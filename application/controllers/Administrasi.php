@@ -1,0 +1,654 @@
+<?php
+
+require_once APPPATH.'..\asset\fpdf\fpdf.php';
+class Administrasi extends CI_Controller{
+    function __construct(){
+        parent:: __construct();
+		date_default_timezone_set('Asia/Jakarta');
+        // $this->page = 'MenuPage';
+        $this->page = 'MenuPageGov';
+        $this->PDF = new FPDF();
+        $this->bulan = ['01'=>'Januari','02'=>'Februari','03'=>'Maret','04'=>'April','05'=>'Mei','06'=>'Juni','07'=>'Juli','08'=>'Agustus','09'=>'September','10'=>'Oktober','11'=>'November','12'=>'Desember'];
+        $this->waktu = date('Y-m-d H:i:s');
+        if (true) {
+            $this->ret['ses']=true;
+        }else{
+            $this->ret['ses']=false;
+        }
+    }
+
+    function index(){
+        $data['page']=$this->page;
+        $data['title'] = 'Homepage';
+        //echo $this->input->get('tipe');
+        $this->load->view('General/home',$data);
+    }
+
+    function comp_asset(){//=================OK
+        $data['page']=$this->page;
+        $data['title'] = 'Aset Bumdes';
+        $data['v1'] = $this->am->get_aset_umum();
+        $data['v2'] = $this->am->get_aset_disewakan();
+        $data['v3'] = $this->am->get_aset_bagi_hasil();
+        // echo $data['v3'];
+        $this->load->view('MenuPage/Main/comp_asset',$data);
+    }
+
+    
+    function tambah_aset(){//=================OK
+        $data['page']=$this->page;
+        $data['title'] = '';
+        $data['tanggal'] = date('d/m/Y');
+        $data['b']=$this->fm->get_saldo();
+        $this->load->view('MenuPage/Form/tambah_aset',$data);
+    }
+    
+    
+    function business_partner(){//=================OK
+        $data['page']=$this->page;
+        $data['title'] = 'Rekanan bisnis';
+        //echo $this->input->get('tipe');
+        $data['tanggal'] = date('d/m/Y');
+        $data['v'] = $this->am->get_rekanan();
+        $this->load->view('MenuPage/Main/mitra_usaha',$data);
+    }
+
+    function tambah_rekanan(){//=============ada view
+        $data['page']=$this->page;
+        $data['title'] = 'Tambah rekanan usaha';
+        //echo $this->input->get('tipe');
+        $data['tanggal'] = date('d/m/Y');
+        $this->load->view('MenuPage/Form/tambah_rekanan',$data);
+    }
+
+    function detail_aset($id){//=============ada view
+        $data['page']=$this->page;
+        $data['title'] = '';
+        $data['tanggal'] = date('d/m/Y');
+        $data['id'] = $id;
+        $data['v'] = $this->am->get_detail_aset($id);
+        // $data['v_masuk_tabel'] = $this->lm->get_detail_komoditas_masuk($id);
+        $this->load->view('MenuPage/Detail_Print/detail_aset2',$data);
+        // echo json_encode($data['v']);
+        // echo APPPATH;
+    }
+
+    function security(){//=============ada view
+        $data['page']=$this->page;
+        $data['title'] = 'Akun admin';//0081578813144
+        $data['v'] = $this->hr->get_user_log_id('0081578813144');
+        $this->load->view('MenuPage/Main/security',$data);
+    }
+
+    function user_management(){//=============ada view
+        $data['page']=$this->page;
+        $data['title'] = '';
+        $data['v']=$this->hr->get_admin();
+        // echo $data['v'];
+        $this->load->view('MenuPage/Main/user_manag',$data);
+    }
+
+    function tambah_admin(){//=============ada view
+        $data['page']=$this->page;
+        $data['title'] = '';
+        $data['tanggal'] = date('d/m/Y');
+        $this->load->view('MenuPage/Form/tambah_admin',$data);
+    }
+
+
+    function admin_log(){//=============ada view
+        $data['page']=$this->page;
+        $data['bln'] = $this->bulan;
+        $data['title'] = '';
+        $data['bulan']=date('m');
+        $data['tahun']=date('Y');
+        $data['v'] = $this->hr->get_log_user('All','All');
+        $data['v_tahun'] = $this->hr->get_tahun_log();
+        // echo $data['v'];
+        $this->load->view('MenuPage/Main/admin_log',$data);
+    }
+
+    function form_edit_aset($id){//=============ada view
+        $data['page']=$this->page;
+        $data['title'] = 'Edit gudang '.$id;
+        $data['id']=$id;
+        $data['v'] = $this->am->get_edit_aset($id);
+        $data['b']=$this->fm->get_saldo();
+        $this->load->view('MenuPage/Form/edit_aset',$data);
+        // echo json_encode($data['v']);
+    }
+
+    function set_aset_baru(){
+
+        $nama = $this->input->post('nama_aset',true);
+        $nomor = $this->input->post('nomor_aset',true);
+        $sumber = $this->input->post('sumber',true);
+        $harga = $this->input->post('harga',true);
+        $harga = $harga?$harga:null;
+        $lokasi = $this->input->post('lokasi',true);
+        $kondisi = $this->input->post('kondisi',true);
+        $tglmasuk = $this->input->post('tanggal_masuk',true);
+        $tglmasuk = date('Y-m-d',strtotime($tglmasuk));
+        $keadaan = $this->input->post('keadaan',true);
+        $cat = $this->input->post('cat',true);
+        $cat=$cat?$cat:null;
+        
+        $file_name = false;
+        if (!empty($_FILES['gambar']['name'])&&$_FILES['gambar']['size']<(5*1048576)) {
+            $fmt = explode('.',$_FILES['gambar']['name']);
+            $file_name = '003'.time().'.'.end($fmt);
+        }
+        
+        $v = $this->am->set_aset_baru($nama,$nomor,$sumber,$harga,$lokasi,$kondisi,$tglmasuk,$keadaan,$cat, $file_name);
+
+        if (isset($_POST['potong_saldo'])&&$v['resp']) {
+            $pesan = 'Pembelian aset '.$nama.' dengan kondisi '.$kondisi;
+            $v2=$this->fm->set_arus_kas('OUT', $pesan, $harga, date('Y-m-d',strtotime($tglmasuk)), 'System', $v['id']);
+            if ($v2['res']) {
+                $log_mesg = '[TAMBAH][KEUANGAN][BELI ASET]['.$v2['id'].']['.$v['id'].'] Pembelian aset '.$nama.' dengan kondisi '.$kondisi.', dan keadaan '.$keadaan;
+                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            }
+        }
+        if ($v['resp']) {
+            $log_mesg = '[TAMBAH][ASET]['.$v['id'].'] Penambahan aset '.$nama.' dengan kondisi '.$kondisi.' dalam keadaan '.$keadaan.' melalui proses '.$sumber;
+            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+        }
+        
+        
+
+        if ($v['resp']) {
+            if ($file_name) {
+                $file_name = explode('.',$file_name);
+                $file_name = $file_name[0];
+            }
+            $config = [
+                'upload_path'=> 'asset/gambar/',
+                'allowed_types'=> 'jpg|png',
+                'max_size'=> 5*1048576,//in KB, 0 = unlimit
+                'max_width'=>0,
+                'min_width'=>0,
+                'file_name'=> $file_name
+            ];
+            $this->load->library('upload', $config);
+            $this->upload->do_upload('gambar');/*
+            if ($this->upload->do_upload('gambar')){
+                $resp = $this->upload->data();
+                $resp = 'Ok | '.$resp['file_size'];
+            }else{
+                $resp= $this->upload->display_errors();
+            }*/
+        }
+        
+        if ($v['resp']) {
+            $s=$this->fm->get_saldo();
+            $s = isset($s[0]->ac)?$s[0]->ac:0;
+            echo '200|'.$s;
+        }else{
+            echo ' | ';
+        }
+    }
+
+    function set_mitra_baru(){
+        $nama = $this->input->post('nama',true);
+        $pj = $this->input->post('pj',true);
+        $k_1 = $this->input->post('kontak_1',true);
+        $k_2 = $this->input->post('kontak_2',true);
+        $k_2 = $k_2!=''?$k_2:null;
+        $alamat = $this->input->post('alamat',true);
+
+        $v=$this->am->set_rekan_usaha($nama, $pj, $k_1, $k_2, $alamat);
+        $log_mesg = '[TAMBAH][REKANAN]['.$v['id'].'] Penambahan rekanan baru, dengan nama rekanan '.$nama;
+
+        if ($v['resp']) {
+            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            echo '200';
+        }
+
+    }
+
+    function set_admin_baru(){
+        $nama = $this->input->post('nama',true);
+        $kontak = $this->input->post('kontak',true);
+        $kat = $this->input->post('kategori',true);
+        $kat2 = $kat=='MNG'?'Manajemen BUMDes':'Pemerintah desa';
+        $usern = $this->input->post('username',true);
+        $password = $this->input->post('password',true);
+
+        $v=$this->hr->set_admin_baru($nama, $kontak, $usern, $kat, $password);
+        $log_mesg = '[TAMBAH][ADMIN]['.$v['id'].'] Penambahan admin bernama '.$nama.' dari '.$kat2;
+
+        if ($v['resp']) {
+            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            echo '200';
+        }
+    }
+
+    function form_edit_mitra($id){
+        $data['page']=$this->page;
+        $data['title'] = '';
+        $data['v'] = $this->am->get_edit_mitra($id);
+        $this->load->view('MenuPage/Form/edit_rekanan',$data);
+        // echo json_encode($data['v']);
+    }
+
+    function edit_aset(){
+        $id = $this->input->post('id',true);
+        $nama = $this->input->post('nama_aset',true);
+        $nomor = $this->input->post('nomor_aset',true);
+        $sumber = $this->input->post('sumber',true);
+        $harga = $this->input->post('harga',true);
+        $ps = $this->input->post('potong_saldo',true);
+        $lokasi = $this->input->post('lokasi',true);
+        $del_fot = $this->input->post('del_fot',true);
+        $img_val = $this->input->post('img_val',true);
+        $img_val = $img_val?$img_val:false;
+        $kondisi = $this->input->post('kondisi',true);
+        $tglmasuk = $this->input->post('tanggal_masuk',true);
+        $tglmasuk = date('Y-m-d',strtotime($tglmasuk));
+        $keadaan = $this->input->post('keadaan',true);
+        $cat = $this->input->post('catatan',true);
+        $cat = $cat?$cat:null;
+
+        if (isset($_FILES['foto']['name'])) {//variable eksis atau tidak
+            $cek_file = $_FILES['foto']['name']?true:false;
+        }else{
+            $cek_file=false;
+        }
+        $fn = $cek_file?$_FILES['foto']['name']:false;//mengambil nama jika variable ada
+        $fn=$fn?explode('.',$_FILES['foto']['name']):false;//membuang . dari variabel
+        $file_name= $fn?'300'.time().'.'.end($fn):false;
+        $resp = false;
+
+        $v = $this->am->edit_aset($id, $nama, $nomor, $sumber, $harga, $lokasi, $kondisi, $tglmasuk, $keadaan, $cat, $file_name, $del_fot);
+
+        if ($v) {
+            $log_mesg = '[EDIT][ASET]['.$id.'] Perubahan data aset '. $nama.' dengan kondisi '.$kondisi.', keadaan '.$keadaan;;
+            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $resp=true;
+        }
+
+        if ($ps) {
+            $ket_kas ='Pembelian aset '.$nama.' dengan kondisi '.$kondisi.', keadaan '.$keadaan;
+            $v = $this->fm->set_arus_kas('OUT', $ket_kas, $harga, $tglmasuk, 'System', $id);
+            if ($v['res']) {
+                $log_mesg='[TAMBAH][KEUANGAN][BELI ASET]['.$v['id'].']['.$id.'] Pembelian aset '.$nama.' dengan kondisi '.$kondisi.', dan keadaan '.$keadaan;
+                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                $resp = true;
+            }else{
+                $v=$this->fm->edit_arus_kas($id, $harga, 'Kredit', $tglmasuk, $ket_kas);
+                if ($v['resp']) {
+                    $log_mesg='[EDIT][KEUANGAN][BELI ASET]['.$v['id'].']['.$id.'] Pembelian aset '.$nama.' dengan kondisi '.$kondisi.', dan keadaan '.$keadaan;
+                    $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                    $resp = true;
+                }
+            }
+        }else {
+            $v = $this->fm->del_keuangan($id);
+            $log_mesg='[HAPUS][KEUANGAN][STOK MASUK]['.$id.'] Menghapus data keuangan dari pembelian '.$nama.' dengan kondisi '.$kondisi.', keadaan '.$keadaan;
+            if ($v) {//log delete kas
+                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                $resp=true;
+            }
+        }
+
+        // echo json_encode($_POST);
+        $mesg=null;
+        $stat=null;
+        $foto=base_url('asset/gambar/unnamed.png');
+        if ($del_fot&&$v&&waktu_data($id)) {
+            if (file_exists('asset/gambar/'.$img_val)) {
+                unlink('asset/gambar/'.$img_val);
+            }
+            $stat='Del';
+        }elseif ($file_name&&$v&&waktu_data($id)) {
+            $file_name = explode('.',$file_name);
+            $config = [
+                'upload_path'=> 'asset/gambar/',
+                'allowed_types'=> 'jpg|png',
+                'max_size'=> 5*1048576,
+                'max_width'=>0,
+                'min_width'=>0,
+                'file_name'=> $file_name[0]
+            ];
+            $this->load->library('upload', $config);
+            if ( ! $this->upload->do_upload('foto')){
+                $mesg ['mesg'] = $this->upload->display_errors();
+            }else{
+                $mesg ['mesg'] = $this->upload->data();
+                if ($img_val) {
+                    if (file_exists('asset/gambar/'.$img_val)) {
+                        unlink('asset/gambar/'.$img_val);
+                    }
+                }
+                $stat='Change';
+                $foto = base_url('asset/gambar/').$mesg['mesg']['orig_name'];
+            }
+        }
+
+        if ($resp) {
+            $s=$this->fm->get_saldo();
+            $s = isset($s[0]->ac)?$s[0]->ac:0;
+            $ar = [200, $s, $stat, $foto];
+            $ar = implode('|',$ar);
+            echo $ar;
+            // echo json_encode($ar);
+        }else{
+            echo '100| | | ';
+        }
+    }
+
+    function edit_rekanan(){
+        $telp2 = null;
+        $id = $this->input->post('id',true);
+        $nama = $this->input->post('nama',true);
+        $pj = $this->input->post('pj',true);
+        $alamat = $this->input->post('alamat',true);
+        $status = $this->input->post('status',true);
+        $telp1 = $this->input->post('telp_1',true);
+        $telp2 = $this->input->post('telp_2',true);
+        if ($telp2=='') {
+            $telp2=null;
+        }
+
+        $v = $this->am->edit_rekanan($id, $nama, $pj, $alamat, $status, $telp1, $telp2);
+        $log_mesg = '[EDIT][REKANAN] ['.$id.'] Perubahan data rekanan '.$nama;
+        if ($v) {
+            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+        }
+    }
+
+    function hapus_komoditas(){
+        $id = $this->input->post('id',true);
+        
+        $v = $this->am->del_komoditas($id);
+        
+        $log_mesg = '[HAPUS][KOMODITAS]['.$id.'] Menghapus komoditas dagang';
+        if ($v) {
+            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            echo 200;
+        }else{
+            echo 100;
+        }
+    } //$value 
+
+    //=============ada view
+    function pdf_aset($id){
+        // membuat halaman baru
+        $this->PDF->AddPage();
+        // setting jenis font yang akan digunakan
+        $this->PDF->SetFont('Arial','B',16);
+        // mencetak string 
+        $this->PDF->Cell(190,7,'SEKOLAH MENENGAH KEJURUSAN NEEGRI 2 LANGSA',0,1,'C');
+        $this->PDF->SetFont('Arial','B',12);
+        $this->PDF->Cell(190,7,'DAFTAR SISWA KELAS IX JURUSAN REKAYASA PERANGKAT LUNAK',0,1,'C');
+        // Memberikan space kebawah agar tidak terlalu rapat
+        $this->PDF->Cell(10,7,'',0,1);
+        $this->PDF->SetFont('Arial','B',10);
+        $this->PDF->Cell(20,6,'NIM',1,0);
+        $this->PDF->Cell(110,6,'NAMA MAHASISWA',1,0);
+        $this->PDF->Cell(30,6,'NO HP',1,0);
+        $this->PDF->Cell(30,6,'TANGGAL LHR',1,0);
+        $this->PDF->SetFont('Arial','',10);/*
+        $mahasiswa = $this->db->get('mahasiswa')->result();
+        foreach ($mahasiswa as $row){
+            $this->PDF->Cell(20,6,$row->nim,1,0);
+            $this->PDF->Cell(85,6,$row->nama_lengkap,1,0);
+            $this->PDF->Cell(27,6,$row->no_hp,1,0);
+            $this->PDF->Cell(25,6,$row->tanggal_lahir,1,1); 
+        }*/
+        $this->PDF->Output();
+    }
+
+    //=============ada view
+    function pdf_daftar_aset(){
+        
+        $r = $this->am->get_aset_umum('JSON');
+        $r1 = $this->am->get_aset_disewakan('JSON');
+        $r2 = $this->am->get_aset_bagi_hasil('JSON');
+        // membuat halaman baru
+        $this->PDF->AddPage();
+        // setting jenis font yang akan digunakan
+        $this->PDF->SetFont('Arial','B',16);
+        $logo = base_url().'logo.jpeg';
+        $this->PDF->Cell(30,30,$this->PDF->Image($logo, ($this->PDF->GetX()-1), $this->PDF->GetY()-12, 33.58),0);
+        // mencetak string 
+        $this->PDF->Cell(120,7,'DAFTAR ASET DIMILIKI',0,1,'C');
+        $this->PDF->SetFont('Arial','B',12);
+        $this->PDF->Cell(180,8,'BUMDES Indrakila Jaya',0,1,'C');
+        $this->PDF->Cell(190,0,'',1,1);
+        // Memberikan space kebawah agar tidak terlalu rapat
+        $this->PDF->Cell(10,7,'',0,1);
+        $this->PDF->SetFont('Arial','',15);
+        $this->PDF->Cell(190,7,date('d/m/Y'),0,1,'R');
+        /*
+        $this->PDF->SetFont('Arial','',12);
+        $this->PDF->Cell(80,10,'Total pemasukan bagi hasil',0,1);
+        $this->PDF->SetFont('Arial','B',20);
+        $this->PDF->Cell(190,10,'Rp. 400,000',0,1,'C');
+        $this->PDF->Cell(10,10,'',0,1);*/
+
+        /*=======================ASET UMUM===========================*/
+        $this->PDF->SetFont('Arial','',15);
+        $this->PDF->Cell(10,10,'Daftar aset umum',0,1);
+
+        $this->PDF->SetFont('Arial','B',11);
+        $this->PDF->Cell(10,6,'No',1,0);
+        $this->PDF->Cell(50,6,'Nama aset',1,0);
+        $this->PDF->Cell(50,6,'Nomor aset',1,0);
+        $this->PDF->Cell(50,6,'Lokasi aset',1,0);
+        $this->PDF->Cell(30,6,'Tahun terdaftar',1,1);
+
+        $this->PDF->SetFont('Arial','',9);     
+        foreach ($r as $key => $v) {
+            $this->PDF->Cell(10,6,($key+1),1,0);
+            $this->PDF->Cell(50,6,$v->nm,1,0);
+            $this->PDF->Cell(50,6,$v->num,1,0);
+            $this->PDF->Cell(50,6,$v->lok,1,0);
+            $this->PDF->Cell(30,6,date('d/m/Y',strtotime($v->thn)),1,1);
+        }
+        /*=======================ASET Disewakan===========================*/
+        $this->PDF->Cell(190,10,'',0,1);
+        $this->PDF->SetFont('Arial','',15);
+        $this->PDF->Cell(10,10,'Daftar aset disewakan',0,1);
+
+        $this->PDF->SetFont('Arial','B',11);
+        $this->PDF->Cell(10,6,'No',1,0);
+        $this->PDF->Cell(50,6,'Nama aset',1,0);
+        $this->PDF->Cell(50,6,'Nomor aset',1,0);
+        $this->PDF->Cell(50,6,'Lokasi aset',1,0);
+        $this->PDF->Cell(30,6,'Tahun terdaftar',1,1);
+
+        $this->PDF->SetFont('Arial','',9);     
+        foreach ($r1 as $key => $v) {
+            $this->PDF->Cell(10,6,($key+1),1,0);
+            $this->PDF->Cell(50,6,$v->nm,1,0);
+            $this->PDF->Cell(50,6,$v->num,1,0);
+            $this->PDF->Cell(50,6,$v->lok,1,0);
+            $this->PDF->Cell(30,6,date('d/m/Y',strtotime($v->thn)),1,1);
+        }
+
+        /*=======================ASET Bagi Hasil===========================*/
+        $this->PDF->Cell(190,10,'',0,1);
+        $this->PDF->SetFont('Arial','',15);
+        $this->PDF->Cell(10,10,'Daftar aset bagi hasil',0,1);
+
+        $this->PDF->SetFont('Arial','B',11);
+        $this->PDF->Cell(10,6,'No',1,0);
+        $this->PDF->Cell(50,6,'Nama aset',1,0);
+        $this->PDF->Cell(50,6,'Nomor aset',1,0);
+        $this->PDF->Cell(50,6,'Lokasi aset',1,0);
+        $this->PDF->Cell(30,6,'Tahun terdaftar',1,1);
+
+        $this->PDF->SetFont('Arial','',9);     
+        foreach ($r2 as $key => $v) {
+            $this->PDF->Cell(10,6,($key+1),1,0);
+            $this->PDF->Cell(50,6,$v->nm,1,0);
+            $this->PDF->Cell(50,6,$v->num,1,0);
+            $this->PDF->Cell(50,6,$v->lok,1,0);
+            $this->PDF->Cell(30,6,date('d/m/Y',strtotime($v->thn)),1,1);
+        }
+
+        $this->PDF->Output('I','Daftar_barang_'.date('d_m_Y').'.pdf');
+    }
+
+    function hapus_satuan(){
+        $id = $this->input->post('id',true);
+        $nm = $this->input->post('nm',true);
+        $log_mesg = '[HAPUS][SATUAN] Menghapus satuan '.$nm;
+        $v = $this->am->del_satuan($id);
+        if ($v) {
+            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            echo 200;
+        }
+    }
+
+
+    function hapus_aset(){
+        $id = $this->input->post('id',true);
+        $nm = $this->input->post('nm',true);
+        $log_mesg = '[HAPUS][ASET]['.$id.'] Menghapus '.$nm.' dari daftar aset';
+        $v = $this->am->del_aset($id);
+        if ($v) {
+            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            echo 200;
+        }
+    }
+
+    function hapus_mitra(){
+        $id = $this->input->post('id',true);
+        $nm = $this->input->post('nm',true);
+        $log_mesg = '[HAPUS][REKANAN]['.$id.'] Menghapus '.$nm.' dari daftar rekanan usaha BUMDes';
+        $v = $this->am->del_rekanan($id);
+        if ($v) {
+            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            echo 200;
+        }
+    }
+
+    function hapus_user(){
+        $id = $this->input->post('id',true);
+        $nm = $this->input->post('nm',true);
+        $log_mesg = '[HAPUS][USER]['.$id.'] Menghapus '.$nm.' dari daftar pengguna sistem';
+        $v = $this->hr->del_user($id);
+        if ($v) {
+            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            echo 200;
+        }
+    }
+
+    function tambah_satuan(){
+        $sat = $this->input->post('sat',true);
+        $ket_sat = $this->input->post('ket_sat',true);
+
+        $v = $this->am->set_satuan($sat, $ket_sat);
+        $log_mesg = '[TAMBAH][SATUAN] Menambah '.$sat.' ke daam daftar satuan produk dagang';
+        if ($v) {
+            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            echo 200;
+        }
+    }
+
+    function ubah_profil(){//=============ada view
+        $data['page']=$this->page;
+        $data['title'] = 'Ubah informasi admin ';
+        $data['v']=$this->hr->get_edit_profil('0081578813144');
+        $this->load->view('MenuPage/Form/edit_profil',$data);
+        // echo json_encode($data['v']);
+    }
+
+    function ganti_password(){//=============ada view
+        $data['page']=$this->page;
+        $data['title'] = 'Ganti password';
+        // $data['b']=$this->hr->get_saldo('0081578813144);
+        $this->load->view('MenuPage/Form/edit_ganti_pass',$data);
+        // echo json_encode($data['v']);
+    }
+
+    function detail_user($id){
+        $kat =['MNG'=>'Pengurus BUMDes', 'GOV'=>'Pemerintahan Desa Pujotirto'];
+        $data['page']=$this->page;
+        $data['title'] = 'Ganti password';
+        $data['u']=$this->hr->get_detail_user($id);
+        $data['k'] = isset($data['u']->kt)?$kat[$data['u']->kt]:'-';
+        $this->load->view('MenuPage/Detail_Print/detail_user',$data);
+    }
+
+    function edit_profil(){
+        $nama = $this->input->post('nama',true);
+        $username = $this->input->post('username',true);
+        $kontak = $this->input->post('kontak',true);
+        $password = $this->input->post('password',true);
+        $img_val =  $this->input->post('img_val',true);
+        $foto=false;
+        if (isset($_FILES['foto'])) {
+            $foto = $_FILES['foto']['name']?explode('.',$_FILES['foto']['name'])[1]:false;
+            $foto = $foto?'400'.time().'.'.$foto:false;
+            $foto = $_FILES['foto']['size']<=5*1048576?$foto:false; //cek ukuran
+        }
+
+        $del_fot = isset($_POST['del_fot']);
+        $stat = 'None';
+        $v= $this->hr->edit_profil('0081578813144',$nama, $username, $kontak, $password, $foto, $del_fot);
+        if ($v) {
+            $log_mesg = '[EDIT][PROFIL]['.'0081578813144'.'] Admin {NAMA} mengubah informasi di profilnya';
+            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+        }
+
+        if ($v&&$foto) {
+            $foto = explode('.',$foto);
+            $config = [
+                'upload_path'=> 'asset/gambar/admin/',
+                'allowed_types'=> 'jpg|png',
+                'max_size'=> 5*1048576,
+                'max_width'=>0,
+                'min_width'=>0,
+                'file_name'=> $foto[0]
+            ];
+            $this->load->library('upload', $config);
+            if ( ! $this->upload->do_upload('foto')){
+                $mesg ['mesg'] = $this->upload->display_errors();
+            }else{
+                $mesg ['mesg'] = $this->upload->data();
+                if ($img_val) {
+                    if (file_exists('asset/gambar/admin/'.$img_val)) {
+                        unlink('asset/gambar/admin/'.$img_val);
+                    }
+                }
+                $stat='Change';
+                $foto = base_url('asset/gambar/admin/').$mesg['mesg']['orig_name'];
+            }
+        }elseif ($del_fot) {
+            if ($img_val) {
+                if (file_exists('asset/gambar/admin/'.$img_val)) {
+                    unlink('asset/gambar/admin/'.$img_val);
+                }
+            }
+            $stat='Del';
+            $foto = base_url('asset/gambar/unnamed.png');
+        }
+
+        if ($v) {
+            echo '200|'.$stat.'|'.$foto;
+        }
+    }
+
+    
+    function gov_asset(){
+        $data['page']=$this->page;
+        $data['title'] = 'Pencatatan penjualan';
+        $data['v'] = '';
+        $data['v1'] = $this->am->get_aset_umum('json');
+        $data['v2'] = $this->am->get_aset_disewakan('json');
+        $data['v3'] = $this->am->get_aset_bagi_hasil('json');
+        $this->load->view('MenuPage/Main/gov_asset',$data);
+    }
+    
+    
+    function gov_kerjasama_bgh(){
+        $data['page']=$this->page;
+        $data['title'] = 'Pencatatan penjualan';
+        $this->load->view('MenuPage/Main/gov_kerjasama_bgh',$data);
+        // echo json_encode($data['v1']);
+    }
+
+}
