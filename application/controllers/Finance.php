@@ -606,9 +606,9 @@ class Finance extends CI_controller{
     function hapus_bagi_hasil(){
         $id = $this->input->post('id',true);
 
-        $log_mesg = '[HAPUS][BAGI HASIL]['.$id.'] Menghapus/membatalkan kerjasama bagi hasil';
         $v = $this->fm->del_bagi_hasil($id);
-        if ($v) {
+        if ($v['res']) {
+            $log_mesg = '['.$v['log'].'][BAGI HASIL]['.$id.'] '.$v['mesg'].' kerjasama bagi hasil';
             $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
             echo 200;
         }

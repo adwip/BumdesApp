@@ -20,8 +20,8 @@ class Finance_model extends CI_Model{
         $result1=null;
         if ($type=='html') {
             foreach ($result as $key => $v) {
-                $btnk = (int)$v->rh<=30||$v->idt?'Hapus':'Batalkan';
-                $clBut =  (int)$v->rh<=30||$v->idt?'hapus':'batal';
+                $btnk = (int)$v->rh<=30&&!$v->idt?'Hapus':'Batalkan';
+                $clBut =  (int)$v->rh<=30&&!$v->idt?'hapus-bgh':'batal';
                 $btn =null;
                 if ($v->sgh!='Batal'&&waktu_data($v->id)) {
                     $btn = anchor('edit-sp/'.$v->id,'Ubah', 'class="btn btn-xs btn-warning"').
@@ -715,11 +715,32 @@ class Finance_model extends CI_Model{
     }
 
     function del_bagi_hasil($id){
-        $isi = ['status_bgh'=>'Batal'];
+        $this->db->select('DATEDIFF("'.date('Y-m-d').'",tanggal_mulai) AS jh, COUNT(id_temp) AS jb');
+        $this->db->from('bagi_hasil_aset');
+        $this->db->join('pemb_bagi_hasil','id_bagi=id_bgh','LEFT');
         $this->db->where('id_bgh',$id);
-        $this->db->update('bagi_hasil_aset',$isi);
+        $r = $this->db->get()->result();
+        $jh = isset($r[0])?(int)$r[0]->jh:null;
+        $jb = isset($r[0])?$r[0]->jb:null;
 
-        return $this->db->affected_rows();
+        $res['res']=false;
+        if ($jh<=30 && !$jb) {
+            $isi = ['status_bgh'=>'Batal'];
+            $this->db->where('id_bgh',$id);
+            $this->db->delete('bagi_hasil_aset');
+            $res['res'] = $this->db->affected_rows();
+            $res['mesg'] = 'Menghapus';
+            $res['log'] = 'HAPUS';
+        }else{
+            $isi = ['status_bgh'=>'Batal'];
+            $this->db->where('id_bgh',$id);
+            $this->db->update('bagi_hasil_aset',$isi);
+            $res['res'] = $this->db->affected_rows();
+            $res['mesg'] = 'Membatalkan';
+            $res['log'] = 'BATAL';
+        }
+
+        return $res;
     }
 
     function del_bagi_dividen_g($id){

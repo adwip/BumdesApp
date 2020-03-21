@@ -124,7 +124,7 @@
 
                   <tbody id="val-body" data-act="hapus-bagi-hasil" data-meth="POST">
                       <?= $value ?>
-                </tbody>
+                  </tbody>
                 </table>
             </div>
           </div>
