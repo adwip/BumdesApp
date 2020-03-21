@@ -601,6 +601,7 @@ $(document).ready(function(){
         })
         
     })
+
     //Untuk pembatalan kerjasama bagi hasil 
     $('tbody').on('click','.batal2',function(){
         const act = $(this).closest('tbody')
@@ -619,7 +620,6 @@ $(document).ready(function(){
                         if (v==200) {
                             swal({text:"Berhasil membatalkan",buttons: false,timer:3000,icon:"success"})
                         }else{
-                            
                             swal({text:"Gagal membatalkan",buttons: false,timer:3000,icon:"error"})
                         }
                     }

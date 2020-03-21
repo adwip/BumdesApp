@@ -8,10 +8,11 @@ class Finance_model extends CI_Model{
     }
 
     function get_aset_bagi_hasil($tahun, $type='html'){
-        $this->db->select('id_bgh AS id, IFNULL(aset_luar,IFNULL(nama, deld_aset)) AS na, tanggal_mulai AS tm, tanggal_selesai AS ts, nama_mitra AS nm, pers_bumdes AS pb, pers_mitra AS pm, DATEDIFF("'.date('Y-m-d').'",tanggal_mulai) AS rh, status_bgh AS sgh');
+        $this->db->select('id_bgh AS id, IFNULL(aset_luar,IFNULL(nama, deld_aset)) AS na, tanggal_mulai AS tm, tanggal_selesai AS ts, nama_mitra AS nm, pers_bumdes AS pb, pers_mitra AS pm, DATEDIFF("'.date('Y-m-d').'",tanggal_mulai) AS rh, status_bgh AS sgh, id_temp AS idt');
         $this->db->from('bagi_hasil_aset bg');
         $this->db->join('aset as','bg.aset_bh=as.id_aset','LEFT');
         $this->db->join('mitra mt','bg.mitra=mt.id_mitra');
+        $this->db->join('pemb_bagi_hasil','id_bagi=id_bgh','LEFT');
         if ($tahun!='All') {
             $this->db->like('tanggal_selesai ',$tahun,'after');
         }
@@ -19,11 +20,12 @@ class Finance_model extends CI_Model{
         $result1=null;
         if ($type=='html') {
             foreach ($result as $key => $v) {
-                $btnk = (int)$v->rh<=30?'Hapus':'Batalkan';
+                $btnk = (int)$v->rh<=30||$v->idt?'Hapus':'Batalkan';
+                $clBut =  (int)$v->rh<=30||$v->idt?'hapus':'batal';
                 $btn =null;
-                if ($v->sgh!='Batal') {
+                if ($v->sgh!='Batal'&&waktu_data($v->id)) {
                     $btn = anchor('edit-sp/'.$v->id,'Ubah', 'class="btn btn-xs btn-warning"').
-                        '<button type="button" class="btn btn-xs btn-danger hapus" value="'.$v->id.'">'.$btnk.'</button>';
+                        '<button type="button" class="btn btn-xs btn-danger '.$clBut.'" value="'.$v->id.'">'.$btnk.'</button>';
                 }
                 $result1 .= '<tr>
                                 <td>'.($key+1).'</td>

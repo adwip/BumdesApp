@@ -28,7 +28,6 @@ class Logistic_model extends CI_Model{
                                 <td>'.date('d/m/Y',strtotime($val->tanggal)).'</td>
                                 <td>'.$val->jumlah.' '.$val->stn.'</td>
                                 <td>Rp. '.$val->nilai.'</td>
-                                <td>'.$val->stok.' '.$val->stn.'</td>
                                 <td class="text-center">
                                     '.anchor('detail-lin/'.$val->idp,'Detail','  title="'.$val->idp.'"').'
                                 '.$akt.'
@@ -68,7 +67,6 @@ class Logistic_model extends CI_Model{
                                 <td>'.date('d/m/Y',strtotime($val->tgl)).'</td>
                                 <td>'.$val->jlh.' '.$val->stn.'</td>
                                 <td>'.$val->tjn.'</td>
-                                <td>'.$val->stk.' '.$val->stn.'</td>
                                 <td class="text-center">
                                     '.anchor('detail-lout/'.$val->id,'Detail','  title="'.$val->id.'"').'    <br>
                                 

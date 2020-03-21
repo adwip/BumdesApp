@@ -179,9 +179,7 @@ class Finance extends CI_controller{
                 $val['ses']='Off';
             }
             echo json_encode($val);
-            // echo $data['tahun'];
         }
-        // echo json_encode($data['v']);
     }
 
     function bagi_dividen(){

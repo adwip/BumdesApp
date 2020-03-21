@@ -129,7 +129,6 @@
                     <th>Tanggal</th>
                     <th>Jumlah</th>
                     <th>Harga</th>
-                    <th>Stok</th>
                     <th>Aksi</th>
                   </tr>
                 </thead>
