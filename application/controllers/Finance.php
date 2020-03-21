@@ -5,8 +5,8 @@ class Finance extends CI_controller{
     function __construct(){
         parent:: __construct();
 		date_default_timezone_set('Asia/Jakarta');
-        // $this->page = 'MenuPage';
-        $this->page = 'MenuPageGov';
+        $this->page = 'MenuPage';
+        // $this->page = 'MenuPageGov';
         $this->PDF = new FPDF();
         $this->bulan = ['01'=>'Januari','02'=>'Februari','03'=>'Maret','04'=>'April','05'=>'Mei','06'=>'Juni','07'=>'Juli','08'=>'Agustus','09'=>'September','10'=>'Oktober','11'=>'November','12'=>'Desember'];
         $this->waktu = date('Y-m-d H:i:s');
@@ -622,9 +622,20 @@ class Finance extends CI_controller{
         $entitas = $this->input->post('entitas',true);
         $jumlah = $this->input->post('jumlah',true);
         $cat = $this->input->post('cat',true);
+
         $v = $this->fm->set_bagi_hasil_usaha($tahun, $nilai, $entitas, $jumlah, $cat);
-        $log_mesg = '[TAMBAH][BAGI HASIL USAHA]['.$v['id'].'] Menambah bagi hasil usaha tahunan tahun '.$tahun.' untuk sebanyak '.count($entitas).' entitas';
+        /*
+        if ($v['resp']&&isset($_POST['potong_saldo'])) {
+            $pesan = 'Kas keluar untuk pembagian bagi hasil usaha tahun '.$tahun;
+            $v1=$this->fm->set_arus_kas('OUT', $pesan, $nilai, date('Y-m-d'), 'System', $v['id']);
+            if ($v1['res']) {
+                $log_mesg = '[TAMBAH][KEUANGAN][BAGI HASIL USAHA]['.$v['id'].'] kas keluar untuk bagi hasil tahunan tahun '.$tahun;
+                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            }
+        }
+        */
         if ($v['resp']) {
+            $log_mesg = '[TAMBAH][BAGI HASIL USAHA]['.$v['id'].'] Menambah bagi hasil usaha tahunan tahun '.$tahun.' untuk sebanyak '.count($entitas).' entitas';
             $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
             echo 200;
         }
@@ -739,5 +750,6 @@ class Finance extends CI_controller{
         $data['v2'] = $this->fm->get_kredit_debit_bulanan($data['tahun'],$data['bulan']);
         $data['v3'] = $this->am->get_aset_bagi_hasil('json');
         $this->load->view('MenuPage/Main/gov_finansial',$data);
+        // echo json_encode($data['v2']);
     }
 }

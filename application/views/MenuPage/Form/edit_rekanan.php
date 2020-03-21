@@ -100,10 +100,10 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" for="tang_mul">No telp 1 & 2</label>
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                          <input type="text" required class="form-control" name="telp_1" id="tang_mul" value="<?= isset($v->t1)?$v->t1:null ?>">
+                          <input type="text" required class="form-control" name="telp_1" id="tang_mul" value="<?= isset($v->t1)?$v->t1:null ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                          <input type="text" class="form-control" name="telp_2" value="<?= isset($v->t2)?$v->t2:null ?>">
+                          <input type="text" class="form-control" name="telp_2" value="<?= isset($v->t2)?$v->t2:null ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                         </div>
                       </div> <br>
                       

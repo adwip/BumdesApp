@@ -77,11 +77,12 @@
                   <label class="control-label col-md-3 col-sm-3 col-xs-3" for="">Total</label>
                   <div class="col-md-3 col-sm-3 col-xs-3">
                     <input required type="text" name="nilai" class="form-control" value="<?= isset($v->jd)?$v->jd:'-' ?>">
+                    <!-- <span><input <?= isset($v->idf)?'checked':null; ?> type="checkbox" id="cut-saldo" name="potong_saldo" value="Ya"> <label for="">Potong otomatis saldo</label></span> -->
                   </div>
                   <div class="col-md-3 col-sm-3 col-xs-3">
                     <input readonly type="text" class="form-control" id="total-pers" value="100">
                   </div>
-                </div> <br>
+                </div><br>
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-3" for="">Pembagian dividen</label>
                   <div class="col-md-7 col-sm-7 col-xs-7">

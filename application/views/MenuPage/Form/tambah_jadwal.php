@@ -59,7 +59,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="x_panel">
             <div class="x_title">
-            <h1>Tambah penyewaan barang</h1>
+            <h1>Tambah penyewaan aset</h1>
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
@@ -68,7 +68,7 @@
                   <label class="control-label col-md-3 col-sm-3 col-xs-3" for="">Aset disewa</label>
                   <div class="col-md-6 col-sm-6 col-xs-6">
                     <select class="form-control" name="aset" id="aset" required>
-                        <option value="">Pilih aset</option>
+                        <option data-hg="" value="">Pilih aset</option>
                     <?php foreach ($v as $key => $s) {
                             echo '<option data-hg="'.$s->hg.'" value="'.$s->id.'">'.$s->nm.'</option>';
                           } ?>
@@ -84,13 +84,13 @@
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-3" for="kontak">Kontak penyewa</label>
                   <div class="col-md-6 col-sm-6 col-xs-6">
-                    <input type="text" required class="form-control" name="kontak" id="kontak">
+                    <input type="text" required class="form-control" name="kontak" id="kontak" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                   </div>
                 </div> <br>
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-3" for="tang_mul">Tanggal mulai / jumlah hari</label>
                   <div class="col-md-3 col-sm-3 col-xs-3">
-                    <div class='input-group date  tanggal_form' id='tanggal_edit'>
+                    <div class='input-group date  tanggal_form tanggal_new'>
                         <input  type='text' class="form-control" readonly="readonly"  id="edit_tanggal" name="tanggal" value="<?= date('d-m-Y') ?>" />
                         <span class="input-group-addon">
                           <span class="glyphicon glyphicon-calendar"></span>
@@ -137,6 +137,7 @@
     <?php $this->load->view('SuptPage/JsP') ?>
     <script src="<?= base_url('asset/JS/Error_handler.js') ?>"></script>
     <script src="<?= base_url('asset/JS/Fitur.js') ?>"></script>
+    <script src="<?= base_url('asset/JS/Dtmpicker.js') ?>"></script>
     <script src="<?= base_url('asset/JS/Form.js') ?>"></script>
   </body>
 </html>

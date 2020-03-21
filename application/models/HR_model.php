@@ -158,6 +158,15 @@ class HR_model extends CI_Model{
         return $result;
     }
 
+    function cek_username($usn){
+        $this->db->select('');
+        $this->db->from('admin');
+        $this->db->where('username',$usn);
+        $result = $this->db->get()->num_rows();
+        // $this->db->
+        return $result;
+    }
+
     function login($email,$password){
         //json [status],[kategori]
     }

@@ -70,10 +70,6 @@
                         <div class="col-md-6 col-sm-6 col-xs-6">
                           <input type="text" required class="form-control" name="ket" >
                         </div>
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                          <small class="label label-warning">Maks sebelum 15 menit /</small><br>
-                          <small class="label label-warning">Sebelum tutup buku tahunan</small>
-                        </div>
                       </div> <br>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" for="kontak">Jenis</label>
@@ -84,9 +80,6 @@
                         <div class="col-md-3 col-sm-3 col-xs-3">
                           <input type="radio" name="jenis" value="OUT" class="kas">
                           <label for="">Kas keluar (kredit)</label>
-                        </div>
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                          <small class="label label-danger">Tidak dapat diubah</small>
                         </div>
                       </div> <br>
                       <div class="form-group">
@@ -99,23 +92,18 @@
                           <span><label for="">Saldo saat ini</label></span>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                          <small class="label label-warning">Maks sebelum 15 menit /</small><br>
-                          <small class="label label-warning">Sebelum tutup buku tahunan</small>
+                          <small class="label label-danger" id="warning" style="display: none;">Nilai melebihi saldo saat ini</small>
                         </div>
                       </div>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" >Tanggal</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                          <div class="input-group date  tanggal_form">
+                          <div class="input-group date  tanggal_form tanggal_new">
                             <input  type='text' class="form-control" readonly="readonly"  id="edit_tanggal" name="tanggal" value="<?= date('d-m-Y') ?>" />
                             <span class="input-group-addon">
                               <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                           </div>
-                        </div>
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                          <small class="label label-warning">Maks sebelum 15 menit /</small><br>
-                          <small class="label label-warning">Sebelum tutup buku tahunan</small>
                         </div>
                       </div> <br>
                       <div class="form-group">
@@ -162,6 +150,7 @@
     <?php $this->load->view('SuptPage/JsP') ?>
     <script src="<?= base_url('asset/JS/Error_handler.js') ?>"></script>
     <script src="<?= base_url('asset/JS/Fitur.js') ?>"></script>
+    <script src="<?= base_url('asset/JS/Dtmpicker.js') ?>"></script>
     <script src="<?= base_url('asset/JS/Form.js') ?>"></script>
   </body>
 </html>

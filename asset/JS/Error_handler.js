@@ -71,9 +71,14 @@ $(document).ready(function() {
     $('#aset, #jum_har').change(function(){
         // alert('Change')
         const harga = $('option:selected','#aset').attr('data-hg')
-        $('#nominal').val('Rp. '+harga+' / hari')
-        const jh = $('#jum_har').val()
-        $('#harga').val(jh*harga.replace(',','').replace(',',''))
+        if (harga!='') {
+            $('#nominal').val('Rp. '+harga+' / hari')
+            const jh = $('#jum_har').val()
+            $('#harga').val(jh*harga.replace(',','').replace(',',''))
+        }else{
+            $('#nominal').val('')
+            $('#harga').val('')
+        }
     })
 
     // Tambah aset disewakan
@@ -143,4 +148,18 @@ $(document).ready(function() {
             $('#val-m').val(n*(m/100))
         }
     })
+
+    $('.passwords2').keyup(function(){
+        const p1 = $('.passwords').val()
+        const p2 = $('.passwords2').val()
+
+        if (p1!=p2) {
+            $('.conf-pass').show()
+            $('button[type=submit]').attr('disabled',true)
+        }else{
+            $('.conf-pass').hide()
+            $('button[type=submit]').attr('disabled',false)
+        }
+    })
+
 })

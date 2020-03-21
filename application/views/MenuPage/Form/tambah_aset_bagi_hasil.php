@@ -74,23 +74,20 @@
                       } ?>
                     </select>
                   </div>
-                  <div class="col-md-3 col-sm-3 col-xs-3">
-                    <small class="label label-danger">Tidak dapat diubah</small>
-                  </div>
                 </div><br>
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-3" for="kontak">Sumber aset</label>
                   <div class="col-md-3 col-sm-3 col-xs-3 text-center">
                     <input checked type="radio" name="sumber" value="Internal" class="s-aset" id="primary">
-                    <label for="">Aset Internal</label>
+                    <label>Aset Internal</label>
                   </div>
                   <div class="col-md-3 col-sm-3 col-xs-3">
                     <input type="radio" name="sumber" value="Eksternal" class="s-aset">
-                    <label for="">Aset luar</label>
+                    <label>Aset luar</label>
                   </div>
                 </div> <br>
                 <div class="form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-3" for="">Aset</label>
+                  <label class="control-label col-md-3 col-sm-3 col-xs-3">Aset</label>
                   <div class="col-md-6 col-sm-6 col-xs-6" id="internal">
                     <select class="form-control" name="aset" id="inter_aset" required>
                       <option value="">Pilih aset</option>
@@ -102,29 +99,22 @@
                   <div class="col-md-6 col-sm-6 col-xs-6" id="external" style="display:none;">
                     <input disabled required type="text" class="form-control" name="aset" placeholder="Masukkan aset">
                   </div>
-                  <div class="col-md-3 col-sm-3 col-xs-3">
-                    <small class="label label-danger">Tidak dapat diubah</small>
-                  </div>
                 </div> <br>
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-3" for="kontak">Pembagian bagi hasil (%)</label>
                   <div class="col-md-3 col-sm-3 col-xs-3">
                     <input required type="text" id="pers-bumdes" name="pers_bumdes" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
-                    <span><label for="">BUMDes</label></span>
+                    <span><label>BUMDes</label></span>
                   </div>
                   <div class="col-md-3 col-sm-3 col-xs-3">
                     <input type="text" id="pers-mitra" name="pers_mitra" readonly class="form-control" value="0">
-                    <span><label for="">Mitra</label></span>
-                  </div>
-                  <div class="col-md-3 col-sm-3 col-xs-3">
-                    <small class="label label-warning">Maks sebelum 15 menit /</small><br>
-                    <small class="label label-warning">Sebelum tutup buku tahunan</small>
+                    <span><label>Mitra</label></span>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-3" for="tang_mul">Tanggal mulai / lama kerja sama</label>
                   <div class="col-md-3 col-sm-3 col-xs-3">
-                    <div class='input-group date  tanggal_form' id='tanggal_edit'>
+                    <div class='input-group date  tanggal_form tanggal_new'>
                         <input  type='text' class="form-control" readonly="readonly"  id="edit_tanggal" name="tanggal" value="<?= date('d-m-Y') ?>" />
                         <span class="input-group-addon">
                           <span class="glyphicon glyphicon-calendar"></span>
@@ -137,14 +127,9 @@
                   <div class="col-md-1 col-sm-1 col-xs-1">
                     <input readonly class="form-control" value="Bulan">
                   </div>
-                  <div class="col-md-3 col-sm-3 col-xs-3">
-                    <small class="label label-warning">Maks sebelum 15 menit /</small><br>
-                    <small class="label label-warning">Sebelum tutup buku tahunan</small>
-                  </div>
                 </div> <br>
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <button type="submit" class="btn btn-md btn-primary">Kirim</button>
-                        <button type="button" onclick="reset_form()">Reset</button>
                 </div>
               </form>
             </div>
@@ -168,6 +153,7 @@
 
     <?php $this->load->view('SuptPage/JsP') ?>
     <script src="<?= base_url('asset/JS/Fitur.js') ?>"></script>
+    <script src="<?= base_url('asset/JS/Dtmpicker.js') ?>"></script>
     <script src="<?= base_url('asset/JS/Error_handler.js') ?>"></script>
     <script src="<?= base_url('asset/JS/Form.js') ?>"></script>
   </body>

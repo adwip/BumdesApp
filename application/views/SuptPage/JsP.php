@@ -47,4 +47,4 @@
     <script src="<?= base_url('asset/') ?>JS/ms-conf.js"></script>
     <!-- Sweetalert -->
     <script src="<?= base_url('asset/') ?>JS/Swal_module.js"></script>
-    <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
+    <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>  -->

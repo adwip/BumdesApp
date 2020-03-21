@@ -56,7 +56,7 @@
           <div class="row tile_count">
             <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Aset umum</span>
-              <div class="count"><?= count($v1) ?></div>
+              <div class="count" ><?= count($v1) ?></div>
             </div>
             <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Aset disewakan</span>

@@ -96,8 +96,6 @@
                                 <td><strong>Penerima</strong></td>
                                 <td><strong>Persentase</strong></td>
                                 <td><strong>Jumlah</strong></td>
-                                <td><strong>Pembayaran</strong></td>
-                                <td><strong>Aksi</strong></td>
                             </tr>
                         </thead>
                         <tbody data-mid="<?= $id ?>" id="val-body" data-act="<?= site_url('hapus-pembayaran') ?>" data-act2="<?= site_url('set-pembayaran') ?>" data-meth="POST">

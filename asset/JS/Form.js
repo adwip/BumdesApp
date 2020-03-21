@@ -39,7 +39,13 @@ $(document).ready(function(){
                     data: $(this).serialize()+n_kom+sat+n_mitra,
                     dataType: 'json',
                     success: function(v){
-                        if (v==200) {
+                        if (v['resp']==200) {
+                            let html = '<option value="">Pilih komoditas</option>'
+                            for (let i = 0; i < v['data'].length; i++) {
+                                html += '<option data-s2="'+v['data'][i].st2+'" data-sk="'+v['data'][i].stk+'" data-s="'+v['data'][i].st+'" value="'+v['data'][i].id+'">'+v['data'][i].kom+'</option>'
+                                
+                            }
+                            $('#komoditas').html(html)
                             reset_form()
                             swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
                         }else{
@@ -47,21 +53,6 @@ $(document).ready(function(){
                         }
                     }
                 })
-            }
-        })
-    })
-
-    $('#set-distribusi-barang').submit(function(e){
-        e.preventDefault()
-        $.ajax({
-            url: $(this).attr('action'),
-            type: $(this).attr('method'),
-            data: $(this).serialize(),
-            dataType: 'json',
-            success: function(v){
-                // alert(v['status'])
-                // alert('Berhasil menginput '+v['msg'].length)
-                // window.location.href=document.referrer
             }
         })
     })
@@ -136,317 +127,19 @@ $(document).ready(function(){
     $('#set-aset-sewaan').submit(function(e){
         e.preventDefault()
         const n_aset = '&n_aset='+$('option:selected','#tambah-aset-sewa').html();
-        $.ajax({
-            url: $(this).attr('action'),
-            type: $(this).attr('method'),
-            data: $(this).serialize()+n_aset,
-            dataType: 'json',
-            success: function(v){
-                // alert(v['status'])
-                // alert(v)
-                // window.location.href=document.referrer
-            }
-        })
-    })
-
-    $('#set-bagi-hasil').submit(function(e){
-        e.preventDefault()
-        const n_mitra = '&n_mitra='+$('option:selected','#mitra').html();
-        $.ajax({
-            url: $(this).attr('action'),
-            type: $(this).attr('method'),
-            data: $(this).serialize()+n_mitra,
-            dataType: 'json',
-            success: function(v){
-                // alert(v['status'])
-                // alert(v)
-                // window.location.href=document.referrer
-            }
-        })
-    })
-
-    $('#set-pemb-bgh').submit(function(e){
-        e.preventDefault()
-        $.ajax({
-            url: $(this).attr('action'),
-            type: $(this).attr('method'),
-            data: $(this).serialize(),
-            dataType: 'json',
-            success: function(v){
-                // alert(v['status'])
-                // alert(v)
-                // window.location.href=document.referrer
-            }
-        })
-    })
-
-    $('#set-aset-baru').submit(function(e){
-        e.preventDefault()
-        const data = new FormData(this);
-        $.ajax({
-            url: $(this).attr('action'),
-            type: $(this).attr('method'),
-            data: data,
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function(v){
-                v = v.split('|')
-                // alert(v['status'])
-                // alert(v)
-                // window.location.href=document.referrer
-            }
-        })
-    })
-
-    $('#set-arus-kas').submit(function(e){
-        e.preventDefault()
-        $.ajax({
-            url: $(this).attr('action'),
-            type: $(this).attr('method'),
-            data: $(this).serialize(),
-            dataType: 'json',
-            success: function(v){
-                // alert(v['status'])
-                // alert(v)
-                // window.location.href=document.referrer
-            }
-        })
-    })
-
-    $('#set-mitra-baru').submit(function(e){
-        e.preventDefault()
-        $.ajax({
-            url: $(this).attr('action'),
-            type: $(this).attr('method'),
-            data: $(this).serialize(),
-            dataType: 'json',
-            success: function(v){
-                // alert(v['status'])
-                // alert(v)
-                // window.location.href=document.referrer
-            }
-        })
-    })
-
-    $('#set-user-baru').submit(function(e){
-        e.preventDefault()
-        $.ajax({
-            url: $(this).attr('action'),
-            type: $(this).attr('method'),
-            data: $(this).serialize(),
-            dataType: 'json',
-            success: function(v){
-                // alert(v['status'])
-                // alert(v)
-                // window.location.href=document.referrer
-            }
-        })
-    })
-
-    $('#set-bagi-dividen').submit(function(e){
-        e.preventDefault()
-        $.ajax({
-            url: $(this).attr('action'),
-            type: $(this).attr('method'),
-            data: $(this).serialize(),
-            dataType: 'json',
-            success: function(v){
-                // alert(v['status'])
-                // alert(v)
-                // window.location.href=document.referrer
-            }
-        })
-    })
-
-    /*========================================Edit form========================================= */
-    $('#edit-barang-masuk').submit(function(e){
-        e.preventDefault()
-        $.ajax({
-            url: $(this).attr('action'),
-            type: $(this).attr('method'),
-            data: $(this).serialize(),
-            dataType: 'json',
-            success: function(v){
-                if (v['resp']==200) {
-                    $('#saldo').val('Rp. '+v['sld'])
-                }
-            }
-        })
-    })
-
-    $('#edit-barang-keluar').submit(function(e){
-        e.preventDefault()
-        const n_mitra = '&n_mit='+$('option:selected','#mitra').html();
-        $.ajax({
-            url: $(this).attr('action'),
-            type: $(this).attr('method'),
-            data: $(this).serialize()+n_mitra,
-            dataType: 'json',
-            success: function(v){
-                // alert(v['status'])
-                // alert(v)
-                // window.location.href=document.referrer
-            }
-        })
-    })
-
-    $('#edit-penyewaan').submit(function(e){
-        e.preventDefault()
-        $.ajax({
-            url: $(this).attr('action'),
-            type: $(this).attr('method'),
-            data: $(this).serialize(),
-            dataType: 'json',
-            success: function(v){
-                // alert(v['status'])
-                // alert(v)
-                // window.location.href=document.referrer
-            }
-        })
-    })
-
-    $('#edit_aset_sewa').submit(function(e){
-        e.preventDefault()
-        $.ajax({
-            url: $(this).attr('action'),
-            type: $(this).attr('method'),
-            data: $(this).serialize(),
-            dataType: 'json',
-            success: function(v){
-                // alert(v['status'])
-                // alert(v)
-                // window.location.href=document.referrer
-            }
-        })
-    })
-
-    $('#edit-bagi-hasil').submit(function(e){
-        e.preventDefault()
-        $.ajax({
-            url: $(this).attr('action'),
-            type: $(this).attr('method'),
-            data: $(this).serialize(),
-            dataType: 'json',
-            success: function(v){
-                // alert(v['status'])
-                // alert(v)
-                // window.location.href=document.referrer
-            }
-        })
-    })
-
-    $('#edit-comp-asset').submit(function(e){
-        e.preventDefault()
-        const data = new FormData(this);
-        // alert('Ok')
-        $.ajax({
-            url: $(this).attr('action'),
-            type: $(this).attr('method'),
-            data: data,
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function(v){
-                v = v.split('|')
-                if (v[0]==200) {
-                    if (v[2]=='Change') {
-                        $('#image-asset').attr('src',v[3])
-                        $('#gan-fot').attr('disabled',false)
-                    }else if(v[2]=='Del'){
-                        $('#image-asset').attr('src',v[3])
-                        $('#hid-img').val('')
-                        $('#gan-fot').attr('checked',false)
-                        $('#gan-fot').attr('disabled',true)
-                        // alert('Del')
-                    }
-                }
-            }
-        })
-    })
-
-    $('#edit-arus-kas').submit(function(e){
-        e.preventDefault()
-        $.ajax({
-            url: $(this).attr('action'),
-            type: $(this).attr('method'),
-            data: $(this).serialize(),
-            dataType: 'json',
-            success: function(v){
-                if (v['resp']==200) {
-                    $('#saldo').val('Rp. '+v['b'])
-                }
-                // alert(v['status'])
-                // alert(v)
-                // window.location.href=document.referrer
-            }
-        })
-    })
-
-    $('#edit-rekanan').submit(function(e){
-        e.preventDefault()
-        $.ajax({
-            url: $(this).attr('action'),
-            type: $(this).attr('method'),
-            data: $(this).serialize(),
-            dataType: 'json',
-            success: function(v){
-                // alert(v['status'])
-                // alert(v)
-                // window.location.href=document.referrer
-            }
-        })
-    })
-    $('#edit-komoditas-dagang').submit(function(e){
-        e.preventDefault()
-        $.ajax({
-            url: $(this).attr('action'),
-            type: $(this).attr('method'),
-            data: $(this).serialize(),
-            dataType: 'json',
-            success: function(v){
-                // alert(v['status'])
-                // alert(v)
-                // window.location.href=document.referrer
-            }
-        })
-    })
-
-    $('#edit-bagi-dividen').submit(function(e){
-        e.preventDefault()
-        $.ajax({
-            url: $(this).attr('action'),
-            type: $(this).attr('method'),
-            data: $(this).serialize(),
-            dataType: 'json',
-            success: function(v){
-                // alert(v['status'])
-                // alert(v)
-                // window.location.href=document.referrer
-            }
-        })
-    })
-
-    $('tbody').on('click','.bayar',function(){
-        const act = $(this).closest('tbody')
-        const ent = $(this).closest('tr').find(' td:nth-child(2)').html()
-        const harga = $(this).closest('tr').find(' td:nth-child(4)').html()
-        const fin = $(this).closest('td').find('.fbut:checked').length//on('checked','.fbut').length
-        swal({title:"Lanjutkan pembayaran ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {
+        swal({title:"Lanjutkan menyimpan ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {
             if (Ok) {
                 $.ajax({
-                    url: act.attr('data-act2'),
-                    type: act.attr('data-meth'),
-                    data: 'id='+$(this).val()+'&nm='+ent+'&hg='+harga+'&fin='+fin+'&idm='+act.attr('data-mid'),
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: $(this).serialize()+n_aset,
                     dataType: 'json',
                     success: function(v){
                         if (v==200) {
-                            $('#val-body').html(v['html'])
-                            swal({text:"Berhasil membayar",buttons: false,timer:3000,icon:"success"}).then(()=>{
-                                window.location.reload()
-                            })
+                            reset_form()
+                            swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
                         }else{
-                            swal({text:"Gagal membayar",buttons: false,timer:3000,icon:"error"})
+                            swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
                         }
                     }
                 })
@@ -454,7 +147,394 @@ $(document).ready(function(){
         })
     })
 
+    $('#set-bagi-hasil').submit(function(e){
+        e.preventDefault()
+        const n_mitra = '&n_mitra='+$('option:selected','#mitra').html();
+        swal({title:"Lanjutkan menyimpan ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {
+            if (Ok) {
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: $(this).serialize()+n_mitra,
+                    dataType: 'json',
+                    success: function(v){
+                        if (v==200) {
+                            reset_form()
+                            swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
+                        }else{
+                            swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
+                        }
+                    }
+                })
+            }
+        })
+    })
+
+    $('#set-pemb-bgh').submit(function(e){
+        e.preventDefault()
+        swal({title:"Lanjutkan menyimpan ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {
+            if (Ok) {
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(v){
+                        if (v==200) {
+                            reset_form()
+                            swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
+                        }else{
+                            swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
+                        }
+                    }
+                })
+            }
+        })
+    })
+
+    $('#set-aset-baru').submit(function(e){
+        e.preventDefault()
+        const data = new FormData(this);
+        swal({title:"Lanjutkan menyimpan ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {
+            if (Ok) {
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: data,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function(v){
+                        if (v==200) {
+                            v = v.split('|')
+                            reset_form()
+                            swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
+                        }else{
+                            swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
+                        }
+                    }
+                })
+            }
+        })
+    })
+
+    $('#set-arus-kas').submit(function(e){
+        e.preventDefault()
+        swal({title:"Lanjutkan menyimpan ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {
+            if (Ok) {
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(v){
+                        if (v==200) {
+                            reset_form()
+                            swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
+                        }else{
+                            swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
+                        }
+                    }
+                })
+            }
+        })
+    })
+
+    $('#set-mitra-baru').submit(function(e){
+        e.preventDefault()
+        swal({title:"Lanjutkan menyimpan ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {
+            if (Ok) {
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(v){
+                        if (v==200) {
+                            reset_form()
+                            swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
+                        }else{
+                            swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
+                        }
+                    }
+                })
+            }
+        })
+    })
+
+    $('#set-user-baru').submit(function(e){
+        e.preventDefault()
+        swal({title:"Lanjutkan menyimpan ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {
+            if (Ok) {
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(v){
+                        if (v==200) {
+                            reset_form()
+                            swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
+                        }else{
+                            swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
+                        }
+                    }
+                })
+            }
+        })
+    })
+
+    $('#set-bagi-dividen').submit(function(e){
+        e.preventDefault()
+        swal({title:"Lanjutkan menyimpan ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {
+            if (Ok) {
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(v){
+                        if (v==200) {
+                            reset_form()
+                            swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
+                        }else{
+                            swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
+                        }
+                    }
+                })
+            }
+        })
+    })
+
+    /*========================================Edit form========================================= */
+    $('#edit-barang-masuk').submit(function(e){
+        e.preventDefault()
+        swal({title:"Lanjutkan menyimpan ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {
+            if (Ok) {
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(v){
+                        if (v['resp']==200) {
+                            $('#saldo').val('Rp. '+v['sld'])
+                            swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
+                        }else{
+                            swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
+                        }
+                    }
+                })
+            }
+        })
+    })
+
+    $('#edit-barang-keluar').submit(function(e){
+        e.preventDefault()
+        const n_mitra = '&n_mit='+$('option:selected','#mitra').html();
+        swal({title:"Lanjutkan menyimpan ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {
+            if (Ok) {
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: $(this).serialize()+n_mitra,
+                    dataType: 'json',
+                    success: function(v){
+                        if (v==200) {
+                            swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
+                        }else{
+                            swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
+                        }
+                    }
+                })
+            }
+        })
+    })
+
+    $('#edit-penyewaan').submit(function(e){
+        e.preventDefault()
+        swal({title:"Lanjutkan menyimpan ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {
+            if (Ok) {
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(v){
+                        if (v==200) {
+                            swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
+                        }else{
+                            swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
+                        }
+                    }
+                })
+            }
+        })
+    })
+
+    $('#edit_aset_sewa').submit(function(e){
+        e.preventDefault()
+        swal({title:"Lanjutkan menyimpan ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {
+            if (Ok) {
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(v){
+                        if (v==200) {
+                            swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
+                        }else{
+                            swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
+                        }
+                    }
+                })
+            }
+        })
+    })
+
+    $('#edit-bagi-hasil').submit(function(e){
+        e.preventDefault()
+        swal({title:"Lanjutkan menyimpan ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {
+            if (Ok) {
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(v){
+                        if (v==200) {
+                            swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
+                        }else{
+                            swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
+                        }
+                    }
+                })
+            }
+        })
+    })
+
+    $('#edit-comp-asset').submit(function(e){
+        e.preventDefault()
+        const data = new FormData(this);
+        swal({title:"Lanjutkan menyimpan ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {
+            if (Ok) {
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: data,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function(v){
+                        v = v.split('|')
+                        if (v[0]==200) {
+                            swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
+                            if (v[2]=='Change') {
+                                $('#image-asset').attr('src',v[3])
+                                $('#gan-fot').attr('disabled',false)
+                            }else if(v[2]=='Del'){
+                                $('#image-asset').attr('src',v[3])
+                                $('#hid-img').val('')
+                                $('#gan-fot').attr('checked',false)
+                                $('#gan-fot').attr('disabled',true)
+                            }
+                        }else{
+                            swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
+                        }
+                    }
+                })
+            }
+        })
+    })
+
+    $('#edit-arus-kas').submit(function(e){
+        e.preventDefault()
+        swal({title:"Lanjutkan menyimpan ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {
+            if (Ok) {
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(v){
+                        if (v==200) {
+                            swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
+                        }else{
+                            swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
+                        }
+                    }
+                })
+            }
+        })
+    })
+
+    $('#edit-rekanan').submit(function(e){
+        e.preventDefault()
+        swal({title:"Lanjutkan menyimpan ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {
+            if (Ok) {
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(v){
+                        if (v==200) {
+                            swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
+                        }else{
+                            swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
+                        }
+                    }
+                })
+            }
+        })
+    })
+
+    $('#edit-komoditas-dagang').submit(function(e){
+        e.preventDefault()
+        swal({title:"Lanjutkan menyimpan ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {
+            if (Ok) {
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(v){
+                        if (v==200) {
+                            swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
+                        }else{
+                            swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
+                        }
+                    }
+                })
+            }
+        })
+    })
+
+    $('#edit-bagi-dividen').submit(function(e){
+        e.preventDefault()
+        swal({title:"Lanjutkan menyimpan ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {
+            if (Ok) {
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(v){
+                        if (v==200) {
+                            swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
+                        }else{
+                            swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
+                        }
+                    }
+                })
+            }
+        })
+    })
+
+
     /*==================HAPUS==================================*/
+    
     
     //Untuk menghapus
     $('tbody').on('click','.hapus',function(){
@@ -547,6 +627,23 @@ $(document).ready(function(){
             }
         })
         
+    })
+
+    $('#username').change(function(){
+        $.ajax({
+            url: 'Administrasi/cek_username',
+            type: 'GET',
+            data: 'usn='+$(this).val(),
+            success: function(v){
+                if (v>0) {
+                    $('#warning').show()
+                    $('button[type=submit]').attr('disabled',true)
+                }else{
+                    $('#warning').hide()
+                    $('button[type=submit]').attr('disabled',false)
+                }
+            }
+        })
     })
 
 })

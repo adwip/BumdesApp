@@ -103,15 +103,15 @@
           <div class="row tile_count">
             <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Saldo saat ini</span>
-              <div class="count"><?= isset($v->hg)?''.$v->hg:'0' ?></div>
+              <div class="count" id="saldo">Rp. <?= isset($v1[0]->ac)?$v1[0]->ac:'0' ?></div>
             </div>
             <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Total Debit periode ini</span>
-              <div class="count"><?= isset($v->hg)?''.$v->hg:'0' ?></div>
+              <div class="count" id="debit">Rp. <?= isset($v2[0]->dbt)?$v2[0]->dbt:'0' ?></div>
             </div>
             <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Total Kredit periode ini</span>
-              <div class="count"><?= isset($v->hg)?''.$v->hg:'0' ?></div>
+              <div class="count" id="kredit">Rp. <?= isset($v2[0]->kdt)?$v2[0]->kdt:'0' ?></div>
             </div>
           </div>
 

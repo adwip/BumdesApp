@@ -116,7 +116,7 @@ class Finance_model extends CI_Model{
     function get_keuangan_tahunan($tahun, $type='html'){
         $this->db->select('id_fin AS id, tanggal_fin AS dt, keterangan AS nt, FORMAT(debit, "#.00") AS db, FORMAT(kredit, "#.00") AS kd,FORMAT(sld, "#.00") AS bc, actor AS at');
         $this->db->from('rekap_keuangan');
-        $this->db->like('tanggal',$tahun,'after');
+        $this->db->like('tanggal_fin',$tahun,'after');
         $result = $this->db->get()->result();
         $result1=null;
         if ($type=='html') {
@@ -233,8 +233,10 @@ class Finance_model extends CI_Model{
         $result1=null;
         if ($type=='html') {
             foreach ($result as $key => $v) {
-                $but = waktu_data($v->id)?'<button class="btn btn-xs btn-danger hapus" value="'.$v->id.'" >Hapus</button>':null;//edit-bagi-dividen/$v->id
-                $ebut = !$v->tb?anchor('edit-bgu/'.$v->id, 'Ubah','class="btn btn-xs btn-warning"'):null;
+                $but=null;
+                if (waktu_data($v->id)) {
+                    $but = '<button class="btn btn-xs btn-danger hapus" value="'.$v->id.'" >Hapus</button> '.anchor('edit-bgu/'.$v->id, 'Ubah','class="btn btn-xs btn-warning"');
+                }
                 $result1 .= '<tr data-nam="'.$v->td.'">
                                 <td>'.($key+1).'</td>
                                 <td class="text-center">'.$v->je.'</td>
@@ -242,7 +244,7 @@ class Finance_model extends CI_Model{
                                 <td>Rp. '.$v->jd.'</td>
                                 <td>'.$v->tb.'/'.$v->je.'</td>
                                 <td class="text-center">
-                                '.anchor('info-bagi-dividen/'.$v->id,'Info','class="btn btn-xs btn-info"').''.$but.' '.$ebut.'
+                                '.anchor('info-bagi-dividen/'.$v->id,'Detail','class="btn btn-xs btn-info"').''.$but.'
                                 </td>
                             </tr>';
             }
@@ -503,17 +505,11 @@ class Finance_model extends CI_Model{
         $result = $this->db->get()->result();
         $result1 = null;
         foreach ($result as $key => $v) {
-            $disb = $v->nil2>$v->sd ? 'disabled':null;
-            $but = !$v->sp?'<button '.$disb.' type="button" class="btn btn-xs btn-primary bayar" value="'.$v->id.'">Bayar</button>':'<button type="button" class="btn btn-xs btn-danger batal" value="'.$v->id.'">Batal bayar</button>';
-            $sp = $v->sp?'Ok | '.date('d-m-Y',strtotime($v->tp)):null;
-            $checkb = $v->nil2>$v->sd||$v->sp?null:'<input class="fbut" type="checkbox">Catat ke keuangan';
             $result1 .= '<tr data-nam="'.$v->td.'">
                             <td>'.($key+1).'</td>
                             <td>'.$v->ent.'</td>
                             <td>'.$v->prs.' %</td>
                             <td>Rp. '.$v->nil.'</td>
-                            <td>'.$sp.'</td>
-                            <td data-id="'.$v->id.'">'.$but.$checkb.'</td>
                         </tr>';
         }
         return $result1;
@@ -598,8 +594,9 @@ class Finance_model extends CI_Model{
     }
 
     function get_edit_bagi_dividen($id){
-        $this->db->select('id_gdiv AS id, jumlah_div AS jd, tahun_div AS td, cat_gdiv AS cd');
+        $this->db->select('id_gdiv AS id, jumlah_div AS jd, tahun_div AS td, cat_gdiv AS cd, id_fin AS idf');
         $this->db->from('dividen_profit');
+        $this->db->join('rekap_keuangan','foreg_id=id_gdiv','LEFT');
         $this->db->where('id_gdiv',$id);
         $result = $this->db->get()->result();
         $result = isset($result[0])?$result[0]:null;

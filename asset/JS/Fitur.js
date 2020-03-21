@@ -38,13 +38,9 @@ function total_persentase(){
   }
   $('#total-pers').val(persentase)
 }
-$(document).ready(function(){
-  $('.tanggal_form').datetimepicker({
-    ignoreReadonly: true,
-    format: 'DD-MM-YYYY'
-    //allowInputToggle: true
-  });
 
+
+$(document).ready(function(){
 
   $('#datatable, .datatable').dataTable();
 

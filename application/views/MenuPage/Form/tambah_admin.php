@@ -68,13 +68,13 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" for="">Nama</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                          <input type="text" required class="form-control" name="nama">
+                          <input type="text" required class="form-control" name="nama" autocomplete="off">
                         </div>
                       </div> <br>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" for="penyewa">Kontak</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                          <input type="text" required class="form-control" name="kontak">
+                          <input type="text" required class="form-control" name="kontak" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                         </div>
                       </div><br>
                       <div class="form-group">
@@ -91,19 +91,28 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3">Username</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                          <input type="text" required class="form-control" name="username" onkeypress="return (event.charCode !=32)">
+                          <input type="text" required class="form-control" name="username" onkeypress="return (event.charCode !=32)" autocomplete="off" id="username">
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-3" style="display: none;" id="warning">
+                          <small class="label label-danger">Username sudah digunakan</small>
                         </div>
                       </div> <br>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3">Password</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                          <input type="password" required class="form-control" name="password">
+                          <input type="password" required class="form-control passwords" name="password">
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-3 conf-pass" style="display: none;">
+                          <small class="label label-danger">Password tidak sama</small>
                         </div>
                       </div> <br>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3">Konfirmasi password</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                          <input required type="password" class="form-control">
+                          <input required type="password" class="form-control passwords2">
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-3 conf-pass" style="display: none;">
+                          <small class="label label-danger">Password tidak sama</small>
                         </div>
                       </div> <br>
                       
@@ -132,6 +141,7 @@
     
 
     <?php $this->load->view('SuptPage/JsP') ?>
+    <script src="<?= base_url('asset/JS/Error_handler.js') ?>"></script>
     <script src="<?= base_url('asset/JS/Fitur.js') ?>"></script>
     <script src="<?= base_url('asset/JS/Form.js') ?>"></script>
   </body>

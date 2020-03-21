@@ -83,21 +83,21 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3">Kontak penyewa</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                          <input type="text" required class="form-control" name="kontak" value="<?= isset($v->kt)?$v->kt:'-' ?>">
+                          <input type="text" required class="form-control" name="kontak" value="<?= isset($v->kt)?$v->kt:'-' ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                         </div>
                       </div><br>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3">Tanggal mulai / jumlah hari</label>
                         <div class="col-md-4 col-sm-4 col-xs-4">
-                          <div class='input-group date  tanggal_form' id='tanggal_edit'>
-                            <input type="text" readonly class="form-control" name="tanggal" value="<?= isset($v->tm)?date('d-m-Y',strtotime($v->tm)):'-' ?>">
+                          <div class='input-group date  tanggal_form tanggal_edit'>
+                            <input id='tanggal_edit' type="text" readonly class="form-control" name="tanggal" value="<?= isset($v->tm)?date('d-m-Y',strtotime($v->tm)):'-' ?>">
                             <span class="input-group-addon">
                               <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                           </div>
                         </div>
                         <div class="col-md-1 col-sm-1 col-xs-1">
-                          <input type="text" class="form-control" name="jumlah_hari"  value="<?= isset($v->jh)?$v->jh:'0' ?>">
+                          <input type="text" class="form-control" name="jumlah_hari"  value="<?= isset($v->jh)?$v->jh:'0' ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                         </div>
                         <div class="col-md-1 col-sm-1 col-xs-1">
                           <input readonly type="text" class="form-control" value="Hari">
@@ -106,7 +106,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3">Harga</label>
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                          <input type="text" class="form-control" name="harga" value="<?= isset($v->hg)?$v->hg:'0' ?>">
+                          <input type="text" class="form-control" name="harga" value="<?= isset($v->hg)?$v->hg:'0' ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                           <!--========================================================-->
                           <span><input <?= isset($v->idf)?waktu_data($v->id)?'checked':'disabled':null ?> type="checkbox" name="potong_saldo" value="Ya"> <label for="">Catat ke keuangan</label></span>
                         </div>
@@ -141,6 +141,7 @@
 
     <?php $this->load->view('SuptPage/JsP') ?>
     <script src="<?= base_url('asset/JS/Fitur.js') ?>"></script>
+    <script src="<?= base_url('asset/JS/Dtmpicker.js') ?>"></script>
     <script src="<?= base_url('asset/JS/Form.js') ?>"></script>
   </body>
 </html>

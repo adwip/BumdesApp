@@ -66,7 +66,7 @@
                   <div class="x_content">
                     <form action="set-barang-keluar" id="set-barang-keluar" method="POST" class="form-horizontal form-label-left">
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-3" for="">Komoditas</label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3">Komoditas</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
                         <select class="form-control" name="nama" id="komoditas" required>
                           <option value="">Pilih komoditas</option>
@@ -83,7 +83,7 @@
                         </div>
                         <div class="col-md-2 col-sm-2 col-xs-2">
                           <input type="text" readonly id="stok" class="form-control empty-form">
-                          <span><label for="">Stok saat ini</label></span>
+                          <span><label>Stok saat ini</label></span>
                         </div>
                         <div class="col-md-1 col-sm-1 col-xs-1">
                           <input readonly type="text" class="form-control empty-form" id="satuan" name="n_sat">
@@ -96,11 +96,11 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" for="kontak">Tujuan</label>
                         <div class="col-md-3 col-sm-3 col-xs-3 text-center">
                           <input class="tujuan" checked type="radio" name="tujuan" id="primary" value="Distribusi">
-                          <label for="">Distribusi</label>
+                          <label>Distribusi</label>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
                           <input class="tujuan" type="radio" name="tujuan" value="Non-distribusi">
-                          <label for="">Non-Distribusi</label>
+                          <label>Non-Distribusi</label>
                         </div>
                       </div> <br>
                       <div class="form-group">
@@ -118,14 +118,14 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" >Nilai</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
                           <input type="text" class="form-control empty-form" name="nilai" id="tang_mul" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
-                          <span><input checked type="checkbox" name="tambah_trans" value="Ya"> <label for="">Catat ke keuangan</label></span>
+                          <span><input checked type="checkbox" name="tambah_trans" value="Ya"> <label>Catat ke keuangan</label></span>
                           <small class="label label-info">Opsional</small>
                         </div>
                       </div> <br>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" >Tanggal</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                          <div class='input-group date  tanggal_form' id='tanggal_edit'>
+                          <div class='input-group date  tanggal_form tanggal_new'>
                               <input  type='text' class="form-control" readonly="readonly"  id="edit_tanggal" name="tanggal" value="<?= date('d-m-Y') ?>" />
                               <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
@@ -168,6 +168,7 @@
     <?php $this->load->view('SuptPage/JsP') ?>
     <script src="<?= base_url('asset/JS/Error_handler.js') ?>"></script>
     <script src="<?= base_url('asset/JS/Fitur.js') ?>"></script>
+    <script src="<?= base_url('asset/JS/Dtmpicker.js') ?>"></script>
     <script src="<?= base_url('asset/JS/Form.js') ?>"></script>
   </body>
 </html>

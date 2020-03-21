@@ -6,8 +6,8 @@ class Logistic extends CI_Controller{
     function __construct(){
         parent:: __construct();
 		date_default_timezone_set('Asia/Jakarta');
-        // $this->page = 'MenuPage';
-        $this->page = 'MenuPageGov';
+        $this->page = 'MenuPage';
+        // $this->page = 'MenuPageGov';
         $this->bulan = ['01'=>'Januari','02'=>'Februari','03'=>'Maret','04'=>'April','05'=>'Mei','06'=>'Juni','07'=>'Juli','08'=>'Agustus','09'=>'September','10'=>'Oktober','11'=>'November','12'=>'Desember'];
         $this->PDF = new FPDF();
         $this->waktu = date('Y-m-d H:i:s');
@@ -522,14 +522,20 @@ class Logistic extends CI_Controller{
         $v = $this->lm->set_stok_masuk($nm,$jl, $tg, $jn, $hg, $sat,$ct);
         
         if ($v['stat']>0&&$hg!=null&&isset($_POST['potong_saldo'])) {
-            $this->fm->set_arus_kas('OUT', $pesan, $hg, date('Y-m-d',strtotime($tg)), 'System', $v['id']);
+            $v1=$this->fm->set_arus_kas('OUT', $pesan, $hg, date('Y-m-d',strtotime($tg)), 'System', $v['id']);
+            if ($v1['res']) {
+                $log_mes = '[TAMBAH][KEUANGAN][STOK MASUK]['.$v1['id'].']['.$v['id'].'] Menambah arus kas keluar (Kredit) untuk pembelian '.$n_kom.' sebanyak '.$jl.' '.$n_sat;
+                $this->hr->log_admin('0081578813144', $log_mes, date('Y-m-d'), date('H:i:s'));
+            }
         }
-        if ($v['stat']>0) {
+        if ($v['stat']) {
             $log_mes = '[TAMBAH][STOK MASUK]['.$v['id'].'] Penambahan stok masuk '.$n_kom.' sebanyak '.$jl.' '.$n_sat.' dengan cara '.$jn;
             $this->hr->log_admin('0081578813144', $log_mes, date('Y-m-d'), date('H:i:s'));
             $s=$this->fm->get_saldo();
             $s = isset($s[0]->ac)?$s[0]->ac:0;
             echo json_encode(['resp'=>200,'sld'=>$s]);
+        }else{
+            echo json_encode(['resp'=>100]);
         }
     }
 

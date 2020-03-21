@@ -68,7 +68,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" for="">Nama</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                          <input type="text" required class="form-control" name="nama">
+                          <input type="text" required class="form-control" name="nama" autocomplete="off">
                         </div>
                       </div> <br>
                       <div class="form-group">
@@ -80,10 +80,10 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" for="tang_mul">Kontak</label>
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                          <input type="text" required class="form-control" name="kontak_1" id="tang_mul">
+                          <input type="text" required class="form-control" name="kontak_1" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                          <input type="text" name="kontak_2" class="form-control" >
+                          <input type="text" name="kontak_2" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                           <small class="label label-info">Opsional</small>
                         </div>
                       </div>

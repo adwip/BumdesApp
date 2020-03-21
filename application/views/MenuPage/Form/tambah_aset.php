@@ -74,7 +74,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" for="penyewa">Nomor aset</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                          <input type="text" required class="form-control" name="nomor_aset">
+                          <input autocomplete="off" type="text" required class="form-control" name="nomor_aset">
                         </div>
                       </div><br>
                       <div class="form-group">
@@ -119,7 +119,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" >Tanggal masuk</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                          <div class="input-group date  tanggal_form">
+                          <div class="input-group date  tanggal_form tanggal_new">
                               <input  type='text' class="form-control" readonly="readonly"  id="edit_tanggal" name="tanggal_masuk" value="<?= date('d-m-Y') ?>" />
                               <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
@@ -140,10 +140,11 @@
                       </div> <br>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" >Gambar</label>
-                        <div class="col-md-1 col-sm-1 col-xs-1">
-                          <input type="file" name="gambar" id="gam_file">
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                          <input type="file" name="gambar" id="gam_file" class="form-control">
+                          <span>Tipe file JPG atau PNG</span>
                         </div>
-                      </div> <br>
+                      </div>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" >Catatan</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
@@ -153,7 +154,6 @@
                       
                       <div class="col-md-12 col-sm-12 col-xs-12">
                         <button type="submit" class="btn btn-md btn-primary">Kirim</button>
-                        <button type="button" onclick="reset_form()">Reset</button>
                       </div>
                     </form>
                   </div>
@@ -179,6 +179,7 @@
     <?php $this->load->view('SuptPage/JsP') ?>
     <script src="<?= base_url('asset/JS/Error_handler.js') ?>"></script>
     <script src="<?= base_url('asset/JS/Fitur.js') ?>"></script>
+    <script src="<?= base_url('asset/JS/Dtmpicker.js') ?>"></script>
     <script src="<?= base_url('asset/JS/Form.js') ?>"></script>
   </body>
 </html>

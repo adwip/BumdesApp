@@ -102,7 +102,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" >Jumlah</label>
                         <div class="col-md-5 col-sm-5 col-xs-5">
-                          <input <?= isset($v->id)? !waktu_data($v->id)?'disabled':null:null ?> <?= isset($v->id)?null:'disabled' ?> type="text" required class="form-control" name="jumlah" id="tang_mul" value="<?= isset($v->jl)?$v->jl:'0' ?>">
+                          <input <?= isset($v->id)? !waktu_data($v->id)?'disabled':null:null ?> <?= isset($v->id)?null:'disabled' ?> type="text" required class="form-control" name="jumlah" id="tang_mul" value="<?= isset($v->jl)?$v->jl:'0' ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                         </div>
                         <div class="col-md-1 col-sm-1 col-xs-1">
                           <input type="text" name="satuan" readonly class="form-control" id="tang_mul" value="<?= isset($v->st)?$v->st:'-' ?>">
@@ -111,7 +111,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" >Nilai</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                          <input name="nilai" <?= isset($v->id)? !waktu_data($v->id)?'disabled':null:null ?> type="text" class="form-control" value="<?= isset($v->hg)?$v->hg:'0' ?>">
+                          <input name="nilai" <?= isset($v->id)? !waktu_data($v->id)?'disabled':null:null ?> type="text" class="form-control" value="<?= isset($v->hg)?$v->hg:'0' ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                           <!--========================================================-->
                           <span><input <?= isset($v->idf)?waktu_data($v->id)?'checked':'disabled':null ?> type="checkbox" name="potong_saldo" value="Ya"> <label for="">Catat ke keuangan</label></span>
                         </div>
@@ -119,8 +119,8 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" >Tanggal</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                          <div class='input-group date  tanggal_form' id='tanggal_edit'>
-                            <input <?= isset($v->id)? !waktu_data($v->id)?'disabled':null:null ?> readonly <?= isset($v->id)?null:'disabled' ?> type="text" required class="form-control" name="tanggal" value="<?= isset($v->dt)?date('d-m-Y',strtotime($v->dt)):'-' ?>">
+                          <div class='input-group date  tanggal_form tanggal_edit'>
+                            <input id='tanggal_edit' <?= isset($v->id)? !waktu_data($v->id)?'disabled':null:null ?> readonly <?= isset($v->id)?null:'disabled' ?> type="text" required class="form-control" name="tanggal" value="<?= isset($v->dt)?date('d-m-Y',strtotime($v->dt)):'-' ?>">
                             <span class="input-group-addon">
                               <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -160,6 +160,7 @@
 
     <?php $this->load->view('SuptPage/JsP') ?>
     <script src="<?= base_url('asset/JS/Fitur.js') ?>"></script>
+    <script src="<?= base_url('asset/JS/Dtmpicker.js') ?>"></script>
     <script src="<?= base_url('asset/JS/Error_handler.js') ?>"></script>
     <script src="<?= base_url('asset/JS/Form.js') ?>"></script>
   </body>

@@ -5,8 +5,8 @@ class Trade extends CI_Controller{
     function __construct(){
         parent:: __construct();
 		date_default_timezone_set('Asia/Jakarta');
-        // $this->page = 'MenuPage';
-        $this->page = 'MenuPageGov';
+        $this->page = 'MenuPage';
+        // $this->page = 'MenuPageGov';
         $this->bulan = ['01'=>'Januari','02'=>'Februari','03'=>'Maret','04'=>'April','05'=>'Mei','06'=>'Juni','07'=>'Juli','08'=>'Agustus','09'=>'September','10'=>'Oktober','11'=>'November','12'=>'Desember'];
         $this->PDF = new FPDF();
         $this->waktu = date('Y-m-d H:i:s');
@@ -100,12 +100,19 @@ class Trade extends CI_Controller{
         
         $v = $this->tm->tambah_distribusi($nama, $jumlah, $tujuan, $mitra, $sat, $harga, $tanggal, $catatan);
         if ($v['stat']&&$harga&&isset($_POST['tambah_trans'])) {
-            $this->fm->set_arus_kas('IN', $pesan, $harga, date('Y-m-d',strtotime($tanggal)), 'System', $v['id']);
+            $v1=$this->fm->set_arus_kas('IN', $pesan, $harga, date('Y-m-d',strtotime($tanggal)), 'System', $v['id']);
+            if ($v1['res']) {
+                $log_mes = '[TAMBAH][KEUANGAN][STOK KELUAR]['.$v1['id'].']['.$v['id'].'] Menambah arus kas masuk (Debit) untuk penjualan '.$n_kom.' sebanyak '.$jumlah.' '.$n_sat;
+                $this->hr->log_admin('0081578813144', $log_mes, date('Y-m-d'), date('H:i:s'));
+            }
         }
         if ($v['stat']) {
-        $log_mesg = '[TAMBAH][STOK KELUAR]['.$v['id'].'] Stok '.$n_kom.' keluar sebanyak '.$jumlah.' '.$n_sat.' untuk '.$tujuan.$mesg;
+            $log_mesg = '[TAMBAH][STOK KELUAR]['.$v['id'].'] Stok '.$n_kom.' keluar sebanyak '.$jumlah.' '.$n_sat.' untuk '.$tujuan.$mesg;
             $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
-            echo '200';
+            $data = $this->lm->get_komoditas('JSON');
+            echo json_encode(['resp'=>200,'data'=>$data]);
+        }else{
+            echo json_encode(['resp'=>100]);
         }
         
         // echo json_encode($_POST);

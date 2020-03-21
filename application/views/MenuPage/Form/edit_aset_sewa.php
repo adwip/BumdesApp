@@ -83,7 +83,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3">Harga sewa</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                          <input type="text" required class="form-control" name="harga" value="<?= isset($v->hs)?$v->hs:'-' ?>">
+                          <input type="text" required class="form-control" name="harga" value="<?= isset($v->hs)?$v->hs:'-' ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                         </div>
                       </div><br>
                       

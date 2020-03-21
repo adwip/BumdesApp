@@ -77,7 +77,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" for="tang_mul">Jumlah</label>
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                          <input type="text" required class="form-control" name="jumlah" id="tang_mul" value="<?= isset($v->db)||isset($v->kd)? $v->db!=null?$v->db:$v->kd :'-' ?>">
+                          <input type="text" required class="form-control" name="jumlah" id="tang_mul" value="<?= isset($v->db)||isset($v->kd)? $v->db!=null?$v->db:$v->kd :'-' ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                         </div>
                         <div class="col-md-1 col-sm-1 col-xs-1">
                           <input type="text" readonly class="form-control" value="<?= isset($v->db)||isset($v->kd)? $v->db!=null?'Debit':'Kredit' :'-' ?>" name="jenis" name="trans">
@@ -90,8 +90,8 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" for="tang_mul">Tanggal</label>
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                          <div class='input-group date  tanggal_form' id='tanggal_edit'>
-                            <input readonly type="text" required class="form-control" name="tanggal" id="tang_mul" value="<?= isset($v->tg)?date('d-m-Y',strtotime($v->tg)):'-' ?>">
+                          <div class='input-group date  tanggal_form tanggal_edit'>
+                            <input id='tanggal_edit' readonly type="text" required class="form-control" name="tanggal" value="<?= isset($v->tg)?date('d-m-Y',strtotime($v->tg)):'-' ?>">
                               <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                               </span>
@@ -141,6 +141,7 @@
 
     <?php $this->load->view('SuptPage/JsP') ?>
     <script src="<?= base_url('asset/JS/Fitur.js') ?>"></script>
+    <script src="<?= base_url('asset/JS/Dtmpicker.js') ?>"></script>
     <script src="<?= base_url('asset/JS/Form.js') ?>"></script>
   </body>
 </html>

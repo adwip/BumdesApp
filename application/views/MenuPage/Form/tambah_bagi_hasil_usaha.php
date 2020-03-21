@@ -68,17 +68,10 @@
                   <label class="control-label col-md-3 col-sm-3 col-xs-3" for="mitra">Tahun / Jumlah bagi hasil</label>
                   <div class="col-md-3 col-sm-3 col-xs-3">
                     <input autocomplete="off" type="text" placeholder="Masukkan tahun" class="form-control" name="tahun">
-                    <!-- <select data-link="saldo-dividen" class="form-control" name="tahun" id="tahun-dividen">
-                        <option value="--">Pilih tahun</option>
-                        <?php 
-                        foreach ($tahun as $key => $v) {
-                          echo '<option value="'.$v->tahun.'">'.$v->tahun.'</option>';
-                        }
-                        ?>
-                    </select> -->
                   </div>
                   <div class="col-md-3 col-sm-3 col-xs-3">
                     <input type="text" class="form-control" name="nilai" id="nilai-dividen" placeholder="Masukkan jumlah bagi hasil">
+                    <!-- <span><input <?= isset($v->idf)?'checked':null; ?> type="checkbox" id="cut-saldo" name="potong_saldo" value="Ya"> <label for="">Potong otomatis saldo</label></span> -->
                   </div>
                 </div><br>
                 <div class="form-group">
@@ -123,7 +116,6 @@
                 
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <button type="submit" class="btn btn-md btn-primary">Kirim</button>
-                        <button type="button" onclick="reset_form()">Reset</button>
                 </div>
               </form>
             </div>

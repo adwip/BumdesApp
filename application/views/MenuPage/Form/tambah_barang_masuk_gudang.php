@@ -114,8 +114,8 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" >Tanggal masuk</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                          <div class='input-group date  tanggal_form'>
-                              <input  type='text' class="form-control" readonly="readonly"  name="tanggal" value="<?= date('d-m-Y') ?>" />
+                          <div class='input-group date  tanggal_form tanggal_new'>
+                              <input type='text' class="form-control" readonly="readonly"  name="tanggal" value="<?= date('d-m-Y') ?>" />
                               <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                               </span>
@@ -158,6 +158,7 @@
     <?php $this->load->view('SuptPage/JsP') ?>
     <script src="<?= base_url('asset/JS/Error_handler.js') ?>"></script>
     <script src="<?= base_url('asset/JS/Fitur.js') ?>"></script>
+    <script src="<?= base_url('asset/JS/Dtmpicker.js') ?>"></script>
     <script src="<?= base_url('asset/JS/Form.js') ?>"></script>
   </body>
 </html>

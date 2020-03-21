@@ -83,26 +83,26 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" for="">Pembagian (%)</label>
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                          <input type="text" class="form-control" value="<?= isset($v->pb)?$v->pb:'-' ?>" name="pb">
+                          <input type="text" id="pers-bumdes" class="form-control" value="<?= isset($v->pb)?$v->pb:'-' ?>" name="pb" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                           <span><label>BUMDes</label></span>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                          <input type="text" readonly class="form-control" value="<?= isset($v->pm)?$v->pm:'-' ?>" name="pm">
+                          <input type="text" id="pers-mitra" readonly class="form-control" value="<?= isset($v->pm)?$v->pm:'-' ?>" name="pm">
                           <span><label>Mitra</label></span>
                         </div>
                       </div>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" >Tanggal mulai / durasi</label>
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                          <div class='input-group date  tanggal_form'>
-                            <input type="text" readonly class="form-control" name="tanggal" value="<?= isset($v->tm)?date('d-m-Y',strtotime($v->tm)):'-' ?>">
+                          <div class='input-group date  tanggal_form tanggal_edit'>
+                            <input id='tanggal_edit' type="text" readonly class="form-control" name="tanggal" value="<?= isset($v->tm)?date('d-m-Y',strtotime($v->tm)):'-' ?>">
                             <span class="input-group-addon">
                               <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                           </div>
                         </div>
                         <div class="col-md-2 col-sm-2 col-xs-2">
-                          <input type="number" min="12" required class="form-control" name="bulan" value="<?= isset($v->sb)?$v->sb:'-' ?>">
+                          <input type="number" min="12" required class="form-control" name="bulan" value="<?= isset($v->sb)?$v->sb:'-' ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                         </div>
                         <div class="col-md-1 col-sm-1 col-xs-1">
                           <input readonly type="text" required class="form-control" value="Bulan">
@@ -135,6 +135,8 @@
 
     <?php $this->load->view('SuptPage/JsP') ?>
     <script src="<?= base_url('asset/JS/Fitur.js') ?>"></script>
+    <script src="<?= base_url('asset/JS/Dtmpicker.js') ?>"></script>
     <script src="<?= base_url('asset/JS/Form.js') ?>"></script>
+    <script src="<?= base_url('asset/JS/Error_handler.js') ?>"></script>
   </body>
 </html>
