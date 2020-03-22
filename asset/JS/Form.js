@@ -541,8 +541,7 @@ $(document).ready(function(){
         const act = $(this).closest('tbody')
         const rem = $(this).closest('tr')
         const hb = $(this)
-        let bt = 'membatalkan';
-        swal({title:"Lanjutkan ?",dangerMode: true,button:'Lanjut'}).then((willDelete) => {
+        swal({title:"Lanjutkan menghapus ?",dangerMode: true,button:'Lanjut'}).then((willDelete) => {
             if (willDelete) {
                 $.ajax({
                     url: act.attr('data-act'),
@@ -551,18 +550,50 @@ $(document).ready(function(){
                     dataType: 'text',
                     success: function(v){
                         if (v==200) {
-                            if (act.attr('data-act')!='hapus-bagi-hasil'||hb.html()=='Hapus') {
-                                rem.remove()
-                                bt = 'menghapus';
-                            }else{
-                                hb.closest('td').find('.btn').remove()
-                            }
-                            swal({text:"Berhasil "+bt,buttons: false,timer:3000,icon:"success"})
+                            hb.closest('td').find('.btn').remove()
+                            swal({text:"Berhasil menghapus",buttons: false,timer:3000,icon:"success"})
                         }else{
                             if (hb.html()=='Hapus') {
                                 bt = 'menghapus'
                             }
-                            swal({text:"Gagal "+bt,buttons: false,timer:3000,icon:"error"})
+                            swal({text:"Gagal menghapus",buttons: false,timer:3000,icon:"error"})
+                        }
+                    }
+                })
+            }
+        })
+        
+    })
+
+    
+    $('tbody').on('click','.hapus-bgh',function(){
+        const act = $(this).closest('tbody')
+        const rem = $(this).closest('tr')
+        const hb = $(this)
+        let text=null
+        if (hb.html()=='Batalkan') {
+          text = 'membatalkan'  
+        }else{
+          text = 'menghapus'
+        }
+        swal({title:"Lanjutkan "+text+" ?",dangerMode: true,button:'Lanjut'}).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: act.attr('data-act'),
+                    type: act.attr('data-meth'),
+                    data: 'id='+$(this).val()+'&nm='+rem.attr('data-nam'),
+                    dataType: 'json',
+                    success: function(v){
+                        if (v['res']==200) {
+                            if (v['stat']=='BATAL') {
+                                rem.find('td:nth-child(6)').html('Batal')
+                                hb.closest('td').find('.btn').remove()
+                            }else{
+                                rem.remove()
+                            }
+                            swal({text:"Berhasil "+text,buttons: false,timer:3000,icon:"success"})
+                        }else{
+                            swal({text:"Gagal "+text,buttons: false,timer:3000,icon:"error"})
                         }
                     }
                 })

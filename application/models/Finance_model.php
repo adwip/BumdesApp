@@ -21,13 +21,12 @@ class Finance_model extends CI_Model{
         if ($type=='html') {
             foreach ($result as $key => $v) {
                 $btnk = (int)$v->rh<=30&&!$v->idt?'Hapus':'Batalkan';
-                $clBut =  (int)$v->rh<=30&&!$v->idt?'hapus-bgh':'batal';
                 $btn =null;
-                if ($v->sgh!='Batal'&&waktu_data($v->id)) {
+                if ($v->sgh!='Batal') {
                     $btn = anchor('edit-sp/'.$v->id,'Ubah', 'class="btn btn-xs btn-warning"').
-                        '<button type="button" class="btn btn-xs btn-danger '.$clBut.'" value="'.$v->id.'">'.$btnk.'</button>';
+                        '<button type="button" class="btn btn-xs btn-danger hapus-bgh" value="'.$v->id.'">'.$btnk.'</button>';
                 }
-                $result1 .= '<tr>
+                $result1 .= '<tr data-nam="">
                                 <td>'.($key+1).'</td>
                                 <td>'.$v->na.'</td>
                                 <td>'.$v->nm.'</td>
@@ -720,11 +719,11 @@ class Finance_model extends CI_Model{
         $this->db->join('pemb_bagi_hasil','id_bagi=id_bgh','LEFT');
         $this->db->where('id_bgh',$id);
         $r = $this->db->get()->result();
-        $jh = isset($r[0])?(int)$r[0]->jh:null;
+        $jh = isset($r[0])?(int)$r[0]->jh:0;
         $jb = isset($r[0])?$r[0]->jb:null;
 
         $res['res']=false;
-        if ($jh<=30 && !$jb) {
+        if ($jh<=30 && !$jb ) {
             $isi = ['status_bgh'=>'Batal'];
             $this->db->where('id_bgh',$id);
             $this->db->delete('bagi_hasil_aset');
