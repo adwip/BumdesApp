@@ -88,7 +88,7 @@
                           <input autocomplete="off" type="text" required class="form-control" name="jumlah"  onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" id="jumlah-kas">
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                          <input type="text" readonly class="form-control" value="Rp. <?= isset($b[0])? $b[0]->ac:0 ?>" id="saldo">
+                          <input readonly class="form-control" value="Rp. <?= isset($b[0])? $b[0]->ac:0 ?>" id="saldo">
                           <span><label for="">Saldo saat ini</label></span>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">

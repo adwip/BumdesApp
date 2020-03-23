@@ -121,7 +121,8 @@ class Rent extends CI_Controller{
         $hari = $this->input->post('jumlah_hari',true);
         $tanggal_sel = date('Y-m-d',strtotime($tanggal_mul.'+'.$hari.'days'));
         $harga = $this->input->post('harga',true);
-        $fin_mesg = 'Penerimaan dari sewa aset '.$n_aset.' mulai dari '.date('d-m-Y',strtotime($tanggal_mul)).' selama '.$hari.' oleh '.$penyewa;
+        //'Penerimaan dari penyewaan aset '.$aset.' oleh '.$penyewa.' selama '.$hari.' hari, dimulai dari tanggal '.date('d-m-Y',strtotime($tanggal_mul));
+        $fin_mesg = 'Penerimaan dari penyewaan aset '.$n_aset.' mulai dari '.date('d-m-Y',strtotime($tanggal_mul)).' selama '.$hari.' oleh '.$penyewa;
         
         $v = $this->rm->set_penyewaan($aset, $penyewa, $kontak, $tanggal_mul, $tanggal_sel, $harga);
         if ($v['stat']) {
@@ -165,7 +166,7 @@ class Rent extends CI_Controller{
         $harga = $this->input->post('harga',true);
         $ps = $this->input->post('potong_saldo',true);
 
-        $log_mesg = '[EDIT][PENYEWAAN]['.$id.'] Perubahan data penyewaan aset '.$aset.' oleh '.$penyewa.' selama '.$hari.' hari, dimulai dari tanggal '.date('d-m-Y',strtotime($tanggal_mul));
+        $log_mesg = '[EDIT][PENYEWAAN]['.$id.'] Mengubah data penyewaan aset '.$aset.' oleh '.$penyewa.' selama '.$hari.' hari, dimulai dari tanggal '.date('d-m-Y',strtotime($tanggal_mul));
         $resp=false;
 
         $v = $this->rm->edit_penyewaan($id, $penyewa, $kontak, $tanggal_mul, $tanggal_sel, $harga);
@@ -174,8 +175,9 @@ class Rent extends CI_Controller{
             $resp =true;
         }
 
-        if ($ps) {//perubahan data keuangan
-            $ket_kas = 'Penerimaan dari penyewaan aset '.$aset.' oleh '.$penyewa.' selama '.$hari.' hari, dimulai dari tanggal '.date('d-m-Y',strtotime($tanggal_mul));
+        if ($ps) {
+            $ket_kas = 'Penerimaan dari penyewaan aset '.$aset.' mulai dari '.date('d-m-Y',strtotime($tanggal_mul)).' selama '.$hari.' oleh '.$penyewa;
+
             $v = $this->fm->set_arus_kas('IN', $ket_kas, $harga, $tanggal_mul, 'System', $id);
             if ($v['res']) {
                 $log_mesg='[TAMBAH][KEUANGAN][PENYEWAAN]['.$v['id'].']['.$id.'] Menambah catatan keuangan dari penyewaan aset '.$aset.' oleh '.$penyewa.' selama '.$hari.' hari, dimulai dari tanggal '.date('d-m-Y',strtotime($tanggal_mul));

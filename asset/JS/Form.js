@@ -550,19 +550,15 @@ $(document).ready(function(){
                     dataType: 'text',
                     success: function(v){
                         if (v==200) {
-                            hb.closest('td').find('.btn').remove()
+                            rem.remove()
                             swal({text:"Berhasil menghapus",buttons: false,timer:3000,icon:"success"})
                         }else{
-                            if (hb.html()=='Hapus') {
-                                bt = 'menghapus'
-                            }
                             swal({text:"Gagal menghapus",buttons: false,timer:3000,icon:"error"})
                         }
                     }
                 })
             }
         })
-        
     })
 
     
@@ -587,7 +583,7 @@ $(document).ready(function(){
                         if (v['res']==200) {
                             if (v['stat']=='BATAL') {
                                 rem.find('td:nth-child(6)').html('Batal')
-                                hb.closest('td').find('.btn').remove()
+                                rem.find('td:nth-child(7)').find('.btn').remove()
                             }else{
                                 rem.remove()
                             }

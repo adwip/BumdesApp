@@ -89,7 +89,6 @@
                       <th>Jumlah penerima</th>
                       <th>Tahun</th>
                       <th>Nilai dividen</th>
-                      <th>Jumlah terbayar</th>
                       <th>Aksi</th>
                     </tr>
                   </thead>

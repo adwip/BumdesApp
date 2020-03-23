@@ -1,7 +1,7 @@
 
 $(document).ready(function(){
     const minDate = moment().subtract(7, 'days').millisecond(0).second(0).minute(0).hour(0)
-    const maxDate = moment().add(1, 'days').millisecond(0).second(0).minute(0).hour(0)
+    const maxDate = moment().add(0, 'days').millisecond(0).second(0).minute(0).hour(0)
     $('.tanggal_new').datetimepicker({
       ignoreReadonly: true,
       format: 'DD-MM-YYYY',
@@ -17,7 +17,8 @@ $(document).ready(function(){
         tanggal = tanggal[2]+'-'+tanggal[1]+'-'+tanggal[0]
         // alert(tanggal)
         const minDate2 = moment(tanggal).subtract(7, 'days').millisecond(0).second(0).minute(0).hour(0)
-        const maxDate2 = moment(new Date()).add(1, 'days').millisecond(0).second(0).minute(0).hour(0)
+        const maxDate2 = moment(new Date()).add(0, 'days').millisecond(0).second(0).minute(0).hour(0)
+
         $('.tanggal_edit').datetimepicker({
           ignoreReadonly: true,
           format: 'DD-MM-YYYY',
@@ -25,5 +26,8 @@ $(document).ready(function(){
           minDate: minDate2
           //allowInputToggle: true
         });
+        tanggal = tanggal.split('-')
+        $('#tanggal_edit').val(tanggal[2]+'-'+tanggal[1]+'-'+tanggal[0])
+        // alert(tanggal)
     }
   })

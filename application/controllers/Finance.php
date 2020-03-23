@@ -188,8 +188,6 @@ class Finance extends CI_controller{
         $data['v'] = $this->fm->get_daftar_dividen();
         $data['v_grafik'] = $this->fm->get_grafik_dividen();
         $this->load->view('MenuPage/Main/Pembagian_dividen',$data);
-        // echo json_encode($data['v']);
-        // echo $data['v_grafik'];
     }
 
     function form_tabah_dividen(){
@@ -679,15 +677,13 @@ class Finance extends CI_controller{
         $tahun =  $this->input->post('nm',true);
         $log_mesg='[HAPUS][BAGI HASIL USAHA]['.$id.'] Menghapus pembagian hasil usaha tahun '.$tahun;
         $v = $this->fm->del_bagi_dividen_g($id);
-        if ($v['stat']) {
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
-            foreach ($v['val'] as $key => $v) {
-                $v2=$this->fm->del_keuangan($v->id);
-                if ($v2['res']) {
-                    $log_mesg = '[HAPUS][KEUANGAN]['.$v2['id'].']['.$v->id.'] Menghapus pembayaran bagi hasil usaha';
-                    $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
-                }
-            }
+        if ($v) {
+            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));/*
+            $v=$this->fm->del_keuangan($id);
+            if ($v['res']) {
+                $log_mesg = '[HAPUS][KEUANGAN][BAGI HASIL USAHA]['.$v['id'].']['.$id.'] Menghapus pembayaran bagi hasil usaha tahun '.$tahun;
+                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            }*/
             echo 200;
         }
     }

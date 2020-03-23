@@ -87,8 +87,8 @@ $route['gov-finansial'] = 'Finance/gov_finansial';//=========ada view
 
 
 // routing logistik **
-$route['incoming-goods'] = 'Logistic/incoming_goods';//=========ada
-$route['tambah-stok'] = 'Logistic/tambah_barang_masuk_gudang';//=========ada view
+$route['stok-masuk'] = 'Logistic/stok_masuk';//=========ada
+$route['tambah-stok'] = 'Logistic/form_tambah_barang_masuk_gudang';//=========ada view
 $route['add-commodites'] = 'Logistic/tambah_komoditas';//================ada view
 $route['commodity'] = 'Logistic/komoditas';//=========ada
 $route['edit-ig/(:num)'] = 'Logistic/form_edit_barang_masuk_gudang/$1';//=====ada view

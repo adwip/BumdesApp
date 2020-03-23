@@ -4,7 +4,7 @@
                 <ul class="nav side-menu">
                   <li><a><i class="fa fa-desktop"></i>Logistik<span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="<?= site_url('incoming-goods') ?>">Belanja barang</a></li>
+                      <li><a href="<?= site_url('stok-masuk') ?>">Belanja barang</a></li>
                       <li><a href="<?= site_url('exit-item') ?>">Barang keluar</a></li>
                     </ul>
                   </li>

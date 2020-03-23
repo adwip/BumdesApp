@@ -142,7 +142,7 @@ class Administrasi extends CI_Controller{
         $v = $this->am->set_aset_baru($nama,$nomor,$sumber,$harga,$lokasi,$kondisi,$tglmasuk,$keadaan,$cat, $file_name);
 
         if (isset($_POST['potong_saldo'])&&$v['resp']) {
-            $pesan = 'Pembelian aset '.$nama.' dengan kondisi '.$kondisi;
+            $pesan = 'Pembelian aset '.$nama.' dengan kondisi '.$kondisi.', keadaan '.$keadaan;
             $v2=$this->fm->set_arus_kas('OUT', $pesan, $harga, date('Y-m-d',strtotime($tglmasuk)), 'System', $v['id']);
             if ($v2['res']) {
                 $log_mesg = '[TAMBAH][KEUANGAN][BELI ASET]['.$v2['id'].']['.$v['id'].'] Pembelian aset '.$nama.' dengan kondisi '.$kondisi.', dan keadaan '.$keadaan;
@@ -267,7 +267,7 @@ class Administrasi extends CI_Controller{
             $resp=true;
         }
 
-        if ($ps) {
+        if ($ps) {//  'Pembelian aset '.$nama.' dengan kondisi '.$kondisi.', keadaan '.$keadaan;
             $ket_kas ='Pembelian aset '.$nama.' dengan kondisi '.$kondisi.', keadaan '.$keadaan;
             $v = $this->fm->set_arus_kas('OUT', $ket_kas, $harga, $tglmasuk, 'System', $id);
             if ($v['res']) {
@@ -510,6 +510,13 @@ class Administrasi extends CI_Controller{
         $v = $this->am->del_aset($id);
         if ($v) {
             $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            if (waktu_data($id, 5)) {
+                $v=$this->fm->del_keuangan($id);
+                if ($v['res']) {
+                    $log_mesg = '[HAPUS][KEUANGAN][BELI ASET]['.$v['id'].']['.$id.'] Menghapus kas keluar (Kredit) untuk pembelian aset';
+                    $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                }
+            }
             echo 200;
         }
     }

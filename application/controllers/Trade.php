@@ -134,6 +134,7 @@ class Trade extends CI_Controller{
         $ct = $this->input->post('catatan',TRUE);
         $n_mit = $this->input->post('n_mit',TRUE);
 
+        //$mesg =  $tujuan=='Distribusi'?' kepada '.$n_mit:null;
         $ext = $jn=='Distribusi'?$jn.' kepada '.$n_mit:'Non-distribusi';
         $log_mesg = '[EDIT][STOK KELUAR]['.$id.'] Perubahan data '.$n_kom.' keluar/distribusi sebanyak '.$jl.' '.$st;
 

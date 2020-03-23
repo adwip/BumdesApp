@@ -243,9 +243,8 @@ class Finance_model extends CI_Model{
                                 <td class="text-center">'.$v->je.'</td>
                                 <td>'.$v->td.'</td>
                                 <td>Rp. '.$v->jd.'</td>
-                                <td>'.$v->tb.'/'.$v->je.'</td>
                                 <td class="text-center">
-                                '.anchor('info-bagi-dividen/'.$v->id,'Detail','class="btn btn-xs btn-info"').''.$but.'
+                                '.anchor('info-bagi-dividen/'.$v->id,'Detail').' '.$but.'
                                 </td>
                             </tr>';
             }
@@ -743,16 +742,12 @@ class Finance_model extends CI_Model{
     }
 
     function del_bagi_dividen_g($id){
-        $this->db->select('id_ent_div AS id');
-        $this->db->from('penerima_dividen');
-        $this->db->where('id_div',$id);
-        $result['val'] = $this->db->get()->result();
         if (waktu_data($id)) {
             $this->db->where('id_gdiv',$id);
             $this->db->delete('dividen_profit');
-            $result['stat']=$this->db->affected_rows();
+            $result=$this->db->affected_rows();
         }else{
-            $result['stat']=false;
+            $result=false;
         }
         return $result;
     }

@@ -18,7 +18,7 @@ class Logistic extends CI_Controller{
         }
     }
 
-    function incoming_goods($type='html'){//=================OK
+    function stok_masuk($type='html'){//=================OK
         $data['page']=$this->page;
         $data['bln'] = $this->bulan;
         $data['title'] = 'Belanja komoditas';
@@ -49,7 +49,7 @@ class Logistic extends CI_Controller{
         }
     }
 
-    function tambah_barang_masuk_gudang(){//=============ada view
+    function form_tambah_barang_masuk_gudang(){//=============ada view
         $data['page']=$this->page;
         $data['title'] = '';
         $data['tanggal'] = date('d-m-Y');
@@ -575,7 +575,7 @@ class Logistic extends CI_Controller{
         }
 
         if ($pt) {
-            $ket_kas ='Pembelian logistik dagang '.$n_kom.' sebanyak '.$jl.' '.$sat;
+            $ket_kas ='Pembelian/stok masuk '.$n_kom.' sebanyak '.$jl.' '.$sat;
             $v = $this->fm->set_arus_kas('OUT', $ket_kas, $hg, $tg, 'System', $id);
             if ($v['res']) {
                 $log_mesg='[TAMBAH][KEUANGAN][STOK MASUK]['.$v['id'].']['.$id.'] Menambah catatan keuangan dari pembelian '.$n_kom.' sebanyak '.$jl.' '.$sat;
