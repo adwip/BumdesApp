@@ -59,7 +59,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="x_panel">
             <div class="x_title">
-              <h1>Detail aset bagi hasil <?= isset($v[0])?$v[0]->na:'tidak terdaftar' ?></h1>
+              <h1>Detail aset bagi hasil <?= isset($v->na)?$v->na:'tidak terdaftar' ?></h1>
                 <!-- <h1>Detail bagi hasil aset</h1> -->
               <div class="clearfix"></div>
             </div>
@@ -67,21 +67,21 @@
                 <table class="col-md-12 col-sm-12 col-xs-12">
                     <tr>
                         <td class="col-md-2 col-sm-2 col-xs-2"><h4>Aset :</h4></td>
-                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= isset($v[0])?$v[0]->na:'-' ?></h3></td>
+                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= isset($v->na)?$v->na:'-' ?></h3></td>
                         <td class="col-md-2 col-sm-2 col-xs-2"><h4>Mitra :</h4></td>
-                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= isset($v[0])?$v[0]->nm:'-' ?></h3></td>
+                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= isset($v->nm)?anchor('detail-mit/'.$v->idm,$v->nm,'target="_blank"'):'-' ?></h3></td>
                     </tr>
                     <tr>
                         <td class="col-md-2 col-sm-2 col-xs-2"><h4>Tanggal mulai :</h4></td>
-                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= isset($v[0])?date('d/m/Y',strtotime($v[0]->tm)):'-' ?></h3></td>
+                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= isset($v->tm)?date('d/m/Y',strtotime($v->tm)):'-' ?></h3></td>
                         <td class="col-md-2 col-sm-2 col-xs-2"><h4>Tanggal selesai :</h4></td>
-                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= isset($v[0])?date('d/m/Y',strtotime($v[0]->ts)):'-' ?></h3></td>
+                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= isset($v->ts)?date('d/m/Y',strtotime($v->ts)):'-' ?></h3></td>
                     </tr>
                     <tr>
                         <td class="col-md-2 col-sm-2 col-xs-2"><h4>Total bagi hasil :</h4></td>
-                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= isset($v[0])?'Rp. '.$v[0]->jl:'-' ?></h3></td>
-                        <td class="col-md-2 col-sm-2 col-xs-2"><h4>Kontak mitra :</h4></td>
-                        <td class="col-md-4 col-sm-4 col-xs-4"><h4><?= isset($v[0])?$v[0]->km:'-' ?></h4></td>
+                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= isset($v->jl)?'Rp. '.$v->jl:'Rp. 0' ?></h3></td>
+                        <td class="col-md-2 col-sm-2 col-xs-2"><h4>Pembagian :</h4></td>
+                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= isset($v->id)?'BUMDes: '.$v->pb.'% | Mitra: '.$v->pm.'%':'-' ?></h3></td>
                     </tr>
                 </table>
             </div>
@@ -99,8 +99,12 @@
                     <thead>
                         <tr>
                             <td><strong>No</strong></td>
+                            <td><strong>Keterangan</strong></td>
                             <td><strong>Tanggal bayar</strong></td>
+                            <td><strong>Penerimaan BUMDes</strong></td>
+                            <td><strong>Penerimaan Rekanan</strong></td>
                             <td><strong>Nilai pembayaran</strong></td>
+                            <td><strong>Aksi</strong></td>
                         </tr>
                     </thead>
                     <tbody>

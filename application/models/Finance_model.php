@@ -7,14 +7,14 @@ class Finance_model extends CI_Model{
 		$this->load->library('Num_splitter');
     }
 
-    function get_aset_bagi_hasil($tahun, $type='html'){
-        $this->db->select('id_bgh AS id, IFNULL(aset_luar,IFNULL(nama, deld_aset)) AS na, tanggal_mulai AS tm, tanggal_selesai AS ts, nama_mitra AS nm, pers_bumdes AS pb, pers_mitra AS pm, DATEDIFF("'.date('Y-m-d').'",tanggal_mulai) AS rh, status_bgh AS sgh, id_temp AS idt');
+    function daftar_kerjasama_bgh($tahun, $type='html'){
+        $this->db->select('id_bgh AS id, IFNULL(aset_luar,IFNULL(nama, deld_aset)) AS na, tanggal_mulai AS tm, tanggal_selesai AS ts, nama_mitra AS nm, pers_bumdes AS pb, pers_mitra AS pm, DATEDIFF("'.date('Y-m-d').'",tanggal_mulai) AS rh, status_bgh AS sgh');
         $this->db->from('bagi_hasil_aset bg');
         $this->db->join('aset as','bg.aset_bh=as.id_aset','LEFT');
         $this->db->join('mitra mt','bg.mitra=mt.id_mitra');
         $this->db->join('pemb_bagi_hasil','id_bagi=id_bgh','LEFT');
         if ($tahun!='All') {
-            $this->db->like('tanggal_selesai ',$tahun,'after');
+            $this->db->where('YEAR(tanggal_mulai) <= "'.$tahun.'" AND YEAR(tanggal_selesai) >= "'.$tahun.'"');
         }
         $result = $this->db->get()->result();
         $result1=null;
@@ -413,38 +413,52 @@ class Finance_model extends CI_Model{
     }
 
     function get_detail_bagi_hasil($id){
-        $this->db->select('nama AS na, nama_mitra AS nm, tanggal_mulai AS tm,tanggal_selesai AS ts, FORMAT(SUM(jumlah), "#.00") AS jl, CONCAT(kontak_1," / ",kontak_2) AS km');
+        $this->db->select('id_bgh AS id, IFNULL(aset_luar, IFNULL(nama, deld_aset)) AS na, nama_mitra AS nm, tanggal_mulai AS tm,tanggal_selesai AS ts, FORMAT(SUM(jumlah), "#.00") AS jl, CONCAT(kontak_1," / ",kontak_2) AS km, id_mitra AS idm, pers_bumdes AS pb, pers_mitra AS pm');
         $this->db->from('bagi_hasil_aset ba');
-        $this->db->join('aset as','as.id_aset=ba.aset_bh');
+        $this->db->join('aset as','as.id_aset=ba.aset_bh','LEFT');
         $this->db->join('mitra mt','mt.id_mitra=ba.mitra');
-        $this->db->join('pemb_bagi_hasil bg','bg.id_bagi=ba.id_bgh');
+        $this->db->join('pemb_bagi_hasil bg','bg.id_bagi=ba.id_bgh','LEFT');
         $this->db->where('id_bgh',$id);
         $result = $this->db->get()->result();
+        $result = isset($result[0])?$result[0]:null;
         return $result;
     }
 
     function get_detail_histori_bagi_hasil($id){
-        $this->db->select('FORMAT(jumlah,"#.00") AS jl, tanggal_bayar AS tb');
+        $this->db->select('id_pbgh AS id, FORMAT(jumlah,"#.00") AS jl, tanggal_bayar AS tb, FORMAT((pers_bumdes/100)*jumlah,"#.00") AS pb, FORMAT((pers_mitra/100)*jumlah,"#.00") AS pm, catatan AS cat');
         $this->db->from('pemb_bagi_hasil');
+        $this->db->join('bagi_hasil_aset','id_bgh=id_bagi');
         $this->db->where('id_bagi',$id);
         $this->db->order_by('tanggal_bayar','ASC');
         $result = $this->db->get()->result();
         $result1 = null;
         foreach ($result as $key => $v) {
+            $but=null;
+            if (waktu_data($v->id)) {
+                $but = '<a href="#" class="btn btn-xs btn-primary">Ubah</a> <button type="button" class="btn btn-xs btn-danger">Hapus</button>';
+            }
             $result1 .= '<tr>
                             <td>'.($key+1).'</td>
-                            <td>'.date('d/m/Y',strtotime($v->tb)).'</td>
-                            <td>'.$v->jl.'</td>
+                            <td>'.$v->cat.'</td>
+                            <td>'.date('d-m-Y',strtotime($v->tb)).'</td>
+                            <td>Rp. '.$v->pb.'</td>
+                            <td>Rp. '.$v->pm.'</td>
+                            <td>Rp. '.$v->jl.'</td>
+                            <td>'.$but.'</td>
                         </tr>';
         }
         return $result1;
     }
 
-    function set_pemb_bagi_hasil($id, $jumlah, $cat, $tanggal){
-        $isi = ['id_bagi'=>$id,'jumlah'=>$jumlah,'catatan'=>$cat,'tanggal_bayar'=>$tanggal];
-
+    function set_pemb_bagi_hasil($idg, $jumlah, $cat, $tanggal){
+        
+        $res['id'] = '400'.time();
+        $isi = ['id_pbgh'=>$res['id'],'id_bagi'=>$idg,'jumlah'=>$jumlah,'catatan'=>$cat,'tanggal_bayar'=>$tanggal];
         $this->db->insert('pemb_bagi_hasil',$isi);
-        return $this->db->affected_rows();
+
+        $res['res'] = $this->db->affected_rows();
+
+        return $res;
     }
 
     function set_arus_kas($jenis, $ket, $jumlah, $tanggal, $actor, $for_id=null){

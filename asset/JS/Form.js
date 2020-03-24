@@ -172,12 +172,13 @@ $(document).ready(function(){
 
     $('#set-pemb-bgh').submit(function(e){
         e.preventDefault()
+        const info = $('option:selected','#plh-kjs').html()
         swal({title:"Lanjutkan menyimpan ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {
             if (Ok) {
                 $.ajax({
                     url: $(this).attr('action'),
                     type: $(this).attr('method'),
-                    data: $(this).serialize(),
+                    data: $(this).serialize()+'&info='+info,
                     dataType: 'json',
                     success: function(v){
                         if (v==200) {

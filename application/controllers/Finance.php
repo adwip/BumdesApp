@@ -163,9 +163,9 @@ class Finance extends CI_controller{
             $data['tahun'] = $this->input->get('tahun',TRUE);
         }
         $data['thn'] = $this->fm->get_tahun();
-        $data['value'] = $this->fm->get_aset_bagi_hasil($data['tahun']);
+        $data['value'] = $this->fm->daftar_kerjasama_bgh($data['tahun']);
         $data['v'] = $this->fm->get_total_bagi_hasil($data['tahun']);
-        $data['v_grafik']=$this->fm->get_grafik_bagi_hasil(2019);
+        $data['v_grafik']=$this->fm->get_grafik_bagi_hasil($data['tahun']);
         if ($type=='html') {
             // echo json_encode($data['value']);
             $this->load->view('MenuPage/Main/bagi_hasil',$data);
@@ -231,7 +231,7 @@ class Finance extends CI_controller{
     function form_tambah_pemb_bgh(){
         $data['page']=$this->page;
         $data['title'] = 'Penerimaan bagi hasil';
-        $data['v']= $this->fm->get_aset_bagi_hasil(date('Y'),'json');
+        $data['v']= $this->fm->daftar_kerjasama_bgh(date('Y'),'json');
         $this->load->view('MenuPage/Form/tambah_pemb_bgh',$data);
     }
 
@@ -273,9 +273,8 @@ class Finance extends CI_controller{
         $data['id'] = $id;
         $data['v'] = $this->fm->get_detail_bagi_hasil($id);
         $data['v_histori_bgh'] = $this->fm->get_detail_histori_bagi_hasil($id);
-        $data['v_histori_harga_sewa'] = $this->rm->get_perubahan_harga_sewa($id);
         $this->load->view('MenuPage/Detail_Print/detail_bagi_hasil',$data);
-        // echo json_encode($data['v_histori_bgh']);
+        // echo json_encode($data['v']);
     }
 
     function set_tambah_bagi_hasil(){
@@ -309,10 +308,28 @@ class Finance extends CI_controller{
         $cat = $this->input->post('cat',true);
         $tanggal = $this->input->post('tanggal',true);
         $tanggal = date('Y-m-d',strtotime($tanggal));
-
-
+        $pen = $this->input->post('pen_b',true);
+        $pers_b = $this->input->post('pers_b',true);
+        $pers_b = str_replace('%','',$pers_b);
+        $pen = ($pers_b/100)*$jumlah;
+        $info = $this->input->post('info',true);
+        $info = explode('|', $info);
+        
+        
         $v = $this->fm->set_pemb_bagi_hasil($id, $jumlah, $cat, $tanggal);
-        echo $v;
+        $log_mesg = '[TAMBAH][PEMBAYARAN][BAGI HASIL]['.$v['id'].']['.$id.'] Menambah pembayaran hasil dari kerjasama bagi hasil penggunaan aset';
+        if ($v['res']) {
+            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            if (isset($_POST['tambah_trans'])) {
+                $ket_kas ='Pembayaran bagi hasil usaha dengan '.$info[1]. ' dari aset '.$info[0];
+                $v1 = $this->fm->set_arus_kas('IN', $ket_kas, $pen, $tanggal, 'System', $id);
+                $log_mesg = '[TAMBAH][KEUANGAN][BAGI HASIL] ['.$v1['id'].']['.$v['id'].'] Menambah pemasukan dari kerjasama bagi hasil dengan '.$info[1].' dari aset '.$info[0];
+                if ($v1['res']) {
+                    $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                }
+            }
+            echo 200;
+        }
     }
 
     function set_arus_kas(){
@@ -374,7 +391,7 @@ class Finance extends CI_controller{
     //=============ada view
     function pdf_daftar_bagi_hasil(){
         $tahun = $this->input->get('tahun',true);
-        $r = $this->fm->get_aset_bagi_hasil($tahun,'json');
+        $r = $this->fm->daftar_kerjasama_bgh($tahun,'json');
         $row = $this->fm->get_total_bagi_hasil($tahun);
         $row = isset($row->hg)?$row->hg:0;
         // membuat halaman baru

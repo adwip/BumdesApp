@@ -68,7 +68,7 @@
                 <div class="col-md-9 col-sm-9 col-xs-9">
                   <a href="unduh-daftar-bagi-hasil?tahun=<?=$tahun?>"class="btn btn-md btn-warning" target="_blank">Unduh daftar kerja sama</a>
                   <a href="tambah-bagi-hasil" class="btn btn-md btn-info">Tambah aset dibagi hasil</a>
-                  <a href="tambah-pemasukan-bgh" class="btn btn-md btn-primary">Tambah pemasukan bagi hasil</a>
+                  <a href="tambah-pemasukan-bgh" class="btn btn-md btn-primary">Tambah pembayaran bagi hasil</a>
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-3">
                     <div class="row">

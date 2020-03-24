@@ -103,7 +103,7 @@ $autoload['helper'] = array('url','time_cek');
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array();
+$autoload['config'] = ['email'];//array();
 
 /*
 | -------------------------------------------------------------------
