@@ -59,33 +59,37 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="x_panel">
             <div class="x_title">
-            <h1>Penerimaan kerja sama bagi hasil</h1>
+            <h1>Ubah data penerimaan bagi hasil</h1>
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-              <form action="set-pemb-bgh" id="set-pemb-bgh" method="POST" class="form-horizontal form-label-left">
+              <form action="<?= site_url('edit-pemb-bgh') ?>" id="edit-pemb-bgh" method="POST" class="form-horizontal form-label-left">
                 <div class="form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-3" for="">Kerjasama</label>
-                  <div class="col-md-8 col-sm-8 col-xs-8">
-                    <select class="form-control" name="id" id="plh-kjs" required>
-                      <option data-m="" data-b="" value="">Pilih kerjasama</option>
-                      <?php foreach ($v as $key => $s2) {
-                        echo '<option data-m="'.$s2->pm.'" data-b="'.$s2->pb.'" value="'.$s2->id.'">'.$s2->na.' | '.$s2->nm.' | '.date('d-m-Y',strtotime($s2->tm)).' - '.date('d-m-Y',strtotime($s2->ts)).' </option>';
-                      } ?>
-                    </select>
+                  <label class="control-label col-md-3 col-sm-3 col-xs-3" for="">Rekanan</label>
+                  <div class="col-md-6 col-sm-6 col-xs-6">
+                    <input type="text" value="<?= isset($v->id)?$v->nm:'-' ?>" readonly class="form-control" name="mitra">
+                  </div>
+                  <div class="col-md-3 col-sm-3 col-xs-3">
+                    <input type="text" value="<?= isset($v->id)?$v->id:'-' ?>" readonly class="form-control" name="id" >
                   </div>
                 </div> <br>
                 <div class="form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-3" >Aset</label>
+                  <div class="col-md-6 col-sm-6 col-xs-6">
+                    <input type="text" value="<?= isset($v->id)?$v->ast:'-' ?>" readonly class="form-control" name="aset" >
+                  </div>
+                </div><br>
+                <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-3" >Catatan</label>
                   <div class="col-md-6 col-sm-6 col-xs-6">
-                    <input type="text" required class="form-control" name="cat" >
+                    <input type="text" value="<?= isset($v->id)?$v->ct:'-' ?>" required class="form-control" name="cat" >
                   </div>
                 </div><br>
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-3" >Tanggal bayar</label>
                   <div class="col-md-6 col-sm-6 col-xs-6">
-                    <div class="input-group date  tanggal_form tanggal_new">
-                      <input  type='text' class="form-control" readonly="readonly"  id="edit_tanggal" name="tanggal" value="<?= date('d-m-Y') ?>" />
+                    <div class="input-group date  tanggal_form tanggal_edit">
+                      <input value="<?= isset($v->id)?date('d-m-Y',strtotime($v->tb)):'-' ?>" type='text' class="form-control" readonly="readonly" id="tanggal_edit" name="tanggal" />
                       <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                       </span>
@@ -95,26 +99,26 @@
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-3" >Nilai pembayaran (Rp)</label>
                   <div class="col-md-6 col-sm-6 col-xs-6">
-                    <input autocomplete="off" type="text" required class="form-control" name="jumlah" id="nominal" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
-                    <span><input checked type="checkbox" name="tambah_trans" value="Ya"> <label for="">Catat ke keuangan</label></span>
+                    <input autocomplete="off" value="<?= isset($v->id)?$v->jl:'-' ?>" type="text" required class="form-control" name="jumlah" id="nominal-edit-pbgh" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
+                    <span><input <?= isset($v->idf)?'checked':null ?> type="checkbox" name="tambah_trans" value="Ya"> <label>Catat ke keuangan</label></span>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-3" >BUMDes (Rp)</label>
                   <div class="col-md-4 col-sm-4 col-xs-4">
-                    <input type="text" readonly class="form-control text-center" id="val-b">
+                    <input type="text" value="<?= isset($v->id)?$v->pnb:'-' ?>" readonly class="form-control text-center" id="val-b" name="pen_b">
                   </div>
                   <div class="col-md-2 col-sm-2 col-xs-2">
-                    <input type="text" required readonly class="form-control text-center" id="pers-b" value="%">
+                    <input type="text" value="<?= isset($v->id)?$v->pb.'%':'-' ?>" readonly class="form-control text-center" id="pers-b" name="pers_b">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-3" >Rekanan (Rp)</label>
                   <div class="col-md-4 col-sm-4 col-xs-4">
-                    <input type="text" readonly class="form-control text-center" id="val-m">
+                    <input type="text" value="<?= isset($v->id)?$v->pnm:'-' ?>" readonly class="form-control text-center" id="val-m" name="pen_m">
                   </div>
                   <div class="col-md-2 col-sm-2 col-xs-2">
-                    <input type="text" required readonly class="form-control text-center" id="pers-m" value="%">
+                    <input type="text" value="<?= isset($v->id)?$v->pm.'%':'-' ?>" readonly class="form-control text-center" id="pers-m" name="pers_m">
                   </div>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12">

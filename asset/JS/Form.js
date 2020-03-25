@@ -533,7 +533,26 @@ $(document).ready(function(){
         })
     })
 
-
+    $('#edit-pemb-bgh').submit(function(e){
+        e.preventDefault()
+        swal({title:"Lanjutkan menyimpan ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {
+            if (Ok) {
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(v){
+                        if (v==200) {
+                            swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
+                        }else{
+                            swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
+                        }
+                    }
+                })
+            }
+        })
+    })
     /*==================HAPUS==================================*/
     
     

@@ -8,11 +8,12 @@ class Finance_model extends CI_Model{
     }
 
     function daftar_kerjasama_bgh($tahun, $type='html'){
-        $this->db->select('id_bgh AS id, IFNULL(aset_luar,IFNULL(nama, deld_aset)) AS na, tanggal_mulai AS tm, tanggal_selesai AS ts, nama_mitra AS nm, pers_bumdes AS pb, pers_mitra AS pm, DATEDIFF("'.date('Y-m-d').'",tanggal_mulai) AS rh, status_bgh AS sgh');
+        $this->db->select('id_bgh AS id, IFNULL(aset_luar,IFNULL(nama, deld_aset)) AS na, tanggal_mulai AS tm, tanggal_selesai AS ts, nama_mitra AS nm, pers_bumdes AS pb, pers_mitra AS pm, DATEDIFF("'.date('Y-m-d').'",tanggal_mulai) AS rh, status_bgh AS sgh, COUNT(id_pbgh) AS idt');
         $this->db->from('bagi_hasil_aset bg');
         $this->db->join('aset as','bg.aset_bh=as.id_aset','LEFT');
         $this->db->join('mitra mt','bg.mitra=mt.id_mitra');
         $this->db->join('pemb_bagi_hasil','id_bagi=id_bgh','LEFT');
+        $this->db->group_by('id_bgh');
         if ($tahun!='All') {
             $this->db->where('YEAR(tanggal_mulai) <= "'.$tahun.'" AND YEAR(tanggal_selesai) >= "'.$tahun.'"');
         }
@@ -435,7 +436,7 @@ class Finance_model extends CI_Model{
         foreach ($result as $key => $v) {
             $but=null;
             if (waktu_data($v->id)) {
-                $but = '<a href="#" class="btn btn-xs btn-primary">Ubah</a> <button type="button" class="btn btn-xs btn-danger">Hapus</button>';
+                $but = '<a href="'.site_url('edit-pbgu/'.$v->id).'" class="btn btn-xs btn-primary">Ubah</a> <button type="button" class="btn btn-xs btn-danger">Hapus</button>';
             }
             $result1 .= '<tr>
                             <td>'.($key+1).'</td>
@@ -459,6 +460,34 @@ class Finance_model extends CI_Model{
         $res['res'] = $this->db->affected_rows();
 
         return $res;
+    }
+
+    function get_edit_pemb_bgh($id){
+        $this->db->select('id_pbgh AS id, IFNULL(aset_luar,IFNULL(nama, deld_aset)) AS ast, nama_mitra AS nm, catatan AS ct, tanggal_bayar AS tb, jumlah AS jl, pen_bumdes AS pnb, pen_mitra AS pnm, pers_bumdes AS pb, pers_mitra AS pm, id_fin AS idf');
+        //FORMAT((pers_bumdes/100)*jumlah, "#.00")
+        //FORMAT((pers_mitra/100)*jumlah,"#.00")
+        $this->db->from('pemb_bagi_hasil');
+        $this->db->join('bagi_hasil_aset bha','id_bgh=id_bagi');//bagi hasil aset
+        $this->db->join('mitra','id_mitra=bha.mitra');//mitra
+        $this->db->join('aset','id_aset=aset_bh','LEFT');//aset
+        $this->db->join('rekap_keuangan','foreg_id=id_pbgh','LEFT');//catatan keuangan
+        $this->db->where('id_pbgh',$id);
+        $result = $this->db->get()->result();
+
+        $result = isset($result[0])&&waktu_data($id)?$result[0]:null;
+        return $result;
+    }
+
+    function edit_pemb_bgh($id, $cat, $tanggal, $pen_b, $pen_m, $jumlah){
+        $isi = ['pen_bumdes'=>$pen_b,'pen_mitra'=>$pen_m,'jumlah'=>$jumlah,'catatan'=>$cat,'tanggal_bayar'=>$tanggal];
+
+        if (waktu_data($id)) {
+            $this->db->where('id_pbgh',$id);
+            $this->update('pemb_bagi_hasil',$isi);
+            return $this->db->affected_rows();
+        }else{
+            return false;
+        }
     }
 
     function set_arus_kas($jenis, $ket, $jumlah, $tanggal, $actor, $for_id=null){

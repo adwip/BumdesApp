@@ -111,7 +111,7 @@
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-3" >Rekanan (Rp)</label>
                   <div class="col-md-4 col-sm-4 col-xs-4">
-                    <input type="text" readonly class="form-control text-center" id="val-m">
+                    <input type="text" readonly class="form-control text-center" id="val-m" name="pen_m">
                   </div>
                   <div class="col-md-2 col-sm-2 col-xs-2">
                     <input type="text" required readonly class="form-control text-center" id="pers-m" value="%">

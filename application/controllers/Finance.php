@@ -235,6 +235,14 @@ class Finance extends CI_controller{
         $this->load->view('MenuPage/Form/tambah_pemb_bgh',$data);
     }
 
+    function form_edit_pemb_bagi_hasil($id){
+        $data['page']=$this->page;
+        $data['title'] = 'Ubah pembayaran bagi hasil';
+        $data['v']= $this->fm->get_edit_pemb_bgh($id);
+        $this->load->view('MenuPage/Form/edit_pemb_bgh',$data);
+        // echo json_encode($data['v']);
+    }
+
     function form_tambah_aset_bagi_hasil(){//=============ada view
         $data['page']=$this->page;
         $data['title'] = '';
@@ -328,6 +336,44 @@ class Finance extends CI_controller{
                     $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
                 }
             }
+            echo 200;
+        }
+    }
+
+    function edit_pemb_bgh(){
+
+        $id = $this->input->post('id',true);
+        $mitra = $this->input->post('mitra',true);
+        $aset = $this->input->post('aset',true);
+        $cat = $this->input->post('cat',true);
+        $tanggal = $this->input->post('tanggal',true);
+        $tanggal = date('Y-m-d',strtotime($tanggal));
+        $jumlah = $this->input->post('jumlah',true);
+        $pen_b = $this->input->post('pen_b',true);
+        $pen_m = $this->input->post('pen_m',true);
+        $log_mesg ='[EDIT][PEMBAYARAN BAGI HASIL]['.$id.'] Mengubah data pembayaran bagi hasil dari kerjasama dengan '.$mitra.' dari aset '.$aset;
+        $v1 = $this->fm->edit_pemb_bgh($id, $cat, $tanggal, $pen_b, $pen_m, $jumlah);
+        
+        if ($v1) {
+            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+        }
+
+        if (waktu_data($id)&&isset($_POST['tambah_trans'])) {
+            $ket_kas ='Pembayaran bagi hasil usaha dengan '.$mitra. ' dari aset '.$aset;
+            $v = $this->fm->set_arus_kas('IN', $ket_kas, $pen_b, $tanggal, 'System', $id);
+            if ($v['res']) {
+                $log_mesg = '[TAMBAH][KEUANGAN][BAGI HASIL] ['.$v['id'].']['.$id.'] Menambah pemasukan dari kerjasama bagi hasil dengan '.$mitra.' dari aset '.$aset;
+                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            }else{
+                $v=$this->fm->edit_arus_kas($id, $pen_b, 'Debit', $tanggal, $ket_kas);
+                if ($v['resp']) {
+                    $log_mesg = '[EDIT][KEUANGAN][BAGI HASIL] ['.$v['id'].']['.$id.'] Mengubah data pemasukan dari kerjasama bagi hasil dengan '.$mitra.' dari aset '.$aset;
+                    $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                }
+            }
+        }
+
+        if ($v1) {
             echo 200;
         }
     }

@@ -131,4 +131,15 @@ $(document).ready(function(){
         $('#img-form').attr('disabled',false)
       }
     })
+
+    //Edit pembayaran bagi hasil
+    $('#nominal-edit-pbgh').change(function(){
+      let psb = $('#pers-b').val().replace('%','')
+      psb = (psb/100)*$(this).val()
+      let psm = $('#pers-m').val().replace('%','')
+      psm = (psm/100)*$(this).val()
+
+      $('#val-m').val(psb)
+      $('#val-b').val(psm)
+    })
 })

@@ -82,6 +82,8 @@ $route['set-pembayaran'] = 'Finance/set_pembayaran_ent_bhu';//=========ada view
 $route['edit-bgu/(:num)'] = 'Finance/form_edit_bagi_dividen/$1';//=========ada view
 $route['edit-bagi-dividen'] = 'Finance/edit_bagi_hasil_div';//=========ada view
 $route['gov-finansial'] = 'Finance/gov_finansial';//=========ada view
+$route['edit-pbgu/(:num)'] = 'Finance/form_edit_pemb_bagi_hasil/$1';//=========ada view
+$route['edit-pemb-bgh'] = 'Finance/edit_pemb_bgh';//=========ada view
 // $route['cek-saldo'] = 'Finance/cek_saldo';
 
 
@@ -144,4 +146,5 @@ $route['gov-kerjasama-bgh'] = 'Administrasi/gov_kerjasama_bgh';//===============
 $route['404_override'] = 'Homepage/not_found';
 $route['masuk'] = 'Homepage/login_page';//=================ada view
 $route['translate_uri_dashes'] = TRUE;
+
 
