@@ -322,7 +322,8 @@ class Finance extends CI_controller{
         $pen = ($pers_b/100)*$jumlah;
         $info = $this->input->post('info',true);
         $info = explode('|', $info);
-        
+
+        echo json_encode($_POST);
         
         $v = $this->fm->set_pemb_bagi_hasil($id, $jumlah, $cat, $tanggal);
         $log_mesg = '[TAMBAH][PEMBAYARAN][BAGI HASIL]['.$v['id'].']['.$id.'] Menambah pembayaran hasil dari kerjasama bagi hasil penggunaan aset';
@@ -340,6 +341,31 @@ class Finance extends CI_controller{
         }
     }
 
+    function del_pemb_bgh(){
+        $id = $this->input->post('id',true);
+        $id2 = $this->input->post('id2',true);
+        $mitra = $this->input->post('mitra',true);
+        $aset = $this->input->post('aset',true);
+
+        $log_mesg = '[HAPUS][PEMBAYARAN][BAGI HASIL]['.$id.'] Menghapus pembayaran hasil dari dari kerjasama bagi hasil penggunaan aset dengan '.$mitra.' dari aset '.$aset;
+        $v= $this->fm->del_pemb_bgh($id);
+        if ($v) {
+            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $v = $this->fm->del_keuangan($id);
+            $log_mesg='[HAPUS][KEUANGAN][BAGI HASIL]['.$v['id'].']['.$id.'] Menghapus data keuangan dari penerimaan bagi hasil dengan '.$mitra.' dari aset '.$aset;
+            if ($v['res']) {//log delete kas
+                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            }
+            $res = $this->fm->get_detail_bagi_hasil($id2);
+            $ret['jl'] = $res->jl;
+            $ret['pnb'] = $res->pnb;
+            $ret['res'] = 200;
+            echo json_encode($ret);
+        }else{
+            echo json_encode(['res'=>100]);
+        }
+    }
+
     function edit_pemb_bgh(){
 
         $id = $this->input->post('id',true);
@@ -352,10 +378,12 @@ class Finance extends CI_controller{
         $pen_b = $this->input->post('pen_b',true);
         $pen_m = $this->input->post('pen_m',true);
         $log_mesg ='[EDIT][PEMBAYARAN BAGI HASIL]['.$id.'] Mengubah data pembayaran bagi hasil dari kerjasama dengan '.$mitra.' dari aset '.$aset;
+        $resp = false;
         $v1 = $this->fm->edit_pemb_bgh($id, $cat, $tanggal, $pen_b, $pen_m, $jumlah);
         
         if ($v1) {
             $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $resp=true;
         }
 
         if (waktu_data($id)&&isset($_POST['tambah_trans'])) {
@@ -364,16 +392,25 @@ class Finance extends CI_controller{
             if ($v['res']) {
                 $log_mesg = '[TAMBAH][KEUANGAN][BAGI HASIL] ['.$v['id'].']['.$id.'] Menambah pemasukan dari kerjasama bagi hasil dengan '.$mitra.' dari aset '.$aset;
                 $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                $resp=true;
             }else{
                 $v=$this->fm->edit_arus_kas($id, $pen_b, 'Debit', $tanggal, $ket_kas);
                 if ($v['resp']) {
                     $log_mesg = '[EDIT][KEUANGAN][BAGI HASIL] ['.$v['id'].']['.$id.'] Mengubah data pemasukan dari kerjasama bagi hasil dengan '.$mitra.' dari aset '.$aset;
                     $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                    $resp=true;
                 }
+            }
+        }else if(waktu_data($id)&&!isset($_POST['tambah_trans'])){
+            $v = $this->fm->del_keuangan($id);
+            $log_mesg='[HAPUS][KEUANGAN][BAGI HASIL]['.$v['id'].']['.$id.'] Menghapus data keuangan dari penerimaan bagi hasil dengan '.$mitra.' dari aset '.$aset;
+            if ($v['res']) {//log delete kas
+                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                $resp=true;
             }
         }
 
-        if ($v1) {
+        if ($resp) {
             echo 200;
         }
     }

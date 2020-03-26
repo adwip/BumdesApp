@@ -175,7 +175,7 @@ class Rent extends CI_Controller{
             $resp =true;
         }
 
-        if ($ps) {
+        if ($ps&&waktu_data($id)) {
             $ket_kas = 'Penerimaan dari penyewaan aset '.$aset.' mulai dari '.date('d-m-Y',strtotime($tanggal_mul)).' selama '.$hari.' oleh '.$penyewa;
 
             $v = $this->fm->set_arus_kas('IN', $ket_kas, $harga, $tanggal_mul, 'System', $id);
@@ -191,10 +191,10 @@ class Rent extends CI_Controller{
                     $resp = true;
                 }
             }
-        }else {//perubahan data keuangan
+        }else if(waktu_data($id)&&!$ps&&$id){//perubahan data keuangan
             $v = $this->fm->del_keuangan($id);
             $log_mesg='[HAPUS][KEUANGAN][PENYEWAAN]['.$v['id'].']['.$id.'] Menghapus data keuangan dari penyewaan aset '.$aset.' oleh '.$penyewa.' selama '.$hari.' hari, dimulai dari tanggal '.date('d-m-Y',strtotime($tanggal_mul));
-            if ($v) {//log delete kas
+            if ($v['res']) {//log delete kas
                 $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
                 $resp=true;
             }

@@ -67,21 +67,27 @@
                 <table class="col-md-12 col-sm-12 col-xs-12">
                     <tr>
                         <td class="col-md-2 col-sm-2 col-xs-2"><h4>Aset :</h4></td>
-                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= isset($v->na)?$v->na:'-' ?></h3></td>
+                        <td class="col-md-4 col-sm-4 col-xs-4"><h3 id="aset"><?= isset($v->na)?$v->na:'-' ?></h3></td>
                         <td class="col-md-2 col-sm-2 col-xs-2"><h4>Mitra :</h4></td>
-                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= isset($v->nm)?anchor('detail-mit/'.$v->idm,$v->nm,'target="_blank"'):'-' ?></h3></td>
+                        <td class="col-md-4 col-sm-4 col-xs-4"><h3 id="mitra"><?= isset($v->nm)?anchor('detail-mit/'.$v->idm,$v->nm,'target="_blank"'):'-' ?></h3></td>
                     </tr>
                     <tr>
                         <td class="col-md-2 col-sm-2 col-xs-2"><h4>Tanggal mulai :</h4></td>
-                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= isset($v->tm)?date('d/m/Y',strtotime($v->tm)):'-' ?></h3></td>
+                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= isset($v->tm)?date('d-m-Y',strtotime($v->tm)):'-' ?></h3></td>
                         <td class="col-md-2 col-sm-2 col-xs-2"><h4>Tanggal selesai :</h4></td>
-                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= isset($v->ts)?date('d/m/Y',strtotime($v->ts)):'-' ?></h3></td>
+                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= isset($v->ts)?date('d-m-Y',strtotime($v->ts)):'-' ?></h3></td>
                     </tr>
                     <tr>
                         <td class="col-md-2 col-sm-2 col-xs-2"><h4>Total bagi hasil :</h4></td>
-                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= isset($v->jl)?'Rp. '.$v->jl:'Rp. 0' ?></h3></td>
+                        <td class="col-md-4 col-sm-4 col-xs-4"><h3 id="jum_bgh"><?= isset($v->jl)?'Rp. '.$v->jl:'Rp. 0' ?></h3></td>
                         <td class="col-md-2 col-sm-2 col-xs-2"><h4>Pembagian :</h4></td>
                         <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= isset($v->id)?'BUMDes: '.$v->pb.'% | Mitra: '.$v->pm.'%':'-' ?></h3></td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-2 col-sm-2 col-xs-2"><h4>Penerimaan BUMDes :</h4></td>
+                        <td class="col-md-4 col-sm-4 col-xs-4"><h3 id="pen_b"><?= isset($v->pnb)?'Rp. '.$v->pnb:'Rp. 0' ?></h3></td>
+                        <td class="col-md-2 col-sm-2 col-xs-2"><h4>Durasi :</h4></td>
+                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= isset($v->dur)?$v->dur.' Bulan':'-' ?></h3></td>
                     </tr>
                 </table>
             </div>
@@ -107,7 +113,7 @@
                             <td><strong>Aksi</strong></td>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody data-act="<?= site_url('hapus-pemb-bagi-hasil') ?>" data-meth="POST" data-id="<?= isset($v->id)?$v->id:'-' ?>">
                       <?= $v_histori_bgh ?>
                     </tbody>
                 </table>
@@ -132,5 +138,6 @@
 
     <?php $this->load->view('SuptPage/JsP') ?>
     <script src="<?= base_url('asset/JS/Fitur.js') ?>"></script>
+    <script src="<?= base_url('asset/JS/Form_hapus.js') ?>"></script>
   </body>
 </html>

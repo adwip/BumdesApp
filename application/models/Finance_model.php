@@ -414,7 +414,7 @@ class Finance_model extends CI_Model{
     }
 
     function get_detail_bagi_hasil($id){
-        $this->db->select('id_bgh AS id, IFNULL(aset_luar, IFNULL(nama, deld_aset)) AS na, nama_mitra AS nm, tanggal_mulai AS tm,tanggal_selesai AS ts, FORMAT(SUM(jumlah), "#.00") AS jl, CONCAT(kontak_1," / ",kontak_2) AS km, id_mitra AS idm, pers_bumdes AS pb, pers_mitra AS pm');
+        $this->db->select('id_bgh AS id, IFNULL(aset_luar, IFNULL(nama, deld_aset)) AS na, nama_mitra AS nm, tanggal_mulai AS tm,tanggal_selesai AS ts, FORMAT(SUM(jumlah), "#.00") AS jl, CONCAT(kontak_1," / ",kontak_2) AS km, id_mitra AS idm, pers_bumdes AS pb, pers_mitra AS pm, FORMAT(SUM(pen_bumdes),"#.00") AS pnb, TIMESTAMPDIFF(MONTH,tanggal_mulai, tanggal_selesai) AS dur');
         $this->db->from('bagi_hasil_aset ba');
         $this->db->join('aset as','as.id_aset=ba.aset_bh','LEFT');
         $this->db->join('mitra mt','mt.id_mitra=ba.mitra');
@@ -436,7 +436,7 @@ class Finance_model extends CI_Model{
         foreach ($result as $key => $v) {
             $but=null;
             if (waktu_data($v->id)) {
-                $but = '<a href="'.site_url('edit-pbgu/'.$v->id).'" class="btn btn-xs btn-primary">Ubah</a> <button type="button" class="btn btn-xs btn-danger">Hapus</button>';
+                $but = '<a href="'.site_url('edit-pbgu/'.$v->id).'" class="btn btn-xs btn-primary">Ubah</a> <button type="button" class="btn btn-xs btn-danger hapus-pbgh" value="'.$v->id.'">Hapus</button>';
             }
             $result1 .= '<tr>
                             <td>'.($key+1).'</td>
@@ -449,6 +449,16 @@ class Finance_model extends CI_Model{
                         </tr>';
         }
         return $result1;
+    }
+
+    function del_pemb_bgh($id){
+        if (waktu_data($id)) {
+            $this->db->where('id_pbgh',$id);
+            $this->db->delete('pemb_bagi_hasil');
+            return $this->db->affected_rows();
+        }else {
+            return false;
+        }
     }
 
     function set_pemb_bagi_hasil($idg, $jumlah, $cat, $tanggal){
@@ -483,7 +493,7 @@ class Finance_model extends CI_Model{
 
         if (waktu_data($id)) {
             $this->db->where('id_pbgh',$id);
-            $this->update('pemb_bagi_hasil',$isi);
+            $this->db->update('pemb_bagi_hasil',$isi);
             return $this->db->affected_rows();
         }else{
             return false;
