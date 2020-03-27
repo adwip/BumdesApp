@@ -25,7 +25,7 @@ class Rent_model extends CI_Model{
             foreach ($result as $key => $v) {
                 $but=null;
                 if (waktu_data($v->id, 10)) {
-                    $but = '<button type="button" class="btn btn-xs btn-danger hapus" value="'.$v->id.'">Hapus</button>'.anchor('edit-ar/'.$v->id,'Ubah','class="btn btn-xs btn-warning"');
+                    $but = '<button type="button" class="btn btn-xs btn-danger hapus-sewa" value="'.$v->id.'">Hapus</button>'.anchor('edit-ar/'.$v->id,'Ubah','class="btn btn-xs btn-warning"');
                 }
                 $result1 .='<tr data-nam="'.$v->ast.'">
                             <td>'.($key+1).'</td>

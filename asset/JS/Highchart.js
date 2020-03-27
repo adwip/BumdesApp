@@ -617,7 +617,7 @@ function keuangan_tahunan(value, selector, $tahun=null){
        borderColor: 'black',
        borderRadius: 10,*/
        formatter: function() {
-          return this.series.name + '</b> bulan <b>' + this.x + '</b>, adalah <b>Rp. '+ this.y+' </b>';
+          return this.series.name + '</b> tahun <b>' + this.x + '</b>, adalah <b>Rp. '+ this.y+' </b>';
        }
     }
    var legend = {

@@ -66,7 +66,7 @@ class Finance_model extends CI_Model{
                 $act = 'Di-input oleh sistem';
             if ($v->at=='User') {
                 $act = '
-                <button type="button" class="btn btn-xs btn-danger hapus" value="'.$v->id.'">Hapus</button>
+                <button type="button" class="btn btn-xs btn-danger hapus-fin" value="'.$v->id.'">Hapus</button>
                 <a href="edit-fin/'.$v->id.'" class="btn btn-xs btn-warning">Ubah</a>';
             }
             $result1 .= '<tr>
@@ -96,7 +96,7 @@ class Finance_model extends CI_Model{
                 $act = 'Di-input oleh sistem';
             if ($v->at=='User') {
                 $act = '
-                <button type="button" class="btn btn-xs btn-danger hapus" value="'.$v->id.'">Hapus</button>
+                <button type="button" class="btn btn-xs btn-danger hapus-fin" value="'.$v->id.'">Hapus</button>
                 <a href="edit-fin/'.$v->id.'" class="btn btn-xs btn-warning">Ubah</a>';
             }
             $result1 .= '<tr>
@@ -125,8 +125,7 @@ class Finance_model extends CI_Model{
             foreach ($result as $key => $v) {
                     $act = 'Di-input oleh sistem';
                 if ($v->at=='User') {
-                    $act = '
-                    <button type="button" class="btn btn-xs btn-danger hapus" value="'.$v->id.'">Hapus</button>
+                    $act = '<button type="button" class="btn btn-xs btn-danger hapus-fin" value="'.$v->id.'">Hapus</button>
                     <a href="edit-fin/'.$v->id.'" class="btn btn-xs btn-warning">Ubah</a>';
                 }
                 $result1 .= '<tr>

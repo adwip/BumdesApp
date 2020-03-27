@@ -306,7 +306,7 @@ class Rent extends CI_Controller{
         $this->PDF->Output('I','Daftar_barang_'.date('d_m_Y').'.pdf');
     }
 
-    function hapus_penyewaan(){
+    function hapus_penyewaan(){/*
         $id = $this->input->post('id',true);
         $log_mesg = '[HAPUS][PENYEWAAN]['.$id.'] Menghapus jadwal penyewaan aset';
 
@@ -320,7 +320,9 @@ class Rent extends CI_Controller{
             }
             echo 200;
             // echo $v;
-        }
+        }*/
+
+        echo json_encode($_POST);
     }
 
     function hapus_aset_sewa(){

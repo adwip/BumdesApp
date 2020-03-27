@@ -104,6 +104,13 @@
             </div>
           </div>
         </div>
+        <br>
+          <div class="row tile_count">
+            <div class="col-md-12 col-sm-12 col-xs-12 tile_stats_count">
+              <span class="count_top"><h4><i class="fa fa-user"></i> Total pendapatan sewa</h4></span>
+              <div class="count text-center" id="info-distribusi"><?= isset($v->hg)?'Rp. '.$v->hg:'Rp. 0' ?></div>
+            </div>
+          </div>
         
         <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="x_panel">
@@ -169,7 +176,7 @@
     <?php $this->load->view('SuptPage/JsP') ?>
     
     <script src="<?= base_url('asset') ?>/JS/Highchart.js"></script>
-    <script src="<?= base_url('asset') ?>/JS/Form.js"></script>
+    <script src="<?= base_url('asset/JS/Form_hapus.js') ?>"></script>
     <!-- Datatables -->
     <script src="<?= base_url('asset') ?>/vendors/datatables.net/js/jquery.dataTables.js"></script>
     <script src="<?= base_url('asset') ?>/vendors/datatables.net-bs/js/dataTables.bootstrap.js"></script>

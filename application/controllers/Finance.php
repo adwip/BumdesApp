@@ -686,7 +686,7 @@ class Finance extends CI_controller{
         $this->PDF->Output('I','Daftar_barang_'.date('d_m_Y').'.pdf');
     }
 
-    function hapus_keuangan(){
+    function hapus_keuangan($tp){
         $id = $this->input->post('id',true);
 
         $v = $id?$this->fm->del_keuangan($id):false;
@@ -694,10 +694,35 @@ class Finance extends CI_controller{
         if ($v['res']) {
             $log_mesg = '[HAPUS][KEUANGAN]['.$v['id'].'] Menghapus transaksi keuangan';
             $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
-            echo 200;
+            if ($tp=='mng') {
+                $minggu = $this->input->post('minggu',true);
+                $bulan = $this->input->post('bulan',true);
+                $tahun = $this->input->post('tahun',true);
+                $d=$this->fm->get_kredit_debit_mingguan($tahun,$bulan,$minggu);
+                $dk['d']= isset($d[0])? $d[0]->dbt:0;
+                $dk['k']= isset($d[0])? $d[0]->kdt:0;
+                $g=$this->fm->get_grafik_keuangan_mingguan($tahun,$bulan);
+            }elseif ($tp='bln') {
+                $bulan = $this->input->post('bulan',true);
+                $tahun = $this->input->post('tahun',true);
+                $d=$this->fm->get_kredit_debit_bulanan($tahun,$bulan);
+                $dk['d']= isset($d[0])? $d[0]->dbt:0;
+                $dk['k']= isset($d[0])? $d[0]->kdt:0;
+                $g=$this->fm->get_grafik_keuangan_bulanan($tahun);
+            }else {
+                $tahun = $this->input->post('tahun',true);
+                $d=$this->fm->get_kredit_debit_tahunan($tahun);
+                $dk['d']= isset($d[0])? $d[0]->dbt:0;
+                $dk['k']= isset($d[0])? $d[0]->kdt:0;
+                $g=$this->fm->get_grafik_keuangan_tahunan();
+            }
+            $s=$this->fm->get_saldo();
+            $s = isset($s[0])? $s[0]->ac:0;
+            $g = json_decode($g);
+            echo json_encode(['res'=>200,'saldo'=>$s,'dk'=>$dk,'grafik'=>$g]);
             // echo $v;
         }else{
-            echo 100;
+            echo json_encode(['res'=>100]);
         }
     }
     

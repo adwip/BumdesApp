@@ -72,7 +72,9 @@ $route['dividen-bumdes'] = 'Finance/bagi_dividen';//=========ada view
 $route['tambah-dividen'] = 'Finance/form_tabah_dividen';//=========ada view
 $route['saldo-dividen'] = 'Finance/saldo_dividen';//=========ada view
 $route['edit-bagi-dividen/(:num)'] = 'Finance/edit_bagi_dividen/$1';//=========ada view
-$route['hapus-keuangan'] = 'Finance/hapus_keuangan';//=========ada view
+$route['hapus-keuangan/mng'] = 'Finance/hapus_keuangan/mng';//=========ada view
+$route['hapus-keuangan/bln'] = 'Finance/hapus_keuangan/bln';//=========ada view
+$route['hapus-keuangan/thn'] = 'Finance/hapus_keuangan/thn';//=========ada view
 $route['hapus-bagi-hasil'] = 'Finance/hapus_bagi_hasil';//=========ada view
 $route['set-bagi-dividen'] = 'Finance/set_bagi_dividen';//=========ada view
 $route['info-bagi-dividen/(:num)'] = 'Finance/detail_bagi_dividen/$1';//=========ada view

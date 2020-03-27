@@ -20,9 +20,9 @@ class Logistic_model extends CI_Model{
             foreach ($result as $key => $val) {
                 $akt=null;
                 if (waktu_data($val->idp)) {
-                    $akt = '<button type="button" class="btn btn-xs btn-danger hapus" value="'.$val->idp.'">Hapus</button>'.anchor('edit-ig/'.$val->idp,'Ubah','class="btn btn-xs btn-warning"');
+                    $akt = '<button type="button" class="btn btn-xs btn-danger hapus-bmsk" value="'.$val->idp.'">Hapus</button>'.anchor('edit-ig/'.$val->idp,'Ubah','class="btn btn-xs btn-warning"');
                 }
-                $result1 .='<tr class="'.$val->idp.'">
+                $result1 .='<tr data-nam="'.$val->nkom.'">
                                 <td>'.($key+1).'</td>
                                 <td>'.$val->nkom.'</td>
                                 <td>'.date('d/m/Y',strtotime($val->tanggal)).'</td>
@@ -59,9 +59,9 @@ class Logistic_model extends CI_Model{
             foreach ($result as $key => $val) {
                 $btn=null;
                 if (waktu_data($val->id)) {
-                    $btn = '<button type="button" class="btn btn-xs btn-danger hapus" value="'.$val->id.'">Hapus</button>'.anchor('edit-ei/'.$val->id,'Ubah','class="btn btn-xs btn-warning"');
+                    $btn = '<button type="button" class="btn btn-xs btn-danger hapus-bklr" value="'.$val->id.'">Hapus</button>'.anchor('edit-ei/'.$val->id,'Ubah','class="btn btn-xs btn-warning"');
                 }
-                $result1 .='<tr>
+                $result1 .='<tr data-nam="'.$val->kom.'">
                                 <td>'.($key+1).'</td>
                                 <td>'.$val->kom.'</td>
                                 <td>'.date('d/m/Y',strtotime($val->tgl)).'</td>

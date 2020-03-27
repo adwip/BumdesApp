@@ -60,7 +60,7 @@
         <div class="row tile_count">
             <div class="col-md-12 col-sm-12 col-xs-12 tile_stats_count">
               <span class="count_top"><h4><i class="fa fa-user"></i> Saldo</h4></span>
-              <div class="count text-center">Rp. <?= isset($s[0])? $s[0]->ac:0 ?></div>
+              <div class="count text-center" id="saldo">Rp. <?= isset($s[0])? $s[0]->ac:0 ?></div>
             </div>
           </div>
         
@@ -134,7 +134,7 @@
                           </tr>
                         </thead>
 
-                        <tbody id="val-body" data-act="hapus-keuangan" data-meth="POST">
+                        <tbody id="val-body" data-act="hapus-keuangan/thn" data-meth="POST">
                           <?= $value ?>
                         </tbody>
                       </table>
@@ -177,7 +177,7 @@
 
     <?php $this->load->view('SuptPage/JsP') ?>
     <script src="<?= base_url('asset') ?>/JS/Highchart.js"></script>
-    <script src="<?= base_url('asset') ?>/JS/Form.js"></script>
+    <script src="<?= base_url('asset/JS/Form_hapus.js') ?>"></script>
     <!-- Datatables -->
     <script src="<?= base_url('asset') ?>/vendors/datatables.net/js/jquery.dataTables.js"></script>
     <script src="<?= base_url('asset') ?>/vendors/datatables.net-bs/js/dataTables.bootstrap.js"></script>

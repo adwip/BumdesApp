@@ -644,9 +644,11 @@ class Logistic extends CI_Controller{
     }
 
     function hapus_stok_masuk(){
+        
         $id = $this->input->post('id',true);
+        $nama = $this->input->post('nm',true);
         $v = $this->lm->hapus_rekap_stok($id);
-        $log_mesg = '[HAPUS][STOK MASUK]['.$id.'] Menghapus data stok/logistik masuk';
+        $log_mesg = '[HAPUS][STOK MASUK]['.$id.'] Menghapus data stok/logistik masuk untuk barang '.$nama;
         if ($v) {
             $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
             $v=$this->fm->del_keuangan($id);
@@ -654,17 +656,22 @@ class Logistic extends CI_Controller{
                 $log_mesg = '[HAPUS][KEUANGAN][STOK MASUK]['.$v['id'].']['.$id.'] Menghapus transaksi dari pembelian logistik dagang';
                 $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
             }
-            echo 200;
+            $tahun = $this->input->post('tahun',true);
+            $bulan = $this->input->post('bulan',true);
+            $data=$this->lm->total_belanja_barang($tahun,$bulan);
+            $data = isset($data->hg)?$data->hg:0;
+            echo json_encode(['res'=>200,'val'=>$data]);
             // echo $v;
         }else{
-            echo 100;
+            echo json_encode(['res'=>100]);
         }
     }
 
     function hapus_stok_keluar(){
         $id = $this->input->post('id',true);
+        $nama = $this->input->post('nm',true);
         $v = $this->lm->hapus_rekap_stok($id);
-        $log_mesg = '[HAPUS][STOK KELUAR / DISTRIBUSI]['.$id.'] Menghapus rekap stok keluar/distribusi';
+        $log_mesg = '[HAPUS][STOK KELUAR / DISTRIBUSI]['.$id.'] Menghapus rekap stok keluar/distribusi untuk barang '.$nama;
         
         if ($v) {
             $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
@@ -673,10 +680,14 @@ class Logistic extends CI_Controller{
                 $log_mesg = '[HAPUS][KEUANGAN][STOK KELUAR / DISTRIBUSI]['.$v['id'].']['.$id.'] Menghapus transaksi penjualan/distribusi barang';
                 $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
             }
-            echo 200;
+            $tahun = $this->input->post('tahun',true);
+            $bulan = $this->input->post('bulan',true);
+            $data = $this->tm->get_total_penjualan($tahun,$bulan);
+            $data = isset($data->hg)?$data->hg:0;
+            echo json_encode(['res'=>200,'val'=>$data]);
             // echo $v;
         }else{
-            echo 100;
+            echo json_encode(['res'=>100]);
         }
     }
 

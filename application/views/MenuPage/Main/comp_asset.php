@@ -193,7 +193,7 @@
     </div>
 
     <?php $this->load->view('SuptPage/JsP') ?>
-    <script src="<?= base_url('asset') ?>/JS/Form.js"></script>
+    <script src="<?= base_url('asset/JS/Form_hapus.js') ?>"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
     <!-- Datatables -->
