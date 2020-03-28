@@ -135,7 +135,13 @@ $(document).ready(function(){
                     data: $(this).serialize()+n_aset,
                     dataType: 'json',
                     success: function(v){
-                        if (v==200) {
+                        if (v['res']==200) {
+                            let html = '<option value="">Pilih aset</option>'
+                            for (let i = 0; i < v['data'].length; i++) {
+                                html += '<option data-na="'+v['data'][i].num+'"  value="'+v['data'][i].id+'">'+v['data'][i].nm+'</option>'
+                                
+                            }
+                            $('#tambah-aset-sewa').html(html)
                             reset_form()
                             swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
                         }else{
@@ -158,7 +164,13 @@ $(document).ready(function(){
                     data: $(this).serialize()+n_mitra,
                     dataType: 'json',
                     success: function(v){
-                        if (v==200) {
+                        if (v['res']==200) {
+                            let html = '<option value="">Pilih aset</option>'
+                            for (let i = 0; i < v['data'].length; i++) {
+                                html += '<option value="'+v['data'][i].id+'">'+v['data'][i].nm+'</option>'
+                                
+                            }
+                            $('#inter_aset').html(html)
                             reset_form()
                             swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
                         }else{
@@ -206,9 +218,11 @@ $(document).ready(function(){
                     contentType: false,
                     processData: false,
                     success: function(v){
-                        if (v==200) {
-                            v = v.split('|')
+                        v = v.split('|')
+                        if (v[0]==200) {
+                            $('#saldo').val('Rp. '+v[1])
                             reset_form()
+                            $('#gam_file').val(null)
                             swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
                         }else{
                             swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})

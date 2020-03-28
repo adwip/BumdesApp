@@ -14,6 +14,7 @@ $(document).ready(function(){
                     success: function(v){
                         if (v['res']==200) {
                             $('#info-belanja').html('Rp. '+v['val'])
+                            pembelian_logistik(v['grafik'],'#grafik_pembelian_logistik')
                             rem.remove()
                             swal({text:"Berhasil menghapus",buttons: false,timer:3000,icon:"success"})
                         }else{
@@ -62,7 +63,8 @@ $(document).ready(function(){
                     dataType: 'json',
                     success: function(v){
                         if (v['res']==200) {
-                            $('#info-distribusi').html('Rp. '+v['val'])
+                            $('#info-sewa').html('Rp. '+v['val'])
+                            penyewaan(v['grafik'],'#grafik_penyewaan')
                             rem.remove()
                             swal({text:"Berhasil menghapus",buttons: false,timer:3000,icon:"success"})
                         }else{

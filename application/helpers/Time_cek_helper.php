@@ -27,3 +27,15 @@ if ( ! function_exists('waktu_data')){
         }
     }   
 }
+
+if ( ! function_exists('time_conv')){
+    
+    function time_conv($id){
+        $id2=null;
+        for ($i=3; $i < strlen($id); $i++) { 
+            $id2 .= $id[$i];
+        }
+        return date('Y-m-d H:i:s',(int)$id2);
+    }   
+}
+

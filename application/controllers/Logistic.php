@@ -659,8 +659,10 @@ class Logistic extends CI_Controller{
             $tahun = $this->input->post('tahun',true);
             $bulan = $this->input->post('bulan',true);
             $data=$this->lm->total_belanja_barang($tahun,$bulan);
+            $g = $this->fm->get_grafik_belanja_barang($tahun);
+            $g = json_decode($g);
             $data = isset($data->hg)?$data->hg:0;
-            echo json_encode(['res'=>200,'val'=>$data]);
+            echo json_encode(['res'=>200,'val'=>$data,'grafik'=>$g]);
             // echo $v;
         }else{
             echo json_encode(['res'=>100]);

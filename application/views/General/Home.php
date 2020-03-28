@@ -73,7 +73,7 @@
               <div class="dashboard_graph">
                 <div class="row x_title">
                   <div class="col-md-12">
-                    <h3>Pertumbuhan perdagangan <small>Bulan Januari 2020</small></h3>
+                    <h3>Pertumbuhan perdagangan <small>Bulan <?= $nam_bulan ?> <?= $tahun ?></small></h3>
                   </div>
                   <!-- <div class="col-md-6">
                     <form id="TipForm" action="">
@@ -102,7 +102,7 @@
               <div class="dashboard_graph">
                 <div class="row x_title">
                   <div class="col-md-12">
-                    <h3>Pertumbuhan penyewaan <small>Bulan Januari 2020</small></h3>
+                    <h3>Pertumbuhan penyewaan <small>Bulan <?= $nam_bulan ?> <?= $tahun ?></small></h3>
                   </div>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12">

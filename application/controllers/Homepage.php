@@ -27,7 +27,8 @@ class Homepage extends CI_Controller{
         $data['v'] = $this->rm->get_total_penyewaan($data['Y']);
         $data['v2'] = $this->tm->get_total_penjualan($data['Y'],date('m'));
         $data['v3'] = $this->fm->get_total_bagi_hasil($data['Y']);
-
+        $data['nam_bulan'] = $this->bulan[date('m')];
+        $data['tahun'] = date('Y');
         // echo json_encode($data['v3']);
         // echo $data['v_graf'];
         if (true) {

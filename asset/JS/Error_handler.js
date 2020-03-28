@@ -1,6 +1,4 @@
-function cek_tanggal(tanggal){
 
-}
 
 $(document).ready(function() {
 

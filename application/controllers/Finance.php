@@ -306,7 +306,8 @@ class Finance extends CI_controller{
 
         if ($v['resp']) {
             $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
-            echo '200';
+            $data=$this->am->get_aset_umum('json');
+            echo json_encode(['res'=>200,'data'=>$data]);
         }
     }
 

@@ -68,7 +68,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3">Komoditas</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                        <select class="form-control" name="nama" id="komoditas" required>
+                        <select class="form-control" name="komoditas" id="komoditas" required>
                           <option value="">Pilih komoditas</option>
                           <?php foreach ($v as $key => $s) {
                             echo '<option data-s2="'.$s->st2.'" data-sk="'.$s->stk.'" data-s="'.$s->st.'" value="'.$s->id.'">'.$s->kom.'</option>';

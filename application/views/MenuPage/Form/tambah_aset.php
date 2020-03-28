@@ -80,23 +80,26 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" for="kontak">Sumber</label>
                         <div class="col-md-3 col-sm-3 col-xs-3 text-center">
-                          <input checked type="radio" name="sumber" class="sumber primary" value="Beli">
+                          <input checked type="radio" name="sumber" class="sumber primary jenis" value="Beli">
                           <label for="">Pembelian</label>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                          <input type="radio" name="sumber" class="sumber" value="Non-beli">
+                          <input type="radio" name="sumber" class="sumber jenis" value="Non-beli">
                           <label for="">Non-Pembelian</label>
                         </div>
                       </div> <br>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" >Harga</label>
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                          <input type="text" required class="form-control" name="harga"  id="harga" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
+                          <input autocomplete="off" type="text" required class="form-control" name="harga"  id="harga" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                           <span><input checked id="cut-saldo" type="checkbox" name="potong_saldo" value="Ya"> <label for="">Potong otomatis saldo</label></span>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
                           <input readonly class="form-control" id="saldo" value="Rp. <?= isset($b[0])? $b[0]->ac:0 ?>">
                           <span><label for="">Saldo saat ini</label></span>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-3" id="warning" style="display: none;">
+                          <small class="label label-danger">Nilai melebihi saldo saat ini</small>
                         </div>
                       </div>
                       <div class="form-group">

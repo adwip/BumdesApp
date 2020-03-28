@@ -81,7 +81,7 @@ class Trade extends CI_Controller{
     }
 
     function set_barang_keluar(){
-        $nama = $this->input->post('nama',TRUE);
+        $nama = $this->input->post('komoditas',TRUE);
         $n_kom = $this->input->post('n_kom',TRUE);
         $n_sat = $this->input->post('n_sat',TRUE);
         $n_mit = $this->input->post('n_mit',TRUE);

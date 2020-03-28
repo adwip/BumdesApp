@@ -150,7 +150,8 @@ class Rent extends CI_Controller{
 
         if ($v['res']) {
             $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
-            echo '200';
+            $data=$this->am->get_aset_umum('json');
+            echo json_encode(['res'=>200,'data'=>$data]);
         }
     }
     
@@ -306,7 +307,7 @@ class Rent extends CI_Controller{
         $this->PDF->Output('I','Daftar_barang_'.date('d_m_Y').'.pdf');
     }
 
-    function hapus_penyewaan(){/*
+    function hapus_penyewaan(){
         $id = $this->input->post('id',true);
         $log_mesg = '[HAPUS][PENYEWAAN]['.$id.'] Menghapus jadwal penyewaan aset';
 
@@ -318,11 +319,17 @@ class Rent extends CI_Controller{
                 $log_mesg = '[HAPUS][KEUANGAN]['.$v['id'].']['.$id.'] Menghapus transaksi dari penyewaan aset';
                 $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
             }
-            echo 200;
+            $tahun = $this->input->post('tahun',true);
+            $bulan = $this->input->post('bulan',true);
+            $v1 = null;//$this->rm->get_total_pend_sewa($tahun, $bulan);
+            $v1 = isset($v1->jl)?$v1->jl:0;
+            $g = $this->fm->get_grafik_penyewaan($tahun);
+            $g = json_decode($g);
+            echo json_encode(['res'=>200,'val'=>$v1,'grafik'=>$g]);
             // echo $v;
-        }*/
-
-        echo json_encode($_POST);
+        }else {
+            # code...
+        }
     }
 
     function hapus_aset_sewa(){

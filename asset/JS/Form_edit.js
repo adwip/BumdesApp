@@ -131,6 +131,7 @@ $(document).ready(function(){
                                 $('#gan-fot').attr('checked',false)
                                 $('#gan-fot').attr('disabled',true)
                             }
+                            $('#img-form').val(null)
                         }else{
                             swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
                         }

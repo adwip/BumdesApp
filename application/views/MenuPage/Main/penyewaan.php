@@ -108,7 +108,7 @@
           <div class="row tile_count">
             <div class="col-md-12 col-sm-12 col-xs-12 tile_stats_count">
               <span class="count_top"><h4><i class="fa fa-user"></i> Total pendapatan sewa</h4></span>
-              <div class="count text-center" id="info-distribusi"><?= isset($v->hg)?'Rp. '.$v->hg:'Rp. 0' ?></div>
+              <div class="count text-center" id="info-sewa"><?= isset($v->hg)?'Rp. '.$v->hg:'Rp. 0' ?></div>
             </div>
           </div>
         

@@ -103,7 +103,7 @@
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-3" for="kontak">Pembagian bagi hasil (%)</label>
                   <div class="col-md-3 col-sm-3 col-xs-3">
-                    <input required type="text" id="pers-bumdes" name="pers_bumdes" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
+                    <input max="100" autocomplete="off" required type="number" id="pers-bumdes" name="pers_bumdes" class="form-control rem-panah" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                     <span><label>BUMDes</label></span>
                   </div>
                   <div class="col-md-3 col-sm-3 col-xs-3">

@@ -107,8 +107,8 @@
                           <input readonly class="form-control" value="Rp. <?= isset($b[0])? $b[0]->ac:0 ?>" id="saldo">
                           <span><label for="">Saldo saat ini</label></span>
                         </div>
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                          <small class="label label-danger" id="warning" style="display: none;">Nilai melebihi saldo saat ini</small>
+                        <div class="col-md-3 col-sm-3 col-xs-3" id="warning" style="display: none;">
+                          <small class="label label-danger">Nilai melebihi saldo saat ini</small>
                         </div>
                       </div>
                       <div class="form-group">

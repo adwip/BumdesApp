@@ -6832,3 +6832,16 @@ button.close {
   }
 }
 /*# sourceMappingURL=bootstrap.css.map */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0; 
+}/*
+display: none; <- Crashes Chrome on hover
+Apparently some margin are still there even though it's hidden
+*/
+
+input[type=number] {
+  -moz-appearance: textfield;
+}

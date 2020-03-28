@@ -1,5 +1,5 @@
     <!-- Bootstrap -->
-    <link href="<?= base_url('asset') ?>/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?= base_url('asset') ?>/vendors/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="<?= base_url('asset') ?>/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
