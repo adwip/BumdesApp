@@ -40,6 +40,7 @@ $route['hapus-penyewaan'] = 'Rent/hapus_penyewaan';//=========ada view
 $route['hapus-aset-sewa'] = 'Rent/hapus_aset_sewa';//=========ada view
 $route['edit-penyewaan'] = 'Rent/edit_penyewaan';//=========ada view
 $route['gov-penyewaan'] = 'Rent/gov_penyewaan';//=========ada view
+$route['cek-jadwal'] = 'Rent/cek_penyewaan';//=========ada view
 
 //routing finansial
 $route['weekly-freport'] = 'Finance/weekly_report';//=========ada

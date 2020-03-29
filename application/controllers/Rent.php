@@ -349,4 +349,20 @@ class Rent extends CI_Controller{
         $this->load->view('MenuPage/Main/gov_penyewaan',$data);
     }
 
+    function cek_penyewaan(){
+        //'2020-03-29', '2020-04-04'
+        $id = $this->input->post('aset',true);
+        $tm = $this->input->post('tanggal',true);
+        $tm = date('Y-m-d',strtotime($tm));
+        $ts = $this->input->post('jumlah_hari');
+        $ts = date('Y-m-d',strtotime($tm.' + '.$ts.' days'));/*
+        if (!isset($_POST['tambah_trans'])) {
+            echo '2020-03-29 - 2020-04-04 <br>';
+            $data = $this->rm->cek_penyewaan('0051585410835', '2020-03-22', '2020-03-30');
+        }else{
+        }*/
+        $data = $this->rm->cek_penyewaan($id, $tm, $ts);
+        echo $data;//.'| '.$id.' | '.$tm.' - '.$ts;
+    }
+
 }

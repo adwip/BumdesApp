@@ -160,4 +160,32 @@ $(document).ready(function() {
         }
     })
 
+    //cek jadwal penyewaan
+    $('#tanggal_sewa, #jum_har, #aset').on('dp.change change',function(){
+        if ($('#aset').val()!=''&&$('#jum_har').val()!='') {
+            $.ajax({
+                url: $('#set-tambah-penyewaan').attr('data-cek'),
+                data: $('#set-tambah-penyewaan').serialize(),
+                type: 'POST',
+                dataType: 'text',
+                success:function(v){
+                    if (v>0) {
+                        $('button[type=submit]').attr('disabled',true)
+                        $('#warning').show()
+                    }else{
+                        $('button[type=submit]').attr('disabled',false)
+                        $('#warning').hide()
+                    }
+                }
+            })
+        }else{
+            $('button[type=submit]').attr('disabled',false)
+            $('#warning').hide()
+        }
+    })
+
+    // $('#tanggal_sewa').on('#dp.change, change',function(){
+    //     alert('Change')
+    // })
+
 })

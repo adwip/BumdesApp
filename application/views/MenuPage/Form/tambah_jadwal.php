@@ -63,7 +63,7 @@
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-              <form action="set-tambah-penyewaan" id="set-tambah-penyewaan" method="POST" class="form-horizontal form-label-left">
+              <form action="set-tambah-penyewaan" id="set-tambah-penyewaan" method="POST" class="form-horizontal form-label-left" data-cek="cek-jadwal">
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-3" for="">Aset disewa</label>
                   <div class="col-md-6 col-sm-6 col-xs-6">
@@ -90,8 +90,8 @@
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-3" for="tang_mul">Tanggal mulai / jumlah hari</label>
                   <div class="col-md-3 col-sm-3 col-xs-3">
-                    <div class='input-group date  tanggal_form tanggal_new'>
-                        <input  type='text' class="form-control" readonly="readonly"  id="edit_tanggal" name="tanggal" value="<?= date('d-m-Y') ?>" />
+                    <div class='input-group date  tanggal_form tanggal_new' id="tanggal_sewa">
+                        <input  type='text' class="form-control" readonly="readonly"  name="tanggal" value="<?= date('d-m-Y') ?>" />
                         <span class="input-group-addon">
                           <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -99,6 +99,9 @@
                   </div>
                   <div class="col-md-3 col-sm-3 col-xs-3">
                     <input autocomplete="off" type="text" required class="form-control" name="jumlah_hari" id="jum_har" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
+                  </div>
+                  <div class="col-md-3 col-sm-3 col-xs-3" id="warning" style="display: none;">
+                    <small class="label label-danger">Ada tabrakan jadwal sewa</small>
                   </div>
                 </div> <br>
                 <div class="form-group">
