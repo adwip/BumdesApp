@@ -88,6 +88,7 @@ $route['gov-finansial'] = 'Finance/gov_finansial';//=========ada view
 $route['edit-pbgu/(:num)'] = 'Finance/form_edit_pemb_bagi_hasil/$1';//=========ada view
 $route['edit-pemb-bgh'] = 'Finance/edit_pemb_bgh';//=========ada view
 $route['hapus-pemb-bagi-hasil'] = 'Finance/del_pemb_bgh';//=========ada view
+$route['cek-jadwal-bgh'] = 'Finance/cek_jadwal_bgh';//=========ada view
 // $route['cek-saldo'] = 'Finance/cek_saldo';
 
 
@@ -144,6 +145,7 @@ $route['ganti-password'] = 'Administrasi/ganti_password';//=================ada 
 $route['detail-user/(:num)'] = 'Administrasi/detail_user/$1';//=================ada view
 $route['gov-asset'] = 'Administrasi/gov_asset';//=================ada view
 $route['gov-kerjasama-bgh'] = 'Administrasi/gov_kerjasama_bgh';//=================ada view
+$route['registrasi-admin/(:num)'] = 'Administrasi/reg_admin/$1';//=================ada view
 // $route['add-user'] = 'Administrasi/tambah_admin';//=================ada view
 //CONCAT(year(tanggal), "/",WEEK(tanggal))
 //Routing homepage

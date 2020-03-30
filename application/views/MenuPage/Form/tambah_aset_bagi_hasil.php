@@ -63,7 +63,7 @@
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-              <form action="set-bagi-hasil" id="set-bagi-hasil" method="POST" class="form-horizontal form-label-left">
+              <form action="set-bagi-hasil" id="set-bagi-hasil" method="POST" class="form-horizontal form-label-left" data-cek="cek-jadwal-bgh">
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-3" for="mitra">Mitra</label>
                   <div class="col-md-6 col-sm-6 col-xs-6">
@@ -114,7 +114,7 @@
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-3" for="tang_mul">Tanggal mulai / lama kerja sama</label>
                   <div class="col-md-3 col-sm-3 col-xs-3">
-                    <div class='input-group date  tanggal_form tanggal_new'>
+                    <div class='input-group date  tanggal_form tanggal_new' id="tanggal-bgh">
                         <input  type='text' class="form-control" readonly="readonly"  id="edit_tanggal" name="tanggal" value="<?= date('d-m-Y') ?>" />
                         <span class="input-group-addon">
                           <span class="glyphicon glyphicon-calendar"></span>
@@ -122,10 +122,13 @@
                     </div>
                   </div>
                   <div class="col-md-2 col-sm-2 col-xs-2">
-                    <input type="number" min="12" required class="form-control" name="bulan" value="12" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
+                    <input type="number" min="12" required class="form-control" name="bulan" value="12" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" id="jum_bulan" max="100">
                   </div>
                   <div class="col-md-1 col-sm-1 col-xs-1">
                     <input readonly class="form-control" value="Bulan">
+                  </div>
+                  <div class="col-md-3 col-sm-3 col-xs-3" id="warning" style="display: none;">
+                    <small class="label label-danger">Ada tabrakan jadwal bagi hasil</small>
                   </div>
                 </div> <br>
                 <div class="col-md-12 col-sm-12 col-xs-12">

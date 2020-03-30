@@ -874,4 +874,15 @@ class Finance extends CI_controller{
         $this->load->view('MenuPage/Main/gov_finansial',$data);
         // echo json_encode($data['v2']);
     }
+
+    function cek_jadwal_bgh(){
+        $id = $this->input->post('aset',true);
+        $tm = $this->input->post('tanggal',true);
+        $tm = date('Y-m-d',strtotime($tm));
+        $ts = $this->input->post('bulan');
+        $ts = date('Y-m-d',strtotime($tm.' + '.$ts.' months'));
+
+        $data = $this->rm->cek_jadwal_bgh($id, $tm, $ts);
+        echo $data;
+    }
 }

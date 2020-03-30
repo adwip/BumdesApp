@@ -816,4 +816,16 @@ class Finance_model extends CI_Model{
         return $this->db->affected_rows();
     }
 
+    function cek_jadwal_bgh($id, $tm, $ts){
+        $this->db->from('bagi_hasil_aset');
+        $this->db->where('aset',$id);
+        $this->db->where('status_bgh <> "Batal" ');
+        $this->db->where('((tanggal_selesai >= "'.$tm.'" AND tanggal_selesai <= "'.$ts.'" )');
+        $this->db->or_where('(tanggal_mulai >= "'.$tm.'" AND tanggal_mulai <= "'.$ts.'")');
+        $this->db->or_where('(tanggal_mulai <= "'.$tm.'" AND tanggal_selesai >= "'.$ts.'")');
+        $this->db->or_where('(tanggal_mulai >= "'.$tm.'" AND tanggal_selesai <= "'.$ts.'"))');
+        $result = $this->db->get()->num_rows();
+        return $result;
+    }
+    
 }

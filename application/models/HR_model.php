@@ -17,7 +17,8 @@ class HR_model extends CI_Model{
     }
 
     function get_admin(){
-        $this->db->select('id_admin AS id, nama AS nm, kategori AS ktg, status_akt as sa, kontak AS kt, waktu_reg AS wr');
+        $this->db->select('id_admin AS id, nama AS nm, kategori AS ktg, kontak AS kt, waktu_reg AS wr');
+        // status_akt as sa,
         $this->db->from('admin');
         $this->db->where('kategori !=','SYS');
         $result = $this->db->get()->result();
@@ -99,15 +100,16 @@ class HR_model extends CI_Model{
     }
 
 
-    function set_admin_baru($nama, $kontak, $username, $kategori, $password){
+    function set_admin_baru($nama, $email, $password, $kategori, $kontak, $foto){
         $id = '008'.time();
-        $isi=['id_admin'=>$id,'nama'=>$nama,'username'=>$username,'password'=>md5($password),'kontak'=>$kontak,'kategori'=>$kategori,'status_akt'=>'Aktif', 'waktu_reg'=>date('Y-m-d H:i:s')];
+        $isi=['id_admin'=>$id,'nama'=>$nama,'email'=>$email,'password'=>$password, 'kategori'=>$kategori,'kontak'=>$kontak,'foto_user'=>$foto, 'waktu_reg'=>date('Y-m-d H:i:s') ];
         $this->db->insert('admin',$isi);
 
         $ret['id'] = $id;
-        $ret['resp'] = $this->db->affected_rows();
+        $ret['res'] = $this->db->affected_rows();
         return $ret;
     }
+
     function log_admin($id, $pesan, $tanggal, $waktu){
       $isi = ['log'=>$pesan,'admin'=>$id,'tanggal'=>$tanggal,'waktu'=>$waktu];
       $this->db->insert('log_admin',$isi);
@@ -164,6 +166,28 @@ class HR_model extends CI_Model{
         $this->db->where('username',$usn);
         $result = $this->db->get()->num_rows();
         // $this->db->
+        return $result;
+    }
+
+    function set_url_confirm($catatan){
+        $ret['id'] = '500'.time();
+        $isi = ['id'=>$ret['id'],'catatan'=>$catatan];
+        $this->db->insert('url_confirm',$isi);
+        $ret['res'] = $this->db->affected_rows();
+        return $ret;
+    }
+
+    function get_url_confirm($id){
+        $this->db->select('catatan AS nt');
+        $this->db->from('url_confirm');
+        $this->db->where('id',$id);
+        $this->db->where('status <> "1"');
+        $result = $this->db->get()->result();
+        $result = isset($result[0])?$result[0]:false;
+
+        $isi = ['status'=>1];
+        $this->db->where('id',$id);
+        $this->db->update('url_confirm',$isi);
         return $result;
     }
 

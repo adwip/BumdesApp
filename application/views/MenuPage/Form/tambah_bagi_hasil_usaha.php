@@ -67,10 +67,10 @@
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-3" for="mitra">Tahun / Jumlah bagi hasil</label>
                   <div class="col-md-3 col-sm-3 col-xs-3">
-                    <input autocomplete="off" type="text" placeholder="Masukkan tahun" class="form-control" name="tahun">
+                    <input autocomplete="off" type="text" placeholder="Masukkan tahun" class="form-control" name="tahun" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                   </div>
                   <div class="col-md-3 col-sm-3 col-xs-3">
-                    <input type="text" class="form-control" name="nilai" id="nilai-dividen" placeholder="Masukkan jumlah bagi hasil">
+                    <input type="text" class="form-control" name="nilai" id="nilai-dividen" placeholder="Masukkan jumlah bagi hasil" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                     <!-- <span><input <?= isset($v->idf)?'checked':null; ?> type="checkbox" id="cut-saldo" name="potong_saldo" value="Ya"> <label for="">Potong otomatis saldo</label></span> -->
                   </div>
                 </div><br>
@@ -94,7 +94,7 @@
                                 <label>Penerima</label>
                             </td>
                             <td class="col-md-1 col-sm-1 col-xs-1 last-child">
-                                <input autocomplete="off" required type="text" class="form-control jumlah-div" name="jumlah[]">
+                                <input autocomplete="off" required type="text" class="form-control jumlah-div" name="jumlah[]" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                                 <label>Jumlah (%)</label>
                             </td>
                         </tr>

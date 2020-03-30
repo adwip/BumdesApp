@@ -208,18 +208,32 @@ class Administrasi extends CI_Controller{
 
     function set_admin_baru(){
         $nama = $this->input->post('nama',true);
-        $kontak = $this->input->post('kontak',true);
         $kat = $this->input->post('kategori',true);
         $kat2 = $kat=='MNG'?'Manajemen BUMDes':'Pemerintah desa';
-        $usern = $this->input->post('username',true);
-        $password = $this->input->post('password',true);
+        $email = $this->input->post('email',true);
+        $this->load->library('email');
+        $from = $this->config->item('smtp_user');
+        
+        $v=$this->hr->set_url_confirm($email);
+        $log_mesg = '[TAMBAH][ADMIN]['.$v['id'].'] Registrasi admin baru bernama '.$nama.' dari '.$kat2;
 
-        $v=$this->hr->set_admin_baru($nama, $kontak, $usern, $kat, $password);
-        $log_mesg = '[TAMBAH][ADMIN]['.$v['id'].'] Penambahan admin bernama '.$nama.' dari '.$kat2;
-
-        if ($v['resp']) {
+        if ($v['res']) {
             $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
-            echo '200';
+
+            $subject = 'Registrasi admin baru';
+            $message = 'Silahkan klik <a href="'.site_url('registrasi-admin/'.$v['id']).'" target="_blank">tautan</a> ini untuk melanjutkan proses registrasi admin bernama '.$nama;
+    
+            $this->email->set_newline("\r\n");
+            $this->email->from($from);
+            $this->email->to($email);
+            $this->email->subject($subject);
+            $this->email->message($message);
+            
+            if ($this->email->send()) {
+                echo 'Your Email has successfully been sent.';
+            } else {
+                show_error($this->email->print_debugger());
+            }
         }
     }
 
@@ -502,7 +516,6 @@ class Administrasi extends CI_Controller{
         }
     }
 
-
     function hapus_aset(){
         $id = $this->input->post('id',true);
         $nm = $this->input->post('nm',true);
@@ -639,7 +652,6 @@ class Administrasi extends CI_Controller{
         }
     }
 
-    
     function gov_asset(){
         $data['page']=$this->page;
         $data['title'] = 'Pencatatan penjualan';
@@ -649,7 +661,6 @@ class Administrasi extends CI_Controller{
         $data['v3'] = $this->am->get_aset_bagi_hasil('json');
         $this->load->view('MenuPage/Main/gov_asset',$data);
     }
-    
     
     function gov_kerjasama_bgh(){
         $data['page']=$this->page;
@@ -664,6 +675,15 @@ class Administrasi extends CI_Controller{
         $v = $this->hr->cek_username($usn);
 
         echo $v;
+    }
+
+    function reg_admin($id){
+        $data['page']=$this->page;
+        $data['title'] = 'Registrasi admin baru';
+        // $data['v'] = $this->am->get_edit_mitra($id);
+        // $data['v'] = $this->hr->get_reg_admin();
+        $this->load->view('General/registrasi_admin',$data);
+        // redirect(base_url());
     }
 
 }

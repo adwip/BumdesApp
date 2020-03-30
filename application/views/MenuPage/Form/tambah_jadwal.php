@@ -97,8 +97,11 @@
                         </span>
                     </div>
                   </div>
-                  <div class="col-md-3 col-sm-3 col-xs-3">
+                  <div class="col-md-2 col-sm-2 col-xs-2">
                     <input autocomplete="off" type="text" required class="form-control" name="jumlah_hari" id="jum_har" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
+                  </div>
+                  <div class="col-md-1 col-sm-1 col-xs-1">
+                    <input readonly value="hari" class="form-control">
                   </div>
                   <div class="col-md-3 col-sm-3 col-xs-3" id="warning" style="display: none;">
                     <small class="label label-danger">Ada tabrakan jadwal sewa</small>

@@ -20,7 +20,7 @@ $(document).ready(function() {
     })
     
 
-    $('#harga, #cut-saldo, .jenis').change(function(){
+    $('#harga, #cut-saldo, .jenis').on('change keyup',function(){
         const harga = parseInt($('#harga').val())
         const saldo = parseInt($('#saldo').val().replace('Rp. ','').replace(',','').replace(',',''))
         const jenis = $('.jenis:checked').val()
@@ -51,7 +51,7 @@ $(document).ready(function() {
     })
 
     
-    $('#jumlah, #komoditas').change(function(){
+    $('#jumlah, #komoditas').on('change keyup',function(){
         const jumlah = parseFloat($('#jumlah').val())
         const stok = parseFloat($('#stok').val())
         if (jumlah>stok) {
@@ -66,7 +66,7 @@ $(document).ready(function() {
     })
 
     // Tambah jadwal sewa aset
-    $('#aset, #jum_har').change(function(){
+    $('#aset, #jum_har').on('change keyup',function(){
         // alert('Change')
         const harga = $('option:selected','#aset').attr('data-hg')
         if (harga!='') {
@@ -121,20 +121,22 @@ $(document).ready(function() {
     })
 
     // Catatan keuangan
-    $('#jumlah-kas, .kas').change(function(){
+    $('#jumlah-kas, .kas').on('change keyup',function(){
         const harga = parseInt($('#jumlah-kas').val())
         const saldo = parseInt($('#saldo').val().replace('Rp. ','').replace(',','').replace(',',''))
         const jenis = $('.kas:checked').val()
         // alert(jenis)
         if (harga>saldo&&jenis=='OUT') {
             $('button[type=submit]').attr('disabled',true)
+            $('#warning').show()
         }else{
             $('button[type=submit]').attr('disabled',false)
+            $('#warning').hide()
         }
     })
 
     // Penerimaan bagi hasil
-    $('#plh-kjs, #nominal').change(function(){
+    $('#plh-kjs, #nominal').on('change keyup',function(){
         const b = $('option:selected','#plh-kjs').attr('data-b')
         const m = $('option:selected','#plh-kjs').attr('data-m')
         const n = $('#nominal').val()
@@ -161,11 +163,35 @@ $(document).ready(function() {
     })
 
     //cek jadwal penyewaan
-    $('#tanggal_sewa, #jum_har, #aset').on('dp.change change',function(){
+    $('#tanggal_sewa, #jum_har, #aset').on('dp.change change keyup',function(){
         if ($('#aset').val()!=''&&$('#jum_har').val()!='') {
             $.ajax({
                 url: $('#set-tambah-penyewaan').attr('data-cek'),
                 data: $('#set-tambah-penyewaan').serialize(),
+                type: 'POST',
+                dataType: 'text',
+                success:function(v){
+                    if (v>0) {
+                        $('button[type=submit]').attr('disabled',true)
+                        $('#warning').show()
+                    }else{
+                        $('button[type=submit]').attr('disabled',false)
+                        $('#warning').hide()
+                    }
+                }
+            })
+        }else{
+            $('button[type=submit]').attr('disabled',false)
+            $('#warning').hide()
+        }
+    })
+
+    //cek jadwal bagi hasil
+    $('#tanggal-bgh, #jum_bulan, #inter_aset, .s-aset').on('dp.change change keyup',function(){
+        if ($('#aset').val()!=''&&$('#jum_bulan').val()!=''&&$('#primary').is(':checked')) {
+            $.ajax({
+                url: $('#set-bagi-hasil').attr('data-cek'),
+                data: $('#set-bagi-hasil').serialize(),
                 type: 'POST',
                 dataType: 'text',
                 success:function(v){

@@ -51,8 +51,8 @@ class Homepage extends CI_Controller{
     function send() {
         // $this->load->config('email');
         $this->load->library('email');
-        
         $from = $this->config->item('smtp_user');
+        
         $to = 'prabowoa63@gmail.com';//$this->input->post('to');
         $subject = 'Ganti password '.time();//$this->input->post('subject');
         $message = "";//$this->input->post('message');
@@ -70,5 +70,10 @@ class Homepage extends CI_Controller{
         }
 
         // echo json_encode($this->config->item());
+    }
+
+    function general_req($id){
+        $data = $this->hr->get_url_conf($id);
+        redirect(site_url());
     }
 }
