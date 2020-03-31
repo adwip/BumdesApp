@@ -89,7 +89,8 @@ $(document).ready(function(){
                     data: $(this).serialize(),
                     dataType: 'json',
                     success: function(v){
-                        if (v==200) {
+                        if (v['res']==200) {
+                            $('#satuan').html(v['v'])
                             reset_form()
                             swal({text:"Berhasil menambahkan",buttons: false,timer:3000,icon:"success"})
                         }else{
@@ -299,6 +300,34 @@ $(document).ready(function(){
         })
     })
 
+    $('#registrasi-admin').submit(function(e){
+        const data = new FormData(this);
+        data.append('sub','Ok')
+        e.preventDefault()
+        swal({title:"Lanjutkan menyimpan ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {
+            if (Ok) {
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: data,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function(v){/*
+                        v = v.split('|')
+                        if (v[0]==200) {
+                            $('#saldo').val('Rp. '+v[1])
+                            reset_form()
+                            $('#gam_file').val(null)
+                            swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
+                        }else{
+                            swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
+                        }*/
+                    }
+                })
+            }
+        })
+    })
     $('#set-bagi-dividen').submit(function(e){
         e.preventDefault()
         swal({title:"Lanjutkan menyimpan ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {

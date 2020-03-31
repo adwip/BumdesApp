@@ -77,19 +77,19 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" for="kontak">Tujuan</label>
                         <div class="col-md-3 col-sm-3 col-xs-3 text-center">
-                          <input class="tujuan" <?= isset($v->id)? !waktu_data($v->id)?'disabled':null:null ?> <?= isset($v->tj)? $v->tj=='Distribusi'?'checked':null :'Checked disabled' ?>  type="radio" name="tujuan" value="Distribusi">
+                          <input class="tujuan" <?= isset($v->tj)? $v->tj=='Distribusi'?'checked':null :'Checked disabled' ?>  type="radio" name="tujuan" value="Distribusi">
                           <label for="">Distribusi</label>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                          <input class="tujuan" <?= isset($v->id)? !waktu_data($v->id)?'disabled':null:null ?> <?= isset($v->tj)? $v->tj!='Distribusi'?'checked':null :'disabled' ?> type="radio" name="tujuan" value="Non-distribusi">
+                          <input class="tujuan" <?= isset($v->tj)? $v->tj!='Distribusi'?'checked':null :'disabled' ?> type="radio" name="tujuan" value="Non-distribusi">
                           <label for="">Non-distribusi</label>
                         </div>
                       </div> <br>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" >Tujuan distribusi</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                          <select id="mitra" <?= isset($v->id)? !waktu_data($v->id)?'disabled':null:null ?> <?= isset($v->id)?null:'disabled' ?> class="form-control" name="mitra" required>
-                            <option value="">Tidak ada</option>
+                          <select id="mitra" <?= isset($v->id)?$v->tj!='Distribusi'?'disabled':null:null ?> class="form-control" name="mitra" required>
+                            <option value="">Pilih tujuan distribusi</option>
                             <?php 
                             foreach ($v2 as $key => $vl) {
                               $vl->id==$v->nm?$sel='selected':$sel=null;
@@ -102,7 +102,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" >Jumlah</label>
                         <div class="col-md-5 col-sm-5 col-xs-5">
-                          <input <?= isset($v->id)? !waktu_data($v->id)?'disabled':null:null ?> <?= isset($v->id)?null:'disabled' ?> type="text" required class="form-control" name="jumlah" id="tang_mul" value="<?= isset($v->jl)?$v->jl:'0' ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
+                          <input <?= isset($v->id)?null:'disabled' ?> type="text" required class="form-control" name="jumlah" id="tang_mul" value="<?= isset($v->jl)?$v->jl:'0' ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                         </div>
                         <div class="col-md-1 col-sm-1 col-xs-1">
                           <input type="text" name="satuan" readonly class="form-control" id="tang_mul" value="<?= isset($v->st)?$v->st:'-' ?>">
@@ -111,16 +111,16 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" >Nilai</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                          <input name="nilai" <?= isset($v->id)? !waktu_data($v->id)?'disabled':null:null ?> type="text" class="form-control" value="<?= isset($v->hg)?$v->hg:'0' ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
+                          <input name="nilai" type="text" class="form-control" value="<?= isset($v->hg)?$v->hg:'0' ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                           <!--========================================================-->
-                          <span><input <?= isset($v->idf)?waktu_data($v->id)?'checked':'disabled':null ?> type="checkbox" name="potong_saldo" value="Ya"> <label for="">Catat ke keuangan</label></span>
+                          <span><input <?= isset($v->idf)?'checked':null ?> type="checkbox" name="potong_saldo" value="Ya"> <label for="">Catat ke keuangan</label></span>
                         </div>
                       </div><br>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" >Tanggal</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
                           <div class='input-group date  tanggal_form tanggal_edit'>
-                            <input id='tanggal_edit' <?= isset($v->id)? !waktu_data($v->id)?'disabled':null:null ?> readonly <?= isset($v->id)?null:'disabled' ?> type="text" required class="form-control" name="tanggal" value="<?= isset($v->dt)?date('d-m-Y',strtotime($v->dt)):'-' ?>">
+                            <input id='tanggal_edit' readonly <?= !isset($v->id)?'disabled':'data-tl="'.konv_waktu($v->id).'"' ?> type="text" class="form-control" name="tanggal" value="<?= isset($v->dt)?date('d-m-Y',strtotime($v->dt)):'-' ?>">
                             <span class="input-group-addon">
                               <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -130,7 +130,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" >Catatan</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                          <textarea <?= isset($v->id)? !waktu_data($v->id)?'disabled':null:null ?> name="catatan" class="form-control" name="catatan" id="" cols="30" rows="10" style="resize:none;"><?= isset($v->ct)?$v->ct:null ?></textarea>
+                          <textarea name="catatan" class="form-control" name="catatan" id="" cols="30" rows="10" style="resize:none;"><?= isset($v->ct)?$v->ct:null ?></textarea>
                         </div>
                       </div> <br>
                       

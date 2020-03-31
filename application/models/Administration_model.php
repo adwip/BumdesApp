@@ -24,7 +24,7 @@ class Administration_model extends CI_Model{
                         <td>'.$v->st.'</td>
                         <td>'.$v->ket.'</td>
                         <td>
-                          <button type="button" class="btn btn-xs btn-warning">Ubah</button>
+                          <button type="button" class="btn btn-xs btn-warning ubah-sat" value="'.$v->id.'">Ubah</button>
                          '.$btn.' 
                         </td>
                       </tr>';
@@ -311,6 +311,13 @@ class Administration_model extends CI_Model{
 
     function set_satuan($sat, $ks){
       $this->db->insert('satuan',['satuan'=>$sat,'ket_satuan'=>$ks]);
+      return $this->db->affected_rows();
+    }
+
+    function edit_satuan($id, $sat, $ket){
+      $isi = ['satuan'=>$sat,'ket_satuan'=>$ket];
+      $this->db->where('id',$id);
+      $this->db->update('satuan',$isi);
       return $this->db->affected_rows();
     }
 

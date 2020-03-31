@@ -99,10 +99,9 @@ class HR_model extends CI_Model{
         return $result1;
     }
 
-
     function set_admin_baru($nama, $email, $password, $kategori, $kontak, $foto){
         $id = '008'.time();
-        $isi=['id_admin'=>$id,'nama'=>$nama,'email'=>$email,'password'=>$password, 'kategori'=>$kategori,'kontak'=>$kontak,'foto_user'=>$foto, 'waktu_reg'=>date('Y-m-d H:i:s') ];
+        $isi=['id_admin'=>$id,'nama'=>$nama,'email'=>$email,'password'=>md5($password), 'kategori'=>$kategori,'kontak'=>$kontak,'foto_user'=>$foto, 'waktu_reg'=>date('Y-m-d H:i:s') ];
         $this->db->insert('admin',$isi);
 
         $ret['id'] = $id;
@@ -181,14 +180,17 @@ class HR_model extends CI_Model{
         $this->db->select('catatan AS nt');
         $this->db->from('url_confirm');
         $this->db->where('id',$id);
-        $this->db->where('status <> "1"');
+        $this->db->where('status IS NULL');
         $result = $this->db->get()->result();
         $result = isset($result[0])?$result[0]:false;
+        
+        return $result;
+    }
 
+    function set_r_url_confirm($id){
         $isi = ['status'=>1];
         $this->db->where('id',$id);
         $this->db->update('url_confirm',$isi);
-        return $result;
     }
 
     function login($email,$password){

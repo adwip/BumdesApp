@@ -61,21 +61,23 @@ class Trade_model extends CI_Model{
         $this->db->join('rekap_keuangan','foreg_id='.$id,'LEFT');
         $this->db->where('id_stok',$id);
         $result = $this->db->get()->result();
-        isset($result[0])?$result[0]=$result[0]:$result[0]=null;
-        return $result[0];
+        $result = isset($result[0])&&waktu_data($id)?$result[0]:null;
+        return $result;
     }
 
     function edit_stok_keluar($id,$jl, $tg, $jn, $ct, $mitra, $nilai_trans){
-        $resp=0;
-        $isi = ['jumlah'=>$jl,'tanggal'=>$tg];
-        $this->db->where('id_stok',$id);
-        $this->db->update('stok_item',$isi);
-        $resp = $this->db->affected_rows();
-        
-        $isi = ['tujuan'=>$jn,'catatan'=>$ct, 'mitra'=>$mitra, 'nilai_transaksi'=>$nilai_trans];
-        $this->db->where('id_prb',$id);
-        $this->db->update('stok_keluar',$isi);
-        $resp += $this->db->affected_rows();
+        $resp=false;
+        if (waktu_data($id)) {
+            $isi = ['jumlah'=>$jl,'tanggal'=>$tg];
+            $this->db->where('id_stok',$id);
+            $this->db->update('stok_item',$isi);
+            $resp = $this->db->affected_rows();
+            
+            $isi = ['tujuan'=>$jn,'catatan'=>$ct, 'mitra'=>$mitra, 'nilai_transaksi'=>$nilai_trans];
+            $this->db->where('id_prb',$id);
+            $this->db->update('stok_keluar',$isi);
+            $resp += $this->db->affected_rows();
+        }
         return $resp;
     }
 

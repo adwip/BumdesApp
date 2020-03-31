@@ -69,6 +69,7 @@
                 <div class="col-md-12">
                   <a href="unduh-daftar-komoditas"class="btn btn-md btn-warning" target="_blank">Unduh daftar komoditas</a>
                   <a href="add-commodites" class="btn btn-md btn-primary">Tambah komoditas</a>
+                  <a href="add-commodites" class="btn btn-md btn-info">Tambah satuan ukur</a>
                 </div>
               </div>
             </div>
@@ -118,7 +119,7 @@
                   </tr>
                 </thead>
 
-                  <tbody data-act="hapus-satuan" data-meth="POST">
+                  <tbody data-act="hapus-satuan" data-meth="POST" id="satuan">
                   <?= $sat ?>
                   </tbody>
               </table>
@@ -145,7 +146,7 @@
                     <div class="form-group">
                       <label class="control-label col-md-3 col-sm-3 col-xs-3">Keterangan</label>
                       <div class="col-md-9 col-sm-9 col-xs-9">
-                        <input type="text" required class="form-control" name="ket_aset">
+                        <input type="text" required class="form-control" name="ket_sat">
                       </div>
                     </div><br>
                     <div class="form-group">
@@ -166,23 +167,24 @@
                   <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                  <form action="tambah-satuan" method="POST" class="form-horizontal form-label-left"><br>
+                  <form id="edit-satuan" action="edit-satuan" method="POST" class="form-horizontal form-label-left"><br>
                     <div class="form-group">
                       <label class="control-label col-md-3 col-sm-3 col-xs-3">Satuan</label>
                       <div class="col-md-9 col-sm-9 col-xs-9">
-                        <input type="text" required class="form-control" name="nama_aset">
+                        <input type="text" required class="form-control" name="sat" id="edit_sat">
+                        <input type="hidden" name="id" id="id_sat">
                       </div>
                     </div><br>
                     <div class="form-group">
                       <label class="control-label col-md-3 col-sm-3 col-xs-3">Keterangan</label>
                       <div class="col-md-9 col-sm-9 col-xs-9">
-                        <input type="text" required class="form-control" name="nama_aset">
+                        <input type="text" class="form-control" name="ket" id="edit_ket">
                       </div>
                     </div><br>
                     <div class="form-group">
                       <div class="col-md-12 col-sm-12 col-xs-12">
-                        <button type="submit" class="btn btn-md btn-primary">Simpan</button>
-                        <button onclick="$(this).closest('.cls-but').hide()" type="button" class="btn btn-md btn-danger">Batal</button>
+                        <button type="submit" class="btn btn-xs btn-primary">Simpan</button>
+                        <button onclick="$(this).closest('.cls-but').hide()" type="button" class="btn btn-xs btn-danger">Batal</button>
                       </div>
                     </div>
                   </form>
@@ -209,6 +211,8 @@
     
     <script src="<?= base_url('asset') ?>/JS/Highchart.js"></script>
     <script src="<?= base_url('asset/JS/Form_hapus.js') ?>"></script>
+    <script src="<?= base_url('asset/JS/Form.js') ?>"></script>
+    <script src="<?= base_url('asset/JS/Form_edit.js') ?>"></script>
     <script src="<?= base_url('asset/JS/Fitur.js') ?>"></script>
     <!-- Datatables -->
     <script src="<?= base_url('asset') ?>/vendors/datatables.net/js/jquery.dataTables.js"></script>

@@ -77,19 +77,19 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" for="kontak">Sumber</label>
                         <div class="col-md-3 col-sm-3 col-xs-3 text-center">
-                          <input class="jenis" <?= isset($v->id)? !waktu_data($v->id)?'disabled':null:null ?> <?= isset($v->bl)? $v->bl=='Beli'?'checked':null :'Checked' ?> type="radio" name="sumber" value="Beli">
+                          <input class="jenis" <?= isset($v->bl)? $v->bl=='Beli'?'checked':null :'Checked' ?> type="radio" name="sumber" value="Beli">
                           <label for="">Pembelian</label>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                          <input class="jenis" <?= isset($v->id)? !waktu_data($v->id)?'disabled':null:null ?> <?= isset($v->bl)? $v->bl!='Beli'?'checked':null :null ?> type="radio" name="sumber" value="Non-beli">
+                          <input class="jenis" <?= isset($v->bl)? $v->bl!='Beli'?'checked':null :null ?> type="radio" name="sumber" value="Non-beli">
                           <label for="">Non-pembelian</label>
                         </div>
                       </div> <br>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" >Tanggal</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                          <div class='input-group date  tanggal_form tanggal_edit'>
-                              <input id='tanggal_edit' readonly="readonly" <?= isset($v->id)? !waktu_data($v->id)?'disabled':null:null ?> type="text" required class="form-control" name="tanggal"  value="<?= isset($v->dt)?date('d-m-Y',strtotime($v->dt)):'-' ?>">
+                          <div class='input-group date tanggal_form tanggal_edit'>
+                              <input id='tanggal_edit' readonly <?= !isset($v->id)?'disabled':'data-tl="'.konv_waktu($v->id).'"' ?> type="text" class="form-control" name="tanggal"  value="<?= isset($v->dt)?date('d-m-Y',strtotime($v->dt)):'-' ?>">
                               <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                               </span>
@@ -99,7 +99,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" >Jumlah</label>
                         <div class="col-md-5 col-sm-5 col-xs-5">
-                          <input <?= isset($v->id)? !waktu_data($v->id)?'disabled':null:null ?> type="text" required class="form-control" name="jumlah" value="<?= isset($v->jl)?$v->jl:'0' ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
+                          <input type="text" required class="form-control" name="jumlah" value="<?= isset($v->jl)?$v->jl:0 ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                         </div>
                         <div class="col-md-1 col-sm-1 col-xs-1">
                           <input type="text" name="satuan" readonly class="form-control"  value="<?= isset($v->st)?$v->st:'-' ?>">
@@ -108,9 +108,9 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" >Harga</label>
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                          <input id="harga" name="harga" required <?= isset($v->id)? !waktu_data($v->id)?'disabled':null:null ?> type="text" class="form-control"  value="<?= isset($v->hg)?$v->hg:'0' ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
+                          <input  <?= isset($v->bl)? $v->bl!='Beli'?'disabled':null :null ?> id="harga" name="harga" required <?= isset($v->id)? !waktu_data($v->id)?'disabled':null:null ?> type="text" class="form-control"  value="<?= isset($v->hg)?$v->hg:null ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                           <!--========================================================-->
-                          <span><input <?= isset($v->idf)?waktu_data($v->id)?'checked':'disabled':null ?> type="checkbox" id="cut-saldo" name="potong_saldo" value="Ya"> <label for="">Catat ke keuangan</label></span>
+                          <span><input <?= isset($v->bl)? $v->bl!='Beli'?'disabled':$v->idf?'checked':null :null ?> type="checkbox" id="cut-saldo" name="potong_saldo" value="Ya"> <label for="">Catat ke keuangan</label></span>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
                           <input readonly class="form-control" value="Rp. <?= isset($b[0])? $b[0]->ac:0 ?>" id="saldo">

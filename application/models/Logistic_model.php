@@ -239,8 +239,8 @@ class Logistic_model extends CI_Model{
         $this->db->join('rekap_keuangan','foreg_id='.$id,'LEFT');
         $this->db->where('id_stok',$id);
         $result = $this->db->get()->result();
-        isset($result[0])?$result[0]=$result[0]:$result[0]=null;
-        return $result[0];
+        $result = isset($result[0])&&waktu_data($id)?$result[0]:null;
+        return $result;
     }
 
     function get_detail_log_masuk($id){
@@ -276,17 +276,18 @@ class Logistic_model extends CI_Model{
     }
 
     function edit_stok_masuk($id, $jumlah, $harga, $tanggal, $jenis, $catatan){
-        $ar=0;
-        $isi = ['jumlah'=>$jumlah,'tanggal'=>$tanggal];
-        $this->db->where('id_stok',$id);
-        $this->db->update('stok_item',$isi);
-        $ar = $this->db->affected_rows();
-        
-        $isi = ['asal'=>$jenis,'catatan'=>$catatan, 'nilai'=>$harga];
-        $this->db->where('id_prb',$id);
-        $this->db->update('stok_masuk',$isi);
-        $ar += $this->db->affected_rows();
-        
+        $ar=false;
+        if (waktu_data($id)) {
+            $isi = ['jumlah'=>$jumlah,'tanggal'=>$tanggal];
+            $this->db->where('id_stok',$id);
+            $this->db->update('stok_item',$isi);
+            $ar = $this->db->affected_rows();
+            
+            $isi = ['asal'=>$jenis,'catatan'=>$catatan, 'nilai'=>$harga];
+            $this->db->where('id_prb',$id);
+            $this->db->update('stok_masuk',$isi);
+            $ar += $this->db->affected_rows();
+        }
         return $ar;
     }
 

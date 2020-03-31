@@ -118,6 +118,16 @@ class Trade extends CI_Controller{
         // echo json_encode($_POST);
     }
 
+    function form_edit_barang_keluar_gudang($id){//=============ada view
+        $data['page']=$this->page;
+        $data['title'] = '';
+        $data['tanggal'] = date('d/m/Y');
+        $data['v'] = $this->tm->get_edit_stok_keluar($id);
+        $data['v2'] = $this->am->get_rekanan('JSON');
+        // echo json_encode($data['v']);
+        $this->load->view('MenuPage/Form/edit_barang_keluar_gudang',$data);
+    }
+
     function edit_barang_keluar(){
         $n_kom = $this->input->post('nama',TRUE);
         $id = $this->input->post('id',TRUE);
@@ -163,8 +173,8 @@ class Trade extends CI_Controller{
             }
         }else {//perubahan data keuangan
             $v = $this->fm->del_keuangan($id);
-            $log_mesg='[HAPUS][KEUANGAN][STOK KELUAR]['.$id.'] Menghapus data keuangan dari penjualan '.$n_kom.' sebanyak '.$jl.' '.$st;
-            if ($v) {//log delete kas
+            $log_mesg='[HAPUS][KEUANGAN][STOK KELUAR]['.$id.']['.$id.'] Menghapus data keuangan dari penjualan '.$n_kom.' sebanyak '.$jl.' '.$st;
+            if ($v['res']) {//log delete kas
                 $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
                 $resp=true;
             }

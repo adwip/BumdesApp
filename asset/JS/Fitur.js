@@ -123,6 +123,19 @@ $(document).ready(function(){
       $('#form-edit-sat').hide()
       $('#form-tambah-sat').show()
     })
+
+    $('#satuan').on('click','.ubah-sat',function(){
+
+      const id = $(this).val()
+      const sat = $(this).closest('tr').find('td:nth-child(2)').html()
+      const ket = $(this).closest('tr').find('td:nth-child(3)').html()
+      // alert(sat)
+      $('#id_sat').val(id)
+      $('#edit_sat').val(sat)
+      $('#edit_ket').val(ket)
+      $('#form-tambah-sat').hide()
+      $('#form-edit-sat').show()
+    })
     /*==============================Edit aset===============================*/
     $('#gan-fot').change(function(){
       if ($(this).is(":checked")) {

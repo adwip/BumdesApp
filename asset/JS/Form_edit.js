@@ -245,4 +245,27 @@ $(document).ready(function(){
             }
         })
     })
+
+    $('#edit-satuan').submit(function(e){
+        e.preventDefault()
+        swal({title:"Lanjutkan menambah ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {
+            if (Ok) {
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(v){
+                        if (v['res']==200) {
+                            $('#satuan').html(v['v'])
+                            $('#form-edit-sat').hide()
+                            swal({text:"Berhasil menambahkan",buttons: false,timer:3000,icon:"success"})
+                        }else{
+                            swal({text:"Gagal menambahkan",buttons: false,timer:3000,icon:"error"})
+                        }
+                    }
+                })
+            }
+        })
+    })
 })

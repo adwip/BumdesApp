@@ -214,13 +214,13 @@ class Administrasi extends CI_Controller{
         $this->load->library('email');
         $from = $this->config->item('smtp_user');
         
-        $v=$this->hr->set_url_confirm($email);
+        $v=$this->hr->set_url_confirm($nama.'|'.$email.'|'.$kat2.'|'.$kat);
         $log_mesg = '[TAMBAH][ADMIN]['.$v['id'].'] Registrasi admin baru bernama '.$nama.' dari '.$kat2;
 
         if ($v['res']) {
             $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
 
-            $subject = 'Registrasi admin baru';
+            $subject = 'Registrasi admin baru sistem manajemen BUMDes Indrakila Jaya '.date('d-m-Y');
             $message = 'Silahkan klik <a href="'.site_url('registrasi-admin/'.$v['id']).'" target="_blank">tautan</a> ini untuk melanjutkan proses registrasi admin bernama '.$nama;
     
             $this->email->set_newline("\r\n");
@@ -228,12 +228,9 @@ class Administrasi extends CI_Controller{
             $this->email->to($email);
             $this->email->subject($subject);
             $this->email->message($message);
-            
-            if ($this->email->send()) {
-                echo 'Your Email has successfully been sent.';
-            } else {
-                show_error($this->email->print_debugger());
-            }
+            $this->email->send();
+            // show_error($this->email->print_debugger());
+            echo 200;
         }
     }
 
@@ -564,10 +561,24 @@ class Administrasi extends CI_Controller{
         $log_mesg = '[TAMBAH][SATUAN] Menambah '.$sat.' ke daam daftar satuan produk dagang';
         if ($v) {
             $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
-            echo 200;
+            $v = $this->am->get_satuan();
+            echo json_encode(['res'=>200,'v'=>$v]);
         }
     }
 
+    function edit_satuan(){
+        $id = $this->input->post('id',true);
+        $sat = $this->input->post('sat',true);
+        $ket_sat = $this->input->post('ket',true);
+
+        $v = $this->am->edit_satuan($id, $sat, $ket_sat);
+        $log_mesg = '[UBAH][SATUAN] Mengubah '.$sat.' di dalam daftar satuan produk dagang';
+        if ($v) {
+            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $v = $this->am->get_satuan();
+            echo json_encode(['res'=>200,'v'=>$v]);
+        }
+    }
     function ubah_profil(){//=============ada view
         $data['page']=$this->page;
         $data['title'] = 'Ubah informasi admin ';
@@ -677,13 +688,5 @@ class Administrasi extends CI_Controller{
         echo $v;
     }
 
-    function reg_admin($id){
-        $data['page']=$this->page;
-        $data['title'] = 'Registrasi admin baru';
-        // $data['v'] = $this->am->get_edit_mitra($id);
-        // $data['v'] = $this->hr->get_reg_admin();
-        $this->load->view('General/registrasi_admin',$data);
-        // redirect(base_url());
-    }
 
 }

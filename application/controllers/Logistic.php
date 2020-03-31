@@ -123,15 +123,6 @@ class Logistic extends CI_Controller{
         $this->load->view('MenuPage/Form/edit_barang_masuk_gudang',$data);
     }
 
-    function edit_barang_keluar_gudang($id){//=============ada view
-        $data['page']=$this->page;
-        $data['title'] = '';
-        $data['tanggal'] = date('d/m/Y');
-        $data['v'] = $this->tm->get_edit_stok_keluar($id);
-        $data['v2'] = $this->am->get_rekanan('JSON');
-        // echo json_encode($data['v']);
-        $this->load->view('MenuPage/Form/edit_barang_keluar_gudang',$data);
-    }
     
     function form_edit_komoditas_gudang($id){//=============ada view
         $data['page']=$this->page;
@@ -563,14 +554,7 @@ class Logistic extends CI_Controller{
                 if ($v) {//log delete kas
                     $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
                 }
-            }/*else if ($jn=='Beli') {
-                $ket_kas ='Pembelian logistik dagang '.$n_kom.' sebanyak '.$jl.' '.$sat;
-                $v=$this->fm->edit_arus_kas($id, $hg, 'Kredit', $tg, $ket_kas);
-                if ($v) {//log edit kas
-                    $log_mesg = '[EDIT][KEUANGAN][STOK MASUK]['.$id.'] Perubahan catatan keuangan untuk pembelian '.$n_kom.' sebanyak '.$jl.' '.$sat;
-                    $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
-                }
-            }*/
+            }
             $resp =true;
         }
 

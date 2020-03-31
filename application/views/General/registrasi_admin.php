@@ -30,35 +30,35 @@
         </div>
       </div>
       <div class="main_container">
-        <form method="POST" action="<?= site_url('registrasi') ?>"  class="form-horizontal form-label-left tex-center">
+        <form method="POST" class="form-horizontal form-label-left tex-center" id="registrasi-admin">
             <div class="form-group text-center">
                 <h2>Registrasi admin baru</h2>
             </div>
             <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-3" for="">Nama / Email</label>
                 <div class="col-md-3 col-sm-3 col-xs-3">
-                    <input type="text" required readonly class="form-control" name="nama" autocomplete="off">
+                    <input type="text" readonly class="form-control" name="nama" value="<?= $v[0] ?>">
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-3">
-                    <input type="text" required readonly class="form-control" name="nama" autocomplete="off">
+                    <input type="text" readonly class="form-control" value="<?= $v[1] ?>">
                 </div>
             </div> <br>
             <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-3">Kontak / Kategori</label>
                 <div class="col-md-3 col-sm-3 col-xs-3">
-                    <input type="text" required class="form-control" name="email" onkeypress="return (event.charCode !=32)" autocomplete="off" id="username">
+                    <input type="text" required class="form-control" name="kontak" onkeypress="return (event.charCode !=32)" autocomplete="off">
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-3">
-                    <input type="text" readonly required class="form-control" name="email" onkeypress="return (event.charCode !=32)" autocomplete="off" id="username">
+                    <input type="text" readonly class="form-control" name="kat" value="<?= $v[2] ?>">
                 </div>
             </div> <br>
             <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-3">Kata sandi</label>
                 <div class="col-md-3 col-sm-3 col-xs-3">
-                    <input type="text" required class="form-control" name="email" onkeypress="return (event.charCode !=32)" autocomplete="off" id="username">
+                    <input type="text" required class="form-control" name="pass" onkeypress="return (event.charCode !=32)" autocomplete="off">
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-3">
-                    <input type="text" required class="form-control" name="email" onkeypress="return (event.charCode !=32)" autocomplete="off" id="username">
+                    <input type="text" required class="form-control" onkeypress="return (event.charCode !=32)" autocomplete="off">
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-3" id="warning">
                     <small class="label label-danger">Kata sandi tidak sama</small>
@@ -67,11 +67,10 @@
             <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-3" for="kontak">Uanggah Foto</label>
                 <div class="col-md-3 col-sm-3 col-xs-3 text-center">
-                    <input type="file" name="kategori" class="form-control">
+                    <input type="file" name="foto" class="form-control">
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-3" id="warning">
-                    <small class="label label-info">Opsional</small><br>
-                    <small class="label label-primary">JPG | PNG</small>
+                    <small class="label label-info">JPG | PNG</small>
                 </div>
             </div> <br>
             <div class="col-md-12 col-sm-12 col-xs-12 text-center">
@@ -80,5 +79,7 @@
         </form>
       </div>
     </div>
+    <?php $this->load->view('SuptPage/JsP') ?>
+    <script src="<?= base_url('asset/JS/Form.js') ?>"></script>
   </body>
 </html>

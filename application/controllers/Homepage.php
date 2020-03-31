@@ -72,6 +72,46 @@ class Homepage extends CI_Controller{
         // echo json_encode($this->config->item());
     }
 
+    function reg_admin($id){
+        $data['page']=$this->page;
+        $data['title'] = 'Registrasi admin baru';
+        
+        $data['v'] = $this->hr->get_url_confirm($id);
+        if ($data['v']&&waktu_data($id)&&!isset($_POST['sub'])) {
+            $data['v']= explode('|',$data['v']->nt);
+            $this->load->view('General/registrasi_admin',$data);
+        }else if (isset($_POST['sub'])&&$data['v']) {
+            $res= explode('|',$data['v']->nt);
+            $kontak = $this->input->post('kontak',true);
+            $password = $this->input->post('pass',true);
+            
+            $type = $_FILES['foto']['type'];
+            $type = $type=='image/jpeg'||$type=='image/png'||$type=='image/jpg'?explode('/',$type):false;
+            $nf = $type&&$_FILES['foto']['size']<(5*1048576)?'800'.time().'.'.$type[1]:null;
+
+            $v = $this->hr->set_admin_baru($res[0], $res[1], $password, $res[3], $kontak, $nf);
+            
+            $config = [
+                'upload_path'=> 'media/admin/',
+                'allowed_types'=> 'jpeg|png|jpg',
+                'max_size'=> 5*1048576,//in KB, 0 = unlimit
+                'max_width'=>0,
+                'min_width'=>0,
+                'file_name'=> $nf
+            ];
+            if ($v['res']) {
+                $this->load->library('upload', $config);
+                echo '200|'.$this->upload->do_upload('foto');
+                $this->hr->set_r_url_confirm($id);
+            }else{
+                echo '100| ';
+            }
+            
+        }else{
+            $this->load->view('General/general_404',$data);
+        }
+    }
+
     function general_req($id){
         $data = $this->hr->get_url_conf($id);
         redirect(site_url());

@@ -28,14 +28,14 @@ if ( ! function_exists('waktu_data')){
     }   
 }
 
-if ( ! function_exists('time_conv')){
+if ( ! function_exists('konv_waktu')){
     
-    function time_conv($id){
+    function konv_waktu($id){
         $id2=null;
         for ($i=3; $i < strlen($id); $i++) { 
             $id2 .= $id[$i];
         }
-        return date('Y-m-d H:i:s',(int)$id2);
+        return date('Y-m-d',(int)$id2);
     }   
 }
 

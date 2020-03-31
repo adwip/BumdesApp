@@ -150,8 +150,8 @@ class Rent_model extends CI_Model{
         $this->db->join('aset_disewakan','aset_sw=aset');
         $this->db->where('id_sewa',$id);
         $result = $this->db->get()->result();
-        isset($result[0])?$result[0]=$result[0]:$result[0]=null;
-        return $result[0];
+        $result = isset($result[0])&&waktu_data($id)?$result[0]:null;
+        return $result;
     }
 
     function get_edit_aset_sewa($id){

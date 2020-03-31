@@ -64,7 +64,7 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <form action="<?= site_url('edit-penyewaan') ?>" id="edit-penyewaan" method="POST" class="form-horizontal form-label-left">
+                    <form action="<?= site_url('edit-penyewaan') ?>" id="edit-penyewaan" method="POST" class="form-horizontal form-label-left" data-cek="cek-jadwal">
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" for="">Nama aset</label>
                         <div class="col-md-4 col-sm-4 col-xs-4">
@@ -90,7 +90,7 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-3">Tanggal mulai / jumlah hari</label>
                         <div class="col-md-4 col-sm-4 col-xs-4">
                           <div class='input-group date  tanggal_form tanggal_edit'>
-                            <input id='tanggal_edit' type="text" readonly class="form-control" name="tanggal" value="<?= isset($v->tm)?date('d-m-Y',strtotime($v->tm)):'-' ?>">
+                            <input id='tanggal_edit' type="text" readonly <?= !isset($v->id)?'disabled':'data-tl="'.konv_waktu($v->id).'"' ?> class="form-control" name="tanggal" value="<?= isset($v->tm)?date('d-m-Y',strtotime($v->tm)):'-' ?>">
                             <span class="input-group-addon">
                               <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -102,13 +102,16 @@
                         <div class="col-md-1 col-sm-1 col-xs-1">
                           <input readonly type="text" class="form-control" value="Hari">
                         </div>
+                        <div class="col-md-3 col-sm-3 col-xs-3" id="warning" style="display: none;">
+                          <small class="label label-danger">Ada tabrakan jadwal sewa</small>
+                        </div>
                       </div> <br>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3">Harga</label>
                         <div class="col-md-3 col-sm-3 col-xs-3">
                           <input type="text" class="form-control" name="harga" value="<?= isset($v->hg)?$v->hg:'0' ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                           <!--========================================================-->
-                          <span><input <?= isset($v->idf)?waktu_data($v->id)?'checked':'disabled':null ?> type="checkbox" name="potong_saldo" value="Ya"> <label for="">Catat ke keuangan</label></span>
+                          <span><input <?= isset($v->idf)?'checked':null ?> type="checkbox" name="potong_saldo" value="Ya"> <label for="">Catat ke keuangan</label></span>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
                           <input readonly type="text" class="form-control" value="Rp. <?= isset($v->hs)?$v->hs:'0' ?>">

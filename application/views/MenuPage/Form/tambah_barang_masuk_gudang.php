@@ -99,7 +99,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" >Harga</label>
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                          <input autocomplete="off" placeholder="Biaya yang dikeluarkan" type="text" required class="form-control empty-form" id="harga" name="harga" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
+                          <input autocomplete="off" placeholder="Biaya yang dikeluarkan" type="text" required class="form-control" id="harga" name="harga" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                           <!--========================================================-->
                           <span><input checked type="checkbox" id="cut-saldo" name="potong_saldo" value="Ya"> <label for="">Potong otomatis saldo</label></span>
                         </div>
