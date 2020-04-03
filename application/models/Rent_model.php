@@ -143,7 +143,7 @@ class Rent_model extends CI_Model{
     }
 
     function get_edit_penyewaan($id){
-        $this->db->select('id_sewa AS id, nama AS nm, penyewa AS pn, tanggal_mulai AS tm, DATEDIFF(tanggal_selesai, tanggal_mulai) AS jh, harga AS hg, kontak AS kt, id_fin AS idf, FORMAT(harga_sewa, "#.00") AS hs');
+        $this->db->select('id_sewa AS id,aset AS ids, nama AS nm, penyewa AS pn, tanggal_mulai AS tm, DATEDIFF(tanggal_selesai, tanggal_mulai) AS jh, harga AS hg, kontak AS kt, id_fin AS idf, FORMAT(harga_sewa, "#.00") AS hs');
         $this->db->from('penyewaan pn');
         $this->db->join('aset as','as.id_aset=pn.aset');
         $this->db->join('rekap_keuangan','foreg_id=id_sewa','LEFT');
@@ -160,17 +160,21 @@ class Rent_model extends CI_Model{
         $this->db->join('aset as','as.id_aset=ad.aset_sw');
         $this->db->where('id_aset_sewa',$id);
         $result = $this->db->get()->result();
-        isset($result[0])?$result[0]=$result[0]:$result[0]=null;
-        return $result[0];
+        $result = isset($result[0])?$result[0]:null;
+        return $result;
     }
 
     function edit_penyewaan($id, $penyewa, $kontak, $tanggal_mul, $tanggal_sel, $harga){
+
         $isi = ['penyewa'=>$penyewa,'kontak'=>$kontak,'tanggal_mulai'=>$tanggal_mul,'tanggal_selesai'=>$tanggal_sel,'harga'=>$harga];
 
-        $this->db->where('id_sewa',$id);
-        $this->db->update('penyewaan',$isi);
-        
-        return $this->db->affected_rows();
+        if (waktu_data($id)) {
+            $this->db->where('id_sewa',$id);
+            $this->db->update('penyewaan',$isi);
+            return $this->db->affected_rows();
+        }else {
+            return false;
+        }
     }
 
     function edit_aset_disewakan($id, $harga){
@@ -186,7 +190,7 @@ class Rent_model extends CI_Model{
         $this->db->join('aset as','as.id_aset=ad.aset_sw');
         $this->db->where('id_aset_sewa',$id);
         $result = $this->db->get()->result();
-      return $result;
+        return $result;
     }
 
     function get_total_penyewaan($tahun){
@@ -195,8 +199,8 @@ class Rent_model extends CI_Model{
         $this->db->group_by('YEAR(tanggal_mulai)');
         $this->db->like('tanggal_mulai',$tahun,'after');
         $result = $this->db->get()->result();
-        isset($result[0])?$result[0]=$result[0]:$result[0]=null;
-        return $result[0];
+        $result = isset($result[0])?$result[0]:null;
+        return $result;
     }
 
     function get_tahun(){
@@ -217,9 +221,12 @@ class Rent_model extends CI_Model{
         return $this->db->affected_rows();
     }
 
-    function cek_penyewaan($id, $tm, $ts){
+    function cek_penyewaan($id, $tm, $ts, $edit=false){
         $this->db->from('penyewaan');
         $this->db->where('aset',$id);
+        if ($edit) {
+            $this->db->where('id_sewa <>',$edit);
+        }
         $this->db->where('((tanggal_selesai >= "'.$tm.'" AND tanggal_selesai <= "'.$ts.'" )');
         $this->db->or_where('(tanggal_mulai >= "'.$tm.'" AND tanggal_mulai <= "'.$ts.'")');
         $this->db->or_where('(tanggal_mulai <= "'.$tm.'" AND tanggal_selesai >= "'.$ts.'")');

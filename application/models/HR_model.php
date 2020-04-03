@@ -128,7 +128,7 @@ class HR_model extends CI_Model{
     }
 
     function get_edit_profil($id){
-        $this->db->select('nama AS nm, username AS un, kontak AS kt, foto_user AS img');
+        $this->db->select('nama AS nm, email AS em, kontak AS kt, foto_user AS img');
         $this->db->from('admin');
         $this->db->where('id_admin',$id);
         $result = $this->db->get()->result();

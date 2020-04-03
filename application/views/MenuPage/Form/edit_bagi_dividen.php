@@ -65,7 +65,7 @@
             <div class="x_content">
               <form action="<?= site_url('edit-bagi-dividen') ?>" id="edit-bagi-dividen" method="POST" class="form-horizontal form-label-left">
                 <div class="form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-3" for="mitra">Tahun / Jumlah bagi hasil</label>
+                  <label class="control-label col-md-3 col-sm-3 col-xs-3" for="mitra">Tahun</label>
                   <div class="col-md-3 col-sm-3 col-xs-3">
                     <input autocomplete="off" type="text" placeholder="Masukkan tahun" class="form-control" name="tahun" value="<?= isset($v->td)?$v->td:'-' ?>">
                   </div>
@@ -74,13 +74,12 @@
                   </div>
                 </div><br>
                 <div class="form-group">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-3" for="">Total</label>
+                  <label class="control-label col-md-3 col-sm-3 col-xs-3" for="">Total / persentase</label>
                   <div class="col-md-3 col-sm-3 col-xs-3">
                     <input required type="text" name="nilai" class="form-control" value="<?= isset($v->jd)?$v->jd:'-' ?>">
-                    <!-- <span><input <?= isset($v->idf)?'checked':null; ?> type="checkbox" id="cut-saldo" name="potong_saldo" value="Ya"> <label for="">Potong otomatis saldo</label></span> -->
                   </div>
                   <div class="col-md-3 col-sm-3 col-xs-3">
-                    <input readonly type="text" class="form-control" id="total-pers" value="100">
+                    <input readonly min="100" type="number" class="form-control" id="total-pers" value="100">
                   </div>
                 </div><br>
                 <div class="form-group">

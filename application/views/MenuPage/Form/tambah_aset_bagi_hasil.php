@@ -63,7 +63,7 @@
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-              <form action="set-bagi-hasil" id="set-bagi-hasil" method="POST" class="form-horizontal form-label-left" data-cek="cek-jadwal-bgh">
+              <form action="set-bagi-hasil" id="set-bagi-hasil" method="POST" class="form-horizontal form-label-left" data-cek="cek-jadwal-bgh" data-tp="new">
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-3" for="mitra">Mitra</label>
                   <div class="col-md-6 col-sm-6 col-xs-6">
@@ -115,7 +115,7 @@
                   <label class="control-label col-md-3 col-sm-3 col-xs-3" for="tang_mul">Tanggal mulai / lama kerja sama</label>
                   <div class="col-md-3 col-sm-3 col-xs-3">
                     <div class='input-group date  tanggal_form tanggal_new' id="tanggal-bgh">
-                        <input  type='text' class="form-control" readonly="readonly"  id="edit_tanggal" name="tanggal" value="<?= date('d-m-Y') ?>" />
+                        <input  type='text' class="form-control" readonly="readonly" name="tanggal" value="<?= date('d-m-Y') ?>" />
                         <span class="input-group-addon">
                           <span class="glyphicon glyphicon-calendar"></span>
                         </span>

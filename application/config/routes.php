@@ -42,6 +42,7 @@ $route['hapus-aset-sewa'] = 'Rent/hapus_aset_sewa';//=========ada view
 $route['edit-penyewaan'] = 'Rent/edit_penyewaan';//=========ada view
 $route['gov-penyewaan'] = 'Rent/gov_penyewaan';//=========ada view
 $route['cek-jadwal'] = 'Rent/cek_penyewaan';//=========ada view
+$route['cek-edit-sewa'] = 'Rent/cek_edit_penyewaan';//=========ada view
 
 //routing finansial
 $route['weekly-freport'] = 'Finance/weekly_report';//=========ada
@@ -90,6 +91,7 @@ $route['edit-pbgu/(:num)'] = 'Finance/form_edit_pemb_bagi_hasil/$1';//=========a
 $route['edit-pemb-bgh'] = 'Finance/edit_pemb_bgh';//=========ada view
 $route['hapus-pemb-bagi-hasil'] = 'Finance/del_pemb_bgh';//=========ada view
 $route['cek-jadwal-bgh'] = 'Finance/cek_jadwal_bgh';//=========ada view
+$route['cek-edit-bgh'] = 'Finance/cek_edit_jadwal_bgh';//=========ada view
 // $route['cek-saldo'] = 'Finance/cek_saldo';
 
 
@@ -140,12 +142,13 @@ $route['hapus-aset'] = 'Administrasi/hapus_aset';//=================ada view
 $route['hapus-mitra'] = 'Administrasi/hapus_mitra';//=================ada view
 $route['hapus-user'] = 'Administrasi/hapus_user';//=================ada view
 $route['tambah-satuan'] = 'Administrasi/tambah_satuan';//=================ada view
-$route['ubah-profil'] = 'Administrasi/ubah_profil';//=================ada view
+$route['ubah-profil'] = 'Administrasi/form_ubah_profil';//=================ada view
 $route['ganti-password'] = 'Administrasi/ganti_password';//=================ada view
 $route['detail-user/(:num)'] = 'Administrasi/detail_user/$1';//=================ada view
 $route['gov-asset'] = 'Administrasi/gov_asset';//=================ada view
 $route['gov-kerjasama-bgh'] = 'Administrasi/gov_kerjasama_bgh';//=================ada view
 $route['edit-satuan'] = 'Administrasi/edit_satuan';//=================ada view
+$route['edit-profil'] = 'Administrasi/edit_profil';//=================ada view
 // $route['add-user'] = 'Administrasi/tambah_admin';//=================ada view
 //CONCAT(year(tanggal), "/",WEEK(tanggal))
 

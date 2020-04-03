@@ -598,7 +598,7 @@ class Finance_model extends CI_Model{
         return $this->db->affected_rows();
     }
 
-    function edit_arus_kas($id, $jumlah, $jenis, $tanggal, $ket=false){
+    function edit_arus_kas($id, $jumlah, $jenis, $tanggal, $ket=false, $fin=false){
         $isi = ['tanggal_fin'=>$tanggal];
         if ($jenis=='Kredit') {
             $isi['kredit'] = $jumlah;
@@ -611,6 +611,9 @@ class Finance_model extends CI_Model{
         }
 
         $this->db->where('id_fin',$id);
+        if ($fin) {
+            $this->db->where('actor','User');
+        }
         $this->db->or_where('foreg_id',$id);
         $this->db->update('rekap_keuangan',$isi);
 
@@ -624,15 +627,15 @@ class Finance_model extends CI_Model{
     }
 
     function get_edit_bagi_hasil($id){
-        $this->db->select('id_bgh AS id, IFNULL(nama,aset_luar) AS nm, nomor_aset AS na, tanggal_mulai AS tm, tanggal_selesai AS ts, nama_mitra AS mt, TIMESTAMPDIFF(MONTH, tanggal_mulai, tanggal_selesai) AS sb, pers_bumdes AS pb, pers_mitra AS pm');
+        $this->db->select('id_bgh AS id, aset_bh AS ids, IFNULL(nama,aset_luar) AS nm, nomor_aset AS na, tanggal_mulai AS tm, tanggal_selesai AS ts, nama_mitra AS mt, TIMESTAMPDIFF(MONTH, tanggal_mulai, tanggal_selesai) AS sb, pers_bumdes AS pb, pers_mitra AS pm');
         $this->db->from('bagi_hasil_aset bg');
         $this->db->join('aset as','as.id_aset=aset_bh','LEFT');
         $this->db->join('mitra mt','mt.id_mitra=mitra');
         $this->db->where('id_bgh',$id);
         $this->db->where('status <> "Batal"');
         $result = $this->db->get()->result();
-        isset($result[0])?$result[0]=$result[0]:$result[0]=null;
-        return $result[0];
+        $result = isset($result[0])&&waktu_data($id)?$result[0]:null;
+        return $result;
     }
 
     function get_edit_keuangan($id){
@@ -641,8 +644,8 @@ class Finance_model extends CI_Model{
         $this->db->where('id_fin',$id);
         $this->db->where('actor','User');
         $result = $this->db->get()->result();
-        isset($result[0])?$result[0]=$result[0]:$result[0]=null;
-        return $result[0];
+        $result = isset($result[0])&&waktu_data($id)?$result[0]:null;
+        return $result;
     }
 
     function get_edit_bagi_dividen($id){
@@ -651,7 +654,7 @@ class Finance_model extends CI_Model{
         $this->db->join('rekap_keuangan','foreg_id=id_gdiv','LEFT');
         $this->db->where('id_gdiv',$id);
         $result = $this->db->get()->result();
-        $result = isset($result[0])?$result[0]:null;
+        $result = isset($result[0])&&waktu_data($id)?$result[0]:null;
         return $result;
     }
 
@@ -679,7 +682,6 @@ class Finance_model extends CI_Model{
             $this->db->insert('penerima_dividen',$isi);
         }
     }
-
 
     function get_edit_ent_bagi_dividen($id){
         $this->db->select('id_ent_div AS id, entitas_div AS ent_d, pers_jumlah_div AS pers_d');
@@ -816,10 +818,14 @@ class Finance_model extends CI_Model{
         return $this->db->affected_rows();
     }
 
-    function cek_jadwal_bgh($id, $tm, $ts){
+    function cek_jadwal_bgh($id, $tm, $ts, $edit=false){
         $this->db->from('bagi_hasil_aset');
-        $this->db->where('aset',$id);
-        $this->db->where('status_bgh <> "Batal" ');
+        $this->db->where('aset_bh',$id);
+        $this->db->where('status_bgh IS NULL');
+        if ($edit) {
+            $this->db->where('id_bgh <> ', $edit);
+            $this->db->where('deld_aset IS NULL');
+        }
         $this->db->where('((tanggal_selesai >= "'.$tm.'" AND tanggal_selesai <= "'.$ts.'" )');
         $this->db->or_where('(tanggal_mulai >= "'.$tm.'" AND tanggal_mulai <= "'.$ts.'")');
         $this->db->or_where('(tanggal_mulai <= "'.$tm.'" AND tanggal_selesai >= "'.$ts.'")');

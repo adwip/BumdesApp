@@ -268,8 +268,8 @@ class Administration_model extends CI_Model{
       $this->db->join('rekap_keuangan','foreg_id=id_aset','LEFT');
       $this->db->where('id_aset',$id);
       $result = $this->db->get()->result();
-      isset($result[0])?$result[0]=$result[0]:$result[0]=null;
-      return $result[0];
+      $result = isset($result[0])?$result[0]:false;
+      return $result;
     }
 
     function get_edit_mitra($id){
@@ -283,11 +283,20 @@ class Administration_model extends CI_Model{
 
     function edit_aset($id, $nama, $nomor, $sumber, $harga, $lokasi, $kondisi, $tglmasuk, $keadaan, $cat, $file_name, $del_fot){
         
-      $isi = ['nomor_aset'=>$nomor,'nama'=>$nama,'lokasi'=>$lokasi,'kondisi'=>$kondisi,'keadaan'=>$keadaan,'tanggal_masuk'=>$tglmasuk,'ket_aset'=>$cat,'sumber'=>$sumber,'harga_aset'=>$harga];
-      if ($file_name) {
-        $isi['gambar']=$file_name;
-      }elseif ($del_fot) {
-        $isi['gambar']=null;
+      if (waktu_data($id)) {
+        $isi = ['nomor_aset'=>$nomor,'nama'=>$nama,'lokasi'=>$lokasi,'kondisi'=>$kondisi,'keadaan'=>$keadaan,'tanggal_masuk'=>$tglmasuk,'ket_aset'=>$cat,'sumber'=>$sumber,'harga_aset'=>$harga];
+        if ($file_name) {
+          $isi['gambar']=$file_name;
+        }elseif ($del_fot) {
+          $isi['gambar']=null;
+        }
+      }else{
+        $isi = ['nama'=>$nama,'lokasi'=>$lokasi,'keadaan'=>$keadaan,'ket_aset'=>$cat];
+        if ($file_name) {
+          $isi['gambar']=$file_name;
+        }elseif ($del_fot) {
+          $isi['gambar']=null;
+        }
       }
       $this->db->where('id_aset',$id);
       $this->db->update('aset',$isi);
@@ -335,6 +344,5 @@ class Administration_model extends CI_Model{
       $this->db->delete('mitra',['id_mitra'=>$id]);
       return $this->db->affected_rows();
     }
-
-    
+ 
 }

@@ -77,7 +77,7 @@
                       <div class="profile_img">
                         <div id="crop-avatar">
                           <!-- Current avatar -->
-                          <img style="padding: .5px; border: 1px solid black; max-height: 150px; max-width: 250px;" class="img-responsive avatar-view" src="<?= isset($v[0]->img)?base_url('asset/gambar/'.$v[0]->img):base_url('asset/gambar/unnamed.png') ?>" alt="<?= isset($v[0])?$v[0]->nm:'-' ?>" title="<?= isset($v[0])?$v[0]->nm:'-' ?>">
+                          <img style="padding: .5px; border: 1px solid black; max-height: 150px; max-width: 250px;" class="img-responsive avatar-view" src="<?= isset($v[0]->img)?base_url('media/aset/'.$v[0]->img):base_url('media/aset/unnamed.png') ?>" alt="<?= isset($v[0])?$v[0]->nm:'-' ?>" title="<?= isset($v[0])?$v[0]->nm:'-' ?>">
                         </div>
                       </div>
                       <h3>Tiyo Bumdes</h3>

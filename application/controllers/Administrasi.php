@@ -114,6 +114,7 @@ class Administrasi extends CI_Controller{
         $data['id']=$id;
         $data['v'] = $this->am->get_edit_aset($id);
         $data['b']=$this->fm->get_saldo();
+        $data['edit'] = waktu_data($id)&&$data['v'];
         $this->load->view('MenuPage/Form/edit_aset',$data);
         // echo json_encode($data['v']);
     }
@@ -248,18 +249,26 @@ class Administrasi extends CI_Controller{
         $nomor = $this->input->post('nomor_aset',true);
         $sumber = $this->input->post('sumber',true);
         $harga = $this->input->post('harga',true);
-        $ps = $this->input->post('potong_saldo',true);
         $lokasi = $this->input->post('lokasi',true);
         $del_fot = $this->input->post('del_fot',true);
         $img_val = $this->input->post('img_val',true);
-        $img_val = $img_val?$img_val:false;
         $kondisi = $this->input->post('kondisi',true);
         $tglmasuk = $this->input->post('tanggal_masuk',true);
         $tglmasuk = date('Y-m-d',strtotime($tglmasuk));
         $keadaan = $this->input->post('keadaan',true);
         $cat = $this->input->post('catatan',true);
         $cat = $cat?$cat:null;
+        //jpeg, png, jpg, 5*1048576
+        $size= isset($_FILES['foto'])?$_FILES['foto']['size']:0;
+        $size = $size <= (5*1048576)?true:false;//5 Mb
+        $type = isset($_FILES['foto'])?$_FILES['foto']['type']:false;
+        $type = $type?explode('/',$type):false;
+        $type = $type?$type[1]:false;
+        $type = $type=='jpeg'?'jpg':$type;
+        $nam_file = in_array($type,['png','jpg'])&&$size?'300'.time().'.'.$type:false;
 
+        // echo $nam_file;
+        /*
         if (isset($_FILES['foto']['name'])) {//variable eksis atau tidak
             $cek_file = $_FILES['foto']['name']?true:false;
         }else{
@@ -268,81 +277,81 @@ class Administrasi extends CI_Controller{
         $fn = $cek_file?$_FILES['foto']['name']:false;//mengambil nama jika variable ada
         $fn=$fn?explode('.',$_FILES['foto']['name']):false;//membuang . dari variabel
         $file_name= $fn?'300'.time().'.'.end($fn):false;
+        */
         $resp = false;
-
-        $v = $this->am->edit_aset($id, $nama, $nomor, $sumber, $harga, $lokasi, $kondisi, $tglmasuk, $keadaan, $cat, $file_name, $del_fot);
+        $v = $this->am->edit_aset($id, $nama, $nomor, $sumber, $harga, $lokasi, $kondisi, $tglmasuk, $keadaan, $cat, $nam_file, $del_fot);
 
         if ($v) {
-            $log_mesg = '[EDIT][ASET]['.$id.'] Perubahan data aset '. $nama.' dengan kondisi '.$kondisi.', keadaan '.$keadaan;;
+            $log_mesg = '[EDIT][ASET]['.$id.'] Perubahan data aset '. $nama.' dengan nomor aset  '.$nomor;
             $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
             $resp=true;
         }
 
-        if ($ps) {//  'Pembelian aset '.$nama.' dengan kondisi '.$kondisi.', keadaan '.$keadaan;
-            $ket_kas ='Pembelian aset '.$nama.' dengan kondisi '.$kondisi.', keadaan '.$keadaan;
-            $v = $this->fm->set_arus_kas('OUT', $ket_kas, $harga, $tglmasuk, 'System', $id);
-            if ($v['res']) {
-                $log_mesg='[TAMBAH][KEUANGAN][BELI ASET]['.$v['id'].']['.$id.'] Pembelian aset '.$nama.' dengan kondisi '.$kondisi.', dan keadaan '.$keadaan;
+        if (isset($_POST['potong_saldo'])&&waktu_data($id)) {
+            $ket_kas ='Pembelian aset '.$nama.' dengan nomor aset  '.$nomor;
+            $v1 = $this->fm->set_arus_kas('OUT', $ket_kas, $harga, $tglmasuk, 'System', $id);
+            if ($v1['res']) {
+                $log_mesg='[TAMBAH][KEUANGAN][BELI ASET]['.$v1['id'].']['.$id.'] Pembelian aset '.$nama.' dengan nomor aset  '.$nomor;
                 $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
                 $resp = true;
             }else{
-                $v=$this->fm->edit_arus_kas($id, $harga, 'Kredit', $tglmasuk, $ket_kas);
-                if ($v['resp']) {
-                    $log_mesg='[EDIT][KEUANGAN][BELI ASET]['.$v['id'].']['.$id.'] Pembelian aset '.$nama.' dengan kondisi '.$kondisi.', dan keadaan '.$keadaan;
+                $v1=$this->fm->edit_arus_kas($id, $harga, 'Kredit', $tglmasuk, $ket_kas);
+                if ($v1['resp']) {
+                    $log_mesg='[EDIT][KEUANGAN][BELI ASET]['.$v1['id'].']['.$id.'] Pembelian aset '.$nama.' dengan nomor aset  '.$nomor;
                     $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
                     $resp = true;
                 }
             }
-        }else {
-            $v = $this->fm->del_keuangan($id);
-            $log_mesg='[HAPUS][KEUANGAN][STOK MASUK]['.$id.'] Menghapus data keuangan dari pembelian '.$nama.' dengan kondisi '.$kondisi.', keadaan '.$keadaan;
-            if ($v) {//log delete kas
+        }else if(waktu_data($id)){
+            $v1 = $this->fm->del_keuangan($id);
+            $log_mesg='[HAPUS][KEUANGAN][BELI ASET]['.$v1['id'].']['.$id.'] Menghapus data keuangan dari pembelian '.$nama.' dengan nomor aset  '.$nomor;
+            if ($v1['res']) {//log delete kas
                 $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
                 $resp=true;
             }
         }
 
-        // echo json_encode($_POST);
         $mesg=null;
-        $stat=null;
-        $foto=base_url('asset/gambar/unnamed.png');
-        if ($del_fot&&$v&&waktu_data($id)) {
-            if (file_exists('asset/gambar/'.$img_val)) {
-                unlink('asset/gambar/'.$img_val);
+        $stat='IDLE';
+        $foto=base_url('media/aset/unnamed.png');
+        $file_name2 =null;
+        if ($del_fot&&$v) {
+            if (file_exists('media/aset/'.$del_fot)) {
+                unlink('media/aset/'.$del_fot);
             }
             $stat='Del';
-        }elseif ($file_name&&$v&&waktu_data($id)) {
-            $file_name = explode('.',$file_name);
+        }elseif ($nam_file&&$v) {
+            $file_name = explode('.',$nam_file);
             $config = [
-                'upload_path'=> 'asset/gambar/',
-                'allowed_types'=> 'jpg|png',
-                'max_size'=> 5*1048576,
+                'upload_path'=> 'media/aset/',
+                'allowed_types'=> 'jpg|png|jpeg',
+                'max_size'=> 5*1048576,//5 Mb
                 'max_width'=>0,
                 'min_width'=>0,
                 'file_name'=> $file_name[0]
             ];
             $this->load->library('upload', $config);
             if ( ! $this->upload->do_upload('foto')){
-                $mesg ['mesg'] = $this->upload->display_errors();
+                $mesg = $this->upload->display_errors();
             }else{
-                $mesg ['mesg'] = $this->upload->data();
+                $mesg = $this->upload->data();
                 if ($img_val) {
-                    if (file_exists('asset/gambar/'.$img_val)) {
-                        unlink('asset/gambar/'.$img_val);
+                    if (file_exists('media/aset/'.$img_val)) {
+                        unlink('media/aset/'.$img_val);
                     }
                 }
                 $stat='Change';
-                $foto = base_url('asset/gambar/').$mesg['mesg']['orig_name'];
+                $foto = base_url('media/aset/').$mesg['orig_name'];
+                $file_name2 = $mesg['orig_name'];
             }
         }
 
         if ($resp) {
             $s=$this->fm->get_saldo();
             $s = isset($s[0]->ac)?$s[0]->ac:0;
-            $ar = [200, $s, $stat, $foto];
+            $ar = [200, $s, $stat, $foto, $file_name2];
             $ar = implode('|',$ar);
             echo $ar;
-            // echo json_encode($ar);
         }else{
             echo '100| | | ';
         }
@@ -579,7 +588,8 @@ class Administrasi extends CI_Controller{
             echo json_encode(['res'=>200,'v'=>$v]);
         }
     }
-    function ubah_profil(){//=============ada view
+
+    function form_ubah_profil(){//=============ada view
         $data['page']=$this->page;
         $data['title'] = 'Ubah informasi admin ';
         $data['v']=$this->hr->get_edit_profil('0081578813144');
@@ -604,12 +614,21 @@ class Administrasi extends CI_Controller{
         $this->load->view('MenuPage/Detail_Print/detail_user',$data);
     }
 
-    function edit_profil(){
+    function edit_profil1(){
         $nama = $this->input->post('nama',true);
         $username = $this->input->post('username',true);
         $kontak = $this->input->post('kontak',true);
         $password = $this->input->post('password',true);
         $img_val =  $this->input->post('img_val',true);
+        
+        $size= isset($_FILES['foto'])?$_FILES['foto']['size']:0;
+        $size = $size <= (5*1048576)?true:false;//5 Mb
+        $type = isset($_FILES['foto'])?$_FILES['foto']['type']:false;
+        $type = $type?explode('/',$type):false;
+        $type = $type?$type[1]:false;
+        $type = $type=='jpeg'?'jpg':$type;
+        $nam_file = in_array($type,['png','jpg'])&&$size?'300'.time().'.'.$type:false;
+
         $foto=false;
         if (isset($_FILES['foto'])) {
             $foto = $_FILES['foto']['name']?explode('.',$_FILES['foto']['name'])[1]:false;
@@ -688,5 +707,8 @@ class Administrasi extends CI_Controller{
         echo $v;
     }
 
+    function edit_profil(){
+        echo json_encode($_POST);
+    }
 
 }

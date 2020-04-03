@@ -64,11 +64,12 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <form action="<?= site_url('edit-penyewaan') ?>" id="edit-penyewaan" method="POST" class="form-horizontal form-label-left" data-cek="cek-jadwal">
+                    <form action="<?= site_url('edit-penyewaan') ?>" id="edit-penyewaan" method="POST" class="form-horizontal form-label-left" data-cek="<?= site_url('cek-edit-sewa') ?>">
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" for="">Nama aset</label>
                         <div class="col-md-4 col-sm-4 col-xs-4">
                           <input name="aset" type="text" readonly class="form-control" value="<?= isset($v->nm)?$v->nm:'-' ?>">
+                          <input type="hidden" name="ids" value="<?= isset($v->ids)?$v->ids:'-' ?>">
                         </div>
                         <div class="col-md-2 col-sm-2 col-xs-2">
                           <input type="text" readonly class="form-control" name="id" value="<?= isset($v->id)?$v->id:'-' ?>">
@@ -89,7 +90,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3">Tanggal mulai / jumlah hari</label>
                         <div class="col-md-4 col-sm-4 col-xs-4">
-                          <div class='input-group date  tanggal_form tanggal_edit'>
+                          <div class='input-group date  tanggal_form tanggal_edit' id="tanggal_sewa">
                             <input id='tanggal_edit' type="text" readonly <?= !isset($v->id)?'disabled':'data-tl="'.konv_waktu($v->id).'"' ?> class="form-control" name="tanggal" value="<?= isset($v->tm)?date('d-m-Y',strtotime($v->tm)):'-' ?>">
                             <span class="input-group-addon">
                               <span class="glyphicon glyphicon-calendar"></span>
@@ -97,7 +98,7 @@
                           </div>
                         </div>
                         <div class="col-md-1 col-sm-1 col-xs-1">
-                          <input type="text" class="form-control" name="jumlah_hari"  value="<?= isset($v->jh)?$v->jh:'0' ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
+                          <input min="1" required id="jum_har_edit" type="number" class="form-control" name="jumlah_hari"  value="<?= isset($v->jh)?$v->jh:'0' ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                         </div>
                         <div class="col-md-1 col-sm-1 col-xs-1">
                           <input readonly type="text" class="form-control" value="Hari">
@@ -109,12 +110,13 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3">Harga</label>
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                          <input type="text" class="form-control" name="harga" value="<?= isset($v->hg)?$v->hg:'0' ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
+                          <input id="biaya" type="text" class="form-control" name="harga" value="<?= isset($v->hg)?$v->hg:'0' ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                           <!--========================================================-->
-                          <span><input <?= isset($v->idf)?'checked':null ?> type="checkbox" name="potong_saldo" value="Ya"> <label for="">Catat ke keuangan</label></span>
+                          <span><input <?= isset($v->idf)?'checked':null ?> type="checkbox" name="cat_keuangan" value="Ya"> <label for="">Catat ke keuangan</label></span>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                          <input readonly type="text" class="form-control" value="Rp. <?= isset($v->hs)?$v->hs:'0' ?>">
+                          <input id="harga" readonly type="text" class="form-control" value="Rp. <?= isset($v->hs)?$v->hs:'0' ?>">
+                          <span><label for="">Harga sewa per hari</label></span>
                         </div>
                       </div>
                       
@@ -146,5 +148,6 @@
     <script src="<?= base_url('asset/JS/Fitur.js') ?>"></script>
     <script src="<?= base_url('asset/JS/Dtmpicker.js') ?>"></script>
     <script src="<?= base_url('asset/JS/Form.js') ?>"></script>
+    <script src="<?= base_url('asset/JS/Error_handler.js') ?>"></script>
   </body>
 </html>

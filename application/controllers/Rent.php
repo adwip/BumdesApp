@@ -165,7 +165,7 @@ class Rent extends CI_Controller{
         $hari = $this->input->post('jumlah_hari',true);
         $tanggal_sel = date('Y-m-d',strtotime($tanggal_mul.'+'.$hari.'days'));
         $harga = $this->input->post('harga',true);
-        $ps = $this->input->post('potong_saldo',true);
+        $ps = $this->input->post('cat_keuangan',true);
 
         $log_mesg = '[EDIT][PENYEWAAN]['.$id.'] Mengubah data penyewaan aset '.$aset.' oleh '.$penyewa.' selama '.$hari.' hari, dimulai dari tanggal '.date('d-m-Y',strtotime($tanggal_mul));
         $resp=false;
@@ -350,19 +350,25 @@ class Rent extends CI_Controller{
     }
 
     function cek_penyewaan(){
-        //'2020-03-29', '2020-04-04'
+        
         $id = $this->input->post('aset',true);
         $tm = $this->input->post('tanggal',true);
         $tm = date('Y-m-d',strtotime($tm));
         $ts = $this->input->post('jumlah_hari');
-        $ts = date('Y-m-d',strtotime($tm.' + '.$ts.' days'));/*
-        if (!isset($_POST['tambah_trans'])) {
-            echo '2020-03-29 - 2020-04-04 <br>';
-            $data = $this->rm->cek_penyewaan('0051585410835', '2020-03-22', '2020-03-30');
-        }else{
-        }*/
+        $ts = date('Y-m-d',strtotime($tm.' + '.$ts.' days'));
         $data = $this->rm->cek_penyewaan($id, $tm, $ts);
-        echo $data;//.'| '.$id.' | '.$tm.' - '.$ts;
+        echo $data;
+    }
+    
+    function cek_edit_penyewaan(){
+        $id = $this->input->post('id',true);
+        $ids = $this->input->post('ids',true);
+        $tm = $this->input->post('tanggal',true);
+        $tm = date('Y-m-d',strtotime($tm));
+        $ts = $this->input->post('jumlah_hari');
+        $ts = date('Y-m-d',strtotime($tm.' + '.$ts.' days'));
+        $data = $this->rm->cek_penyewaan($ids, $tm, $ts, $id);
+        echo $data;
     }
 
 }

@@ -439,12 +439,15 @@ class Finance extends CI_controller{
         $id = $this->input->post('id',true);
         $jumlah = $this->input->post('jumlah',true);
         $jenis = $this->input->post('jenis',true);
-        $trans = $this->input->post('trans',true);
         $tanggal = $this->input->post('tanggal',true);
         $tanggal = date('Y-m-d',strtotime($tanggal));
-        $log_mesg = '[EDIT][KEUANGAN]['.$id.'] Perubahan keuangan pada transaksi '.$trans.' sebesar Rp. '.$jumlah;
-        $v = $this->fm->edit_arus_kas($id, $jumlah, $jenis, $tanggal, $ket);
-        if ($v) {
+        $log_mesg = '[EDIT][KEUANGAN]['.$id.'] Perubahan keuangan pada transaksi '.$jenis.' sebesar Rp. '.$jumlah;
+        if (waktu_data($id)) {
+            $v = $this->fm->edit_arus_kas($id, $jumlah, $jenis, $tanggal, $ket, true);
+        }else {
+            $v['resp'] = false;
+        }
+        if ($v['resp']) {
             $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
             $s=$this->fm->get_saldo();
             $s = isset($s[0]->ac)?$s[0]->ac:0;
@@ -882,7 +885,20 @@ class Finance extends CI_controller{
         $ts = $this->input->post('bulan');
         $ts = date('Y-m-d',strtotime($tm.' + '.$ts.' months'));
 
-        $data = $this->rm->cek_jadwal_bgh($id, $tm, $ts);
+        $data = $this->fm->cek_jadwal_bgh($id, $tm, $ts);
         echo $data;
+    }
+    
+    function cek_edit_jadwal_bgh(){
+        $id = $this->input->post('id',true);
+        $ids = $this->input->post('ids',true);
+        $tm = $this->input->post('tanggal',true);
+        $tm = date('Y-m-d',strtotime($tm));
+        $ts = $this->input->post('bulan');
+        $ts = date('Y-m-d',strtotime($tm.' + '.$ts.' months'));
+
+        $data = $this->fm->cek_jadwal_bgh($ids, $tm, $ts, $id);
+        echo $data;
+        // echo json_encode($_POST);
     }
 }

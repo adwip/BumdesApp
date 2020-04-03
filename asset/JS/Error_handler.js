@@ -69,7 +69,7 @@ $(document).ready(function() {
     $('#aset, #jum_har').on('change keyup',function(){
         // alert('Change')
         const harga = $('option:selected','#aset').attr('data-hg')
-        if (harga!='') {
+        if (harga!=''||harga!='undefined') {
             $('#nominal').val('Rp. '+harga+' / hari')
             const jh = $('#jum_har').val()
             $('#harga').val(jh*harga.replace(',','').replace(',',''))
@@ -77,6 +77,14 @@ $(document).ready(function() {
             $('#nominal').val('')
             $('#harga').val('')
         }
+    })
+
+    
+    $('#jum_har_edit').on('keyup',function(){
+        // alert('Change')
+        const harga = $('#harga').val()
+        const jh = $('#jum_har_edit').val()
+        $('#biaya').val(jh*harga.replace('Rp. ','').replace(',','').replace(',',''))
     })
 
     // Tambah aset disewakan
@@ -163,11 +171,11 @@ $(document).ready(function() {
     })
 
     //cek jadwal penyewaan
-    $('#tanggal_sewa, #jum_har, #aset').on('dp.change change keyup',function(){
+    $('#tanggal_sewa, #jum_har, #aset, #jum_har_edit').on('dp.change change keyup',function(){
         if ($('#aset').val()!=''&&$('#jum_har').val()!='') {
             $.ajax({
-                url: $('#set-tambah-penyewaan').attr('data-cek'),
-                data: $('#set-tambah-penyewaan').serialize(),
+                url: $('form').attr('data-cek'),
+                data: $('form').serialize(),
                 type: 'POST',
                 dataType: 'text',
                 success:function(v){
@@ -188,10 +196,11 @@ $(document).ready(function() {
 
     //cek jadwal bagi hasil
     $('#tanggal-bgh, #jum_bulan, #inter_aset, .s-aset').on('dp.change change keyup',function(){
-        if ($('#aset').val()!=''&&$('#jum_bulan').val()!=''&&$('#primary').is(':checked')) {
+        
+        if ($('#aset').val()!=''&&$('#jum_bulan').val()!=''&&$('#primary').is(':checked')||$('form').attr('data-tp')=='edit') {
             $.ajax({
-                url: $('#set-bagi-hasil').attr('data-cek'),
-                data: $('#set-bagi-hasil').serialize(),
+                url: $('form').attr('data-cek'),
+                data: $('form').serialize(),
                 type: 'POST',
                 dataType: 'text',
                 success:function(v){
@@ -213,5 +222,56 @@ $(document).ready(function() {
     // $('#tanggal_sewa').on('#dp.change, change',function(){
     //     alert('Change')
     // })
+
+    //Ubah data aset
+
+    $('#del-fot').change(function(){
+        if ($(this).is(":checked")) {
+            $('#img-form').attr('disabled',true)
+        }else{
+            $('#img-form').attr('disabled',false)
+        }
+    })
+
+    $('#img-form').change(function(){
+        if ($(this).val()!='') {
+            $('#del-fot').attr('disabled',true)
+            // alert(this.files[0].size)
+            console.log(this.files)
+        }else{
+            $('#del-fot').attr('disabled',false)
+        }
+
+        if ($(this).val()!='') {
+            const type = this.files[0].type
+            if (this.files[0].size > (5*1048576)) {//cek ukuran file
+                $('#warning-size').show()
+            }else{
+                $('#warning-size').hide()
+            }
+
+            if (type == 'image/jpeg'||type == 'image/png'||type == 'image/jpg') {//cek tipe file
+                $('#warning-type').hide()
+            }else{
+                $('#warning-type').show()
+            }
+        }else{
+            $('#warning-size, #warning-type').hide()
+        }
+    })
+
+    //Edit kuangan
+    $('#jumlah-edit-fin').keyup(function(){
+        const jenis = $('#jenis-edit-fin').val()
+        const saldo = parseInt($('#saldo').val().replace('Rp. ','').replace(',','').replace(',',''))
+        const nilai = $(this).val()
+        if (jenis=='Kredit'&&nilai > saldo) {
+            $('#warning').show()
+            $('button[type=submit]').attr('disabled',true)
+        }else{
+            $('#warning').hide()
+            $('button[type=submit]').attr('disabled',false)
+        }
+    })
 
 })

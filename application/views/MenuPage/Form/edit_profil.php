@@ -64,37 +64,42 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <form action="<?= site_url('edit-arus-kas') ?>" id="edit-arus-kas" method="POST" class="form-horizontal form-label-left">
+                    <form action="<?= site_url('edit-profil') ?>" id="edit-profil" method="POST" class="form-horizontal form-label-left">
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" for="">Nama</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
                           <input type="text" required class="form-control" name="nama" value="<?= isset($v->nm)?$v->nm:'-' ?>">
                         </div>
                       </div> <br>
-                      <div class="form-group">
+                      <div class="form-group"><!-- ============================================================== -->
                         <label class="control-label col-md-3 col-sm-3 col-xs-3">Foto</label>
                         <div class="col-md-3 col-sm-3 col-xs-3">
                           <input class="form-control" type="file" name="foto" id="img-form">
-                          <span><input <?= !isset($v->img)?'disabled':null ?> name="del_fot" value="Ya" id="gan-fot" type="checkbox"><label>Hapus foto | </label></span>
+                          <span><input name="del_fot" <?= !isset($v->img)?'disabled':null ?> value="<?= isset($v->img)?$v->img:null ?>" id="del-fot" type="checkbox"><label>Hapus foto | </label></span>
                           <span>Ukuran maksimal 5 Mb</span>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                          <img id="image-asset" style="padding: 1px; border: 1px solid black;" src="<?= isset($v->img)?base_url('asset/gambar/admin/'.$v->img):base_url('asset/gambar/unnamed.png') ?>" alt="" width="230" height="140">
+                          <img id="image-asset" style="padding: 1px; border: 1px solid black;" src="<?= isset($v->img)?base_url('media/admin/'.$v->img):base_url('media/admin/unnamed.png') ?>" alt="" width="230" height="140" data-iv="<?= $v?$v->img:null ?>">
                           <input type="hidden" id="hid-img" name="img_val" value="<?= isset($v->img)?$v->img:null ?>">
                         </div>
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                          <span id="warning-size" style="display: none;">
+                            <small class="label label-warning">Ukuran file tidak sesuai</small>
+                          </span><br>
+                          <span id="warning-type" style="display: none;">
+                            <small class="label label-warning">Tipe file tidak sesuai</small>
+                          </span>
+                        </div>
                       </div> <br>
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-3">Username</label>
-                        <div class="col-md-6 col-sm-6 col-xs-6">
-                          <input type="text" required class="form-control" name="username" value="<?= isset($v->un)?$v->un:'-' ?>">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3">Email/kontak</label>
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                          <input type="text" onkeypress="return (event.charCode !=32)" required class="form-control" name="username" value="<?= isset($v->em)?$v->em:'-' ?>">
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                          <input type="text" required class="form-control" name="kontak" value="<?= isset($v->kt)?$v->kt:'-' ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                         </div>
                       </div><br>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-3">Kontak</label>
-                        <div class="col-md-3 col-sm-3 col-xs-3">
-                          <input type="text" required class="form-control" name="kontak" value="<?= isset($v->kt)?$v->kt:'-' ?>">
-                        </div>
-                      </div> <br>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3">Konfirmasi password</label>
                         <div class="col-md-3 col-sm-3 col-xs-3">
@@ -128,6 +133,7 @@
 
     <?php $this->load->view('SuptPage/JsP') ?>
     <script src="<?= base_url('asset/JS/Fitur.js') ?>"></script>
-    <script src="<?= base_url('asset/JS/Form.js') ?>"></script>
+    <script src="<?= base_url('asset/JS/Form_edit.js') ?>"></script>
+    <script src="<?= base_url('asset/JS/Error_handler.js') ?>"></script>
   </body>
 </html>
