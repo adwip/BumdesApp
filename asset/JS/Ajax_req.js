@@ -7,6 +7,7 @@
 $(document).ready(function(){
 
     //Belanja barang/barang masuk
+    
     $('#belanja-barang').submit(function(e){
         e.preventDefault()
         const form = $(this).serialize()
@@ -24,6 +25,7 @@ $(document).ready(function(){
                 pembelian_logistik(v.grafik,'#grafik_pembelian_logistik')
                 // alert(v['row'].hg)
                 // window.location.href=document.referrer
+                $('#datatable').dataTable()
             }
         })
     })
@@ -43,6 +45,7 @@ $(document).ready(function(){
                 $('#info-distribusi').html('Rp. '+v.row)
                 let link = $('a[href|=unduh]').attr('href').split('?')
                 $('a[href|=unduh]').attr('href',link[0]+'?'+form)
+                $('#datatable').dataTable()
             }
         })
     })
@@ -63,6 +66,7 @@ $(document).ready(function(){
                 $('#nilai-dist').html('Rp. '+v.row)
                 $('a[href|=unduh]').attr('href',link[0]+'?'+form)
                 distribusi(v.grafik,'#distribusi');
+                $('#datatable').dataTable()
             }
         })
     })
@@ -81,6 +85,7 @@ $(document).ready(function(){
                 $('#val-body').html(v.tabel)
                 let link = $('a[href|=unduh]').attr('href').split('?')
                 $('a[href|=unduh]').attr('href',link[0]+'?'+form)
+                $('#datatable').dataTable()
             }
         })
     })
@@ -100,6 +105,7 @@ $(document).ready(function(){
                 $('#pen-bgh').html('Rp. '+v.row)
                 let link = $('a[href|=unduh]').attr('href').split('?')
                 $('a[href|=unduh]').attr('href',link[0]+'?'+form)
+                $('#datatable').dataTable()
             }
         })
     })
@@ -115,8 +121,8 @@ $(document).ready(function(){
             data: $(this).serialize(),
             dataType: 'json',
             success: function(v){
+                // $('#val-body').removeAttr('id')
                 $('#val-body').html(v.tabel)
-                $('#datatable, .datatable').dataTable();
                 if (v.kd[0].dbt!=null) {
                     $('#debit').html('Rp. '+v.kd[0].dbt)
                 }else{
@@ -132,6 +138,9 @@ $(document).ready(function(){
                 keuangan_mingguan(v.grafik,'#grafik_keuangan_mingguan')
                 keuangan_bulanan(v.grafik,'#grafik_keuangan_bulanan')
                 keuangan_tahunan(v.grafik,'#grafik_keuangan_tahunan')
+                // $('.table').attr('id','datatable')
+                $('#datatable').DataTable()
+                
             }
         })
     })
@@ -146,6 +155,7 @@ $(document).ready(function(){
             success: function(v){
                 v= v.replace(',','').replace(',','').replace(',','')
                 $('#nilai-dividen').val(v)
+                $('#datatable').dataTable()
             }
         })
     })

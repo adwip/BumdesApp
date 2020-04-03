@@ -94,7 +94,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3">Email/kontak</label>
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                          <input type="text" onkeypress="return (event.charCode !=32)" required class="form-control" name="username" value="<?= isset($v->em)?$v->em:'-' ?>">
+                          <input type="text" onkeypress="return (event.charCode !=32)" required class="form-control" name="email" value="<?= isset($v->em)?$v->em:'-' ?>">
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
                           <input type="text" required class="form-control" name="kontak" value="<?= isset($v->kt)?$v->kt:'-' ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">

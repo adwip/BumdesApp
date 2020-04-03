@@ -126,10 +126,7 @@
     </div>
 
     <?php $this->load->view('SuptPage/JsP') ?>
-    <!-- Datatables -->
-    <script src="<?= base_url('asset/') ?>/vendors/datatables.net/js/jquery.dataTables.js"></script>
-    <script src="<?= base_url('asset/') ?>/vendors/datatables.net-bs/js/dataTables.bootstrap.js"></script>
     <!--Javascript tambahan -->
-    <script src="<?= base_url('asset/') ?>/JS/Fitur.js"></script>
+    <script src="<?= base_url('asset') ?>/JS/Fitur.js"></script>
   </body>
 </html>

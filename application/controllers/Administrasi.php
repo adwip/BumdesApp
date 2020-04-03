@@ -225,7 +225,7 @@ class Administrasi extends CI_Controller{
             $message = 'Silahkan klik <a href="'.site_url('registrasi-admin/'.$v['id']).'" target="_blank">tautan</a> ini untuk melanjutkan proses registrasi admin bernama '.$nama;
     
             $this->email->set_newline("\r\n");
-            $this->email->from($from);
+            $this->email->from($from, 'Sistem Web BUMDes');
             $this->email->to($email);
             $this->email->subject($subject);
             $this->email->message($message);
@@ -597,7 +597,7 @@ class Administrasi extends CI_Controller{
         // echo json_encode($data['v']);
     }
 
-    function ganti_password(){//=============ada view
+    function form_ganti_password(){//=============ada view
         $data['page']=$this->page;
         $data['title'] = 'Ganti password';
         // $data['b']=$this->hr->get_saldo('0081578813144);
@@ -708,7 +708,88 @@ class Administrasi extends CI_Controller{
     }
 
     function edit_profil(){
-        echo json_encode($_POST);
+        // echo json_encode($_POST);
+        /*
+        nama: "Tiyo BUMDes"
+        del_fot: "8001585629042.jpeg"
+        img_val: "8001585629042.jpeg"
+        email: "prabowoa63@gmail.com"
+        kontak: "0832-5604-0453"
+        password: "test"
+        */
+
+        $id = '0081578813144';
+        $nama = $this->input->post('nama',true);
+        $del_foto = $this->input->post('del_fot',true);
+        $img_val = $this->input->post('img_val',true);
+        $email = $this->input->post('email',true);
+        $kontak = $this->input->post('kontak',true);
+        $password = $this->input->post('password',true);
+        
+        $size= isset($_FILES['foto'])?$_FILES['foto']['size']:0;
+        $size = $size <= (5*1048576)?true:false;//5 Mb
+        $type = isset($_FILES['foto'])?$_FILES['foto']['type']:false;
+        $type = $type?explode('/',$type):false;
+        $type = $type?$type[1]:false;
+        $type = $type=='jpeg'?'jpg':$type;
+        $nam_file = in_array($type,['png','jpg'])&&$size?'300'.time().'.'.$type:false;
+
+        $v=$this->hr->edit_profil($id,$nama, $email, $kontak, $password, $nam_file, $del_foto);
+
+        
+        $mesg=null;
+        $stat='IDLE';
+        $foto=base_url('media/admin/unnamed.png');
+        $file_name2 =null;
+        if ($del_foto&&$v) {
+            if (file_exists('media/admin/'.$del_foto)) {
+                unlink('media/admin/'.$del_foto);
+            }
+            $stat='Del';
+        }elseif ($nam_file&&$v) {
+            $file_name = explode('.',$nam_file);
+            $config = [
+                'upload_path'=> 'media/admin/',
+                'allowed_types'=> 'jpg|png|jpeg',
+                'max_size'=> 5*1048576,//5 Mb
+                'max_width'=>0,
+                'min_width'=>0,
+                'file_name'=> $file_name[0]
+            ];
+            $this->load->library('upload', $config);
+            if ( ! $this->upload->do_upload('foto')){
+                $mesg = $this->upload->display_errors();
+            }else{
+                $mesg = $this->upload->data();
+                if ($img_val) {
+                    if (file_exists('media/admin/'.$img_val)) {
+                        unlink('media/admin/'.$img_val);
+                    }
+                }
+                $stat='Change';
+                $foto = base_url('media/admin/').$mesg['orig_name'];
+                $file_name2 = $mesg['orig_name'];
+            }
+        }
+
+        if ($v) {
+            $ar = [200, $stat, $foto, $file_name2];
+            $ar = implode('|',$ar);
+            echo $ar;
+        }else{
+            echo '100| | | ';
+        }
+    }
+
+    function ganti_password(){
+        
+        $id = '0081578813144';
+        $password = $this->input->post('password',true);
+        $password2 = $this->input->post('password2',true);
+
+        $v = $this->hr->ganti_password($id, $password, $password2);
+        echo $v?200:100;
+        // echo $password.' - '.$password2;
     }
 
 }

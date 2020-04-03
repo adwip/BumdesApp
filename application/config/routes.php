@@ -112,8 +112,8 @@ $route['set-tambah-komoditas'] = 'Logistic/set_tambah_komoditas';//=========ada 
 $route['hapus-stok-masuk'] = 'Logistic/hapus_stok_masuk';//=========ada view
 $route['hapus-stok-keluar'] = 'Logistic/hapus_stok_keluar';//=========ada view
 $route['edit-barang-masuk'] = 'Logistic/edit_barang_masuk';//=========ada view
-$route['belanja-barang'] = 'Logistic/incoming_goods/json';//=========ada view
-$route['belanja-barang'] = 'Logistic/incoming_goods/json';//=========ada view
+$route['belanja-barang'] = 'Logistic/stok_masuk/json';//=========ada view
+// $route['belanja-barang'] = 'Logistic/incoming_goods/json';//=========ada view
 $route['edit-komoditas-dagang'] = 'Logistic/edit_komoditas_dagang';//=========ada view
 $route['gov-stok-masuk'] = 'Logistic/gov_stok_masuk';//=========ada view
 
@@ -143,12 +143,13 @@ $route['hapus-mitra'] = 'Administrasi/hapus_mitra';//=================ada view
 $route['hapus-user'] = 'Administrasi/hapus_user';//=================ada view
 $route['tambah-satuan'] = 'Administrasi/tambah_satuan';//=================ada view
 $route['ubah-profil'] = 'Administrasi/form_ubah_profil';//=================ada view
-$route['ganti-password'] = 'Administrasi/ganti_password';//=================ada view
+$route['ganti-password'] = 'Administrasi/form_ganti_password';//=================ada view
 $route['detail-user/(:num)'] = 'Administrasi/detail_user/$1';//=================ada view
 $route['gov-asset'] = 'Administrasi/gov_asset';//=================ada view
 $route['gov-kerjasama-bgh'] = 'Administrasi/gov_kerjasama_bgh';//=================ada view
 $route['edit-satuan'] = 'Administrasi/edit_satuan';//=================ada view
 $route['edit-profil'] = 'Administrasi/edit_profil';//=================ada view
+$route['ubah-password'] = 'Administrasi/ganti_password';//=================ada view
 // $route['add-user'] = 'Administrasi/tambah_admin';//=================ada view
 //CONCAT(year(tanggal), "/",WEEK(tanggal))
 

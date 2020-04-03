@@ -183,13 +183,9 @@
     <script src = "https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="<?= base_url('asset/') ?>/JS/Highchart.js"></script>
-    <script src="<?= base_url('asset/') ?>/JS/Form.js"></script>
-    <!-- Datatables -->
-    <script src="<?= base_url('asset/') ?>/vendors/datatables.net/js/jquery.dataTables.js"></script>
-    <script src="<?= base_url('asset/') ?>/vendors/datatables.net-bs/js/dataTables.bootstrap.js"></script>
-    <!-- bootstrap-datetimepicker -->
-    <script src="<?= base_url('asset/') ?>/vendors/moment/min/moment.min.js"></script>    
-    <script src="<?= base_url('asset/') ?>/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <!--Javascript tambahan -->
+    <script src="<?= base_url('asset') ?>/JS/Fitur.js"></script>
+    <script src="<?= base_url('asset/JS/Ajax_req.js') ?>"></script>
     <script type="text/javascript">
       pertumbuhan_laba(JSON.parse('<?= $v_grafik ?>'),'#grafik_laba_usaha')
       $('#myDatepicker2').datetimepicker({

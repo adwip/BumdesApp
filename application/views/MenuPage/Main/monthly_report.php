@@ -132,25 +132,23 @@
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-              <form action="">
-                      <table id="datatable" class="table table-striped table-bordered">
-                        <thead>
-                          <tr>
-                            <th>No</th>
-                            <th>Tanggal</th>
-                            <th>Keterangan</th>
-                            <th>Debit</th>
-                            <th>Kredit</th>
-                            <th>Saldo</th>
-                            <th>Aksi</th>
-                          </tr>
-                        </thead>
+              <table id="datatable" class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Tanggal</th>
+                    <th>Keterangan</th>
+                    <th>Debit</th>
+                    <th>Kredit</th>
+                    <th>Saldo</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
 
-                        <tbody id="val-body" data-act="hapus-keuangan/bln" data-meth="POST">
-                          <?= $value ?>
-                        </tbody>
-                      </table>
-                    </form>
+                <tbody id="val-body" data-act="hapus-keuangan/bln" data-meth="POST">
+                  <?= $value ?>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -190,12 +188,8 @@
     <?php $this->load->view('SuptPage/JsP') ?>
     <script src="<?= base_url('asset/') ?>/JS/Highchart.js"></script>
     <script src="<?= base_url('asset/JS/Form_hapus.js') ?>"></script>
-    <!-- Datatables -->
-    <script src="<?= base_url('asset/') ?>/vendors/datatables.net/js/jquery.dataTables.js"></script>
-    <script src="<?= base_url('asset/') ?>/vendors/datatables.net-bs/js/dataTables.bootstrap.js"></script>
-    <!-- bootstrap-datetimepicker -->
-    <script src="<?= base_url('asset/') ?>/vendors/moment/min/moment.min.js"></script>    
-    <script src="<?= base_url('asset/') ?>/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <!--Javascript tambahan -->
+    <script src="<?= base_url('asset') ?>/JS/Fitur.js"></script>
     <script src="<?= base_url('asset/JS/Ajax_req.js') ?>"></script>
     <script type="text/javascript">
       keuangan_bulanan(JSON.parse('<?= $v_grafik ?>'),'#grafik_keuangan_bulanan')

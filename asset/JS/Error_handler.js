@@ -274,4 +274,32 @@ $(document).ready(function() {
         }
     })
 
+    //Ubah kata sandi/password
+    $('#sandi1, #sandi2').keyup(function(){
+        const sandi1 = $('#sandi1').val()
+        const sandi2 = $('#sandi2').val()
+        let dis = 0;
+        // alert(sandi1.length)
+        if (sandi1!=sandi2&&sandi2!='') {
+            $('#warning2').show()
+            $('button[type=submit]').attr('disabled',true)
+        }else{
+            $('#warning2').hide()
+            $('button[type=submit]').attr('disabled',false)
+        }
+
+        if (sandi1.length<8&&sandi1!='') {
+            $('#warning1').show()
+            $('button[type=submit]').attr('disabled',true)
+        }else{
+            $('#warning1').hide()
+            $('button[type=submit]').attr('disabled',false)
+        }
+
+        if ($('#warning1').is(':visible')||$('#warning2').is(':visible')) {
+            $('button[type=submit]').attr('disabled',true)
+        }else{
+            $('button[type=submit]').attr('disabled',false)
+        }
+    })
 })

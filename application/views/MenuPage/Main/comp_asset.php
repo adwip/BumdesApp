@@ -196,11 +196,9 @@
     <script src="<?= base_url('asset/JS/Form_hapus.js') ?>"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
-    <!-- Datatables -->
-    <script src="<?= base_url('asset') ?>/vendors/datatables.net/js/jquery.dataTables.js"></script>
-    <script src="<?= base_url('asset') ?>/vendors/datatables.net-bs/js/dataTables.bootstrap.js"></script>
     <!--Javascript tambahan -->
     <script src="<?= base_url('asset') ?>/JS/Fitur.js"></script>
+    <script src="<?= base_url('asset/JS/Ajax_req.js') ?>"></script>
     <script>
       let doc = new jsPDF('p','pt','a4');
       

@@ -64,17 +64,23 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <form action="<?= site_url('edit-arus-kas') ?>" id="edit-arus-kas" method="POST" class="form-horizontal form-label-left">
+                    <form action="<?= site_url('ubah-password') ?>" id="ubah-password" method="POST" class="form-horizontal form-label-left">
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" for="">Password baru</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                          <input type="password" required class="form-control" name="ket">
+                          <input type="password" required class="form-control" name="password" id="sandi1">
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-3" id="warning1" style="display: none;">
+                          <small class="label label-danger">Minimal 8 karakter kata sandi</small>
                         </div>
                       </div> <br>
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-3">Cek password</label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3">Konfirmasi password</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                          <input type="password" required class="form-control" name="jumlah">
+                          <input type="password" required class="form-control" name="password2" id="sandi2">
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-3" id="warning2" style="display: none;">
+                          <small class="label label-danger">Kata sandi tidak sama</small>
                         </div>
                       </div><br>
                       
@@ -104,6 +110,7 @@
 
     <?php $this->load->view('SuptPage/JsP') ?>
     <script src="<?= base_url('asset/JS/Fitur.js') ?>"></script>
-    <script src="<?= base_url('asset/JS/Form.js') ?>"></script>
+    <script src="<?= base_url('asset/JS/Form_edit.js') ?>"></script>
+    <script src="<?= base_url('asset/JS/Error_handler.js') ?>"></script>
   </body>
 </html>

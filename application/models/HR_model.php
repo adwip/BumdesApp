@@ -136,14 +136,15 @@ class HR_model extends CI_Model{
         return $result;
     }
 
-    function edit_profil($id, $nama, $username, $kontak, $pass, $foto, $df){
-        $isi = [];
+    function edit_profil($id, $nama, $email, $kontak, $pass, $foto, $df){
+        $isi = ['nama'=>$nama,'email'=>$email,'kontak'=>$kontak];
         if ($foto) {
-            $isi[]=$foto;
+            $isi['foto_user']=$foto;
         }elseif ($df) {
-            $isi[]=null;
+            $isi['foto_user']=null;
         }
         $this->db->where('id_admin',$id);
+        // $this->db->where('password',md5($pass));
         $this->db->update('admin',$isi);
         return $this->db->affected_rows();
     }
@@ -209,8 +210,14 @@ class HR_model extends CI_Model{
 
     }
 
-    function ganti_password($pass_baru,$pass_lama){
-
+    function ganti_password($id, $pass1, $pass2){
+        if ($pass1==$pass2) {
+            $this->db->where('id_admin',$id);
+            $this->db->update('admin',['password'=>md5($pass1)]);
+            return $this->db->affected_rows();
+        }else{
+            return false;
+        }
     }
 
     function cek_session($id){

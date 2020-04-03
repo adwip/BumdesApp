@@ -178,13 +178,8 @@
     <?php $this->load->view('SuptPage/JsP') ?>
     <script src="<?= base_url('asset') ?>/JS/Fitur.js"></script>
     <script src="<?= base_url('asset/') ?>/JS/Highchart.js"></script>
-    <script src="<?= base_url('asset/') ?>/JS/Form.js"></script>
-    <!-- Datatables -->
-    <script src="<?= base_url('asset/') ?>/vendors/datatables.net/js/jquery.dataTables.js"></script>
-    <script src="<?= base_url('asset/') ?>/vendors/datatables.net-bs/js/dataTables.bootstrap.js"></script>
-    <!-- bootstrap-datetimepicker -->
-    <script src="<?= base_url('asset/') ?>/vendors/moment/min/moment.min.js"></script>    
-    <script src="<?= base_url('asset/') ?>/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <!--Javascript tambahan -->
+    <script src="<?= base_url('asset') ?>/JS/Fitur.js"></script>
     <script src="<?= base_url('asset/JS/Ajax_req.js') ?>"></script>
     <script type="text/javascript">
       distribusi(JSON.parse('<?= $v_grafik ?>'),'#distribusi');
