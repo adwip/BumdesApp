@@ -55,7 +55,7 @@ class HR_model extends CI_Model{
         return $result1;
     }
 
-    function get_log_user($tahun, $bulan, $type='html'){
+    function get_log_user($tahun, $bulan, $id=false){
         $this->db->select('IFNULL(del_ad,nama) AS nm, log AS lg, waktu AS tm, tanggal AS dt');
         $this->db->from('log_admin la');
         if ($tahun!='All'&&$bulan=='All') {
@@ -65,18 +65,32 @@ class HR_model extends CI_Model{
         }elseif ($tahun!='All'&&$bulan!='All') {
             $this->db->like('tanggal',$tahun.'-'.$bulan,'after');
         }
+        if ($id) {
+            $this->db->where('admin',$id);
+        }
         $this->db->order_by('id_temp','DESC');
         $this->db->join('admin am','am.id_admin=la.admin','LEFT');
         $result=$this->db->get()->result();
         $result1=null;
-        foreach ($result as $key => $v) {
+        if (!$id) {    
+            foreach ($result as $key => $v) {
             $result1 .= '<tr>
-                           <td>'.($key+1).'</td>
-                           <td>'.$v->nm.'</td>
-                           <td>'.$v->lg.'</td>
-                           <td>'.$v->tm.'</td>
-                           <td>'.date('d/m/Y',strtotime($v->dt)).'</td>
+                        <td>'.($key+1).'</td>
+                        <td>'.$v->nm.'</td>
+                        <td>'.$v->lg.'</td>
+                        <td>'.$v->tm.'</td>
+                        <td>'.date('d/m/Y',strtotime($v->dt)).'</td>
                         </tr>';
+            }
+        }else {
+            foreach ($result as $key => $v) {
+                $result1 .= '<tr>
+                            <td>'.($key+1).'</td>
+                            <td>'.$v->lg.'</td>
+                            <td>'.$v->tm.'</td>
+                            <td>'.date('d/m/Y',strtotime($v->dt)).'</td>
+                            </tr>';
+            }
         }
         return $result1;
     }
@@ -150,10 +164,10 @@ class HR_model extends CI_Model{
     }
 
     function get_detail_user($id){
-        $this->db->select('nama AS nm, username AS un, kategori AS kt, waktu_reg AS wr, foto_user AS ft, kontak AS kn');
+        $this->db->select('nama AS nm, email AS un, kategori AS kt, waktu_reg AS wr, foto_user AS ft, kontak AS kn');
         $this->db->from('admin');
         $this->db->where('id_admin',$id);
-        $this->db->or_where('username',$id);
+        // $this->db->or_where('username',$id);
         $result=$this->db->get()->result();
         $result = isset($result[0])?$result[0]:null;
 
@@ -192,6 +206,15 @@ class HR_model extends CI_Model{
         $isi = ['status'=>1];
         $this->db->where('id',$id);
         $this->db->update('url_confirm',$isi);
+    }
+
+    function get_profil($id){
+        $this->db->select('nama AS nm, email AS em, kategori AS kt, kontak AS ktk, foto_user AS img, waktu_reg AS wtr');
+        $this->db->from('admin');
+        $this->db->where('id_admin',$id);
+        $result = $this->db->get()->result();
+        $result = isset($result[0])?$result[0]:false;
+        return $result;
     }
 
     function login($email,$password){

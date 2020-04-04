@@ -5,8 +5,14 @@ class Finance extends CI_controller{
     function __construct(){
         parent:: __construct();
 		date_default_timezone_set('Asia/Jakarta');
-        $this->page = 'MenuPage';
-        // $this->page = 'MenuPageGov';
+        $tp='GOV';
+        if ($tp=='MNG') {
+            $this->page = 'MenuPage';
+        }else if ($tp=='GOV') {
+            $this->page = 'MenuPageGov';
+        }elseif ($tp=='SYS') {
+            $this->page = 'MenuPageGov';
+        }
         $this->PDF = new FPDF();
         $this->bulan = ['01'=>'Januari','02'=>'Februari','03'=>'Maret','04'=>'April','05'=>'Mei','06'=>'Juni','07'=>'Juli','08'=>'Agustus','09'=>'September','10'=>'Oktober','11'=>'November','12'=>'Desember'];
         $this->waktu = date('Y-m-d H:i:s');
@@ -324,7 +330,7 @@ class Finance extends CI_controller{
         $info = $this->input->post('info',true);
         $info = explode('|', $info);
 
-        echo json_encode($_POST);
+        // echo json_encode($_POST);
         
         $v = $this->fm->set_pemb_bagi_hasil($id, $jumlah, $cat, $tanggal);
         $log_mesg = '[TAMBAH][PEMBAYARAN][BAGI HASIL]['.$v['id'].']['.$id.'] Menambah pembayaran hasil dari kerjasama bagi hasil penggunaan aset';

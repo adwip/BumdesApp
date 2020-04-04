@@ -89,19 +89,19 @@
                 <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <table id="datatable" class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <td><strong>No</strong></td>
-                                <td><strong>Penerima</strong></td>
-                                <td><strong>Persentase</strong></td>
-                                <td><strong>Jumlah</strong></td>
-                            </tr>
-                        </thead>
-                        <tbody data-mid="<?= $id ?>" id="val-body" data-act="<?= site_url('hapus-pembayaran') ?>" data-act2="<?= site_url('set-pembayaran') ?>" data-meth="POST">
-                        <?= $tabel_ent ?>
-                        </tbody>
-                    </table>
+                  <table class="table table-striped table-bordered">
+                      <thead>
+                          <tr>
+                              <td><strong>No</strong></td>
+                              <td><strong>Penerima</strong></td>
+                              <td><strong>Persentase</strong></td>
+                              <td><strong>Jumlah</strong></td>
+                          </tr>
+                      </thead>
+                      <tbody data-mid="<?= $id ?>" id="val-body" data-act="<?= site_url('hapus-pembayaran') ?>" data-act2="<?= site_url('set-pembayaran') ?>" data-meth="POST">
+                      <?= $tabel_ent ?>
+                      </tbody>
+                  </table>
                 </div>
             </div>
             </div>

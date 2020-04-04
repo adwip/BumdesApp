@@ -157,6 +157,17 @@ $(document).ready(function() {
         }
     })
 
+    $('#nominal-edit-pbgh').on('keyup',function(){//edit
+        const b = $('#pers-b').val().replace('%','')
+        const m = $('#pers-m').val().replace('%','')
+        const n = $('#nominal-edit-pbgh').val()
+
+        if (parseInt(n)>0) {
+            $('#val-b').val(n*(b/100))
+            $('#val-m').val(n*(m/100))
+        }
+    })
+
     $('.passwords2').keyup(function(){
         const p1 = $('.passwords').val()
         const p2 = $('.passwords2').val()
@@ -278,7 +289,7 @@ $(document).ready(function() {
     $('#sandi1, #sandi2').keyup(function(){
         const sandi1 = $('#sandi1').val()
         const sandi2 = $('#sandi2').val()
-        let dis = 0;
+        
         // alert(sandi1.length)
         if (sandi1!=sandi2&&sandi2!='') {
             $('#warning2').show()

@@ -472,7 +472,7 @@ class Finance_model extends CI_Model{
     }
 
     function get_edit_pemb_bgh($id){
-        $this->db->select('id_pbgh AS id, IFNULL(aset_luar,IFNULL(nama, deld_aset)) AS ast, nama_mitra AS nm, catatan AS ct, tanggal_bayar AS tb, jumlah AS jl, pen_bumdes AS pnb, pen_mitra AS pnm, pers_bumdes AS pb, pers_mitra AS pm, id_fin AS idf');
+        $this->db->select('id_pbgh AS id, IFNULL(aset_luar,IFNULL(nama, deld_aset)) AS ast, nama_mitra AS nm, catatan AS ct, tanggal_bayar AS tb, jumlah AS jl, pen_bumdes AS pnb, pen_mitra AS pnm, pers_bumdes AS pb, pers_mitra AS pm, id_fin AS idf, TIMESTAMPDIFF(MONTH, tanggal_mulai, tanggal_selesai) AS dur, tanggal_mulai AS tm');
         //FORMAT((pers_bumdes/100)*jumlah, "#.00")
         //FORMAT((pers_mitra/100)*jumlah,"#.00")
         $this->db->from('pemb_bagi_hasil');
@@ -834,4 +834,26 @@ class Finance_model extends CI_Model{
         return $result;
     }
     
+    function get_histori_bgh_aset($id){
+        $this->db->select('nama_mitra AS mt, pers_bumdes AS pb, pers_mitra AS pm, tanggal_mulai AS tm, TIMESTAMPDIFF(MONTH, tanggal_mulai, tanggal_selesai) AS dur, FORMAT(SUM(jumlah),"#.00") AS tbh');
+        $this->db->from('bagi_hasil_aset bgh');
+        $this->db->join('mitra','id_mitra = bgh.mitra');
+        $this->db->join('pemb_bagi_hasil','id_bagi = id_bgh','LEFT');
+        $this->db->where('aset_bh',$id);
+        $this->db->group_by('id_bgh');
+        $result = $this->db->get()->result();
+        $result1=null;
+        foreach ($result as $key => $v) {
+            $result1 .= '<tr>
+                            <td>'.($key+1).'</td>
+                            <td>'.$v->mt.'</td>
+                            <td>'.date('d-m-Y',strtotime($v->tm)).'</td>
+                            <td>'.$v->dur.' Bulan</td>
+                            <Td>'.$v->pb.' %</Td>
+                            <Td>'.$v->pm.' %</Td>
+                            <Td>Rp. '.$v->tbh.'</Td>
+                        </tr>';
+        }
+        return $result1;
+    }//TIMESTAMPDIFF(MONTH,tanggal_mulai, tanggal_selesai) AS dur
 }

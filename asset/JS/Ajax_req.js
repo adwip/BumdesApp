@@ -159,4 +159,19 @@ $(document).ready(function(){
             }
         })
     })
+    
+    $('#log-admin').submit(function(e){
+        e.preventDefault()
+        const form = $(this).serialize()
+        history.pushState("","",'?'+form)
+        $.ajax({
+            url:$(this).attr('action'),
+            data: $(this).serialize(),
+            type: $(this).attr('method'),
+            dataType: 'html',
+            success: function(v){
+                $('#val-body').html(v)
+            }
+        })
+    })
 })

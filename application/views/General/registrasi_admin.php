@@ -46,7 +46,7 @@
             <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-3">Kontak / Kategori</label>
                 <div class="col-md-3 col-sm-3 col-xs-3">
-                    <input type="text" required class="form-control" name="kontak" onkeypress="return (event.charCode !=32)" autocomplete="off">
+                    <input placeholder="Kontak yang bisa dihubungi" type="text" required class="form-control" name="kontak" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" autocomplete="off">
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-3">
                     <input type="text" readonly class="form-control" name="kat" value="<?= $v[2] ?>">
@@ -55,22 +55,35 @@
             <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-3">Kata sandi</label>
                 <div class="col-md-3 col-sm-3 col-xs-3">
-                    <input type="text" required class="form-control" name="pass" onkeypress="return (event.charCode !=32)" autocomplete="off">
+                    <input type="password" placeholder="Masukkan kata sandi anda" required class="form-control" name="pass"utocomplete="off" id="sandi1">
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-3">
-                    <input type="text" required class="form-control" onkeypress="return (event.charCode !=32)" autocomplete="off">
+                    <input type="password" placeholder="Konfirmasi kata sandi anda" required class="form-control" onkeypress="return (event.charCode !=32)" autocomplete="off" id="sandi2">
                 </div>
-                <div class="col-md-3 col-sm-3 col-xs-3" id="warning">
-                    <small class="label label-danger">Kata sandi tidak sama</small>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                    <span id="warning1" style="display: none;">
+                        <small class="label label-danger">Minimal 8 karakter</small>
+                    </span><br>
+                    <span id="warning2" style="display: none;">
+                        <small class="label label-danger">Kata sandi tidak sama</small>
+                    </span>
                 </div>
             </div> <br>
             <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-3" for="kontak">Uanggah Foto</label>
                 <div class="col-md-3 col-sm-3 col-xs-3 text-center">
-                    <input type="file" name="foto" class="form-control">
+                    <input type="file" name="foto" class="form-control" id="img-form">
                 </div>
-                <div class="col-md-3 col-sm-3 col-xs-3" id="warning">
-                    <small class="label label-info">JPG | PNG</small>
+                <div class="col-md-1 col-sm-1 col-xs-1" id="warning">
+                    <small class="label label-info">JPG | PNG | 5 Mb</small>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                    <span id="warning-size" style="display: none;">
+                    <small class="label label-warning">Ukuran file tidak sesuai</small>
+                    </span>
+                    <span id="warning-type" style="display: none;">
+                    <small class="label label-warning">Tipe file tidak sesuai</small>
+                    </span>
                 </div>
             </div> <br>
             <div class="col-md-12 col-sm-12 col-xs-12 text-center">
@@ -81,5 +94,6 @@
     </div>
     <?php $this->load->view('SuptPage/JsP') ?>
     <script src="<?= base_url('asset/JS/Form.js') ?>"></script>
+    <script src="<?= base_url('asset/JS/Error_handler.js') ?>"></script>
   </body>
 </html>

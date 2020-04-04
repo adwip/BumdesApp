@@ -70,32 +70,32 @@
                 <div class="row">
                   <div class="col-md-12">
                     <div class="row">
-                        <form id="TipForm" action="">
+                        <form id="log-admin" action="admin-log">
                             <div class="col-md-6 col-sm-6">  
-                                <div class="form-group">
-                                    <label for="">Tahun</label>
-                                    <select name="tahun" class="form-control" onchange="">
-                                      <?php 
-                                        foreach ($v_tahun as $key => $val) {
-                                          $val->thn==$tahun?$sel='selected':$sel=null;
-                                          echo '<option '.$sel.' value="'.$val->thn.'">'.$val->thn.'</option>';
-                                        }
-                                      ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-sm-6">
-                                <div class="form-group">
-                                  <label for="">Bulan</label>
-                                  <select name="bulan" class="form-control" onchange="">
-                                  <?php 
-                                    foreach ($bln as $key => $val) {
-                                      $key==$bulan?$sel='selected':$sel=null;
-                                      echo '<option '.$sel.' value="'.$key.'">'.$val.'</option>';
-                                    }
+                              <div class="form-group">
+                                  <label for="">Tahun</label>
+                                  <select name="tahun" class="form-control" onchange="$('#log-admin').submit()">
+                                    <?php 
+                                      foreach ($v_tahun as $key => $val) {
+                                        $val->thn==$y?$sel='selected':$sel=null;
+                                        echo '<option '.$sel.' value="'.$val->thn.'">'.$val->thn.'</option>';
+                                      }
                                     ?>
                                   </select>
-                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                              <div class="form-group">
+                                <label for="">Bulan</label>
+                                <select name="bulan" class="form-control" onchange="$('#log-admin').submit()">
+                                <?php 
+                                  foreach ($bln as $key => $val) {
+                                    $key==$m?$sel='selected':$sel=null;
+                                    echo '<option '.$sel.' value="'.$key.'">'.$val.'</option>';
+                                  }
+                                  ?>
+                                </select>
+                              </div>
                             </div>
                         </form>
                     </div>
@@ -104,15 +104,6 @@
               </div>
             </div>
           </div>
-          <!-- <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-              <div class="x_panel" style="height: 70px;">
-                <div class="x_content text-center">
-                  <button class="btn btn-md btn-primary">Tambah Toko</button>
-                </div>
-              </div>
-            </div>
-          </div> -->
           <br>
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -134,7 +125,7 @@
                           </tr>
                         </thead>
 
-                        <tbody>
+                        <tbody id="val-body">
                           <?= $v ?>
                         </tbody>
                       </table>
@@ -161,6 +152,6 @@
     <?php $this->load->view('SuptPage/JsP') ?>
     <!--Javascript tambahan -->
     <script src="<?= base_url('asset') ?>/JS/Fitur.js"></script>
-    <script src="<?= base_url('asset/JS/Ajax_req.js') ?>"></script>
+    <!-- <script src="<?= base_url('asset/JS/Ajax_req.js') ?>"></script> -->
   </body>
 </html>

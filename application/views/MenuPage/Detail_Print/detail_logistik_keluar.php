@@ -108,11 +108,11 @@
                     </div>
                     <div class="col-md-4">
                       <div class="row">
-                          <form id="belanja-barang" action="<?= site_url('belanja-barang') ?>" method="GET">
+                          <form id="detail-penjualan" action="<?= site_url('detail-penjualan/'.$id) ?>" method="GET">
                               <div class="col-md-6 col-sm-6">  
                                   <div class="form-group">
                                       <label for="">Tahun</label>
-                                      <select name="tahun" class="form-control" onchange="$('#belanja-barang').submit()">
+                                      <select name="tahun" class="form-control" onchange="$('#detail-penjualan').submit()">
                                         <?php 
                                           foreach ($thn as $key => $val) {
                                             $val->thn==$y?$sel='selected':$sel=null;
@@ -125,7 +125,7 @@
                               <div class="col-md-6 col-sm-6">
                                   <div class="form-group">
                                       <label for="">Bulan</label>
-                                  <select name="bulan" class="form-control" onchange="$('#belanja-barang').submit()">
+                                  <select name="bulan" class="form-control" onchange="$('#detail-penjualan').submit()">
                                       <?php 
                                       foreach ($bln as $key => $val) {
                                         $key==$m?$sel='selected':$sel=null;
@@ -142,7 +142,7 @@
                   <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                <table id="datatable" class="table table-striped table-bordered">
+                <table class="table table-striped table-bordered">
                       <thead>
                           <tr>
                             <td><strong>No</strong></td>
@@ -154,7 +154,7 @@
                             <td><strong>Stok</strong></td>
                           </tr>
                       </thead>
-                      <tbody>
+                      <tbody id="val-body">
                           <?= $v_keluar_tabel ?>
                       </tbody>
                   </table>
@@ -179,7 +179,6 @@
     
 
     <?php $this->load->view('SuptPage/JsP') ?>
-    <script src="<?= base_url('asset/JS/Fitur.js') ?>"></script>
-    <script src="<?= base_url('asset/JS/Form.js') ?>"></script>
+    <script src="<?= base_url('asset/JS/Ajax_req_detail.js') ?>"></script>
   </body>
 </html>

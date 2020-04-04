@@ -92,7 +92,7 @@
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-                <table id="datatable" class="table table-striped table-bordered">
+                <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <td><strong>No</strong></td>

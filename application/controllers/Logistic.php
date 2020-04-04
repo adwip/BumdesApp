@@ -5,9 +5,15 @@ class Logistic extends CI_Controller{
 
     function __construct(){
         parent:: __construct();
-		date_default_timezone_set('Asia/Jakarta');
-        $this->page = 'MenuPage';
-        // $this->page = 'MenuPageGov';
+        date_default_timezone_set('Asia/Jakarta');
+        $tp='GOV';
+        if ($tp=='MNG') {
+            $this->page = 'MenuPage';
+        }else if ($tp=='GOV') {
+            $this->page = 'MenuPageGov';
+        }elseif ($tp=='SYS') {
+            $this->page = 'MenuPageGov';
+        }
         $this->bulan = ['01'=>'Januari','02'=>'Februari','03'=>'Maret','04'=>'April','05'=>'Mei','06'=>'Juni','07'=>'Juli','08'=>'Agustus','09'=>'September','10'=>'Oktober','11'=>'November','12'=>'Desember'];
         $this->PDF = new FPDF();
         $this->waktu = date('Y-m-d H:i:s');
@@ -145,39 +151,52 @@ class Logistic extends CI_Controller{
         // echo $data['v_tabel_histori'];
     }
 
-    function detail_logistik_masuk($id){//=============ada view
+    function detail_logistik_masuk($id, $type='html'){//=============ada view
         $data['page']=$this->page;
         $data['title'] = '';
         $data['tanggal'] = date('d/m/Y');
         $data['id'] = $id;
         $data['y'] = date('Y');
         $data['m'] = date('m');
+        if (isset($_GET['tahun'])) {
+            $data['y'] = $this->input->get('tahun',TRUE);
+            $data['m'] = $this->input->get('bulan',TRUE);
+        }
         $data['v'] = $this->lm->get_detail_log_masuk($id);
         $id=isset($data['v']->id)?$data['v']->id:null;
         $data['v_masuk_tabel'] = $this->lm->get_detail_komoditas_masuk($id, $data['y'],$data['m']);
         $data['thn'] = $this->lm->get_tahun_his_log($id, 'IN');
         $data['bln'] = $this->bulan;
-        $this->load->view('MenuPage/Detail_Print/detail_logistik_masuk',$data);
-        // echo $data['v_masuk_tabel'];
-        // echo json_encode($data['thn']);
+        if ($type=='html') {
+            $this->load->view('MenuPage/Detail_Print/detail_logistik_masuk',$data);
+        }else{
+            echo $data['v_masuk_tabel'];
+            // echo json_encode($_GET);
+        }
     }
     
 
-    function detail_logistik_keluar($id){//=============ada view
+    function detail_logistik_keluar($id, $type='html'){//=============ada view
         $data['page']=$this->page;
         $data['title'] = '';
         $data['tanggal'] = date('d/m/Y');
         $data['id'] = $id;
         $data['y'] = date('Y');
         $data['m'] = date('m');
+        if (isset($_GET['tahun'])) {
+            $data['y'] = $this->input->get('tahun',TRUE);
+            $data['m'] = $this->input->get('bulan',TRUE);
+        }
         $data['v'] = $this->lm->get_detail_log_keluar($id);
         $id=isset($data['v']->id)?$data['v']->id:null;
         $data['v_keluar_tabel'] = $this->lm->get_detail_komoditas_keluar($id, $data['y'],$data['m']);
         $data['thn'] = $this->lm->get_tahun_his_log($id, 'OUT');
         $data['bln'] = $this->bulan;
-        // echo json_encode($data['v']);
-        $this->load->view('MenuPage/Detail_Print/detail_logistik_keluar',$data);
-        // echo $data['v_keluar_tabel'];
+        if ($type=='html') {
+            $this->load->view('MenuPage/Detail_Print/detail_logistik_keluar',$data);
+        }else{
+            echo $data['v_keluar_tabel'];
+        }
     }
 
     //=============ada view

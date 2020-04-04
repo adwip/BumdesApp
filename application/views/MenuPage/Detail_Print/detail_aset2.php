@@ -53,9 +53,9 @@
 
         <!-- page content -->
         <div class="right_col" role="main" style="color: black;">
-            <div class="col-md-12">
-                <button class="btn btn-md btn-warning" onclick="window.location.href=document.referrer"> Kembali</button>
-            </div>
+          <div class="col-md-12">
+              <button class="btn btn-md btn-warning" onclick="window.location.href=document.referrer"> Kembali</button>
+          </div>
           <div class="">
             <div class="page-title">
               <div class="title_left">
@@ -158,7 +158,20 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                      
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <td><strong>No</strong></td>
+                                <td><strong>Penyewa</strong></td>
+                                <td><strong>Tanggal Mulai</strong></td>
+                                <td><strong>Durasi</strong></td>
+                                <td><strong>Biaya</strong></td>
+                            </tr>
+                        </thead>
+                        <tbody id="val-body">
+                          <?= $v_sewa ?>
+                        </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
@@ -172,7 +185,22 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                      
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <td><strong>No</strong></td>
+                                <td><strong>Mitra</strong></td>
+                                <td><strong>Tanggal Mulai</strong></td>
+                                <td><strong>Durasi</strong></td>
+                                <td><strong>Pers BUMDes</strong></td>
+                                <td><strong>Pers Mitra</strong></td>
+                                <td><strong>Total Bagi hasil</strong></td>
+                            </tr>
+                        </thead>
+                        <tbody id="val-body">
+                          <?= $v_bgh ?>
+                        </tbody>
+                    </table>
                   </div>
                 </div>
               </div>

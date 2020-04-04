@@ -53,6 +53,9 @@
 
         <!-- page content -->
         <div class="right_col" role="main" style="color: black;">
+          <div class="col-md-12">
+              <button class="btn btn-md btn-warning" onclick="window.location.href=document.referrer"> Kembali</button>
+          </div>
           <div class="">
             <div class="page-title">
               <div class="title_left">
@@ -74,7 +77,7 @@
                       <div class="profile_img">
                         <div id="crop-avatar">
                           <!-- Current avatar -->
-                          <img style="padding: .5px; border: 1px solid black; max-height: 150px; max-width: 250px;" class="img-responsive avatar-view" src="<?= isset($u->ft)?base_url('asset/gambar/'.$u->ft):base_url('asset/gambar/unnamed.png') ?>" alt="Avatar" title="Change the avatar">
+                          <img style="padding: .5px; border: 1px solid black; max-height: 150px; max-width: 250px;" class="img-responsive avatar-view" src="<?= isset($u->ft)?base_url('media/admin/'.$u->ft):base_url('media/admin/unnamed.png') ?>" alt="Avatar" title="Change the avatar">
                         </div>
                       </div>
                       <h3><?= isset($v->nm)?$v->nm:'-'?></h3>
@@ -137,7 +140,7 @@
                         </div>
                       </div><br>
                       <!-- start of user-activity-graph -->
-                      <table id="datatable" class="table table-striped table-bordered">
+                      <table class="table table-striped table-bordered">
                         <thead>
                           <tr>
                             <th>No</th>
@@ -148,7 +151,7 @@
                         </thead>
 
                         <tbody id="val-body" data-act="hapus-stok-masuk" data-meth="POST">
-                            <!-- <?= $v ?> -->
+                            <?= $log ?>
                         </tbody>
                       </table>
                       <div id="graph_bar" style="width:100%; height:280px;"></div>

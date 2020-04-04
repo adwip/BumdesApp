@@ -58,7 +58,6 @@ class Rent_model extends CI_Model{
                                 <td>'.$v->nm.'</td>
                                 <td>Rp. '.$v->hs.'</td>
                                 <td class="text-center">
-                                '.anchor('detail-rp/'.$v->id,'Detail').'
                                 '.anchor('edit-rp/'.$v->id,'Ubah','class="btn btn-xs btn-warning"').'
                                 <button type="button" class="btn btn-xs btn-danger hapus" value="'.$v->id.'">Hapus</button>
                                 </td>
@@ -233,6 +232,24 @@ class Rent_model extends CI_Model{
         $this->db->or_where('(tanggal_mulai >= "'.$tm.'" AND tanggal_selesai <= "'.$ts.'"))');
         $result = $this->db->get()->num_rows();
         return $result;
+    }
+
+    function get_histori_sewa_aset($id){
+        $this->db->select('penyewa AS pn, tanggal_mulai AS tm, DATEDIFF(tanggal_selesai, tanggal_mulai) AS dur, FORMAT(harga, "#.00") AS hg');
+        $this->db->from('penyewaan');
+        $this->db->where('aset',$id);
+        $result = $this->db->get()->result();
+        $result1=null;
+        foreach ($result as $key => $v) {
+            $result1 .= '<tr>
+                            <td>'.($key+1).'</td>
+                            <td>'.$v->pn.'</td>
+                            <td>'.date('d-m-Y',strtotime($v->tm)).'</td>
+                            <td>'.$v->dur.' Hari</td>
+                            <Td>Rp. '.$v->hg.'</Td>
+                        </tr>';
+        }
+        return $result1;
     }
 
 }

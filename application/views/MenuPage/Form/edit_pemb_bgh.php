@@ -54,7 +54,7 @@
         <!-- page content -->
         <div class="right_col" role="main" style="color: black;">
             <div class="col-md-12">
-                <button class="btn btn-md btn-warning" onclick="window.location.href=document.referrer">Batal | Kembali</button>
+                <button class="btn btn-md btn-warning" onclick="window.history.back()">Batal | Kembali</button>
             </div>
         <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="x_panel">
@@ -80,6 +80,18 @@
                   </div>
                 </div><br>
                 <div class="form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-3" >Tanggal mulai / durasi</label>
+                  <div class="col-md-3 col-sm-3 col-xs-3">
+                    <input type="text" value="<?= isset($v->tm)?date('d-m-Y',strtotime($v->tm)):'-' ?>" readonly class="form-control">
+                  </div>
+                  <div class="col-md-1 col-sm-1 col-xs-1">
+                    <input type="text" value="<?= isset($v->dur)?$v->dur:'-' ?>" readonly class="form-control">
+                  </div>
+                  <div class="col-md-2 col-sm-2 col-xs-2">
+                    <input type="text" value="Bulan" readonly class="form-control">
+                  </div>
+                </div><br>
+                <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-3" >Catatan</label>
                   <div class="col-md-6 col-sm-6 col-xs-6">
                     <input type="text" value="<?= isset($v->id)?$v->ct:'-' ?>" required class="form-control" name="cat" >
@@ -89,7 +101,7 @@
                   <label class="control-label col-md-3 col-sm-3 col-xs-3" >Tanggal bayar</label>
                   <div class="col-md-6 col-sm-6 col-xs-6">
                     <div class="input-group date  tanggal_form tanggal_edit">
-                      <input value="<?= isset($v->id)?date('d-m-Y',strtotime($v->tb)):'-' ?>" type='text' class="form-control" readonly="readonly" id="tanggal_edit" name="tanggal" />
+                      <input value="<?= isset($v->id)?date('d-m-Y',strtotime($v->tb)):'-' ?>" <?= !isset($v->id)?'disabled':'data-tl="'.konv_waktu($v->id).'"' ?> type='text' class="form-control" readonly="readonly" id="tanggal_edit" name="tanggal" />
                       <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                       </span>

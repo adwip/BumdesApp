@@ -5,8 +5,14 @@ class Administrasi extends CI_Controller{
     function __construct(){
         parent:: __construct();
 		date_default_timezone_set('Asia/Jakarta');
-        $this->page = 'MenuPage';
-        // $this->page = 'MenuPageGov';
+        $tp='GOV';
+        if ($tp=='MNG') {
+            $this->page = 'MenuPage';
+        }else if ($tp=='GOV') {
+            $this->page = 'MenuPageGov';
+        }elseif ($tp=='SYS') {
+            $this->page = 'MenuPageGov';
+        }
         $this->PDF = new FPDF();
         $this->bulan = ['01'=>'Januari','02'=>'Februari','03'=>'Maret','04'=>'April','05'=>'Mei','06'=>'Juni','07'=>'Juli','08'=>'Agustus','09'=>'September','10'=>'Oktober','11'=>'November','12'=>'Desember'];
         $this->waktu = date('Y-m-d H:i:s');
@@ -34,7 +40,6 @@ class Administrasi extends CI_Controller{
         $this->load->view('MenuPage/Main/comp_asset',$data);
     }
 
-    
     function tambah_aset(){//=================OK
         $data['page']=$this->page;
         $data['title'] = '';
@@ -42,7 +47,6 @@ class Administrasi extends CI_Controller{
         $data['b']=$this->fm->get_saldo();
         $this->load->view('MenuPage/Form/tambah_aset',$data);
     }
-    
     
     function business_partner(){//=================OK
         $data['page']=$this->page;
@@ -67,17 +71,31 @@ class Administrasi extends CI_Controller{
         $data['tanggal'] = date('d/m/Y');
         $data['id'] = $id;
         $data['v'] = $this->am->get_detail_aset($id);
-        // $data['v_masuk_tabel'] = $this->lm->get_detail_komoditas_masuk($id);
+        $data['v_sewa'] = $this->rm->get_histori_sewa_aset($id);
+        $data['v_bgh'] = $this->fm->get_histori_bgh_aset($id);
         $this->load->view('MenuPage/Detail_Print/detail_aset2',$data);
-        // echo json_encode($data['v']);
+        // echo json_encode($data['v_bgh']);
         // echo APPPATH;
     }
 
-    function security(){//=============ada view
+    function security($type='html'){//=============ada view
         $data['page']=$this->page;
         $data['title'] = 'Akun admin';//0081578813144
+        $data['y'] = date('Y');
+        $data['m'] = date('m');
+        if (isset($_GET['tahun'])) {
+            $data['y'] = $this->db->get('tahun',true);
+            $data['m'] = $this->db->get('bulan',true);
+        }
         $data['v'] = $this->hr->get_user_log_id('0081578813144');
-        $this->load->view('MenuPage/Main/security',$data);
+        $data['p'] = $this->hr->get_profil('0081586049510');
+        $kat = ['MNG'=>'Pengurus BUMDes Indrakila Jaya','GOV'=>'Pemerintah Desa Pujotirto','SYS'=>'Sistem Admin Web BUMDes'];
+        if ($type=='html') {
+            $data['kt'] = $data['p']?$kat[$data['p']->kt]:null;
+            $this->load->view('MenuPage/Main/security',$data);
+        }else {
+            echo $data['v'];
+        }
     }
 
     function user_management(){//=============ada view
@@ -96,16 +114,24 @@ class Administrasi extends CI_Controller{
     }
 
 
-    function admin_log(){//=============ada view
+    function admin_log($type='html'){//=============ada view
         $data['page']=$this->page;
         $data['bln'] = $this->bulan;
         $data['title'] = '';
-        $data['bulan']=date('m');
-        $data['tahun']=date('Y');
-        $data['v'] = $this->hr->get_log_user('All','All');
+        $data['m']=date('m');
+        $data['y']=date('Y');
+        if (isset($_GET['tahun'])) {
+            $data['y'] = $this->input->get('tahun',true);
+            $data['m'] = $this->input->get('bulan',true);
+        }
+        $data['v'] = $this->hr->get_log_user($data['y'],$data['m']);
         $data['v_tahun'] = $this->hr->get_tahun_log();
         // echo $data['v'];
-        $this->load->view('MenuPage/Main/admin_log',$data);
+        if ($type=='html') {
+            $this->load->view('MenuPage/Main/admin_log',$data);
+        }else{
+            echo $data['v'];
+        }
     }
 
     function form_edit_aset($id){//=============ada view
@@ -610,6 +636,13 @@ class Administrasi extends CI_Controller{
         $data['page']=$this->page;
         $data['title'] = 'Ganti password';
         $data['u']=$this->hr->get_detail_user($id);
+        $data['y'] = date('Y');
+        $data['m'] = date('m');
+        if (isset($_GET['tahun'])) {
+            $data['y'] = $this->db->get('tahun',true);
+            $data['m'] = $this->db->get('bulan',true);
+        }
+        $data['log'] = $this->hr->get_log_user($data['y'], $data['m'], $id);
         $data['k'] = isset($data['u']->kt)?$kat[$data['u']->kt]:'-';
         $this->load->view('MenuPage/Detail_Print/detail_user',$data);
     }
@@ -732,7 +765,7 @@ class Administrasi extends CI_Controller{
         $type = $type?explode('/',$type):false;
         $type = $type?$type[1]:false;
         $type = $type=='jpeg'?'jpg':$type;
-        $nam_file = in_array($type,['png','jpg'])&&$size?'300'.time().'.'.$type:false;
+        $nam_file = in_array($type,['png','jpg'])&&$size?'800'.time().'.'.$type:false;
 
         $v=$this->hr->edit_profil($id,$nama, $email, $kontak, $password, $nam_file, $del_foto);
 

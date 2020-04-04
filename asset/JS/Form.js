@@ -313,21 +313,19 @@ $(document).ready(function(){
                     cache: false,
                     contentType: false,
                     processData: false,
-                    success: function(v){/*
+                    success: function(v){
                         v = v.split('|')
                         if (v[0]==200) {
-                            $('#saldo').val('Rp. '+v[1])
-                            reset_form()
-                            $('#gam_file').val(null)
-                            swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
+                            swal({text:"Registrasi berhasil",buttons: false,timer:3000,icon:"success"})
                         }else{
-                            swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
-                        }*/
+                            swal({text:"Registrasi gagal",buttons: false,timer:3000,icon:"error"})
+                        }
                     }
                 })
             }
         })
     })
+
     $('#set-bagi-dividen').submit(function(e){
         e.preventDefault()
         swal({title:"Lanjutkan menyimpan ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {
