@@ -29,7 +29,7 @@ class Homepage extends CI_Controller{
         $data['title'] = 'Homepage';
         //echo $this->input->get('tipe');
         $data['Y'] = date('Y');
-        $data['v_graf'] = $this->lm->get_grafik_penjualan($data['Y']);
+        $data['v_graf'] = $this->lm->get_grafik_penjualan($data['Y'], date('m'));
         $data['v'] = $this->rm->get_total_penyewaan($data['Y']);
         $data['v2'] = $this->tm->get_total_penjualan($data['Y'],date('m'));
         $data['v3'] = $this->fm->get_total_bagi_hasil($data['Y']);

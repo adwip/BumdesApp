@@ -168,7 +168,7 @@ class Finance extends CI_controller{
         if (isset($_GET['tahun'])) {
             $data['tahun'] = $this->input->get('tahun',TRUE);
         }
-        $data['thn'] = $this->fm->get_tahun();
+        $data['thn'] = $this->fm->get_tahun_bgh();
         $data['value'] = $this->fm->daftar_kerjasama_bgh($data['tahun']);
         $data['v'] = $this->fm->get_total_bagi_hasil($data['tahun']);
         $data['v_grafik']=$this->fm->get_grafik_bagi_hasil($data['tahun']);
@@ -863,25 +863,6 @@ class Finance extends CI_controller{
             }
             echo 200;
         }
-    }
-    
-    function gov_finansial(){
-        $data['page']=$this->page;
-        $data['title'] = 'Pencatatan penjualan';
-        $data['bln'] = $this->bulan;
-        $data['tahun'] = date('Y');
-        $data['bulan'] = date('m');
-        if (isset($_GET['tahun'])) {
-            $data['tahun'] = $this->input->get('tahun',TRUE);
-            $data['bulan'] = $this->input->get('bulan',TRUE);
-        }
-        $data['thn'] = $this->fm->get_tahun_fin();
-        $data['v'] = '';
-        $data['v1'] = $this->fm->get_saldo();
-        $data['v2'] = $this->fm->get_kredit_debit_bulanan($data['tahun'],$data['bulan']);
-        $data['v3'] = $this->am->get_aset_bagi_hasil('json');
-        $this->load->view('MenuPage/Main/gov_finansial',$data);
-        // echo json_encode($data['v2']);
     }
 
     function cek_jadwal_bgh(){

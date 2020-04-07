@@ -114,11 +114,11 @@ class Logistic_model extends CI_Model{
         }
     }
 
-    function get_grafik_penjualan($tahun){
+    function get_grafik_penjualan($tahun,$bulan){
         $this->db->select('SUM(nilai_transaksi) AS sl, SUM(margin) AS mg');
         $this->db->from('stok_item si');
         $this->db->join('stok_keluar sk','si.id_stok=sk.id_prb');
-        $this->db->LIKE('tanggal',$tahun,'after');
+        $this->db->LIKE('tanggal',$tahun.'-'.$bulan,'after');
         $this->db->group_by('CONCAT(year(tanggal), "/",WEEK(tanggal))');
         $result=$this->db->get()->result();
         $result1['penjualan']=[];
@@ -377,7 +377,7 @@ class Logistic_model extends CI_Model{
         $this->db->join('stok_masuk','id_prb=id_stok');
         $this->db->like('tanggal',$tahun.'-'.$bulan,'AFTER');
         $result = $this->db->get()->result();
-        $result = isset($result[0])?$result[0]:null;
+        $result = isset($result[0])?$result[0]:false;
 
         return $result;
     }

@@ -349,11 +349,6 @@ class Rent extends CI_Controller{
         }
     }
 
-    function gov_penyewaan(){
-        $data['page']=$this->page;
-        $data['title'] = 'Pencatatan penjualan';
-        $this->load->view('MenuPage/Main/gov_penyewaan',$data);
-    }
 
     function cek_penyewaan(){
         

@@ -163,6 +163,16 @@ class Rent_model extends CI_Model{
         return $result;
     }
 
+    function get_info_penyewaan($tahun, $bulan){
+        $this->db->select('COUNT(id_sewa) AS tp, FORMAT(SUM(harga),"#.00") AS tps');
+        $this->db->from('penyewaan');
+        $this->db->where('tanggal_selesai  >= "'.$tahun.'-'.$bulan.'-'.date('d').'"');
+        // $this->db->group_by('CONCAT(year(tanggal), "/",MONTH(tanggal))');
+        $result = $this->db->get()->result();
+        $result = isset($result[0])?$result[0]:false;
+        return $result;
+    }
+
     function edit_penyewaan($id, $penyewa, $kontak, $tanggal_mul, $tanggal_sel, $harga){
 
         $isi = ['penyewa'=>$penyewa,'kontak'=>$kontak,'tanggal_mulai'=>$tanggal_mul,'tanggal_selesai'=>$tanggal_sel,'harga'=>$harga];

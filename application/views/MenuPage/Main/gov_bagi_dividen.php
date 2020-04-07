@@ -55,38 +55,25 @@
         <div class="right_col" role="main" style="color:black;">
           <div class="x_panel">
             <div class="x_title">
-            <h1>Informasi belanja barang BUMDes</h1>
+            <h1>Informasi kerjasama bagi hasil BUMDes</h1>
               <div class="clearfix"></div>
             </div>
-            <div class="x_content">
+            <!-- <div class="x_content">
               <div class="row">
-                <div class="col-md-5 col-sm-5 col-xs-5">
+                <div class="col-md-9 col-sm-9 col-xs-9">
                 </div>
-                <div class="col-md-7 col-sm-7 col-xs-7">
+                <div class="col-md-3 col-sm-3 col-xs-3">
                   <div class="row">
-                    <form id="gov-stok-masuk" action="gsmj" method="GET">
-                      <div class="col-md-6 col-sm-6">  
+                    <form id="laporan-keuangan" action="<?= site_url('keuangan-bulanan') ?>" method="GET">
+                      <div class="col-md-12  col-sm-12 col-xs-12">  
                         <div class="form-group">
                           <label for="">Tahun</label>
-                          <select name="tahun" class="form-control" onchange="$('#gov-stok-masuk').submit()">
+                          <select name="tahun" class="form-control" onchange="$('#laporan-keuangan').submit()">
                             <?php 
-                              foreach ($thn as $key => $val) {
+                              foreach ($tahun as $key => $val) {
                                 $key==$y?$sel='selected':$sel=null;
                                 echo '<option '.$sel.' value="'.$val->thn.'">'.$val->thn.'</option>';
                               }
-                            ?>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-md-6 col-sm-6">
-                        <div class="form-group">
-                          <label for="">Bulan</label>
-                          <select name="bulan" class="form-control" onchange="$('#gov-stok-masuk').submit()">
-                            <?php 
-                            foreach ($bln as $key => $val) {
-                              $key==$m?$sel='selected':$sel=null;
-                              echo '<option '.$sel.' value="'.$key.'">'.$val.'</option>';
-                            }
                             ?>
                           </select>
                         </div>
@@ -95,57 +82,72 @@
                 </div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
-
-          <div class="row tile_count">
+          <!-- <div class="row tile_count">
             <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Transaksi barang masuk</span>
-              <div class="count" id="tbm"><?= isset($v->jl)?''.$v->jl:'0' ?></div>
+              <span class="count_top"><i class="fa fa-user"></i> Total bagi hasil tahun 2020</span>
+              <div class="count">Rp. 0</div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-clock-o"></i> Total Nilai belanja</span>
-              <div class="count" id="tnb"><?= isset($v->nl)?'Rp. '.$v->nl:'Rp. 0' ?></div>
+              <span class="count_top"><i class="fa fa-user"></i> Total penerima bagi hasil tahun 2020</span>
+              <div class="count">Rp. 0</div>
             </div>
+          </div> -->
+        
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h1>Bagi hasil usaha BUMDes</h1>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                      <table id="datatable" class="table table-striped table-bordered">
+                        <thead>
+                          <tr>
+                            <th>No</th>
+                            <th>Total bagi hasil</th>
+                            <th>Penerima</th>
+                            <th>Detail</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <?php
+                            foreach ($val as $key => $v) {
+                                echo '<tr>
+                                        <td>'.($key+1).'</td>
+                                        <td>Rp. '.$v->jd.'</td>
+                                        <td>'.$v->je.'</td>
+                                        <td>'.anchor('gov-det-bghu/'.$v->id,'Detail').'</td>
+                                      </tr>';
+                            }
+                          ?>
+                        </tbody>
+                      </table>
+                  </div>
+                </div>
+              </div>
           </div>
-
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="dashboard_graph">
                 <div class="row x_title">
                   <div class="col-md-12">
-                    <h3>Pertumbuhan nilai belanja <small class="g-tahun">Tahun <?= $y ?></small></h3>
+                    <h3>Pertumbuhan penerimaan bagi hasil <small>Bulan Januari 2020</small></h3>
                   </div>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <!-- <div id="chart_plot_01" class="demo-placeholder"></div> -->
-                  <div id="grafik_perdagangan"></div>
+                  <div id="grafik_bagi_hasil"></div>
                 </div>
                 <div class="clearfix"></div>
               </div>
             </div>
           </div>
-          <br>
-          <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-              <div class="dashboard_graph">
-                <div class="row x_title">
-                  <div class="col-md-12">
-                    <h3>Pertumbuhan nilai belanja <small class="g-tahun">Tahun <?= $y ?></small></h3>
-                  </div>
-                </div>
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                  <!-- <div id="chart_plot_01" class="demo-placeholder"></div> -->
-                  <div id="grafik_penyewaan"></div>
-                </div>
-                <div class="clearfix"></div>
-              </div>
-            </div>
-          </div>
-          <br>
-          <br>
-          <br>
+          
+          
         </div>
         <!-- /page content -->
 
@@ -162,10 +164,10 @@
 
     <?php $this->load->view('SuptPage/JsP') ?>
     <script src="<?= base_url('asset') ?>/JS/Highchart.js"></script>
-    <script src="<?= base_url('asset') ?>/JS/Ajax_req_gov.js"></script>
+    <script src="<?= base_url('asset') ?>/JS/Form.js"></script>
     
     <script type="text/javascript">
-      pembelian_logistik(JSON.parse('<?= $v_grafik ?>'),'#grafik_perdagangan')
+    //   bagi_hasil(JSON.parse('<?= $v_grafik ?>'),'#grafik_bagi_hasil',2020);
     </script>
   </body>
 </html>

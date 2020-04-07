@@ -61,9 +61,6 @@
             <div class="x_content">
               <div class="row">
                 <div class="col-md-7">
-                  <!-- <button class="btn btn-md btn-warning">Unduh laporan keuangan</button> -->
-                  <!-- <a href="unduh-keuangan-bulanan?tahun=<?=$tahun?>&bulan=<?=$bulan?>"class="btn btn-md btn-warning" target="_blank">Unduh laporan keuangan</a>
-                  <a href="add-finr" class="btn btn-md btn-info">Input data keuangan</a> -->
                 </div>
                 <div class="col-md-5">
                   <div class="row">
@@ -74,7 +71,7 @@
                           <select name="tahun" class="form-control" onchange="$('#laporan-keuangan').submit()">
                             <?php 
                               foreach ($thn as $key => $val) {
-                                $key==$tahun?$sel='selected':$sel=null;
+                                $key==$y?$sel='selected':$sel=null;
                                 echo '<option '.$sel.' value="'.$val->thn.'">'.$val->thn.'</option>';
                               }
                             ?>
@@ -87,7 +84,7 @@
                           <select name="bulan" class="form-control" onchange="$('#laporan-keuangan').submit()">
                             <?php 
                             foreach ($bln as $key => $val) {
-                              $key==$bulan?$sel='selected':$sel=null;
+                              $key==$m?$sel='selected':$sel=null;
                               echo '<option '.$sel.' value="'.$key.'">'.$val.'</option>';
                             }
                             ?>
@@ -101,17 +98,31 @@
             </div>
           </div>
           <div class="row tile_count">
-            <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Total penerimaan bagi hasil</span>
-              <div class="count"><?= isset($v->hg)?''.$v->hg:'0' ?></div>
+            <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> Total penerimaan bagi hasil Januari 2020</span>
+              <div class="count">Rp. <?= isset($v->hg)?''.$v->hg:'0' ?></div>
             </div>
-            <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Kerjasama aset internal</span>
-              <div class="count"><?= isset($v->hg)?''.$v->hg:'0' ?></div>
+            <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> Total penerimaan bagi hasil tahun 2020</span>
+              <div class="count">Rp. <?= isset($v->hg)?''.$v->hg:'0' ?></div>
             </div>
-            <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Kerjasama aset eksternal</span>
-              <div class="count"><?= isset($v->hg)?''.$v->hg:'0' ?></div>
+          </div>
+          <div class="row tile_count">
+            <div class="col-md-3 col-sm-3 col-xs-3 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> Bagi hasil aset internal Januari 2020</span>
+              <div class="count"><?= $vt?''.$vt->jints:'0' ?></div>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> Bagi hasil aset eksternal Januari 2020</span>
+              <div class="count"><?= $vt?''.$vt->exts:'0' ?></div>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> Bagi hasil aset internal keseluruhan</span>
+              <div class="count"><?= $va?''.$va->jints:'0' ?></div>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> Bagi hasil aset eksternal keseluruhan</span>
+              <div class="count"><?= $va?''.$va->exts:'0' ?></div>
             </div>
           </div>
 
@@ -122,22 +133,11 @@
                   <div class="col-md-12">
                     <h3>Pertumbuhan penerimaan bagi hasil <small>Bulan Januari 2020</small></h3>
                   </div>
-                  <!-- <div class="col-md-6">
-                    <form id="TipForm" action="">
-                      <div class="form-group">
-                        <select onchange="submitHp()" name="tipe" class="form-control">
-                          <option value="minggu">Minggu</option>
-                          <option value="bulan">Bulan</option>
-                          <option value="Tahun">Tahun</option>
-                        </select>
-                      </div>
-                    </form>
-                  </div> -->
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <!-- <div id="chart_plot_01" class="demo-placeholder"></div> -->
-                  <div id="grafik_perdagangan"></div>
+                  <div id="grafik_bagi_hasil"></div>
                 </div>
                 <div class="clearfix"></div>
               </div>
@@ -164,8 +164,7 @@
     <script src="<?= base_url('asset') ?>/JS/Form.js"></script>
     
     <script type="text/javascript">
-      pertumbuhan_perdagangan( ,'#grafik_perdagangan')
-      pertumbuhan_penyewaan( ,'#grafik_penyewaan')
+      bagi_hasil(JSON.parse('<?= $v_grafik ?>'),'#grafik_bagi_hasil',2020);
     </script>
   </body>
 </html>

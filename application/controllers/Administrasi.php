@@ -715,23 +715,6 @@ class Administrasi extends CI_Controller{
         }
     }
 
-    function gov_asset(){
-        $data['page']=$this->page;
-        $data['title'] = 'Pencatatan penjualan';
-        $data['v'] = '';
-        $data['v1'] = $this->am->get_aset_umum('json');
-        $data['v2'] = $this->am->get_aset_disewakan('json');
-        $data['v3'] = $this->am->get_aset_bagi_hasil('json');
-        $this->load->view('MenuPage/Main/gov_asset',$data);
-    }
-    
-    function gov_kerjasama_bgh(){
-        $data['page']=$this->page;
-        $data['title'] = 'Pencatatan penjualan';
-        $this->load->view('MenuPage/Main/gov_kerjasama_bgh',$data);
-        // echo json_encode($data['v1']);
-    }
-
     function cek_username(){
         $usn = $this->input->get('usn',true);
 

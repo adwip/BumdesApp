@@ -74,7 +74,7 @@
                           <select name="tahun" class="form-control" onchange="$('#laporan-keuangan').submit()">
                             <?php 
                               foreach ($thn as $key => $val) {
-                                $key==$tahun?$sel='selected':$sel=null;
+                                $key==$y?$sel='selected':$sel=null;
                                 echo '<option '.$sel.' value="'.$val->thn.'">'.$val->thn.'</option>';
                               }
                             ?>
@@ -87,7 +87,7 @@
                           <select name="bulan" class="form-control" onchange="$('#laporan-keuangan').submit()">
                             <?php 
                             foreach ($bln as $key => $val) {
-                              $key==$bulan?$sel='selected':$sel=null;
+                              $key==$m?$sel='selected':$sel=null;
                               echo '<option '.$sel.' value="'.$key.'">'.$val.'</option>';
                             }
                             ?>
@@ -103,11 +103,11 @@
           <div class="row tile_count">
             <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Jumlah penyewaan</span>
-              <div class="count"><?= isset($v->hg)?''.$v->hg:'0' ?></div>
+              <div class="count"><?= $v?$v->tp:0 ?></div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Nilai penyewaan</span>
-              <div class="count"><?= isset($v->hg)?''.$v->hg:'0' ?></div>
+              <span class="count_top"><i class="fa fa-user"></i> Total pendapatan sewa</span>
+              <div class="count">Rp. <?= $v?$v->tps:0 ?></div>
             </div>
           </div>
 
@@ -116,19 +116,8 @@
               <div class="dashboard_graph">
                 <div class="row x_title">
                   <div class="col-md-12">
-                    <h3>Pertumbuhan nilai penjualan<small>Bulan Januari 2020</small></h3>
+                    <h3>Pertumbuhan pendapatan sewa <small> Tahun <?= $y ?></small></h3>
                   </div>
-                  <!-- <div class="col-md-6">
-                    <form id="TipForm" action="">
-                      <div class="form-group">
-                        <select onchange="submitHp()" name="tipe" class="form-control">
-                          <option value="minggu">Minggu</option>
-                          <option value="bulan">Bulan</option>
-                          <option value="Tahun">Tahun</option>
-                        </select>
-                      </div>
-                    </form>
-                  </div> -->
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12">

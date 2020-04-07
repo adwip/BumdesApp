@@ -344,5 +344,21 @@ class Administration_model extends CI_Model{
       $this->db->delete('mitra',['id_mitra'=>$id]);
       return $this->db->affected_rows();
     }
- 
+    
+    function get_aset_gov(){
+      $this->db->select('id_aset AS id, nama AS nm, nomor_aset AS na, lokasi AS lok');
+      $this->db->from('aset');
+      $result = $this->db->get()->result();
+      $result1=null;
+      foreach ($result as $key => $v) {
+        $result1 .= '<tr>
+                          <td>'.($key+1).'</td>
+                          <td>'.$v->nm.'</td>
+                          <td>'.$v->na.'</td>
+                          <td>'.$v->lok.'</td>
+                          <td>'.anchor('detail-aset/'.$v->id,'Detail').'</td>
+                    </tr>';
+      }
+      return $result1;
+    }
 }

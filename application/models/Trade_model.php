@@ -116,4 +116,15 @@ class Trade_model extends CI_Model{
         $result = $this->db->get()->result();
         return $result;
     }
+
+    function info_dagang_cepat($tahun, $bulan, $tjn){
+        $this->db->select('FORMAT(COUNT(id_temp),"#.00") AS cnt, FORMAT(SUM(nilai_transaksi),"#.00") AS jlh');
+        $this->db->from('stok_keluar');
+        $this->db->join('stok_item','id_stok=id_prb');
+        $this->db->where('tujuan',$tjn);
+        $this->db->like('tanggal',$tahun.'-'.$bulan);
+        $result = $this->db->get()->result();
+        $result = isset($result[0])?$result[0]:false;
+        return $result;
+    }
 }

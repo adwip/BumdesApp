@@ -53,50 +53,49 @@
 
         <!-- page content -->
         <div class="right_col" role="main" style="color:black;">
-          <div class="row tile_count">
-            <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Aset umum</span>
-              <div class="count" ><?= count($v1) ?></div>
+          <div class="x_panel">
+            <div class="x_title">
+                <h1>Komoditas dagang BUMDes</h1>
+                <div class="clearfix"></div>
             </div>
-            <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Aset disewakan</span>
-              <div class="count"><?= count($v2) ?></div>
-            </div>
-            <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Aset bagi hasil</span>
-              <div class="count"><?= count($v3) ?></div>
+            <div class="x_content">
             </div>
           </div>
 
-          
-          <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h1>Aset BUMDes Indrakila Jaya</h1>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                      <table id="datatable" class="table table-striped table-bordered">
-                        <thead>
-                          <tr>
-                            <th>No</th>
-                            <th>Nama aset</th>
-                            <th>Nomor aset</th>
-                            <th>Lokasi aset</th>
-                            <th>Detail</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <?= $v ?>
-                        </tbody>
-                      </table>
-                  </div>
-                </div>
-              </div>
+          <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h3>Informasi komoditas</h3>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table id="datatable" class="table table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Komoditas</th>
+                      <th>Stok</th>
+                      <th>Harga jual</th>
+                      <th>Harga beli</th>
+                    </tr>
+                  </thead>
+
+                  <tbody data-act="hapus-komoditas" data-meth="POST">
+                      <?php foreach ($val as $key => $v) {
+                          echo '<tr>
+                                    <td>'.($key+1).'</td>
+                                    <td>'.$v->kom.'</td>
+                                    <td>'.$v->stk.'</td>
+                                    <td>Rp. '.$v->hgj.'</td>
+                                    <td>Rp. '.$v->hgb.'</td>
+                                </tr>';
+                      } ?>
+                  </tbody>
+                </table>
+            </div>
           </div>
-          
-          
+        </div>
+          <br>
         </div>
         <!-- /page content -->
 
@@ -115,5 +114,9 @@
     <script src="<?= base_url('asset') ?>/JS/Highchart.js"></script>
     <script src="<?= base_url('asset') ?>/JS/Form.js"></script>
     
+    <script type="text/javascript">
+      pembelian_logistik(JSON.parse('<?= $v_grafik ?>'),'#grafik_perdagangan')
+      
+    </script>
   </body>
 </html>

@@ -261,7 +261,7 @@ $(document).ready(function() {
                 $('#warning-size').hide()
             }
 
-            if (type == 'image/jpeg'||type == 'image/png'||type == 'image/jpg') {//cek tipe file
+            if (type == 'image/png'||type == 'image/jpg') {//cek tipe file
                 $('#warning-type').hide()
             }else{
                 $('#warning-type').show()

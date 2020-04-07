@@ -184,9 +184,6 @@
     <script src="<?= base_url('asset/JS/Ajax_req.js') ?>"></script>
     <script type="text/javascript">
       keuangan_tahunan(JSON.parse('<?= $v_grafik ?>'),'#grafik_keuangan_tahunan')
-      $('#myDatepicker2').datetimepicker({
-        format: 'DD/MM/YYYY'
-    });
     </script>
   </body>
 </html>

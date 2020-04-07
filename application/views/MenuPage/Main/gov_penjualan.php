@@ -55,26 +55,23 @@
         <div class="right_col" role="main" style="color:black;">
           <div class="x_panel">
             <div class="x_title">
-            <h1>Informasi penjualan barang BUMDes</h1>
+            <h1>Informasi kegiatan dagang BUMDes</h1>
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
               <div class="row">
-                <div class="col-md-7">
-                  <!-- <button class="btn btn-md btn-warning">Unduh laporan keuangan</button> -->
-                  <!-- <a href="unduh-keuangan-bulanan?tahun=<?=$tahun?>&bulan=<?=$bulan?>"class="btn btn-md btn-warning" target="_blank">Unduh laporan keuangan</a>
-                  <a href="add-finr" class="btn btn-md btn-info">Input data keuangan</a> -->
+                <div class="col-md-5 col-sm-5 col-xs-5">
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-7 col-sm-7 col-xs-7">
                   <div class="row">
-                    <form id="laporan-keuangan" action="<?= site_url('keuangan-bulanan') ?>" method="GET">
+                    <form id="gov-penjualan" action="gpjn" method="GET">
                       <div class="col-md-6 col-sm-6">  
                         <div class="form-group">
                           <label for="">Tahun</label>
-                          <select name="tahun" class="form-control" onchange="$('#laporan-keuangan').submit()">
+                          <select name="tahun" class="form-control" onchange="$('#gov-penjualan').submit()">
                             <?php 
                               foreach ($thn as $key => $val) {
-                                $key==$tahun?$sel='selected':$sel=null;
+                                $key==$y?$sel='selected':$sel=null;
                                 echo '<option '.$sel.' value="'.$val->thn.'">'.$val->thn.'</option>';
                               }
                             ?>
@@ -84,10 +81,10 @@
                       <div class="col-md-6 col-sm-6">
                         <div class="form-group">
                           <label for="">Bulan</label>
-                          <select name="bulan" class="form-control" onchange="$('#laporan-keuangan').submit()">
+                          <select name="bulan" class="form-control" onchange="$('#gov-penjualan').submit()">
                             <?php 
                             foreach ($bln as $key => $val) {
-                              $key==$bulan?$sel='selected':$sel=null;
+                              $key==$m?$sel='selected':$sel=null;
                               echo '<option '.$sel.' value="'.$key.'">'.$val.'</option>';
                             }
                             ?>
@@ -101,17 +98,21 @@
             </div>
           </div>
           <div class="row tile_count">
-            <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
+            <div class="col-md-2 col-sm-2 col-xs-2 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Jumlah distribusi</span>
-              <div class="count"><?= isset($v->hg)?''.$v->hg:'0' ?></div>
+              <div class="count" id="jdb"><?= $dst?''.$dst->cnt:'0' ?></div>
             </div>
             <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
+              <span class="count_top"><i class="fa fa-clock-o"></i> Nilai distribusi</span>
+              <div class="count" id="ndb">Rp. <?= $dst?''.$dst->jlh:'0' ?></div>
+            </div>
+            <div class="col-md-2 col-sm-2 col-xs-2 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Jumlah non-dsitribusi</span>
-              <div class="count"><?= isset($v->hg)?''.$v->hg:'0' ?></div>
+              <div class="count" id="jndb"><?= $ndt?''.$ndt->cnt:'0' ?></div>
             </div>
             <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
-              <span class="count_top"><i class="fa fa-clock-o"></i> Nilai penjualan</span>
-              <div class="count"><?= isset($v2->hg)?'Rp. '.$v2->hg:'Rp. 0' ?></div>
+              <span class="count_top"><i class="fa fa-clock-o"></i> Nilai non-distribusi</span>
+              <div class="count" id="nndb">Rp. <?= $ndt?''.$ndt->jlh:'0' ?></div>
             </div>
           </div>
 
@@ -120,19 +121,8 @@
               <div class="dashboard_graph">
                 <div class="row x_title">
                   <div class="col-md-12">
-                    <h3>Pertumbuhan nilai penjualan<small>Bulan Januari 2020</small></h3>
+                    <h3>Pertumbuhan dagang terdistribusi <small class="g-time">Bulan Januari 2020</small></h3>
                   </div>
-                  <!-- <div class="col-md-6">
-                    <form id="TipForm" action="">
-                      <div class="form-group">
-                        <select onchange="submitHp()" name="tipe" class="form-control">
-                          <option value="minggu">Minggu</option>
-                          <option value="bulan">Bulan</option>
-                          <option value="Tahun">Tahun</option>
-                        </select>
-                      </div>
-                    </form>
-                  </div> -->
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12">
@@ -144,6 +134,23 @@
             </div>
           </div>
           
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="dashboard_graph">
+                <div class="row x_title">
+                  <div class="col-md-12">
+                    <h3>Pertumbuhan dagang non-distribusi <small class="g-time">Bulan Januari 2020</small></h3>
+                  </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                  <!-- <div id="chart_plot_01" class="demo-placeholder"></div> -->
+                  <div id="grafik_perdagangan2"></div>
+                </div>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+          </div>
           
         </div>
         <!-- /page content -->
@@ -161,11 +168,10 @@
 
     <?php $this->load->view('SuptPage/JsP') ?>
     <script src="<?= base_url('asset') ?>/JS/Highchart.js"></script>
-    <script src="<?= base_url('asset') ?>/JS/Form.js"></script>
+    <script src="<?= base_url('asset') ?>/JS/Ajax_req_gov.js"></script>
     
     <script type="text/javascript">
-      pertumbuhan_perdagangan(JSON.parse('<?= $v_graf ?>'),'#grafik_perdagangan')
-      pertumbuhan_penyewaan(JSON.parse('<?= $v_graf ?>'),'#grafik_penyewaan')
+      pertumbuhan_perdagangan(JSON.parse('<?= $v_grafik ?>'),'#grafik_perdagangan')
     </script>
   </body>
 </html>

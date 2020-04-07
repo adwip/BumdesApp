@@ -103,13 +103,13 @@ class Logistic extends CI_Controller{
         // echo json_encode($data['value']);
     }
 
-    function gov_stok_masuk(){//=================OK
+
+    function gov_logistik(){
         $data['page']=$this->page;
-        $data['title'] = 'Info belanja logistik';
-        $data['v'] = $this->lm->get_sum_log_in("2020", "03");
-        $this->load->view('MenuPage/Main/gov_stok_masuk',$data);
-        // echo json_encode($data['v2']);
-        // echo 'test';
+        $data['title'] = '';
+        $data['tanggal'] = date('d/m/Y');
+        $data['v'] = $this->am->get_satuan('json');
+        $this->load->view('MenuPage/Form/tambah_komoditas',$data);
     }
 
     function tambah_komoditas(){//=============ada view

@@ -703,7 +703,7 @@ class Finance_model extends CI_Model{
         return $result[0];
     }
 
-    function get_tahun(){
+    function get_tahun_bgh(){
         $this->db->select('YEAR(tanggal_mulai) AS thn');
         $this->db->from('bagi_hasil_aset');
         $this->db->group_by('YEAR(tanggal_mulai)');
@@ -856,4 +856,25 @@ class Finance_model extends CI_Model{
         }
         return $result1;
     }//TIMESTAMPDIFF(MONTH,tanggal_mulai, tanggal_selesai) AS dur
+
+    function get_info_bgh($tahun=false, $bulan=false){
+        $this->db->select('COUNT(aset_bh) AS ints, COUNT(aset_luar) AS exts, deld_aset AS deints, (COUNT(aset_bh)+COUNT(deld_aset)) AS jints');
+        $this->db->from('bagi_hasil_aset');
+        if ($tahun) {
+            $this->db->where('tanggal_selesai  >= "'.$tahun.'-'.$bulan.'-'.date('d').'"');
+        }
+        $result = $this->db->get()->result();
+        $result = isset($result[0])?$result[0]:false;
+        return $result;
+    }
+
+    /*
+    function get_tahun_div(){
+        $this->db->select('tahun_div AS thn');
+        $this->db->from('dividen_profit');
+        $this->db->group_by('tahun_div');
+        $result = $this->db->get()->result();
+        return $result;
+    }*/
+
 }

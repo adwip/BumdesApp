@@ -19,7 +19,6 @@ $route['pdf-detail-komoditas-out/(:num)'] = 'Trade/pdf_detail_komoditas_keluar/$
 $route['edit-barang-keluar'] = 'Trade/edit_barang_keluar';//=========ada view
 $route['barang-keluar'] = 'Logistic/exit_item/json';//=========ada view
 $route['dis-barang'] = 'Trade/distribution/json';//=========ada view
-$route['gov-penjualan'] = 'Trade/gov_penjualan';//=========ada view
 $route['edit-ei/(:num)'] = 'Trade/form_edit_barang_keluar_gudang/$1';//====ada view
 $route['detail-penjualan/(:num)'] = 'Logistic/detail_logistik_keluar/$1/json';//=========ada view
 
@@ -41,7 +40,6 @@ $route['sewa-aset'] = 'Rent/rentalling/json';//=========ada view
 $route['hapus-penyewaan'] = 'Rent/hapus_penyewaan';//=========ada view
 $route['hapus-aset-sewa'] = 'Rent/hapus_aset_sewa';//=========ada view
 $route['edit-penyewaan'] = 'Rent/edit_penyewaan';//=========ada view
-$route['gov-penyewaan'] = 'Rent/gov_penyewaan';//=========ada view
 $route['cek-jadwal'] = 'Rent/cek_penyewaan';//=========ada view
 $route['cek-edit-sewa'] = 'Rent/cek_edit_penyewaan';//=========ada view
 
@@ -87,7 +85,6 @@ $route['hapus-pembayaran'] = 'Finance/hapus_pembayaran';//=========ada view
 $route['set-pembayaran'] = 'Finance/set_pembayaran_ent_bhu';//=========ada view
 $route['edit-bgu/(:num)'] = 'Finance/form_edit_bagi_dividen/$1';//=========ada view
 $route['edit-bagi-dividen'] = 'Finance/edit_bagi_hasil_div';//=========ada view
-$route['gov-finansial'] = 'Finance/gov_finansial';//=========ada view
 $route['edit-pbgu/(:num)'] = 'Finance/form_edit_pemb_bagi_hasil/$1';//=========ada view
 $route['edit-pemb-bgh'] = 'Finance/edit_pemb_bgh';//=========ada view
 $route['hapus-pemb-bagi-hasil'] = 'Finance/del_pemb_bgh';//=========ada view
@@ -116,7 +113,6 @@ $route['edit-barang-masuk'] = 'Logistic/edit_barang_masuk';//=========ada view
 $route['belanja-barang'] = 'Logistic/stok_masuk/json';//=========ada view
 // $route['belanja-barang'] = 'Logistic/incoming_goods/json';//=========ada view
 $route['edit-komoditas-dagang'] = 'Logistic/edit_komoditas_dagang';//=========ada view
-$route['gov-stok-masuk'] = 'Logistic/gov_stok_masuk';//=========ada view
 $route['detail-belanja/(:num)'] = 'Logistic/detail_logistik_masuk/$1/json';//=========ada view
 
 //routing Administrasi
@@ -147,14 +143,26 @@ $route['tambah-satuan'] = 'Administrasi/tambah_satuan';//=================ada vi
 $route['ubah-profil'] = 'Administrasi/form_ubah_profil';//=================ada view
 $route['ganti-password'] = 'Administrasi/form_ganti_password';//=================ada view
 $route['detail-user/(:num)'] = 'Administrasi/detail_user/$1';//=================ada view
-$route['gov-asset'] = 'Administrasi/gov_asset';//=================ada view
-$route['gov-kerjasama-bgh'] = 'Administrasi/gov_kerjasama_bgh';//=================ada view
 $route['edit-satuan'] = 'Administrasi/edit_satuan';//=================ada view
 $route['edit-profil'] = 'Administrasi/edit_profil';//=================ada view
 $route['ubah-password'] = 'Administrasi/ganti_password';//=================ada view
 $route['log-admin'] = 'Administrasi/admin_log/json';//=================ada view
 // $route['add-user'] = 'Administrasi/tambah_admin';//=================ada view
 //CONCAT(year(tanggal), "/",WEEK(tanggal))
+
+//Rouing government
+$route['gov-penjualan'] = 'Government/gov_penjualan';//=========ada view
+$route['gov-penyewaan'] = 'Government/gov_penyewaan';//=========ada view
+$route['gov-finansial'] = 'Government/gov_finansial';//=========ada view
+$route['gov-stok-masuk'] = 'Government/gov_stok_masuk';//=========ada view
+$route['gov-asset'] = 'Government/gov_asset';//=================ada view
+$route['gov-kerjasama-bgh'] = 'Government/gov_kerjasama_bgh';//=================ada view
+$route['gov-logistik'] = 'Government/gov_logistik';//=================ada view
+$route['gov-dividen'] = 'Government/gov_dividen';//=================ada view
+$route['gsmj'] = 'Government/gov_stok_masuk/j';//=================ada view
+$route['gsmj'] = 'Government/gov_stok_masuk/j';//=================ada view
+$route['gpjn'] = 'Government/gov_stok_masuk/j';//=================ada view
+
 
 //Routing homepage
 $route['404_override'] = 'Homepage/not_found';
