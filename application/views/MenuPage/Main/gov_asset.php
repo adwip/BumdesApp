@@ -60,7 +60,7 @@
             </div>
             <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Aset disewakan</span>
-              <div class="count"><?= count($v2) ?></div>
+              <div class="count"><?= $v2?$v2->tp:0 ?></div>
             </div>
             <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Aset bagi hasil</span>
@@ -112,8 +112,6 @@
     </div>
 
     <?php $this->load->view('SuptPage/JsP') ?>
-    <script src="<?= base_url('asset') ?>/JS/Highchart.js"></script>
-    <script src="<?= base_url('asset') ?>/JS/Form.js"></script>
     
   </body>
 </html>

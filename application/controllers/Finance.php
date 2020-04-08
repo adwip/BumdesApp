@@ -5,7 +5,7 @@ class Finance extends CI_controller{
     function __construct(){
         parent:: __construct();
 		date_default_timezone_set('Asia/Jakarta');
-        $tp='GOV';
+        $tp='MNG';
         if ($tp=='MNG') {
             $this->page = 'MenuPage';
         }else if ($tp=='GOV') {

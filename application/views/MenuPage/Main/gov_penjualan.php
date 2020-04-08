@@ -121,31 +121,49 @@
               <div class="dashboard_graph">
                 <div class="row x_title">
                   <div class="col-md-12">
-                    <h3>Pertumbuhan dagang terdistribusi <small class="g-time">Bulan Januari 2020</small></h3>
+                    <h3>Pertumbuhan laba dagang <small class="g-time">Tahun 2020</small></h3>
                   </div>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <!-- <div id="chart_plot_01" class="demo-placeholder"></div> -->
-                  <div id="grafik_perdagangan"></div>
+                  <div id="grafik-laba-dagang"></div>
                 </div>
                 <div class="clearfix"></div>
               </div>
             </div>
           </div>
-          
+          <br>
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="dashboard_graph">
                 <div class="row x_title">
                   <div class="col-md-12">
-                    <h3>Pertumbuhan dagang non-distribusi <small class="g-time">Bulan Januari 2020</small></h3>
+                    <h3>Pertumbuhan dagang distribusi <small class="g-time">Tahun 2020</small></h3>
                   </div>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <!-- <div id="chart_plot_01" class="demo-placeholder"></div> -->
-                  <div id="grafik_perdagangan2"></div>
+                  <div id="grafik-distribusi"></div>
+                </div>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="dashboard_graph">
+                <div class="row x_title">
+                  <div class="col-md-12">
+                    <h3>Pertumbuhan dagang non-distribusi <small class="g-time">Tahun 2020</small></h3>
+                  </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                  <!-- <div id="chart_plot_01" class="demo-placeholder"></div> -->
+                  <div id="grafik-non-distribusi"></div>
                 </div>
                 <div class="clearfix"></div>
               </div>
@@ -171,7 +189,9 @@
     <script src="<?= base_url('asset') ?>/JS/Ajax_req_gov.js"></script>
     
     <script type="text/javascript">
-      pertumbuhan_perdagangan(JSON.parse('<?= $v_grafik ?>'),'#grafik_perdagangan')
+      pertumbuhan_perdagangan(JSON.parse('<?= $v_grafik ?>'),'#grafik-laba-dagang')
+      distribusi(JSON.parse('<?= $v_grafik2 ?>'),'#grafik-distribusi', "<?= $y ?>")
+      non_distribusi(JSON.parse('<?= $v_grafik3 ?>'),'#grafik-non-distribusi', "<?= $y ?>")
     </script>
   </body>
 </html>

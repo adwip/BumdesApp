@@ -290,6 +290,24 @@ class Finance_model extends CI_Model{
         }
         return json_encode($result1);
     }
+    
+    function get_grafik_nilai_non_distribusi($tahun){
+        $bulan = ['Januari', 'Februari', 'Maret', 'April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+        $this->db->select('SUM(nilai_transaksi)AS v, MONTH(tanggal) AS b');
+        $this->db->from('stok_keluar sk');
+        $this->db->join('stok_item si','si.id_stok=sk.id_prb');
+        $this->db->where('tujuan','Non-distribusi');
+        $this->db->like('tanggal',$tahun,'after');
+        $this->db->group_by('CONCAT(year(tanggal), "/",MONTH(tanggal))');
+        $result=$this->db->get()->result();
+        $result1['value']=[];
+        $result1['bulan']=[];
+        foreach ($result as $key => $v) {
+            $result1['value'][]=(int)$v->v;
+            $result1['bulan'][]=$bulan[$v->b-1];
+        }
+        return json_encode($result1);
+    }
 
     function get_grafik_penyewaan($tahun){
         $bulan = ['Januari', 'Februari', 'Maret', 'April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
@@ -341,12 +359,18 @@ class Finance_model extends CI_Model{
                 $result1['minggu'][]=2;
             }elseif ((int)$v->dt>=15 &&(int)$v->dt<=21) {
                 $result1['minggu'][]=3;
-            }else {
+            }else if(!in_array(4,$result1['minggu'])){
                 $result1['minggu'][]=4;
             }
-            $result1['saldo'][]=(int)$v->s;
-            $result1['debit'][]=(int)$v->d;
-            $result1['kredit'][]=(int)$v->k;
+            if ((int)$v->dt>=22&&$key!=0) {
+                $result1['saldo'][$key-1]+=(int)$v->s;
+                $result1['debit'][$key-1]+=(int)$v->d;
+                $result1['kredit'][$key-1]+=(int)$v->k;
+            }else{
+                $result1['saldo'][]=(int)$v->s;
+                $result1['debit'][]=(int)$v->d;
+                $result1['kredit'][]=(int)$v->k;
+            }
         }
         return json_encode($result1);
     }

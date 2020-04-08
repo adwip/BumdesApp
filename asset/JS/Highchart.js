@@ -7,7 +7,7 @@ function pertumbuhan_perdagangan(value, selector){
    };
    var xAxis =[{
       tickmarkPlacement: 'on',
-      categories: ['1', '2', '3', '4'],
+      categories: value['bulan'],
       startOnTick: true
     }
    ];
@@ -28,7 +28,7 @@ function pertumbuhan_perdagangan(value, selector){
        borderColor: 'black',
        borderRadius: 10,*/
        formatter: function() {
-          return this.series.name + '</b> minggu ke <b>' + this.x + '</b>, adalah <b>Rp. '+ this.y+' </b>';
+          return this.series.name + '</b> bulan <b>' + this.x + '</b>, adalah <b>Rp. '+ this.y+' </b>';
        }
     }
    var legend = {
@@ -145,7 +145,7 @@ function pertumbuhan_penyewaan(value, selector){
 
 function pembelian_logistik(value, selector){
    var title = {
-      text: 'Pertumbuhan pembelian barang'   
+      text: 'Pertumbuhan pembelian barang'
    };
    var subtitle = {
       text: 'Source: worldClimate.com'
@@ -214,9 +214,9 @@ function pembelian_logistik(value, selector){
    $(selector).highcharts(json);
 }
 
-function distribusi(value, selector, $tahun=null){
+function distribusi(value, selector, tahun=null){
    var title = {
-      text: 'Pertumbuhan perdagangan/distribusi'   
+      text: 'Pertumbuhan perdagangan/distribusi tahun '+tahun   
    };
    var subtitle = {
       text: 'Source: worldClimate.com'
@@ -255,6 +255,77 @@ function distribusi(value, selector, $tahun=null){
    };
    var series =  [{
          name: 'Nilai distribusi',
+         data: value['value']
+      }
+   ];
+
+   var plotOptions = {
+      line: {
+         dataLabels: {
+            enabled: false
+         },   
+         enableMouseTracking: true
+      },
+      series: {
+         pointPlacement: 'on'
+      }
+
+   };
+
+   var json = {};
+   json.title = title;
+ //   json.subtitle = subtitle;
+   json.xAxis = xAxis;
+   json.yAxis = yAxis;
+   json.tooltip = tooltip;
+   json.legend = legend;
+   json.series = series;
+   json.plotOptions = plotOptions;
+   
+   $(selector).highcharts(json);
+}
+
+function non_distribusi(value, selector, tahun=null){
+   var title = {
+      text: 'Pertumbuhan perdagangan/non-distribusi tahun '+tahun
+   };
+   var subtitle = {
+      text: 'Source: worldClimate.com'
+   };
+   var xAxis =[{
+      tickmarkPlacement: 'on',
+      categories: value['bulan'],
+      startOnTick: true
+    }
+   ];
+   var yAxis = {
+      title: {
+         text: 'Rupiah IDR'
+      },
+      plotLines: [{
+         value: 0,
+         width: 1,
+         color: '#808080'
+      }]
+   };   
+   var tooltip = {
+       /*valueSuffix: ' µgram/m3',
+       height: 20,*/
+      /* backgroundColor: '#FCFFC5',
+       borderColor: 'black',
+       borderRadius: 10,*/
+       formatter: function() {
+          return this.series.name + '</b> bulan <b>' + this.x + '</b>, adalah <b>Rp. '+ this.y+' </b>';
+       }
+    }
+   var legend = {
+      layout: 'vertical',
+      align: 'right',
+      verticalAlign: 'middle',
+      borderWidth: 0
+   };
+   var series =  [{
+         name: 'Nilai non-distribusi',
          data: value['value']
       }
    ];

@@ -120,24 +120,22 @@
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-              <form action="">
-                      <table id="datatable" class="table table-striped table-bordered">
-                        <thead>
-                          <tr>
-                            <th>No</th>
-                            <th>Tanggal</th>
-                            <th>Mitra</th>
-                            <th>Komoditas</th>
-                            <th>Jumlah</th>
-                            <th>Nilai</th>
-                          </tr>
-                        </thead>
+              <table id="datatable" class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Tanggal</th>
+                    <th>Mitra</th>
+                    <th>Komoditas</th>
+                    <th>Jumlah</th>
+                    <th>Nilai</th>
+                  </tr>
+                </thead>
 
-                        <tbody id="val-body">
-                          <?= $value ?>
-                        </tbody>
-                      </table>
-                    </form>
+                <tbody id="val-body">
+                  <?= $value ?>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -148,13 +146,32 @@
               <div class="dashboard_graph">
                 <div class="row x_title">
                   <div class="col-md-9">
-                    <h3>Pertumbuhan distribusi</h3>
+                    <h3>Pertumbuhan dagang distribusi</h3>
                   </div>
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <!-- <div id="chart_plot_01" class="demo-placeholder"></div> -->
                   <div id="distribusi"></div>
+                </div>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+          </div>
+          <br>
+          
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="dashboard_graph">
+                <div class="row x_title">
+                  <div class="col-md-9">
+                    <h3>Pertumbuhan dagang non-distribusi</h3>
+                  </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                  <!-- <div id="chart_plot_01" class="demo-placeholder"></div> -->
+                  <div id="non-distribusi"></div>
                 </div>
                 <div class="clearfix"></div>
               </div>
@@ -182,10 +199,8 @@
     <script src="<?= base_url('asset') ?>/JS/Fitur.js"></script>
     <script src="<?= base_url('asset/JS/Ajax_req.js') ?>"></script>
     <script type="text/javascript">
-      distribusi(JSON.parse('<?= $v_grafik ?>'),'#distribusi');
-      $('#myDatepicker2').datetimepicker({
-        format: 'DD/MM/YYYY'
-    });
+      distribusi(JSON.parse('<?= $v_grafik ?>'),'#distribusi', "<?= $tahun ?>");
+      non_distribusi(JSON.parse('<?= $v_grafik2 ?>'),'#non-distribusi', "<?= $tahun ?>");
     </script>
   </body>
 </html>

@@ -56,7 +56,7 @@
           <div class="row tile_count">
             <div class="col-md-12 col-sm-12 col-xs-12 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Saldo saat ini</span>
-              <div class="count text-center" id="saldo">Rp. <?= isset($v1[0]->ac)?$v1[0]->ac:'0' ?></div>
+              <div class="count text-center" id="saldo">Rp. <?= isset($blc[0]->ac)?$blc[0]->ac:'0' ?></div>
             </div>
           </div>
         
@@ -69,11 +69,11 @@
               <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <div class="row">
-                    <form id="laporan-keuangan" action="<?= site_url('keuangan-bulanan') ?>" method="GET">
+                    <form id="gov-fin" action="gfin" method="GET">
                       <div class="col-md-4 col-sm-4 col-xs-4">  
                         <div class="form-group">
                           <label for="">Tahun</label>
-                          <select name="tahun" class="form-control" onchange="$('#laporan-keuangan').submit()">
+                          <select name="tahun" class="form-control" onchange="$('#gov-fin').submit()">
                             <?php 
                               foreach ($thn as $key => $val) {
                                 $key==$y?$sel='selected':$sel=null;
@@ -86,7 +86,7 @@
                       <div class="col-md-4 col-sm-4 col-xs-4">
                         <div class="form-group">
                           <label for="">Bulan</label>
-                          <select name="bulan" class="form-control" onchange="$('#laporan-keuangan').submit()">
+                          <select name="bulan" class="form-control" onchange="$('#gov-fin').submit()">
                             <?php 
                             foreach ($bln as $key => $val) {
                               $key==$m?$sel='selected':$sel=null;
@@ -99,11 +99,13 @@
                       <div class="col-md-4 col-sm-4 col-xs-4">
                         <div class="form-group">
                           <label for="">Minggu</label>
-                          <select name="bulan" class="form-control" onchange="$('#laporan-keuangan').submit()">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
+                          <select name="minggu" class="form-control" onchange="$('#gov-fin').submit()">
+                          <?php 
+                              foreach ([1,2,3,4] as $key => $v) {
+                                $v==$w?$sel='selected':$sel=null;
+                                echo '<option '.$sel.' value="'.$v.'">'.$v.'</option>';
+                              }
+                              ?>
                           </select>
                         </div>
                       </div>
@@ -116,11 +118,11 @@
           <div class="row tile_count">
             <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Total Debit minggu ini</span>
-              <div class="count text-center" id="debit">Rp. <?= isset($v2[0]->dbt)?$v2[0]->dbt:'0' ?></div>
+              <div class="count text-center" id="dbw">Rp. <?= isset($dkw[0]->dbt)?$dkw[0]->dbt:'0' ?></div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Total Kredit minggu ini</span>
-              <div class="count text-center" id="kredit">Rp. <?= isset($v2[0]->kdt)?$v2[0]->kdt:'0' ?></div>
+              <div class="count text-center" id="kdw">Rp. <?= isset($dkw[0]->kdt)?$dkw[0]->kdt:'0' ?></div>
             </div>
           </div>
 
@@ -129,7 +131,7 @@
               <div class="dashboard_graph">
                 <div class="row x_title">
                   <div class="col-md-12">
-                    <h3>Keuangan Mingguan BUMDes <small>Bulan <?= $nam_bulan ?> <?= $y ?></small></h3>
+                    <h3>Keuangan Mingguan BUMDes <small id="ig_w"><?= $nam_bulan ?> <?= $y ?></small></h3>
                   </div>
                 </div>
 
@@ -145,11 +147,11 @@
           <div class="row tile_count">
             <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Total Debit bulan ini</span>
-              <div class="count text-center" id="debit">Rp. <?= isset($v2[0]->dbt)?$v2[0]->dbt:'0' ?></div>
+              <div class="count text-center" id="dbm">Rp. <?= isset($dkm[0]->dbt)?$dkm[0]->dbt:'0' ?></div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Total Kredit bulan ini</span>
-              <div class="count text-center" id="kredit">Rp. <?= isset($v2[0]->kdt)?$v2[0]->kdt:'0' ?></div>
+              <div class="count text-center" id="kdm">Rp. <?= isset($dkm[0]->kdt)?$dkm[0]->kdt:'0' ?></div>
             </div>
           </div>
           <br>
@@ -158,7 +160,7 @@
               <div class="dashboard_graph">
                 <div class="row x_title">
                   <div class="col-md-12">
-                    <h3>Keuangan Bulanan BUMDes <small>Tahun <?= $y ?></small></h3>
+                    <h3>Keuangan Bulanan BUMDes <small id="ig_m">Tahun <?= $y ?></small></h3>
                   </div>
                 </div>
 
@@ -174,11 +176,11 @@
           <div class="row tile_count">
             <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Total Debit tahun ini</span>
-              <div class="count text-center" id="debit">Rp. <?= isset($v2[0]->dbt)?$v2[0]->dbt:'0' ?></div>
+              <div class="count text-center" id="dby">Rp. <?= isset($dky[0]->dbt)?$dky[0]->dbt:'0' ?></div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Total Kredit tahun ini</span>
-              <div class="count text-center" id="kredit">Rp. <?= isset($v2[0]->kdt)?$v2[0]->kdt:'0' ?></div>
+              <div class="count text-center" id="kdy">Rp. <?= isset($dky[0]->kdt)?$dky[0]->kdt:'0' ?></div>
             </div>
           </div>
           <br>
@@ -215,12 +217,12 @@
 
     <?php $this->load->view('SuptPage/JsP') ?>
     <script src="<?= base_url('asset') ?>/JS/Highchart.js"></script>
-    <script src="<?= base_url('asset') ?>/JS/Form.js"></script>
+    <script src="<?= base_url('asset') ?>/JS/Ajax_req_gov.js"></script>
     
     <script type="text/javascript">
-      keuangan_mingguan(JSON.parse('<?= $v_grafik1 ?>'),'#grafik_keuangan_mingguan')
-      keuangan_bulanan(JSON.parse('<?= $v_grafik2 ?>'),'#grafik_keuangan_bulanan')
-      keuangan_tahunan(JSON.parse('<?= $v_grafik3 ?>'),'#grafik_keuangan_tahunan')
+      keuangan_mingguan(JSON.parse('<?= $gf_w ?>'),'#grafik_keuangan_mingguan')
+      keuangan_bulanan(JSON.parse('<?= $gf_m ?>'),'#grafik_keuangan_bulanan')
+      keuangan_tahunan(JSON.parse('<?= $gf_y ?>'),'#grafik_keuangan_tahunan')
     </script>
   </body>
 </html>

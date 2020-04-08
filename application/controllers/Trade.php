@@ -5,7 +5,7 @@ class Trade extends CI_Controller{
     function __construct(){
         parent:: __construct();
 		date_default_timezone_set('Asia/Jakarta');
-        $tp='GOV';
+        $tp='MNG';
         if ($tp=='MNG') {
             $this->page = 'MenuPage';
         }else if ($tp=='GOV') {
@@ -44,16 +44,19 @@ class Trade extends CI_Controller{
         $data['v'] = $this->tm->get_total_penjualan($data['tahun'],$data['bulan'],true);
         $data['value']=$this->tm->get_info_distribusi($data['tahun'],$data['bulan']);
         $data['v_grafik']=$this->fm->get_grafik_nilai_distribusi($data['tahun']);
+        $data['v_grafik2']=$this->fm->get_grafik_nilai_non_distribusi($data['tahun']);
         // echo $data['v']->hg;
         
         if ($type=='html') {
             $this->load->view('MenuPage/Main/distribution',$data);
+            // echo $data['v_grafik2'];
         }else{
             if ($this->ret) {
                 $val['ses']='Ok';
                 $val['tabel']=$data['value'];
                 $val['row']=isset($data['v']->hg)?$data['v']->hg:0;
                 $val['grafik']=json_decode($data['v_grafik']);
+                $val['grafik2']=json_decode($data['v_grafik2']);
             }else{
                 $val['ses']='Off';
             }

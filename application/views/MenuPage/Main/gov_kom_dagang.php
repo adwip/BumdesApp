@@ -85,7 +85,7 @@
                           echo '<tr>
                                     <td>'.($key+1).'</td>
                                     <td>'.$v->kom.'</td>
-                                    <td>'.$v->stk.'</td>
+                                    <td>'.$v->stk.' '.$v->st.'</td>
                                     <td>Rp. '.$v->hgj.'</td>
                                     <td>Rp. '.$v->hgb.'</td>
                                 </tr>';
@@ -111,12 +111,5 @@
     </div>
 
     <?php $this->load->view('SuptPage/JsP') ?>
-    <script src="<?= base_url('asset') ?>/JS/Highchart.js"></script>
-    <script src="<?= base_url('asset') ?>/JS/Form.js"></script>
-    
-    <script type="text/javascript">
-      pembelian_logistik(JSON.parse('<?= $v_grafik ?>'),'#grafik_perdagangan')
-      
-    </script>
   </body>
 </html>

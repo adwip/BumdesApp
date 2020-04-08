@@ -181,9 +181,7 @@
     <script src="<?= base_url('asset') ?>/JS/Fitur.js"></script>
     <script src="<?= base_url('asset/JS/Ajax_req.js') ?>"></script>
     <script type="text/javascript">
-    $(document).ready(function(){
       penyewaan(JSON.parse('<?= $v_grafik ?>'),'#grafik_penyewaan')
-    })
     </script>
   </body>
 </html>

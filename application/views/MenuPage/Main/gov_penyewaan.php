@@ -61,17 +61,14 @@
             <div class="x_content">
               <div class="row">
                 <div class="col-md-7">
-                  <!-- <button class="btn btn-md btn-warning">Unduh laporan keuangan</button> -->
-                  <!-- <a href="unduh-keuangan-bulanan?tahun=<?=$tahun?>&bulan=<?=$bulan?>"class="btn btn-md btn-warning" target="_blank">Unduh laporan keuangan</a>
-                  <a href="add-finr" class="btn btn-md btn-info">Input data keuangan</a> -->
                 </div>
                 <div class="col-md-5">
                   <div class="row">
-                    <form id="laporan-keuangan" action="<?= site_url('keuangan-bulanan') ?>" method="GET">
+                    <form id="gov-sewa" action="gpnw" method="GET">
                       <div class="col-md-6 col-sm-6">  
                         <div class="form-group">
                           <label for="">Tahun</label>
-                          <select name="tahun" class="form-control" onchange="$('#laporan-keuangan').submit()">
+                          <select name="tahun" class="form-control" onchange="$('#gov-sewa').submit()">
                             <?php 
                               foreach ($thn as $key => $val) {
                                 $key==$y?$sel='selected':$sel=null;
@@ -84,7 +81,7 @@
                       <div class="col-md-6 col-sm-6">
                         <div class="form-group">
                           <label for="">Bulan</label>
-                          <select name="bulan" class="form-control" onchange="$('#laporan-keuangan').submit()">
+                          <select name="bulan" class="form-control" onchange="$('#gov-sewa').submit()">
                             <?php 
                             foreach ($bln as $key => $val) {
                               $key==$m?$sel='selected':$sel=null;
@@ -95,7 +92,7 @@
                         </div>
                       </div>
                     </form>
-                </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -103,11 +100,11 @@
           <div class="row tile_count">
             <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Jumlah penyewaan</span>
-              <div class="count"><?= $v?$v->tp:0 ?></div>
+              <div class="count" id="jpn"><?= $v?$v->tp:0 ?></div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Total pendapatan sewa</span>
-              <div class="count">Rp. <?= $v?$v->tps:0 ?></div>
+              <div class="count" id="tps">Rp. <?= $v2?$v2->tps:0 ?></div>
             </div>
           </div>
 
@@ -122,14 +119,12 @@
 
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <!-- <div id="chart_plot_01" class="demo-placeholder"></div> -->
-                  <div id="grafik_perdagangan"></div>
+                  <div id="grafik_penyewaan"></div>
                 </div>
                 <div class="clearfix"></div>
               </div>
             </div>
           </div>
-          
-          
         </div>
         <!-- /page content -->
 
@@ -146,11 +141,10 @@
 
     <?php $this->load->view('SuptPage/JsP') ?>
     <script src="<?= base_url('asset') ?>/JS/Highchart.js"></script>
-    <script src="<?= base_url('asset') ?>/JS/Form.js"></script>
+    <script src="<?= base_url('asset') ?>/JS/Ajax_req_gov.js"></script>
     
     <script type="text/javascript">
-      pertumbuhan_perdagangan( ,'#grafik_perdagangan')
-      pertumbuhan_penyewaan( ,'#grafik_penyewaan')
+      penyewaan(JSON.parse('<?= $v_grafik ?>'),'#grafik_penyewaan')
     </script>
   </body>
 </html>
