@@ -159,10 +159,12 @@ $route['gov-asset'] = 'Government/gov_asset';//=================ada view
 $route['gov-kerjasama-bgh'] = 'Government/gov_kerjasama_bgh';//=================ada view
 $route['gov-logistik'] = 'Government/gov_logistik';//=================ada view
 $route['gov-dividen'] = 'Government/gov_dividen';//=================ada view
+$route['gov-det-bghu/(:num)'] = 'Government/gov_det_bghu/$1';//=================ada view
 $route['gsmj'] = 'Government/gov_stok_masuk/j';//=================ada view
 $route['gpjn'] = 'Government/gov_penjualan/j';//=================ada view
 $route['gpnw'] = 'Government/gov_penyewaan/j';//=================ada view
 $route['gfin'] = 'Government/gov_finansial/j';//=================ada view
+$route['gbgh'] = 'Government/gov_kerjasama_bgh/j';//=================ada view
 
 
 //Routing homepage

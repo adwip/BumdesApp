@@ -328,16 +328,34 @@ class Finance_model extends CI_Model{
 
     function get_grafik_bagi_hasil($tahun){
         $bulan = ['Januari', 'Februari', 'Maret', 'April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-        $this->db->select('SUM(jumlah) AS v, MONTH(tanggal_bayar) AS b');
+        $this->db->select('SUM(jumlah) AS nbgh, MONTH(tanggal_bayar) AS b, SUM(pen_bumdes) AS pbgh, SUM(pen_mitra) AS pbghm');
         $this->db->from('pemb_bagi_hasil');
         $this->db->like('tanggal_bayar',$tahun,'after');
         $this->db->group_by('MONTH(tanggal_bayar)');
         $result=$this->db->get()->result();
-        $result1['value']=[];
+        $result1['nilai']=[];
+        $result1['bumdes']=[];
+        $result1['mitra']=[];
         $result1['bulan']=[];
         foreach ($result as $key => $v) {
-            $result1['value'][]=(int)$v->v;
+            $result1['nilai'][]=(int)$v->nbgh;
+            $result1['bumdes'][]=(int)$v->pbgh;
+            $result1['mitra'][]=(int)$v->pbghm;
             $result1['bulan'][]=$bulan[$v->b-1];
+        }
+        return json_encode($result1);
+    }
+
+    function get_grafik_bagi_dividen(){
+        $this->db->select('jumlah_div AS jd, tahun_div AS tdiv');
+        $this->db->from('dividen_profit');
+        $this->db->group_by('tahun_div');
+        $result = $this->db->get()->result();
+        $result1['val']=[];
+        $result1['tahun']=[];
+        foreach ($result as $key => $v) {
+            $result1['val'][]=(int)$v->jd;
+            $result1['tahun'][]=$v->tdiv;
         }
         return json_encode($result1);
     }
@@ -352,8 +370,9 @@ class Finance_model extends CI_Model{
         $result1['debit']=[];
         $result1['kredit']=[];
         $result1['minggu']=[];
+        $i=0;
         foreach ($result as $key => $v) {
-            if ((int)$v->dt>=1 &&(int)$v->dt<=7) {
+            if ((int)$v->dt>=1 &&(int)$v->dt<=7&&!in_array(1,$result1['minggu'])) {
                 $result1['minggu'][]=1;
             }elseif ((int)$v->dt>=8 &&(int)$v->dt<=14) {
                 $result1['minggu'][]=2;
@@ -362,15 +381,20 @@ class Finance_model extends CI_Model{
             }else if(!in_array(4,$result1['minggu'])){
                 $result1['minggu'][]=4;
             }
-            if ((int)$v->dt>=22&&$key!=0) {
-                $result1['saldo'][$key-1]+=(int)$v->s;
-                $result1['debit'][$key-1]+=(int)$v->d;
-                $result1['kredit'][$key-1]+=(int)$v->k;
+            if ((int)$v->dt>=1&&(int)$v->dt<=7&&$i!=0) {
+                $result1['saldo'][$i-1]=(int)$v->s;
+                $result1['debit'][$i-1]+=(int)$v->d;
+                $result1['kredit'][$i-1]+=(int)$v->k;
+            }else if ((int)$v->dt>=22&&$i!=0) {
+                $result1['saldo'][$i-1]=(int)$v->s;
+                $result1['debit'][$i-1]+=(int)$v->d;
+                $result1['kredit'][$i-1]+=(int)$v->k;
             }else{
                 $result1['saldo'][]=(int)$v->s;
                 $result1['debit'][]=(int)$v->d;
                 $result1['kredit'][]=(int)$v->k;
             }
+            $i=$key;
         }
         return json_encode($result1);
     }
@@ -448,7 +472,7 @@ class Finance_model extends CI_Model{
         return $result;
     }
 
-    function get_detail_histori_bagi_hasil($id){
+    function get_detail_histori_bagi_hasil($id, $type='html'){
         $this->db->select('id_pbgh AS id, FORMAT(jumlah,"#.00") AS jl, tanggal_bayar AS tb, FORMAT((pers_bumdes/100)*jumlah,"#.00") AS pb, FORMAT((pers_mitra/100)*jumlah,"#.00") AS pm, catatan AS cat');
         $this->db->from('pemb_bagi_hasil');
         $this->db->join('bagi_hasil_aset','id_bgh=id_bagi');
@@ -456,22 +480,26 @@ class Finance_model extends CI_Model{
         $this->db->order_by('tanggal_bayar','ASC');
         $result = $this->db->get()->result();
         $result1 = null;
-        foreach ($result as $key => $v) {
-            $but=null;
-            if (waktu_data($v->id)) {
-                $but = '<a href="'.site_url('edit-pbgu/'.$v->id).'" class="btn btn-xs btn-primary">Ubah</a> <button type="button" class="btn btn-xs btn-danger hapus-pbgh" value="'.$v->id.'">Hapus</button>';
+        if ($type=='html') {
+            foreach ($result as $key => $v) {
+                $but=null;
+                if (waktu_data($v->id)) {
+                    $but = '<a href="'.site_url('edit-pbgu/'.$v->id).'" class="btn btn-xs btn-primary">Ubah</a> <button type="button" class="btn btn-xs btn-danger hapus-pbgh" value="'.$v->id.'">Hapus</button>';
+                }
+                $result1 .= '<tr>
+                                <td>'.($key+1).'</td>
+                                <td>'.$v->cat.'</td>
+                                <td>'.date('d-m-Y',strtotime($v->tb)).'</td>
+                                <td>Rp. '.$v->pb.'</td>
+                                <td>Rp. '.$v->pm.'</td>
+                                <td>Rp. '.$v->jl.'</td>
+                                <td>'.$but.'</td>
+                            </tr>';
             }
-            $result1 .= '<tr>
-                            <td>'.($key+1).'</td>
-                            <td>'.$v->cat.'</td>
-                            <td>'.date('d-m-Y',strtotime($v->tb)).'</td>
-                            <td>Rp. '.$v->pb.'</td>
-                            <td>Rp. '.$v->pm.'</td>
-                            <td>Rp. '.$v->jl.'</td>
-                            <td>'.$but.'</td>
-                        </tr>';
+            return $result1;
+        }else {
+            return $result;
         }
-        return $result1;
     }
 
     function del_pemb_bgh($id){
@@ -716,17 +744,24 @@ class Finance_model extends CI_Model{
     }
 
     function get_total_bagi_hasil($tahun){
-        $this->db->select('FORMAT(SUM(jumlah), "#.00") AS hg');
+        $this->db->select('FORMAT(SUM(jumlah), "#.00") AS hg, FORMAT(SUM(pen_bumdes),"#.00") AS pnb');
         $this->db->from('pemb_bagi_hasil');
-        $this->db->group_by('YEAR(tanggal_bayar)');
         if ($tahun!='All') {
             $this->db->like('tanggal_bayar',$tahun,'after');
         }
         $result = $this->db->get()->result();
-        isset($result[0])?$result[0]=$result[0]:$result[0]=null;
-        return $result[0];
+        $result = isset($result[0])?$result[0]:false;
+        return $result;
     }
 
+    function get_pemb_bagi_hasil_bulan($tahun, $bulan){
+        $this->db->select('FORMAT(SUM(jumlah), "#.00") AS hg, FORMAT(SUM(pen_bumdes),"#.00") AS pnb');
+        $this->db->from('pemb_bagi_hasil');
+        $this->db->like('tanggal_bayar',$tahun.'-'.$bulan,'after');
+        $result = $this->db->get()->result();
+        $result = isset($result[0])?$result[0]:false;
+        return $result;
+    }
     function get_tahun_bgh(){
         $this->db->select('YEAR(tanggal_mulai) AS thn');
         $this->db->from('bagi_hasil_aset');
@@ -881,7 +916,7 @@ class Finance_model extends CI_Model{
         return $result1;
     }//TIMESTAMPDIFF(MONTH,tanggal_mulai, tanggal_selesai) AS dur
 
-    function get_info_bgh($tahun=false, $bulan=false){
+    function get_info_aset_bgh($tahun=false, $bulan=false){
         $this->db->select('COUNT(aset_bh) AS ints, COUNT(aset_luar) AS exts, deld_aset AS deints, (COUNT(aset_bh)+COUNT(deld_aset)) AS jints');
         $this->db->from('bagi_hasil_aset');
         if ($tahun) {

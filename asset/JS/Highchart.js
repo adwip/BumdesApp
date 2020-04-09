@@ -1,13 +1,13 @@
-function pertumbuhan_perdagangan(value, selector){
+function pertumbuhan_perdagangan(value, selector, bulan, tahun){
    var title = {
-      text: 'Pertumbuhan perdagangan'   
+      text: 'Pertumbuhan perdagangan bulan '+bulan+' '+tahun
    };
    var subtitle = {
       text: 'Source: worldClimate.com'
    };
    var xAxis =[{
       tickmarkPlacement: 'on',
-      categories: value['bulan'],
+      categories: value['minggu'],
       startOnTick: true
     }
    ];
@@ -28,7 +28,7 @@ function pertumbuhan_perdagangan(value, selector){
        borderColor: 'black',
        borderRadius: 10,*/
        formatter: function() {
-          return this.series.name + '</b> bulan <b>' + this.x + '</b>, adalah <b>Rp. '+ this.y+' </b>';
+          return this.series.name + '</b> minggu <b>' + this.x + '</b>, adalah <b>Rp. '+ this.y+' </b>';
        }
     }
    var legend = {
@@ -361,7 +361,7 @@ function penyewaan(value, selector, $tahun=null){
       text: 'Pertumbuhan penyewaan aset BUMDes'   
    };
    var subtitle = {
-      text: 'Sumber: BUMDes Pujotirto'
+      text: 'Sumber: BUMDes Indrakila jaya'
    };
    var xAxis =[{
       tickmarkPlacement: 'on',
@@ -429,10 +429,10 @@ function penyewaan(value, selector, $tahun=null){
 
 function bagi_hasil(value, selector, $tahun=null){
    var title = {
-      text: 'Pertumbuhan pemasukan bagi hasil aset'   
+      text: 'Pertumbuhan pemasukan bagi hasil aset '+$tahun
    };
    var subtitle = {
-      text: 'Sumber: BUMDes Pujotirto'
+      text: 'Sumber: BUMDes Indrakila jaya'
    };
    var xAxis =[{
       tickmarkPlacement: 'on',
@@ -467,8 +467,14 @@ function bagi_hasil(value, selector, $tahun=null){
       borderWidth: 0
    };
    var series =  [{
-         name: 'Total pemasukan',
-         data: value['value']
+         name: 'Nilai bagi hasil',
+         data: value['nilai']
+      },{
+         name: 'Penerimaan BUMDes',
+         data: value['bumdes']
+      },{
+         name: 'Penerimaan Mitra',
+         data: value['mitra']
       }
    ];
 
@@ -500,10 +506,10 @@ function bagi_hasil(value, selector, $tahun=null){
 
 function keuangan_mingguan(value, selector, $tahun=null){
    var title = {
-      text: 'Keuangan BUMDes Pujotirto bulan Desember 2019'   
+      text: 'Keuangan BUMDes Indrakila Jaya bulan Desember 2019'   
    };
    var subtitle = {
-      text: 'Sumber: BUMDes Pujotirto'
+      text: 'Sumber: BUMDes Indrakila jaya'
    };
    var xAxis =[{
       tickmarkPlacement: 'on',
@@ -577,10 +583,10 @@ function keuangan_mingguan(value, selector, $tahun=null){
 
 function keuangan_bulanan(value, selector, $tahun=null){
    var title = {
-      text: 'Keuangan BUMDes Pujotirto Tahun 2019'   
+      text: 'Keuangan BUMDes Indrakila Jaya Tahun 2019'   
    };
    var subtitle = {
-      text: 'Sumber: BUMDes Pujotirto'
+      text: 'Sumber: BUMDes Indrakila jaya'
    };
    var xAxis =[{
       tickmarkPlacement: 'on',
@@ -660,10 +666,10 @@ function keuangan_bulanan(value, selector, $tahun=null){
 
 function keuangan_tahunan(value, selector, $tahun=null){
    var title = {
-      text: 'Keuangan tahunan BUMDes Pujotirto'   
+      text: 'Keuangan tahunan BUMDes Indrakila Jaya'   
    };
    var subtitle = {
-      text: 'Sumber: BUMDes Pujotirto'
+      text: 'Sumber: BUMDes Indrakila jaya'
    };
    var xAxis =[{
       tickmarkPlacement: 'on',
@@ -736,10 +742,10 @@ function keuangan_tahunan(value, selector, $tahun=null){
 
 function pertumbuhan_laba(value, selector, $tahun=null){
    var title = {
-      text: 'Pertumbuhan laba usaha BUMDes Pujotirto tahun 2019'   
+      text: 'Pertumbuhan laba usaha BUMDes Indrakila Jaya tahun 2019'   
    };
    var subtitle = {
-      text: 'Sumber: BUMDes Pujotirto'
+      text: 'Sumber: BUMDes Indrakila jaya'
    };
    var xAxis =[{
       tickmarkPlacement: 'on',
@@ -807,12 +813,13 @@ function pertumbuhan_laba(value, selector, $tahun=null){
    $(selector).highcharts(json);
 }
 
-function pertumbuhan_bagi_hasil(value, selector){
+
+function bagi_hasil_usaha(value, selector){
    var title = {
-      text: 'Pertumbuhan bagi hasil usaha'   
+      text: 'Pertumbuhan bagi hasil usaha BUMDes'
    };
    var subtitle = {
-      text: 'Source: worldClimate.com'
+      text: 'Sumber: BUMDes Indrakila jaya'
    };
    var xAxis =[{
       tickmarkPlacement: 'on',
@@ -837,7 +844,7 @@ function pertumbuhan_bagi_hasil(value, selector){
        borderColor: 'black',
        borderRadius: 10,*/
        formatter: function() {
-          return this.series.name + '</b> tahun <b>' + this.x + '</b> <b> Rp. '+ this.y+' </b>';
+          return this.series.name + '</b> bulan <b>' + this.x + '</b>, adalah <b>Rp. '+ this.y+' </b>';
        }
     }
    var legend = {
@@ -847,8 +854,8 @@ function pertumbuhan_bagi_hasil(value, selector){
       borderWidth: 0
    };
    var series =  [{
-         name: 'Bagi hasil usaha',
-         data: value['nilai']
+         name: 'Nilai bagi hasil',
+         data: value['val']
       }
    ];
 
@@ -867,7 +874,7 @@ function pertumbuhan_bagi_hasil(value, selector){
 
    var json = {};
    json.title = title;
- //   json.subtitle = subtitle;
+   json.subtitle = subtitle;
    json.xAxis = xAxis;
    json.yAxis = yAxis;
    json.tooltip = tooltip;

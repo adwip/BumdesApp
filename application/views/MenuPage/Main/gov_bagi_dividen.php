@@ -84,17 +84,6 @@
               </div>
             </div> -->
           </div>
-          <!-- <div class="row tile_count">
-            <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Total bagi hasil tahun 2020</span>
-              <div class="count">Rp. 0</div>
-            </div>
-            <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Total penerima bagi hasil tahun 2020</span>
-              <div class="count">Rp. 0</div>
-            </div>
-          </div> -->
-        
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
@@ -164,10 +153,9 @@
 
     <?php $this->load->view('SuptPage/JsP') ?>
     <script src="<?= base_url('asset') ?>/JS/Highchart.js"></script>
-    <script src="<?= base_url('asset') ?>/JS/Form.js"></script>
     
     <script type="text/javascript">
-    //   bagi_hasil(JSON.parse('<?= $v_grafik ?>'),'#grafik_bagi_hasil',2020);
+      bagi_hasil_usaha(JSON.parse('<?= $v_grafik ?>'),'#grafik_bagi_hasil');
     </script>
   </body>
 </html>

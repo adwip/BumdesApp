@@ -85,23 +85,42 @@ class Government extends CI_Controller{
         $this->load->view('MenuPage/Main/gov_asset',$dt);
     }
     
-    function gov_kerjasama_bgh(){
+    function gov_kerjasama_bgh($type='html'){
         $dt['page']=$this->page;
         $dt['bln'] = $this->bulan;
+        $dt['nb'] = $this->bulan[date('m')];
         $dt['title'] = 'Pencatatan penjualan';
         $dt['y'] = date('Y');
         $dt['m'] = date('m');
         if (isset($_GET['tahun'])) {
             $dt['y'] = $this->input->get('tahun',TRUE);
             $dt['m'] = $this->input->get('bulan',TRUE);
+            $dt['nb'] = $this->bulan[$dt['m']];
         }
-        $dt['v'] = $this->fm->get_total_bagi_hasil($dt['y']);
+        $dt['pby'] = $this->fm->get_total_bagi_hasil($dt['y']);
+        $dt['pbm'] = $this->fm->get_pemb_bagi_hasil_bulan($dt['y'],$dt['m']);
         $dt['thn'] = $this->fm->get_tahun_bgh();
-        $dt['vt'] = $this->fm->get_info_bgh($dt['y'], $dt['m']);
-        $dt['va'] = $this->fm->get_info_bgh();
+        $dt['vt'] = $this->fm->get_info_aset_bgh($dt['y'], $dt['m']);
+        $dt['va'] = $this->fm->get_info_aset_bgh();
         $dt['v_grafik']=$this->fm->get_grafik_bagi_hasil($dt['y']);
-        $this->load->view('MenuPage/Main/gov_kerjasama_bgh',$dt);
-        // echo json_encode($dt['v']);
+        if ($type=='html') {
+            $this->load->view('MenuPage/Main/gov_kerjasama_bgh',$dt);
+        }else{
+            $dt2['v_grafik'] = json_decode($dt['v_grafik']);
+            $dt2['pbgh-m'] = isset($dt['pbm']->pnb)?$dt['pbm']->pnb:0;
+            $dt2['pbgh-y'] = isset($dt['pby']->pnb)?$dt['pby']->pnb:0;
+            $dt2['nbgh-m'] = isset($dt['pbm']->hg)?$dt['pbm']->hg:0;
+            $dt2['nbgh-y'] = isset($dt['pby']->hg)?$dt['pby']->hg:0;
+            
+            $dt2['int-m'] = isset($dt['vt']->jints)?$dt['vt']->jints:0;
+            $dt2['ext-m'] = isset($dt['vt']->exts)?$dt['vt']->exts:0;
+            $dt2['int-y'] = isset($dt['va']->jints)?$dt['va']->jints:0;
+            $dt2['ext-y'] = isset($dt['va']->exts)?$dt['va']->exts:0;
+
+            $dt2['nb'] = $dt['nb'];
+            $dt2['y'] = $dt['y'];
+            echo json_encode($dt2);
+        }
     }
 
     function gov_finansial($type='html'){
@@ -163,8 +182,9 @@ class Government extends CI_Controller{
             $dt['y'] = $this->input->get('tahun',true);
         }
         $dt['val'] = $this->fm->get_daftar_dividen('json');
+        $dt['v_grafik'] = $this->fm->get_grafik_bagi_dividen();
         $this->load->view('MenuPage/Main/gov_bagi_dividen',$dt);
-        // echo json_encode($dt['tahun']);
+        // echo $dt['v_grafik'];
     }
         
     function gov_penjualan($type='html'){
@@ -199,6 +219,16 @@ class Government extends CI_Controller{
             echo json_encode($dt);
 
         }
+    }
+
+    function gov_det_bghu($id){
+        $dt['page']=$this->page;
+        $dt['title'] = 'Info perdagangan BUMDes';
+        $dt['v'] = $this->fm->detail_bagi_hasil_usaha($id);
+        $dt['tabel_ent'] = $this->fm->detail_entitas_bagi_usaha($id);
+        $dt['id'] = $id;
+        $this->load->view('MenuPage/Detail_print/detail_gov_bagi_dividen',$dt);
+        // echo json_encode($dt['v']);
     }
 
 }

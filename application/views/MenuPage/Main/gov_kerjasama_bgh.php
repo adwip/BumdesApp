@@ -64,11 +64,11 @@
                 </div>
                 <div class="col-md-5">
                   <div class="row">
-                    <form id="laporan-keuangan" action="<?= site_url('keuangan-bulanan') ?>" method="GET">
+                    <form id="gov-kbgh" action="gbgh" method="GET">
                       <div class="col-md-6 col-sm-6">  
                         <div class="form-group">
                           <label for="">Tahun</label>
-                          <select name="tahun" class="form-control" onchange="$('#laporan-keuangan').submit()">
+                          <select name="tahun" class="form-control" onchange="$('#gov-kbgh').submit()">
                             <?php 
                               foreach ($thn as $key => $val) {
                                 $key==$y?$sel='selected':$sel=null;
@@ -81,7 +81,7 @@
                       <div class="col-md-6 col-sm-6">
                         <div class="form-group">
                           <label for="">Bulan</label>
-                          <select name="bulan" class="form-control" onchange="$('#laporan-keuangan').submit()">
+                          <select name="bulan" class="form-control" onchange="$('#gov-kbgh').submit()">
                             <?php 
                             foreach ($bln as $key => $val) {
                               $key==$m?$sel='selected':$sel=null;
@@ -99,30 +99,40 @@
           </div>
           <div class="row tile_count">
             <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Total penerimaan bagi hasil Januari 2020</span>
-              <div class="count">Rp. <?= isset($v->hg)?''.$v->hg:'0' ?></div>
+              <span class="count_top"><i class="fa fa-user"></i> <span id="k-pbgh-m">Penerimaan BUMDes bagi hasil <?= $nb ?> <?= $y ?></span></span>
+              <div class="count text-center" id="pbgh-m">Rp. <?= isset($pbm->pnb)?''.$pbm->pnb:'0' ?></div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Total penerimaan bagi hasil tahun 2020</span>
-              <div class="count">Rp. <?= isset($v->hg)?''.$v->hg:'0' ?></div>
+              <span class="count_top"><i class="fa fa-user"></i> <span id="k-pbgh-y">Penerimaan BUMDes bagi hasil tahun <?= $y ?></span></span>
+              <div class="count text-center" id="pbgh-y">Rp. <?= isset($pby->pnb)?''.$pby->pnb:'0' ?></div>
+            </div>
+          </div>
+          <div class="row tile_count">
+            <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> <span id="k-nbgh-m">Nilai bagi hasil <?= $nb ?> <?= $y ?></span></span>
+              <div class="count text-center" id="nbgh-m">Rp. <?= isset($pbm->hg)?''.$pbm->hg:'0' ?></div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> <span id="k-nbgh-y">Nilai bagi hasil tahun <?= $y ?></span></span>
+              <div class="count text-center" id="nbgh-y">Rp. <?= isset($pby->hg)?''.$pby->hg:'0' ?></div>
             </div>
           </div>
           <div class="row tile_count">
             <div class="col-md-3 col-sm-3 col-xs-3 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Bagi hasil aset internal Januari 2020</span>
-              <div class="count"><?= $vt?''.$vt->jints:'0' ?></div>
+              <span class="count_top"><i class="fa fa-user"></i> Aset internal <?= $nb ?> <?= $y ?></span>
+              <div class="count" id="int-m"><?= $vt?''.$vt->jints:'0' ?></div>
             </div>
             <div class="col-md-3 col-sm-3 col-xs-3 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Bagi hasil aset eksternal Januari 2020</span>
-              <div class="count"><?= $vt?''.$vt->exts:'0' ?></div>
+              <span class="count_top"><i class="fa fa-user"></i> Aset eksternal <?= $nb ?> <?= $y ?></span>
+              <div class="count" id="ext-m"><?= $vt?''.$vt->exts:'0' ?></div>
             </div>
             <div class="col-md-3 col-sm-3 col-xs-3 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Bagi hasil aset internal keseluruhan</span>
-              <div class="count"><?= $va?''.$va->jints:'0' ?></div>
+              <span class="count_top"><i class="fa fa-user"></i> Aset internal tahun <?= $y ?></span>
+              <div class="count" id="int-y"><?= $va?''.$va->jints:'0' ?></div>
             </div>
             <div class="col-md-3 col-sm-3 col-xs-3 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Bagi hasil aset eksternal keseluruhan</span>
-              <div class="count"><?= $va?''.$va->exts:'0' ?></div>
+              <span class="count_top"><i class="fa fa-user"></i> Aset eksternal tahun <?= $y ?></span>
+              <div class="count" id="ext-y"><?= $va?''.$va->exts:'0' ?></div>
             </div>
           </div>
 
@@ -131,7 +141,7 @@
               <div class="dashboard_graph">
                 <div class="row x_title">
                   <div class="col-md-12">
-                    <h3>Pertumbuhan penerimaan bagi hasil <small>Bulan Januari 2020</small></h3>
+                    <h3>Pertumbuhan penerimaan bagi hasil <small id="g-tahun">Tahun <?= $y ?></small></h3>
                   </div>
                 </div>
 
@@ -161,10 +171,10 @@
 
     <?php $this->load->view('SuptPage/JsP') ?>
     <script src="<?= base_url('asset') ?>/JS/Highchart.js"></script>
-    <script src="<?= base_url('asset') ?>/JS/Form.js"></script>
+    <script src="<?= base_url('asset') ?>/JS/Ajax_req_gov.js"></script>
     
     <script type="text/javascript">
-      bagi_hasil(JSON.parse('<?= $v_grafik ?>'),'#grafik_bagi_hasil',2020);
+      bagi_hasil(JSON.parse('<?= $v_grafik ?>'),'#grafik_bagi_hasil',"<?= $y ?>");
     </script>
   </body>
 </html>

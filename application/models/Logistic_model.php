@@ -115,7 +115,7 @@ class Logistic_model extends CI_Model{
     }
 
     function get_grafik_penjualan($tahun,$bulan){
-        $this->db->select('SUM(nilai_transaksi) AS sl, SUM(margin) AS mg');
+        $this->db->select('SUM(nilai_transaksi) AS sl, SUM(margin) AS mg, DAY(tanggal) AS dt');
         $this->db->from('stok_item si');
         $this->db->join('stok_keluar sk','si.id_stok=sk.id_prb');
         $this->db->LIKE('tanggal',$tahun.'-'.$bulan,'after');
@@ -123,9 +123,29 @@ class Logistic_model extends CI_Model{
         $result=$this->db->get()->result();
         $result1['penjualan']=[];
         $result1['margin']=[];
+        $result1['minggu']=[];
+        $i=0;
         foreach ($result as $key => $v) {
-            $result1['penjualan'][]=(int)$v->sl;
-            $result1['margin'][]=(int)$v->mg;
+            if ((int)$v->dt>=1 &&(int)$v->dt<=7&&!in_array(1,$result1['minggu'])) {
+                $result1['minggu'][]=1;
+            }elseif ((int)$v->dt>=8 &&(int)$v->dt<=14) {
+                $result1['minggu'][]=2;
+            }elseif ((int)$v->dt>=15 &&(int)$v->dt<=21) {
+                $result1['minggu'][]=3;
+            }else if(!in_array(4,$result1['minggu'])){
+                $result1['minggu'][]=4;
+            }
+            if ((int)$v->dt>=1&&(int)$v->dt<=7&&$i!=0) {
+                $result1['penjualan'][$i-1]+=(int)$v->sl;
+                $result1['margin'][$i-1]+=(int)$v->mg;
+            }else if ((int)$v->dt>=22&&$i!=0) {
+                $result1['penjualan'][$i-1]+=(int)$v->sl;
+                $result1['margin'][$i-1]+=(int)$v->mg;
+            }else{
+                $result1['penjualan'][]=(int)$v->sl;
+                $result1['margin'][]=(int)$v->mg;
+            }
+            $i=$key;
         }
         return json_encode($result1);
     }

@@ -265,7 +265,5 @@ class Trade extends CI_Controller{
         }
         $this->PDF->Output('I','Daftar_barang_'.date('d_m_Y').'.pdf');
     }
-
-
-
+    
 }

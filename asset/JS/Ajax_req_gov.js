@@ -82,4 +82,32 @@ $(document).ready(function(){
             }
         })
     })
+    
+    $('#gov-kbgh').submit(function(e){
+        e.preventDefault()
+        const form = $(this).serialize()
+        history.pushState("","",'?'+form)
+        $.ajax({
+            url:$(this).attr('action'),
+            type: $(this).attr('method'),
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function(v){
+                $('#pbgh-m').html('Rp. '+v['pbgh-m'])
+                $('#pbgh-y').html('Rp. '+v['pbgh-y'])
+                $('#nbgh-m').html('Rp. '+v['nbgh-m'])
+                $('#nbgh-y').html('Rp. '+v['nbgh-y'])
+                $('#k-pbgh-m').html('Penerimaan BUMDes bagi hasil '+v['nb']+' '+v['y'])
+                $('#k-pbgh-y').html('Penerimaan BUMDes bagi hasil tahun '+v['y'])
+                $('#k-nbgh-m').html('Nilai bagi hasil '+v['nb']+' '+v['y'])
+                $('#k-nbgh-y').html('Nilai bagi hasil tahun '+v['y'])
+                $('#int-m').html(v['int-m'])
+                $('#ext-m').html(v['ext-m'])
+                $('#int-y').html(v['int-m'])
+                $('#ext-y').html(v['ext-y'])
+                $('#g-tahun').html('Tahun '+v['y'])
+                bagi_hasil(v['v_grafik'],'#grafik_bagi_hasil', v['y'])
+            }
+        })
+    })
 })

@@ -35,13 +35,8 @@ class Homepage extends CI_Controller{
         $data['v3'] = $this->fm->get_total_bagi_hasil($data['Y']);
         $data['nam_bulan'] = $this->bulan[date('m')];
         $data['tahun'] = date('Y');
-        // echo json_encode($data['v3']);
-        // echo $data['v_graf'];
-        if (true) {
-            $this->load->view('General/home',$data);
-        }else{
-            $this->load->view('General/home',$data);
-        }
+        
+        $this->load->view('General/home',$data);
     }
 
     function login_page(){

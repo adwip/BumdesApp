@@ -59,7 +59,7 @@
               <div class="count"><?= isset($v->hg)?'Rp. '.$v->hg:'Rp. 0' ?></div>
             </div>
             <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
-              <span class="count_top"><i class="fa fa-clock-o"></i> Penjualan <?= $Y ?></span>
+              <span class="count_top"><i class="fa fa-clock-o"></i> Penjualan <?= $nam_bulan ?> <?= $tahun ?></span>
               <div class="count"><?= isset($v2->hg)?'Rp. '.$v2->hg:'Rp. 0' ?></div>
             </div>
             <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
@@ -135,7 +135,7 @@
     <script src="<?= base_url('asset') ?>/JS/Form.js"></script>
     
     <script type="text/javascript">
-      pertumbuhan_perdagangan(JSON.parse('<?= $v_graf ?>'),'#grafik_perdagangan')
+      pertumbuhan_perdagangan(JSON.parse('<?= $v_graf ?>'),'#grafik_perdagangan', "<?= $nam_bulan ?>", "<?= $tahun ?>")
       pertumbuhan_penyewaan(JSON.parse('<?= $v_graf ?>'),'#grafik_penyewaan')
     </script>
   </body>
