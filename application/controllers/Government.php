@@ -15,7 +15,6 @@ class Government extends CI_Controller{
     }
     
     function gov_stok_masuk($type='h'){//=================OK
-        $dt['page']=$this->page;
         $dt['bln'] = $this->bulan;
         $dt['nam_bulan'] = $this->bulan[date('m')];
         $dt['title'] = 'Info belanja logistik';
@@ -41,7 +40,6 @@ class Government extends CI_Controller{
     }
 
     function gov_logistik(){
-        $dt['page']=$this->page;
         $dt['title'] = '';
         $dt['tahun'] = date('Y');
         $dt['val'] = $this->lm->get_komoditas('json');
@@ -49,7 +47,6 @@ class Government extends CI_Controller{
     }
 
     function gov_penyewaan($type='html'){
-        $dt['page']=$this->page;
         $dt['bln'] = $this->bulan;
         $dt['title'] = 'Pencatatan penjualan';
         $dt['y'] = date('Y');
@@ -74,7 +71,6 @@ class Government extends CI_Controller{
     }
 
     function gov_asset(){
-        $dt['page']=$this->page;
         $dt['title'] = 'Pencatatan penjualan';
         $dt['y'] = date('Y');
         $dt['m'] = date('m');
@@ -86,7 +82,6 @@ class Government extends CI_Controller{
     }
     
     function gov_kerjasama_bgh($type='html'){
-        $dt['page']=$this->page;
         $dt['bln'] = $this->bulan;
         $dt['nb'] = $this->bulan[date('m')];
         $dt['title'] = 'Pencatatan penjualan';
@@ -124,7 +119,6 @@ class Government extends CI_Controller{
     }
 
     function gov_finansial($type='html'){
-        $dt['page']=$this->page;
         $dt['title'] = 'Pencatatan penjualan';
         $dt['nam_bulan'] = $this->bulan[date('m')];
         $dt['bln'] = $this->bulan;
@@ -175,7 +169,6 @@ class Government extends CI_Controller{
     }
 
     function gov_dividen(){
-        $dt['page']=$this->page;
         $dt['title'] = 'Pencatatan penjualan';
         $dt['y'] = date('Y');
         if (isset($_GET['tahun'])) {
@@ -188,7 +181,6 @@ class Government extends CI_Controller{
     }
         
     function gov_penjualan($type='html'){
-        $dt['page']=$this->page;
         $dt['bln'] = $this->bulan;
         $dt['title'] = 'Info perdagangan BUMDes';
         $dt['y'] = date('Y');
@@ -222,7 +214,6 @@ class Government extends CI_Controller{
     }
 
     function gov_det_bghu($id){
-        $dt['page']=$this->page;
         $dt['title'] = 'Info perdagangan BUMDes';
         $dt['v'] = $this->fm->detail_bagi_hasil_usaha($id);
         $dt['tabel_ent'] = $this->fm->detail_entitas_bagi_usaha($id);

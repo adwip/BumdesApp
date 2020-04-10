@@ -96,12 +96,22 @@ class Trade_model extends CI_Model{
         return $result[0];
     }
 
-    function get_jual_profits($tahun){
-        $this->db->select('FORMAT(nilai_transaksi, "#.00") as jl, FORMAT(margin, "#.00") AS pf');
+    function get_jual_profits_tahun($tahun){
+        $this->db->select('FORMAT(SUM(nilai_transaksi), "#.00") as jl, FORMAT(SUM(margin), "#.00") AS pf');
         $this->db->from('stok_keluar sk');
-        $this->db->group_by('YEAR(tanggal)');
+        // $this->db->group_by('YEAR(tanggal)');
         $this->db->join('stok_item si','si.id_stok=sk.id_prb');
         $this->db->like('tanggal',$tahun,'after');
+        $result = $this->db->get()->result();
+        isset($result[0])?$result[0]=$result[0]:$result[0]=null;
+        return $result[0];
+    }
+
+    function get_jual_profits_bulan($tahun, $bulan){
+        $this->db->select('FORMAT(SUM(nilai_transaksi), "#.00") as jl, FORMAT(SUM(margin), "#.00") AS pf');
+        $this->db->from('stok_keluar sk');
+        $this->db->join('stok_item si','si.id_stok=sk.id_prb');
+        $this->db->like('tanggal',$tahun.'-'.$bulan,'after');
         $result = $this->db->get()->result();
         isset($result[0])?$result[0]=$result[0]:$result[0]=null;
         return $result[0];

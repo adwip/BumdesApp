@@ -31,7 +31,6 @@ class Trade extends CI_Controller{
     }
 
     function distribution($type='html'){//=================OK
-        $data['page']=$this->page;
         $data['title'] = '';
         $data['bln'] = $this->bulan;
         $data['tahun'] = date('Y');
@@ -64,25 +63,7 @@ class Trade extends CI_Controller{
         }
     }
 
-
-    function distribusi_barang(){//=============ada view
-        $data['page']=$this->page;
-        $data['title'] = '';
-        $data['tanggal'] = date('d/m/Y');
-        $data['v']=$this->lm->get_komoditas('JSON');
-        $data['v2'] = $this->am->get_rekanan('JSON');
-        $this->load->view('MenuPage/Form/tambah_distribusi_barang',$data);
-    }
-    
-    function catat_transaksi(){//=============ada view
-        $data['page']=$this->page;
-        $data['title'] = 'Pencatatan penjualan';
-        $data['tanggal'] = date('d/m/Y');
-        $this->load->view('MenuPage/Form/catat_transaksi',$data);
-    }
-
     function form_barang_keluar(){//=============ada view
-        $data['page']=$this->page;
         $data['title'] = '';
         $data['tanggal'] = date('d/m/Y');
         $data['v']=$this->lm->get_komoditas('JSON');
@@ -113,12 +94,12 @@ class Trade extends CI_Controller{
             $v1=$this->fm->set_arus_kas('IN', $pesan, $harga, date('Y-m-d',strtotime($tanggal)), 'System', $v['id']);
             if ($v1['res']) {
                 $log_mes = '[TAMBAH][KEUANGAN][STOK KELUAR]['.$v1['id'].']['.$v['id'].'] Menambah arus kas masuk (Debit) untuk penjualan '.$n_kom.' sebanyak '.$jumlah.' '.$n_sat;
-                $this->hr->log_admin('0081578813144', $log_mes, date('Y-m-d'), date('H:i:s'));
+                $this->hr->log_admin($this->ses->nu, $log_mes, date('Y-m-d'), date('H:i:s'));
             }
         }
         if ($v['stat']) {
             $log_mesg = '[TAMBAH][STOK KELUAR]['.$v['id'].'] Stok '.$n_kom.' keluar sebanyak '.$jumlah.' '.$n_sat.' untuk '.$tujuan.$mesg;
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             $data = $this->lm->get_komoditas('JSON');
             echo json_encode(['resp'=>200,'data'=>$data]);
         }else{
@@ -129,7 +110,6 @@ class Trade extends CI_Controller{
     }
 
     function form_edit_barang_keluar_gudang($id){//=============ada view
-        $data['page']=$this->page;
         $data['title'] = '';
         $data['tanggal'] = date('d/m/Y');
         $data['v'] = $this->tm->get_edit_stok_keluar($id);
@@ -162,7 +142,7 @@ class Trade extends CI_Controller{
 
         $v = $this->tm->edit_stok_keluar($id,$jl, $tg, $jn, $ct, $mt, $nl);
         if ($v) {//perubahan data stok
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             $resp =true;
         }
 
@@ -171,13 +151,13 @@ class Trade extends CI_Controller{
             $v = $this->fm->set_arus_kas('IN', $ket_kas, $nl, $tg, 'System', $id);
             if ($v['res']) {
                 $log_mesg='[TAMBAH][KEUANGAN][STOK KELUAR]['.$v['id'].']['.$id.'] Menambah catatan keuangan dari penjualan '.$n_kom.' sebanyak '.$jl.' '.$st.' untuk '.$ext;
-                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
                 $resp = true;
             }else{
                 $v=$this->fm->edit_arus_kas($id, $nl, 'Debit', $tg, $ket_kas);
                 if ($v['resp']) {
                     $log_mesg='[EDIT][KEUANGAN][STOK KELUAR]['.$v['id'].']['.$id.'] Perubahan catatan keuangan dari penjualan '.$n_kom.' sebanyak '.$jl.' '.$st.' untuk '.$ext;
-                    $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                    $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
                     $resp = true;
                 }
             }
@@ -185,7 +165,7 @@ class Trade extends CI_Controller{
             $v = $this->fm->del_keuangan($id);
             $log_mesg='[HAPUS][KEUANGAN][STOK KELUAR]['.$id.']['.$id.'] Menghapus data keuangan dari penjualan '.$n_kom.' sebanyak '.$jl.' '.$st;
             if ($v['res']) {//log delete kas
-                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
                 $resp=true;
             }
         }

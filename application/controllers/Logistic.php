@@ -25,7 +25,6 @@ class Logistic extends CI_Controller{
     }
 
     function stok_masuk($type='html'){//=================OK
-        $data['page']=$this->page;
         $data['bln'] = $this->bulan;
         $data['title'] = 'Belanja komoditas';
         $data['tahun'] = date('Y');
@@ -56,7 +55,6 @@ class Logistic extends CI_Controller{
     }
 
     function form_tambah_barang_masuk_gudang(){//=============ada view
-        $data['page']=$this->page;
         $data['title'] = '';
         $data['tanggal'] = date('d-m-Y');
         $data['b']=$this->fm->get_saldo();
@@ -66,7 +64,6 @@ class Logistic extends CI_Controller{
     }
 
     function exit_item($type='html'){//=================OK
-        $data['page']=$this->page;
         $data['title'] = 'Barang keluar';
         $data['bln'] = $this->bulan;
         $data['tahun'] = date('Y');
@@ -95,7 +92,6 @@ class Logistic extends CI_Controller{
     }
 
     function komoditas(){//=================OK
-        $data['page']=$this->page;
         $data['title'] = 'Komoditas dagang';
         $data['value']=$this->lm->get_komoditas();
         $data['sat'] = $this->am->get_satuan();
@@ -103,25 +99,13 @@ class Logistic extends CI_Controller{
         // echo json_encode($data['value']);
     }
 
-
-    function gov_logistik(){
-        $data['page']=$this->page;
-        $data['title'] = '';
-        $data['tanggal'] = date('d/m/Y');
-        $data['v'] = $this->am->get_satuan('json');
-        $this->load->view('MenuPage/Form/tambah_komoditas',$data);
-    }
-
-    function tambah_komoditas(){//=============ada view
-        $data['page']=$this->page;
-        $data['title'] = '';
-        $data['tanggal'] = date('d/m/Y');
+    function form_tambah_komoditas(){//=============ada view
+        $data['title'] = 'Tambah komoditas dagang';
         $data['v'] = $this->am->get_satuan('json');
         $this->load->view('MenuPage/Form/tambah_komoditas',$data);
     }
 
     function form_edit_barang_masuk_gudang($id){//=============ada view
-        $data['page']=$this->page;
         $data['title'] = 'Edit data barang masuk';
         $data['v'] = $this->lm->get_edit_stok_masuk($id);
         $data['b']=$this->fm->get_saldo();
@@ -130,31 +114,26 @@ class Logistic extends CI_Controller{
     }
 
     
-    function form_edit_komoditas_gudang($id){//=============ada view
-        $data['page']=$this->page;
-        $data['title'] = '';
-        $data['tanggal'] = date('d/m/Y');
+    function form_edit_komoditas_dagang($id){//=============ada view
+        $data['title'] = 'Ubah data komoditas dagang';
         $data['v']=$this->am->get_edit_komoditas($id);
         $data['v2']=$this->am->get_satuan('json');
         $this->load->view('MenuPage/Form/edit_komoditas_gudang',$data);
         // echo json_encode($data['v']);
     }
 
-    function detail_logistik_gdg($id){//=============ada view
-        $data['page']=$this->page;
-        $data['title'] = '';
+    function detail_logistik_dagang($id){//=============ada view
+        $data['title'] = 'Detail komoditas dagang';
         $data['tanggal'] = date('d/m/Y');
         $data['id'] = $id;
         $data['v'] = $this->lm->get_detail_komoditas($id);
         $data['v_tabel_histori'] = $this->lm->get_histori_harga_komoditas($id);
-        $this->load->view('MenuPage/Detail_Print/detail_logistik_gdg',$data);
+        $this->load->view('MenuPage/Detail_Print/detail_logistik_dagang',$data);
         // echo $data['v_tabel_histori'];
     }
 
     function detail_logistik_masuk($id, $type='html'){//=============ada view
-        $data['page']=$this->page;
-        $data['title'] = '';
-        $data['tanggal'] = date('d/m/Y');
+        $data['title'] = 'Detail logistik masuk';
         $data['id'] = $id;
         $data['y'] = date('Y');
         $data['m'] = date('m');
@@ -177,9 +156,7 @@ class Logistic extends CI_Controller{
     
 
     function detail_logistik_keluar($id, $type='html'){//=============ada view
-        $data['page']=$this->page;
-        $data['title'] = '';
-        $data['tanggal'] = date('d/m/Y');
+        $data['title'] = 'Detail logistik keluar';
         $data['id'] = $id;
         $data['y'] = date('Y');
         $data['m'] = date('m');
@@ -535,12 +512,12 @@ class Logistic extends CI_Controller{
             $v1=$this->fm->set_arus_kas('OUT', $pesan, $hg, date('Y-m-d',strtotime($tg)), 'System', $v['id']);
             if ($v1['res']) {
                 $log_mes = '[TAMBAH][KEUANGAN][STOK MASUK]['.$v1['id'].']['.$v['id'].'] Menambah arus kas keluar (Kredit) untuk pembelian '.$n_kom.' sebanyak '.$jl.' '.$n_sat;
-                $this->hr->log_admin('0081578813144', $log_mes, date('Y-m-d'), date('H:i:s'));
+                $this->hr->log_admin($this->ses->nu, $log_mes, date('Y-m-d'), date('H:i:s'));
             }
         }
         if ($v['stat']) {
             $log_mes = '[TAMBAH][STOK MASUK]['.$v['id'].'] Penambahan stok masuk '.$n_kom.' sebanyak '.$jl.' '.$n_sat.' dengan cara '.$jn;
-            $this->hr->log_admin('0081578813144', $log_mes, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mes, date('Y-m-d'), date('H:i:s'));
             $s=$this->fm->get_saldo();
             $s = isset($s[0]->ac)?$s[0]->ac:0;
             echo json_encode(['resp'=>200,'sld'=>$s]);
@@ -566,12 +543,12 @@ class Logistic extends CI_Controller{
         $log_mesg = '[EDIT][STOK MASUK]['.$id.'] Perubahan data stok masuk untuk komoditas '.$n_kom.' sebanyak '.$jl.' '.$sat;
         $v = $this->lm->edit_stok_masuk($id, $jl, $hg, $tg, $jn, $ct);
         if ($v) {//log edit stok
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             if ($jn=='Non-beli') {
                 $v = $this->fm->del_keuangan($id);
                 $log_mesg='[HAPUS][KEUANGAN][STOK MASUK]['.$id.'] Menghapus data keuangan untuk pembelian '.$n_kom.' sebanyak '.$jl.' '.$sat;
                 if ($v) {//log delete kas
-                    $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                    $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
                 }
             }
             $resp =true;
@@ -582,13 +559,13 @@ class Logistic extends CI_Controller{
             $v = $this->fm->set_arus_kas('OUT', $ket_kas, $hg, $tg, 'System', $id);
             if ($v['res']) {
                 $log_mesg='[TAMBAH][KEUANGAN][STOK MASUK]['.$v['id'].']['.$id.'] Menambah catatan keuangan dari pembelian '.$n_kom.' sebanyak '.$jl.' '.$sat;
-                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
                 $resp = true;
             }else{
                 $v=$this->fm->edit_arus_kas($id, $hg, 'Kredit', $tg, $ket_kas);
                 if ($v['resp']) {
                     $log_mesg='[EDIT][KEUANGAN][STOK MASUK]['.$v['id'].']['.$id.'] Perubahan catatan keuangan dari pembelian '.$n_kom.' sebanyak '.$jl.' '.$sat;
-                    $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                    $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
                     $resp = true;
                 }
             }
@@ -596,7 +573,7 @@ class Logistic extends CI_Controller{
             $v = $this->fm->del_keuangan($id);
             $log_mesg='[HAPUS][KEUANGAN][STOK MASUK]['.$id.'] Menghapus data keuangan dari pembelian '.$n_kom.' sebanyak '.$jl.' '.$sat;
             if ($v) {//log delete kas
-                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
                 $resp=true;
             }
         }
@@ -640,7 +617,7 @@ class Logistic extends CI_Controller{
         $v=$this->am->set_komoditas_baru($nam, $sat, $hgj, $hgb);
         if ($v['resp']) {
             $log_mesg = '[TAMBAH][KOMODITAS]['.$v['id'].'] Penambahan komoditas baru '.$nam;
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             echo '200';
         }
 
@@ -653,11 +630,11 @@ class Logistic extends CI_Controller{
         $v = $this->lm->hapus_rekap_stok($id);
         $log_mesg = '[HAPUS][STOK MASUK]['.$id.'] Menghapus data stok/logistik masuk untuk barang '.$nama;
         if ($v) {
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             $v=$this->fm->del_keuangan($id);
             if ($v['res']) {
                 $log_mesg = '[HAPUS][KEUANGAN][STOK MASUK]['.$v['id'].']['.$id.'] Menghapus transaksi dari pembelian logistik dagang';
-                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             }
             $tahun = $this->input->post('tahun',true);
             $bulan = $this->input->post('bulan',true);
@@ -679,11 +656,11 @@ class Logistic extends CI_Controller{
         $log_mesg = '[HAPUS][STOK KELUAR / DISTRIBUSI]['.$id.'] Menghapus rekap stok keluar/distribusi untuk barang '.$nama;
         
         if ($v) {
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             $v=$this->fm->del_keuangan($id);
             if ($v['res']) {
                 $log_mesg = '[HAPUS][KEUANGAN][STOK KELUAR / DISTRIBUSI]['.$v['id'].']['.$id.'] Menghapus transaksi penjualan/distribusi barang';
-                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             }
             $tahun = $this->input->post('tahun',true);
             $bulan = $this->input->post('bulan',true);
@@ -708,7 +685,7 @@ class Logistic extends CI_Controller{
 
         $v = $this->lm->edit_kom_dagang($id, $nama, $har_beli, $har_jual, $sat);
         if ($v) {//log delete kas
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             $resp=true;
         }
     }

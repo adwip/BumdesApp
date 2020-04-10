@@ -326,6 +326,28 @@ $(document).ready(function(){
         })
     })
 
+    $('#ganti-password').submit(function(e){
+        const data = new FormData(this);
+        data.append('sub','Ok')
+        e.preventDefault()
+        swal({title:"Lanjutkan ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {
+            if (Ok) {
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    dataType: 'text',
+                    success: function(v){
+                        if (v==200) {
+                            swal({text:"Ganti password berhasil",buttons: false,timer:3000,icon:"success"})
+                        }else{
+                            swal({text:"Ganti password gagal",buttons: false,timer:3000,icon:"error"})
+                        }
+                    }
+                })
+            }
+        })
+    })
     $('#set-bagi-dividen').submit(function(e){
         e.preventDefault()
         swal({title:"Lanjutkan menyimpan ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {

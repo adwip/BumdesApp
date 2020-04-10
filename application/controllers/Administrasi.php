@@ -31,7 +31,6 @@ class Administrasi extends CI_Controller{
     }
 
     function comp_asset(){//=================OK
-        $data['page']=$this->page;
         $data['title'] = 'Aset Bumdes';
         $data['v1'] = $this->am->get_aset_umum();
         $data['v2'] = $this->am->get_aset_disewakan();
@@ -40,35 +39,26 @@ class Administrasi extends CI_Controller{
         $this->load->view('MenuPage/Main/comp_asset',$data);
     }
 
-    function tambah_aset(){//=================OK
-        $data['page']=$this->page;
+    function form_tambah_aset(){//=================OK
         $data['title'] = '';
-        $data['tanggal'] = date('d/m/Y');
         $data['b']=$this->fm->get_saldo();
         $this->load->view('MenuPage/Form/tambah_aset',$data);
     }
     
     function business_partner(){//=================OK
-        $data['page']=$this->page;
         $data['title'] = 'Rekanan bisnis';
-        //echo $this->input->get('tipe');
-        $data['tanggal'] = date('d/m/Y');
         $data['v'] = $this->am->get_rekanan();
         $this->load->view('MenuPage/Main/mitra_usaha',$data);
     }
 
     function tambah_rekanan(){//=============ada view
-        $data['page']=$this->page;
         $data['title'] = 'Tambah rekanan usaha';
-        //echo $this->input->get('tipe');
-        $data['tanggal'] = date('d/m/Y');
         $this->load->view('MenuPage/Form/tambah_rekanan',$data);
     }
 
     function detail_aset($id){//=============ada view
         $data['page']=$this->page;
         $data['title'] = '';
-        $data['tanggal'] = date('d/m/Y');
         $data['id'] = $id;
         $data['v'] = $this->am->get_detail_aset($id);
         $data['v_sewa'] = $this->rm->get_histori_sewa_aset($id);
@@ -87,7 +77,7 @@ class Administrasi extends CI_Controller{
             $data['y'] = $this->db->get('tahun',true);
             $data['m'] = $this->db->get('bulan',true);
         }
-        $data['v'] = $this->hr->get_user_log_id('0081578813144');
+        $data['v'] = $this->hr->get_user_log_id($this->ses->nu);
         $data['p'] = $this->hr->get_profil('0081586049510');
         $kat = ['MNG'=>'Pengurus BUMDes Indrakila Jaya','GOV'=>'Pemerintah Desa Pujotirto','SYS'=>'Sistem Admin Web BUMDes'];
         if ($type=='html') {
@@ -99,17 +89,14 @@ class Administrasi extends CI_Controller{
     }
 
     function user_management(){//=============ada view
-        $data['page']=$this->page;
         $data['title'] = '';
         $data['v']=$this->hr->get_admin();
-        // echo $data['v'];
         $this->load->view('MenuPage/Main/user_manag',$data);
     }
 
     function tambah_admin(){//=============ada view
         $data['page']=$this->page;
         $data['title'] = '';
-        $data['tanggal'] = date('d/m/Y');
         $this->load->view('MenuPage/Form/tambah_admin',$data);
     }
 
@@ -128,14 +115,14 @@ class Administrasi extends CI_Controller{
         $data['v_tahun'] = $this->hr->get_tahun_log();
         // echo $data['v'];
         if ($type=='html') {
-            $this->load->view('MenuPage/Main/admin_log',$data);
+            // $this->load->view('MenuPage/Main/admin_log',$data);
+            echo json_encode($this->ses->userdata());
         }else{
             echo $data['v'];
         }
     }
 
     function form_edit_aset($id){//=============ada view
-        $data['page']=$this->page;
         $data['title'] = 'Edit gudang '.$id;
         $data['id']=$id;
         $data['v'] = $this->am->get_edit_aset($id);
@@ -167,18 +154,18 @@ class Administrasi extends CI_Controller{
         }
         
         $v = $this->am->set_aset_baru($nama,$nomor,$sumber,$harga,$lokasi,$kondisi,$tglmasuk,$keadaan,$cat, $file_name);
-
+        /*
         if (isset($_POST['potong_saldo'])&&$v['resp']) {
             $pesan = 'Pembelian aset '.$nama.' dengan kondisi '.$kondisi.', keadaan '.$keadaan;
             $v2=$this->fm->set_arus_kas('OUT', $pesan, $harga, date('Y-m-d',strtotime($tglmasuk)), 'System', $v['id']);
             if ($v2['res']) {
                 $log_mesg = '[TAMBAH][KEUANGAN][BELI ASET]['.$v2['id'].']['.$v['id'].'] Pembelian aset '.$nama.' dengan kondisi '.$kondisi.', dan keadaan '.$keadaan;
-                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             }
-        }
+        }*/
         if ($v['resp']) {
             $log_mesg = '[TAMBAH][ASET]['.$v['id'].'] Penambahan aset '.$nama.' dengan kondisi '.$kondisi.' dalam keadaan '.$keadaan.' melalui proses '.$sumber;
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
         }
         
         
@@ -227,7 +214,7 @@ class Administrasi extends CI_Controller{
         $log_mesg = '[TAMBAH][REKANAN]['.$v['id'].'] Penambahan rekanan baru, dengan nama rekanan '.$nama;
 
         if ($v['resp']) {
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             echo '200';
         }
 
@@ -245,7 +232,7 @@ class Administrasi extends CI_Controller{
         $log_mesg = '[TAMBAH][ADMIN]['.$v['id'].'] Registrasi admin baru bernama '.$nama.' dari '.$kat2;
 
         if ($v['res']) {
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
 
             $subject = 'Registrasi admin baru sistem manajemen BUMDes Indrakila Jaya '.date('d-m-Y');
             $message = 'Silahkan klik <a href="'.site_url('registrasi-admin/'.$v['id']).'" target="_blank">tautan</a> ini untuk melanjutkan proses registrasi admin bernama '.$nama;
@@ -262,11 +249,9 @@ class Administrasi extends CI_Controller{
     }
 
     function form_edit_mitra($id){
-        $data['page']=$this->page;
         $data['title'] = '';
         $data['v'] = $this->am->get_edit_mitra($id);
         $this->load->view('MenuPage/Form/edit_rekanan',$data);
-        // echo json_encode($data['v']);
     }
 
     function edit_aset(){
@@ -293,38 +278,27 @@ class Administrasi extends CI_Controller{
         $type = $type=='jpeg'?'jpg':$type;
         $nam_file = in_array($type,['png','jpg'])&&$size?'300'.time().'.'.$type:false;
 
-        // echo $nam_file;
-        /*
-        if (isset($_FILES['foto']['name'])) {//variable eksis atau tidak
-            $cek_file = $_FILES['foto']['name']?true:false;
-        }else{
-            $cek_file=false;
-        }
-        $fn = $cek_file?$_FILES['foto']['name']:false;//mengambil nama jika variable ada
-        $fn=$fn?explode('.',$_FILES['foto']['name']):false;//membuang . dari variabel
-        $file_name= $fn?'300'.time().'.'.end($fn):false;
-        */
         $resp = false;
         $v = $this->am->edit_aset($id, $nama, $nomor, $sumber, $harga, $lokasi, $kondisi, $tglmasuk, $keadaan, $cat, $nam_file, $del_fot);
 
         if ($v) {
             $log_mesg = '[EDIT][ASET]['.$id.'] Perubahan data aset '. $nama.' dengan nomor aset  '.$nomor;
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             $resp=true;
         }
-
+        /*
         if (isset($_POST['potong_saldo'])&&waktu_data($id)) {
             $ket_kas ='Pembelian aset '.$nama.' dengan nomor aset  '.$nomor;
             $v1 = $this->fm->set_arus_kas('OUT', $ket_kas, $harga, $tglmasuk, 'System', $id);
             if ($v1['res']) {
                 $log_mesg='[TAMBAH][KEUANGAN][BELI ASET]['.$v1['id'].']['.$id.'] Pembelian aset '.$nama.' dengan nomor aset  '.$nomor;
-                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
                 $resp = true;
             }else{
                 $v1=$this->fm->edit_arus_kas($id, $harga, 'Kredit', $tglmasuk, $ket_kas);
                 if ($v1['resp']) {
                     $log_mesg='[EDIT][KEUANGAN][BELI ASET]['.$v1['id'].']['.$id.'] Pembelian aset '.$nama.' dengan nomor aset  '.$nomor;
-                    $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                    $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
                     $resp = true;
                 }
             }
@@ -332,10 +306,10 @@ class Administrasi extends CI_Controller{
             $v1 = $this->fm->del_keuangan($id);
             $log_mesg='[HAPUS][KEUANGAN][BELI ASET]['.$v1['id'].']['.$id.'] Menghapus data keuangan dari pembelian '.$nama.' dengan nomor aset  '.$nomor;
             if ($v1['res']) {//log delete kas
-                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
                 $resp=true;
             }
-        }
+        }*/
 
         $mesg=null;
         $stat='IDLE';
@@ -399,7 +373,7 @@ class Administrasi extends CI_Controller{
         $v = $this->am->edit_rekanan($id, $nama, $pj, $alamat, $status, $telp1, $telp2);
         $log_mesg = '[EDIT][REKANAN] ['.$id.'] Perubahan data rekanan '.$nama;
         if ($v) {
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
         }
     }
 
@@ -410,7 +384,7 @@ class Administrasi extends CI_Controller{
         
         $log_mesg = '[HAPUS][KOMODITAS]['.$id.'] Menghapus komoditas dagang';
         if ($v) {
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             echo 200;
         }else{
             echo 100;
@@ -543,7 +517,7 @@ class Administrasi extends CI_Controller{
         $log_mesg = '[HAPUS][SATUAN] Menghapus satuan '.$nm;
         $v = $this->am->del_satuan($id);
         if ($v) {
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             echo 200;
         }
     }
@@ -554,14 +528,14 @@ class Administrasi extends CI_Controller{
         $log_mesg = '[HAPUS][ASET]['.$id.'] Menghapus '.$nm.' dari daftar aset';
         $v = $this->am->del_aset($id);
         if ($v) {
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));/*
             if (waktu_data($id, 5)) {
                 $v=$this->fm->del_keuangan($id);
                 if ($v['res']) {
                     $log_mesg = '[HAPUS][KEUANGAN][BELI ASET]['.$v['id'].']['.$id.'] Menghapus kas keluar (Kredit) untuk pembelian aset';
-                    $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                    $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
                 }
-            }
+            }*/
             echo 200;
         }
     }
@@ -572,7 +546,7 @@ class Administrasi extends CI_Controller{
         $log_mesg = '[HAPUS][REKANAN]['.$id.'] Menghapus '.$nm.' dari daftar rekanan usaha BUMDes';
         $v = $this->am->del_rekanan($id);
         if ($v) {
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             echo 200;
         }
     }
@@ -583,7 +557,7 @@ class Administrasi extends CI_Controller{
         $log_mesg = '[HAPUS][USER]['.$id.'] Menghapus '.$nm.' dari daftar pengguna sistem';
         $v = $this->hr->del_user($id);
         if ($v) {
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             echo 200;
         }
     }
@@ -595,7 +569,7 @@ class Administrasi extends CI_Controller{
         $v = $this->am->set_satuan($sat, $ket_sat);
         $log_mesg = '[TAMBAH][SATUAN] Menambah '.$sat.' ke daam daftar satuan produk dagang';
         if ($v) {
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             $v = $this->am->get_satuan();
             echo json_encode(['res'=>200,'v'=>$v]);
         }
@@ -609,7 +583,7 @@ class Administrasi extends CI_Controller{
         $v = $this->am->edit_satuan($id, $sat, $ket_sat);
         $log_mesg = '[UBAH][SATUAN] Mengubah '.$sat.' di dalam daftar satuan produk dagang';
         if ($v) {
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             $v = $this->am->get_satuan();
             echo json_encode(['res'=>200,'v'=>$v]);
         }
@@ -618,7 +592,7 @@ class Administrasi extends CI_Controller{
     function form_ubah_profil(){//=============ada view
         $data['page']=$this->page;
         $data['title'] = 'Ubah informasi admin ';
-        $data['v']=$this->hr->get_edit_profil('0081578813144');
+        $data['v']=$this->hr->get_edit_profil($this->ses->nu);
         $this->load->view('MenuPage/Form/edit_profil',$data);
         // echo json_encode($data['v']);
     }
@@ -633,7 +607,6 @@ class Administrasi extends CI_Controller{
 
     function detail_user($id){
         $kat =['MNG'=>'Pengurus BUMDes', 'GOV'=>'Pemerintahan Desa Pujotirto'];
-        $data['page']=$this->page;
         $data['title'] = 'Ganti password';
         $data['u']=$this->hr->get_detail_user($id);
         $data['y'] = date('Y');
@@ -671,10 +644,10 @@ class Administrasi extends CI_Controller{
 
         $del_fot = isset($_POST['del_fot']);
         $stat = 'None';
-        $v= $this->hr->edit_profil('0081578813144',$nama, $username, $kontak, $password, $foto, $del_fot);
+        $v= $this->hr->edit_profil($this->ses->nu,$nama, $username, $kontak, $password, $foto, $del_fot);
         if ($v) {
-            $log_mesg = '[EDIT][PROFIL]['.'0081578813144'.'] Admin {NAMA} mengubah informasi di profilnya';
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $log_mesg = '[EDIT][PROFIL]['.$this->ses->nu.'] Admin {NAMA} mengubah informasi di profilnya';
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
         }
 
         if ($v&&$foto) {
@@ -724,17 +697,8 @@ class Administrasi extends CI_Controller{
     }
 
     function edit_profil(){
-        // echo json_encode($_POST);
-        /*
-        nama: "Tiyo BUMDes"
-        del_fot: "8001585629042.jpeg"
-        img_val: "8001585629042.jpeg"
-        email: "prabowoa63@gmail.com"
-        kontak: "0832-5604-0453"
-        password: "test"
-        */
 
-        $id = '0081578813144';
+        $id = $this->ses->nu;
         $nama = $this->input->post('nama',true);
         $del_foto = $this->input->post('del_fot',true);
         $img_val = $this->input->post('img_val',true);
@@ -799,7 +763,7 @@ class Administrasi extends CI_Controller{
 
     function ganti_password(){
         
-        $id = '0081578813144';
+        $id = $this->ses->nu;
         $password = $this->input->post('password',true);
         $password2 = $this->input->post('password2',true);
 

@@ -4,6 +4,7 @@
         format: 'DD-MM-YYYY'
     });
 */
+/*
 $(document).ready(function(){
 
     //Belanja barang/barang masuk
@@ -174,4 +175,4 @@ $(document).ready(function(){
             }
         })
     })
-})
+})*/

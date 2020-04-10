@@ -58,7 +58,7 @@
                     <input type="password" placeholder="Masukkan kata sandi anda" required class="form-control" name="pass"utocomplete="off" id="sandi1">
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-3">
-                    <input type="password" placeholder="Konfirmasi kata sandi anda" required class="form-control" onkeypress="return (event.charCode !=32)" autocomplete="off" id="sandi2">
+                    <input type="password" placeholder="Konfirmasi kata sandi anda" required class="form-control" autocomplete="off" id="sandi2">
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-3">
                     <span id="warning1" style="display: none;">

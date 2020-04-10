@@ -38,7 +38,7 @@
             <br />
 
             <!-- sidebar menu -->
-            <?php $this->load->view('SuptPage/'.$page) ?>
+            <?php $this->load->view('SuptPage/MenuPageGov') ?>
             <!-- /sidebar menu -->
 
             <!-- /menu footer buttons -->

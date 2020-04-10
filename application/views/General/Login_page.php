@@ -6,20 +6,20 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="<?php echo base_url(); ?>favicon.ico" type="image/gif">
+    <link rel="icon" href="<?=base_url(); ?>favicon.ico" type="image/gif">
     <title><?= $title?></title>
 
     <!-- Bootstrap -->
-    <link href="<?php echo base_url(); ?>asset/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?=base_url(); ?>asset/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="<?php echo base_url(); ?>asset/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="<?=base_url(); ?>asset/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
-    <link href="<?php echo base_url(); ?>asset/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <link href="<?=base_url(); ?>asset/vendors/nprogress/nprogress.css" rel="stylesheet">
     <!-- Animate.css -->
-    <link href="<?php echo base_url(); ?>asset/vendors/animate.css/animate.min.css" rel="stylesheet">
+    <link href="<?=base_url(); ?>asset/vendors/animate.css/animate.min.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
-    <link href="<?php echo base_url(); ?>asset/build/css/custom.css" rel="stylesheet">
+    <link href="<?=base_url(); ?>asset/build/css/custom.css" rel="stylesheet">
   </head>
 
   <body class="login" style="color:black;">
@@ -27,23 +27,29 @@
       <div class="login_wrapper">
         <div class=" form login_form">
           <section class="login_content">
-            <form method="POST" action="<?= site_url('Login/masuk') ?>" >
-            <h1><img src="<?php echo base_url(); ?>logo2.png"style="max-width:100px;max-height:100px;"> BUMDes</h1>
+            <form id="login-system" method="POST" action="masuk" >
+            <h1><img src="<?=base_url(); ?>logo2.png"style="max-width:100px;max-height:100px;"> BUMDes</h1>
               
               <div>
-                <input type="text" class="form-control" placeholder="Username" required name="username" />
+                <input title="Masukkan email" type="text" class="form-control" placeholder="Email" required name="email" />
               </div>
               <div>
-                <input type="password" class="form-control" placeholder="Password" required name="password" />
+                <input title="Masukkan password" type="password" class="form-control" placeholder="Password" required name="password" />
               </div>
+              <span id="failed-login" style="display: none;">
+                <div style="color: red;">
+                  Kombinasi email dan password tidak terdaftar
+                </div><br>
+              </span>
               <div>
                 <button class="btn btn-default submit" type="submit">Masuk</button>
               </div>
-
-              
-
               <div class="separator">
+                <p class="change_link">Lupa password
+                  <a href="lupa-password" class="to_register"> Klik di sini </a>
+                </p>
 
+                <div class="clearfix"></div>
                 <br />
 
                 <div>
@@ -56,10 +62,7 @@
         </div>
       </div>
     </div>
-    <style>
-        h1:after, h1:before{
-            content:none;
-        }
-    </style>
+    <?php $this->load->view('SuptPage/JsP') ?>
+    <script src="<?= base_url('asset/JS/General_js.js') ?>"></script>
   </body>
 </html>

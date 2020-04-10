@@ -22,7 +22,7 @@
         <div class="col-md-3 left_col menu_fixed">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="<?= base_url() ?>" class="site_title"><i class="fa fa-paw"></i> <span>Bumdes kalipuru</span></a>
+              <a href="<?= site_url('home') ?>" class="site_title"><i class="fa fa-paw"></i> <span>Bumdes kalipuru</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -30,11 +30,11 @@
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
-                <img src="https://1.bp.blogspot.com/-kuf6W_Yxf5E/WFqXlaCcAeI/AAAAAAAAIL0/V9UhNuz6MhMJciRalykCPaaPp6QCaPjYwCLcB/s1600/Arnold-Schwarzenegger-n-aime-pas-son-corps.jpg" alt="..." class="img-circle profile_img">
+                <img src="<?= isset($this->ses->img)?base_url('media/admin/'.$this->ses->img):base_url('media/admin/unnamed.png') ?>" alt="foto-admin" class="img-circle profile_img">
               </div>
               <div class="profile_info">
                 <span>Welcome,</span>
-                <h2>John Doe</h2>
+                <h2><?= $this->ses->nm ?></h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -42,7 +42,7 @@
             <br />
 
             <!-- sidebar menu -->
-            <?php $this->load->view('SuptPage/'.$page) ?>
+            <?php $this->load->view('SuptPage/MenuPage') ?>
             <!-- /sidebar menu -->
 
             <!-- /menu footer buttons -->
@@ -78,7 +78,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="row">
-                        <form id="laporan-keuangan" action="<?= site_url('keuangan-mingguan') ?>" method="GET">
+                        <form id="laporan-keuangan" action="weekly-freport" method="GET">
                             <div class="col-md-4 col-sm-4">  
                                 <div class="form-group">
                                     <label for="">Tahun</label>

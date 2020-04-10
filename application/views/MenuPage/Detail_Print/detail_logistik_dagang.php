@@ -38,24 +38,11 @@
             <br />
 
             <!-- sidebar menu -->
-            <?php $this->load->view('SuptPage/'.$page) ?>
+            <?php $this->load->view('SuptPage/MenuPage') ?>
             <!-- /sidebar menu -->
 
             <!-- /menu footer buttons -->
-            <div class="sidebar-footer hidden-small">
-              <a data-toggle="tooltip" data-placement="top" title="Settings">
-                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-              </a>
-              <a data-toggle="tooltip" data-placement="top" title="FullScreen">
-                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
-              </a>
-              <a data-toggle="tooltip" data-placement="top" title="Lock">
-                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-              </a>
-              <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
-                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-              </a>
-            </div>
+            <?php $this->load->view('SuptPage/FooterButton') ?>
             <!-- /menu footer buttons -->
           </div>
         </div>
@@ -67,40 +54,57 @@
         <!-- page content -->
         <div class="right_col" role="main" style="color: black;">
             <div class="col-md-12">
-                <button class="btn btn-md btn-warning" onclick="window.location.href=document.referrer">Batal | Kembali</button>
+                <button class="btn btn-md btn-warning" onclick="window.location.href=document.referrer"> Kembali</button>
             </div>
         <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="x_panel">
             <div class="x_title">
-            <h1>Tambah gudang baru</h1>
+            <h1>Detail komoditas <?= isset($v[0])?$v[0]->nk:'tidak terdaftar' ?></h1>
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-              <form action="">
-                <table id="table-master" class="col-md-12 col-sm-12 col-xs-12">
-                  <tr>
-                    <td class="col-md-5 col-sm-5 col-xs-5">
-                      <div class="form-group">
-                        <label for="">Gudang</label>
-                        <input type="text" name="jumlah[]" class="form-control" autocomplete="off">
-                      </div>
-                    </td>
-                    <td class="col-md-6 col-sm-6 col-xs-6 last-child">
-                      <div class="form-group">
-                        <label for="">Alamat</label>
-                        <input type="text" name="jumlah[]" class="form-control" autocomplete="off">
-                        </select>
-                      </div>
-                    </td>
-                  </tr>
+                <table class="col-md-12 col-sm-12 col-xs-12">
+                <tr>
+                        <td class="col-md-2 col-sm-2 col-xs-2"><h4>Komoditas :</h4></td>
+                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= isset($v[0])?$v[0]->nk:'-' ?></h3></td>
+                        <td class="col-md-2 col-sm-2 col-xs-2"><h4>Harga jual :</h4></td>
+                        <td class="col-md-4 col-sm-4 col-xs-4"><h3>Rp. <?= isset($v[0])?$v[0]->hj:'-' ?></h3></td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-2 col-sm-2 col-xs-2"><h4>Stok :</h4></td>
+                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= isset($v[0])?$v[0]->sk:'-' ?></h3></td>
+                        <td class="col-md-2 col-sm-2 col-xs-2"><h4>Harga beli :</h4></td>
+                        <td class="col-md-4 col-sm-4 col-xs-4"><h3>Rp. <?= isset($v[0])?$v[0]->hb:'-' ?></h3></td>
+                    </tr>
                 </table>
-                <div class="col-md-12 col-sm-12 col-xs-12 text-center ">
-                  <button id="tambah-form" type="button" class="btn btn-xs btn-success">Tambah form</button>
-                </div>
+                <hr class="col-md-12 col-sm-12 col-xs-12">
                 <div class="col-md-12 col-sm-12 col-xs-12">
-                  <button type="submit" class="btn btn-md btn-primary">Kirim</button>
+                    <a href="pdf-stok" class="btn btn-sm btn-primary">Unduh bentuk PDF</a>
                 </div>
-              </form>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+            <h3>Detail perubahan harga</h3>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <td><strong>No</strong></td>
+                            <td><strong>Tanggal</strong></td>
+                            <td><strong>Harga lama</strong></td>
+                            <td><strong>Jenis</strong></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?= $v_tabel_histori ?>
+                    </tbody>
+                </table>
             </div>
           </div>
         </div>

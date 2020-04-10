@@ -35,7 +35,6 @@ class Rent extends CI_Controller{
     }
 
     function rentalling($type='html'){//=================OK
-        $data['page']=$this->page;
         $data['title'] = 'Laporan penyewaan';
         $data['bln'] = $this->bulan;
         $data['tahun'] = date('Y');
@@ -62,7 +61,6 @@ class Rent extends CI_Controller{
     }
 
     function rent_price(){//=================OK
-        $data['page']=$this->page;
         $data['title']='Daftar harga sewa';
         $data['tanggal']=date('d/m/Y');
         $data['value']=$this->rm->get_list_harga_sewa();
@@ -71,34 +69,27 @@ class Rent extends CI_Controller{
     }
 
     function form_tambah_jadwal(){//=============ada view
-        $data['page']=$this->page;
         $data['title']='Daftar harga sewa';
         $data['v']=$this->am->get_aset_disewakan('json');
         $this->load->view('MenuPage/Form/tambah_jadwal',$data);
     }
 
     function form_tambah_aset_sewa(){//=============ada view
-        $data['page']=$this->page;
         $data['title']='Daftar harga sewa';
-        $data['tanggal']=date('d/m/Y');
         $data['v']=$this->am->get_aset_umum('json');
         $this->load->view('MenuPage/Form/tambah_aset_sewa',$data);
         // echo json_encode($data['v']);
     }
 
     function form_edit_penyewaan($id){//=============ada view
-        $data['page']=$this->page;
         $data['title']='Daftar harga sewa';
-        $data['tanggal']=date('d/m/Y');
         $data['v'] = $this->rm->get_edit_penyewaan($id);
         $this->load->view('MenuPage/Form/edit_penyewaan',$data);
         // echo json_encode($data['v']);
     }
 
     function form_edit_aset_sewa($id){//=============ada view
-        $data['page']=$this->page;
         $data['title']='Edit aset disewakan';
-        $data['tanggal']=date('d/m/Y');
         $data['id'] = $id;
         $data['v'] = $this->rm->get_edit_aset_sewa($id);
         $this->load->view('MenuPage/Form/edit_aset_sewa',$data);
@@ -106,9 +97,7 @@ class Rent extends CI_Controller{
     }
 
     function detail_aset_sewa($id){//=============ada view
-        $data['page']=$this->page;
         $data['title'] = '';
-        $data['tanggal'] = date('d/m/Y');
         $data['id'] = $id;
         $data['v'] = $this->rm->get_detail_aset_sewa($id);
         $data['v_histori_sewa'] = $this->rm->get_detail_histori_sewa($id);
@@ -133,7 +122,7 @@ class Rent extends CI_Controller{
         $v = $this->rm->set_penyewaan($aset, $penyewa, $kontak, $tanggal_mul, $tanggal_sel, $harga);
         if ($v['stat']) {
             $log_mesg = '[TAMBAH][PENYEWAAN]['.$v['id'].'] Penyewaan aset '.$n_aset.' mulai dari '.date('d-m-Y',strtotime($tanggal_mul)).' selama '.$hari.' hari oleh '.$penyewa;
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             echo '200';
         }
 
@@ -142,7 +131,7 @@ class Rent extends CI_Controller{
             $v2=$this->fm->set_arus_kas('IN', $fin_mesg, $harga, date('Y-m-d',strtotime($tanggal_mul)), 'System', $v['id']);
             if ($v2['res']) {
                 $log_mesg = '[TAMBAH][KEUANGAN][PENYEWAAN]['.$v['id'].']['.$v2['id'].'] Pemasukan dari penyewaan '.$n_aset.' oleh '.$penyewa;
-                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             }
         }
     }
@@ -155,7 +144,7 @@ class Rent extends CI_Controller{
         $log_mesg = '[TAMBAH][ASET SEWA]['.$v['id'].'] Menambah aset '.$n_aset.' untuk disewakan';
 
         if ($v['res']) {
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             $data=$this->am->get_aset_umum('json');
             echo json_encode(['res'=>200,'data'=>$data]);
         }
@@ -178,7 +167,7 @@ class Rent extends CI_Controller{
 
         $v = $this->rm->edit_penyewaan($id, $penyewa, $kontak, $tanggal_mul, $tanggal_sel, $harga);
         if ($v) {//perubahan data stok
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             $resp =true;
         }
 
@@ -188,13 +177,13 @@ class Rent extends CI_Controller{
             $v = $this->fm->set_arus_kas('IN', $ket_kas, $harga, $tanggal_mul, 'System', $id);
             if ($v['res']) {
                 $log_mesg='[TAMBAH][KEUANGAN][PENYEWAAN]['.$v['id'].']['.$id.'] Menambah catatan keuangan dari penyewaan aset '.$aset.' oleh '.$penyewa.' selama '.$hari.' hari, dimulai dari tanggal '.date('d-m-Y',strtotime($tanggal_mul));
-                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
                 $resp = true;
             }else{
                 $v=$this->fm->edit_arus_kas($id, $harga, 'Debit', $tanggal_mul, $ket_kas);
                 if ($v['resp']) {
                     $log_mesg='[EDIT][KEUANGAN][PENYEWAAN]['.$v['id'].']['.$id.'] Perubahan catatan keuangan dari penyewaan aset '.$aset.' oleh '.$penyewa.' selama '.$hari.' hari, dimulai dari tanggal '.date('d-m-Y',strtotime($tanggal_mul));
-                    $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                    $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
                     $resp = true;
                 }
             }
@@ -202,7 +191,7 @@ class Rent extends CI_Controller{
             $v = $this->fm->del_keuangan($id);
             $log_mesg='[HAPUS][KEUANGAN][PENYEWAAN]['.$v['id'].']['.$id.'] Menghapus data keuangan dari penyewaan aset '.$aset.' oleh '.$penyewa.' selama '.$hari.' hari, dimulai dari tanggal '.date('d-m-Y',strtotime($tanggal_mul));
             if ($v['res']) {//log delete kas
-                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
                 $resp=true;
             }
         }
@@ -219,7 +208,7 @@ class Rent extends CI_Controller{
         $v = $this->rm->edit_aset_disewakan($id, $harga);
         $log_mesg = '[EDIT][ASET DISEWAKAN]['.$id.'] Perubahan harga sewa '.$nama.' menjadi Rp. '.$harga;
         if ($v) {
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             echo 200;
         }
     }
@@ -319,11 +308,11 @@ class Rent extends CI_Controller{
 
         $v = $this->rm->del_penyewaan($id);
         if ($v) {
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             $v=$this->fm->del_keuangan($id);
             if ($v['res']) {
                 $log_mesg = '[HAPUS][KEUANGAN]['.$v['id'].']['.$id.'] Menghapus transaksi dari penyewaan aset';
-                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             }
             $tahun = $this->input->post('tahun',true);
             $bulan = $this->input->post('bulan',true);
@@ -344,7 +333,7 @@ class Rent extends CI_Controller{
         $log_mesg = '[HAPUS][ASET DISEWAKAN]['.$id.'] Menghapus aset '.$nm.' dari daftar aset disewakan';
         $v = $this->rm->del_aset_sewa($id);
         if ($v) {
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             echo 200;
         }
     }

@@ -6,8 +6,6 @@ $route['default_controller'] = 'Homepage';
 
 // routing perdagangan **
 $route['item-sold'] = 'Trade/sales_report';
-$route['add-transaction'] = 'Trade/catat_transaksi';
-$route['distribusi-barang'] = 'Trade/distribusi_barang';//============ada view
 $route['tambah-barang-keluar'] = 'Trade/form_barang_keluar';//=============ada view
 $route['set-barang-keluar'] = 'Trade/set_barang_keluar';//=========ada view
 $route['unduh-barang-keluar'] = 'Logistic/pdf_barang_keluar';//==========ada view
@@ -50,7 +48,7 @@ $route['annual-freport'] = 'Finance/annual_report';//=========ada
 $route['corp-profits'] = 'Finance/corp_profits';//=========ada
 $route['bagi-hasil'] = 'Finance/bagi_hasil';//=========ada
 $route['detail-sp/(:num)'] = 'Finance/detail_bagi_hasil/$1';//==========ada view
-$route['add-finr'] = 'Finance/add_cat_fin';//=================ada view
+$route['add-finr'] = 'Finance/form_cat_keuangan';//=================ada view
 $route['edit-fin/(:num)'] = 'Finance/form_edit_finansial/$1';//============ada view**
 $route['unduh-daftar-bagi-hasil'] = 'Finance/pdf_daftar_bagi_hasil';//==ada view
 $route['unduh-keuangan-mingguan'] = 'Finance/pdf_keuangan/1';//=========ada view
@@ -97,11 +95,11 @@ $route['cek-edit-bgh'] = 'Finance/cek_edit_jadwal_bgh';//=========ada view
 // routing logistik **
 $route['stok-masuk'] = 'Logistic/stok_masuk';//=========ada
 $route['tambah-stok'] = 'Logistic/form_tambah_barang_masuk_gudang';//=========ada view
-$route['add-commodites'] = 'Logistic/tambah_komoditas';//================ada view
+$route['add-commodites'] = 'Logistic/form_tambah_komoditas';//================ada view
 $route['commodity'] = 'Logistic/komoditas';//=========ada
 $route['edit-ig/(:num)'] = 'Logistic/form_edit_barang_masuk_gudang/$1';//=====ada view
-$route['edit-com/(:num)'] = 'Logistic/form_edit_komoditas_gudang/$1';//=======ada view
-$route['detail-lg/(:num)'] = 'Logistic/detail_logistik_gdg/$1';//========ada view
+$route['edit-com/(:num)'] = 'Logistic/form_edit_komoditas_dagang/$1';//=======ada view
+$route['detail-lg/(:num)'] = 'Logistic/detail_logistik_dagang/$1';//========ada view
 $route['detail-lin/(:num)'] = 'Logistic/detail_logistik_masuk/$1';//=====ada view
 $route['unduh-barang-masuk'] = 'Logistic/pdf_belanja_barang';//==========ada view
 $route['unduh-daftar-komoditas'] = 'Logistic/pdf_komoditas';//===========ada view
@@ -118,7 +116,7 @@ $route['detail-belanja/(:num)'] = 'Logistic/detail_logistik_masuk/$1/json';//===
 //routing Administrasi
 $route['business-partner'] = 'Administrasi/business_partner';//=========ada
 $route['assets'] = 'Administrasi/comp_asset';//=========ada
-$route['add-asset'] = 'Administrasi/tambah_aset';//=================ada view
+$route['add-asset'] = 'Administrasi/form_tambah_aset';//=================ada view
 $route['add-busspartner'] = 'Administrasi/tambah_rekanan';//=============ada view
 $route['edit-asset/(:num)'] = 'Administrasi/form_edit_aset/$1';//=================ada view
 $route['detail-aset/(:num)'] = 'Administrasi/detail_aset/$1';//==========ada view
@@ -169,8 +167,12 @@ $route['gbgh'] = 'Government/gov_kerjasama_bgh/j';//=================ada view
 
 //Routing homepage
 $route['404_override'] = 'Homepage/not_found';
-$route['masuk'] = 'Homepage/login_page';//=================ada view
+$route['home'] = 'Homepage/home';
+$route['masuk'] = 'Homepage/login_process';//=================ada view
 $route['translate_uri_dashes'] = TRUE;
 $route['registrasi-admin/(:num)'] = 'Homepage/reg_admin/$1';//=================ada view
+$route['ganti-password/(:num)'] = 'Homepage/forget_password/$1';//=================ada view
+$route['lupa-password'] = 'Homepage/req_forget_pass';//=================ada view
+$route['req-password'] = 'Homepage/req_forget_pass/submit';//=================ada view
 
 

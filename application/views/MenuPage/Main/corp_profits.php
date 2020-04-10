@@ -22,7 +22,7 @@
         <div class="col-md-3 left_col menu_fixed">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="<?= base_url() ?>" class="site_title"><i class="fa fa-paw"></i> <span>Bumdes kalipuru</span></a>
+              <a href="<?= site_url('home') ?>" class="site_title"><i class="fa fa-paw"></i> <span>Bumdes kalipuru</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -30,11 +30,11 @@
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
-                <img src="https://1.bp.blogspot.com/-kuf6W_Yxf5E/WFqXlaCcAeI/AAAAAAAAIL0/V9UhNuz6MhMJciRalykCPaaPp6QCaPjYwCLcB/s1600/Arnold-Schwarzenegger-n-aime-pas-son-corps.jpg" alt="..." class="img-circle profile_img">
+                <img src="<?= isset($this->ses->img)?base_url('media/admin/'.$this->ses->img):base_url('media/admin/unnamed.png') ?>" alt="foto-admin" class="img-circle profile_img">
               </div>
               <div class="profile_info">
                 <span>Welcome,</span>
-                <h2>John Doe</h2>
+                <h2><?= $this->ses->nm ?></h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -42,7 +42,7 @@
             <br />
 
             <!-- sidebar menu -->
-            <?php $this->load->view('SuptPage/'.$page) ?>
+            <?php $this->load->view('SuptPage/MenuPage') ?>
             <!-- /sidebar menu -->
 
             <!-- /menu footer buttons -->
@@ -71,11 +71,11 @@
                 </div>
                 <div class="col-md-6">
                     <div class="row">
-                        <form id="TipForm" action="">
+                        <form id="comp-profit" action="corp-profits">
                             <div class="col-md-6 col-sm-6">  
                                 <div class="form-group">
                                   <label for="">Tahun</label>
-                                  <select name="tahun" class="form-control" onchange="$('#TipForm').submit()">
+                                  <select name="tahun" class="form-control" onchange="$('#comp-profit').submit()">
                                     <?php 
                                       foreach ($thn as $key => $val) {
                                         $key==$tahun?$sel='selected':$sel=null;
@@ -88,7 +88,7 @@
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                   <label for="">Bulan</label>
-                                  <select name="bulan" class="form-control" onchange="$('#TipForm').submit()">
+                                  <select name="bulan" class="form-control" onchange="$('#comp-profit').submit()">
                                     <?php 
                                     foreach ($bln as $key => $val) {
                                       $key==$bulan?$sel='selected':$sel=null;
@@ -109,11 +109,21 @@
         <br>
           <div class="row tile_count">
             <div class="col-md-6 col-sm-6 col-xs-12 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Penjualan</span>
+              <span class="count_top"><i class="fa fa-user"></i> Penjualan <?= $nb ?> <?= $tahun ?></span>
+              <div class="count text-center"><?= isset($v3->jl)?'Rp. '.$v3->jl:'Rp. 0' ?></div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> Keuntungan <?= $nb ?> <?= $tahun ?></span>
+              <div class="count text-center"><?= isset($v3->pf)?'Rp. '.$v3->pf:'Rp. 0' ?></div>
+            </div>
+          </div>
+          <div class="row tile_count">
+            <div class="col-md-6 col-sm-6 col-xs-12 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> Penjualan tahun <?= $tahun ?></span>
               <div class="count text-center"><?= isset($v2->jl)?'Rp. '.$v2->jl:'Rp. 0' ?></div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-12 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Keuntungan</span>
+              <span class="count_top"><i class="fa fa-user"></i> Keuntungan tahun <?= $tahun ?></span>
               <div class="count text-center"><?= isset($v2->pf)?'Rp. '.$v2->pf:'Rp. 0' ?></div>
             </div>
           </div>
@@ -188,19 +198,6 @@
     <script src="<?= base_url('asset/JS/Ajax_req.js') ?>"></script>
     <script type="text/javascript">
       pertumbuhan_laba(JSON.parse('<?= $v_grafik ?>'),'#grafik_laba_usaha')
-      $('#myDatepicker2').datetimepicker({
-        format: 'DD/MM/YYYY'
-    });
-
-    $('#TipForm').submit(function(e){
-        e.preventDefault()
-        var form = $(this).serialize()
-        //alert(form)
-        //history.pushState({urlPath:'?'+form},"",'?'+form)
-        // alert(CURRENT_URL)
-        // window.location.reload(window.location.origin)
-        // alert(window.location.origin)
-    })
     </script>
   </body>
 </html>

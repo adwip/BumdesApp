@@ -30,29 +30,34 @@
         </div>
       </div>
       <div class="main_container">
-        <form method="POST" action="<?= site_url('registrasi') ?>"  class="form-horizontal form-label-left tex-center">
+        <form method="POST" class="form-horizontal form-label-left tex-center" id="ganti-password">
             <div class="form-group text-center">
-                <h2>Ubah kata sandi</h2>
+                <h2>Ubah <i>password</i></h2>
             </div>
             <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-3" for="">Nama / Email</label>
                 <div class="col-md-3 col-sm-3 col-xs-3">
-                    <input type="text" required readonly class="form-control" name="nama" autocomplete="off">
+                    <input type="text" readonly class="form-control" value="<?= $v[0] ?>">
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-3">
-                    <input type="text" required readonly class="form-control" name="nama" autocomplete="off">
+                    <input type="text" readonly class="form-control" value="<?= $v[1] ?>" >
                 </div>
             </div> <br>
             <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-3">Kata sandi</label>
                 <div class="col-md-3 col-sm-3 col-xs-3">
-                    <input type="text" required class="form-control" name="email" onkeypress="return (event.charCode !=32)" autocomplete="off" id="username">
+                    <input type="password" required class="form-control" placeholder="Masukkan kata sandi anda" name="password" autocomplete="off" id="sandi1">
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-3">
-                    <input type="text" required class="form-control" name="email" onkeypress="return (event.charCode !=32)" autocomplete="off" id="username">
+                    <input type="password" required class="form-control" placeholder="Konfirmasi kata sandi anda" name="password2" autocomplete="off" id="sandi2">
                 </div>
-                <div class="col-md-3 col-sm-3 col-xs-3" id="warning">
-                    <small class="label label-danger">Kata sandi tidak sama</small>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                    <span id="warning1" style="display: none;">
+                        <small class="label label-danger">Minimal 8 karakter</small>
+                    </span><br>
+                    <span id="warning2" style="display: none;">
+                        <small class="label label-danger">Kata sandi tidak sama</small>
+                    </span>
                 </div>
             </div> <br>
             <div class="col-md-12 col-sm-12 col-xs-12 text-center">
@@ -61,5 +66,8 @@
         </form>
       </div>
     </div>
+    <?php $this->load->view('SuptPage/JsP') ?>
+    <script src="<?= base_url('asset/JS/Form.js') ?>"></script>
+    <script src="<?= base_url('asset/JS/Error_handler.js') ?>"></script>
   </body>
 </html>

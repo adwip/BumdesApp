@@ -57,16 +57,19 @@ class HR_model extends CI_Model{
 
     function get_log_user($tahun, $bulan, $id=false){
         $this->db->select('IFNULL(del_ad,nama) AS nm, log AS lg, waktu AS tm, tanggal AS dt');
-        $this->db->from('log_admin la');
+        $this->db->from('log_admin la');/*
         if ($tahun!='All'&&$bulan=='All') {
             $this->db->like('tanggal',$tahun,'after');
         }elseif ($tahun=='All'&&$bulan!='All') {
             $this->db->like('tanggal',$bulan);
         }elseif ($tahun!='All'&&$bulan!='All') {
             $this->db->like('tanggal',$tahun.'-'.$bulan,'after');
-        }
+        }*/
+        $this->db->like('tanggal',$tahun.'-'.$bulan,'after');
         if ($id) {
             $this->db->where('admin',$id);
+        }else {
+            $this->db->not_like('log', '[PRIVATE]');
         }
         $this->db->order_by('id_temp','DESC');
         $this->db->join('admin am','am.id_admin=la.admin','LEFT');
@@ -164,12 +167,13 @@ class HR_model extends CI_Model{
     }
 
     function get_detail_user($id){
-        $this->db->select('nama AS nm, email AS un, kategori AS kt, waktu_reg AS wr, foto_user AS ft, kontak AS kn');
+        $this->db->select('id_admin As id, nama AS nm, email AS un, kategori AS kt, waktu_reg AS wr, foto_user AS ft, kontak AS kn');
         $this->db->from('admin');
         $this->db->where('id_admin',$id);
+        $this->db->or_where('email',$id);
         // $this->db->or_where('username',$id);
         $result=$this->db->get()->result();
-        $result = isset($result[0])?$result[0]:null;
+        $result = isset($result[0])?$result[0]:false;
 
         return $result;
     }
@@ -217,8 +221,14 @@ class HR_model extends CI_Model{
         return $result;
     }
 
-    function login($email,$password){
-        //json [status],[kategori]
+    function login_process($email,$password){
+        $this->db->select('id_admin AS id, nama AS nm, kategori AS tp, foto_user AS img');
+        $this->db->from('admin');
+        $this->db->where('email',$email);
+        $this->db->where('password',md5($password));
+        $result = $this->db->get()->result();
+        $result = isset($result[0])?$result[0]:false;
+        return $result;
     }
 
     function add_user($nama, $email, $kontak, $kategori){

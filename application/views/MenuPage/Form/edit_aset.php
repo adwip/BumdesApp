@@ -38,7 +38,7 @@
             <br />
 
             <!-- sidebar menu -->
-            <?php $this->load->view('SuptPage/'.$page) ?>
+            <?php $this->load->view('SuptPage/MenuPage') ?>
             <!-- /sidebar menu -->
 
             <!-- /menu footer buttons -->
@@ -93,19 +93,19 @@
                       </div> <br>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3">Harga</label>
-                        <div class="col-md-3 col-sm-3 col-xs-3">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
                           <input autocomplete="off" id="harga" name="harga" <?= $edit?null:'disabled' ?> type="text" class="form-control" <?= $v?$v->sb!='Beli'?'disabled':null:null ?> value="<?= $v?$v->ha:null ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                           <!--========================================================-->
-                          <span><input <?= isset($v->idf)?'checked':null ?> <?= $edit?$v->sb!='Beli'?'disabled':null:'disabled' ?> type="checkbox" id="cut-saldo" name="potong_saldo" value="Ya"> <label for="">Catat ke keuangan</label></span>
-                        </div>
+                          <!--<span><input <?= isset($v->idf)?'checked':null ?> <?= $edit?$v->sb!='Beli'?'disabled':null:'disabled' ?> type="checkbox" id="cut-saldo" name="potong_saldo" value="Ya"> <label for="">Catat ke keuangan</label></span>-->
+                        </div><!--
                         <div class="col-md-3 col-sm-3 col-xs-3">
                           <input readonly class="form-control" value="Rp. <?= isset($b[0])? $b[0]->ac:0 ?>" id="saldo">
                           <span><label for="">Saldo saat ini</label></span>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3" id="warning" style="display: none;">
                           <small class="label label-danger">Nilai melebihi saldo saat ini</small>
-                        </div>
-                      </div> 
+                        </div>-->
+                      </div><br>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3">Lokasi</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">

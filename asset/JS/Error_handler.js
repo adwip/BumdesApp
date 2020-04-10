@@ -18,7 +18,14 @@ $(document).ready(function() {
             $('#harga').attr('disabled',false)
         }
     })
-    
+    //Tambah/edit aset
+    $('.jenis-ast').change(function(){
+        if ($(this).val()!='Beli') {
+            $('#harga-ast').attr('disabled',true)
+        }else{
+            $('#harga-ast').attr('disabled',false)
+        }
+    })
 
     $('#harga, #cut-saldo, .jenis').on('change keyup',function(){
         const harga = parseInt($('#harga').val())

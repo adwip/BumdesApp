@@ -1,5 +1,6 @@
 $(document).ready(function(){
-    $('').submit(function(){
+    $('#login-system').submit(function(e){
+        e.preventDefault()
         $.ajax({
             url: $(this).attr('action'),
             type: $(this).attr('method'),
@@ -7,9 +8,10 @@ $(document).ready(function(){
             dataType: 'json',
             success: function(v){
                 if (v['stat']==200) {
-                    
+                    window.location.href=v['url']
+                    $('#failed-login').hide()
                 }else{
-                    
+                    $('#failed-login').show()
                 }
             }
         })

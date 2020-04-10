@@ -32,7 +32,6 @@ class Finance extends CI_controller{
     }
 
     function weekly_report($type='html'){//=============ada view
-        $data['page']=$this->page;
         $data['title'] = 'Laporan mingguan';
         //echo $this->input->get('tipe');
         $data['mg'] = [1,2,3,4];
@@ -80,7 +79,6 @@ class Finance extends CI_controller{
     }
 
     function monthly_report($type='html'){//=============ada view
-        $data['page']=$this->page;
         $data['title'] = 'Laporan bulanan';
         //echo $this->input->get('tipe');
         $data['bln'] = $this->bulan;
@@ -112,7 +110,6 @@ class Finance extends CI_controller{
     }
 
     function annual_report($type='html'){//=============ada view
-        $data['page']=$this->page;
         $data['title'] = 'Laporan tahunan';
         //echo $this->input->get('tipe');
         $data['tahun'] = date('Y');
@@ -142,7 +139,7 @@ class Finance extends CI_controller{
     }
 
     function corp_profits(){//================= OK
-        $data['page']=$this->page;
+        $data['nb'] = $this->bulan[date('m')];
         $data['title'] = 'Laporan tahunan';
         //echo $this->input->get('tipe');
         $data['bln'] = $this->bulan;
@@ -151,17 +148,18 @@ class Finance extends CI_controller{
         if (isset($_GET['tahun'])) {
             $data['tahun'] = $this->input->get('tahun',TRUE);
             $data['bulan'] = $this->input->get('bulan',TRUE);
+            $data['nb'] = $this->bulan[$data['bulan']];
         }
         $data['thn'] = $this->lm->get_tahun('OUT');
         $data['v'] = $this->fm->get_laba_usaha($data['tahun'], $data['bulan']);
         $data['v_grafik']=$this->fm->get_grafik_laba_dagang($data['tahun']);
-        $data['v2']=$this->tm->get_jual_profits($data['tahun']);
+        $data['v2']=$this->tm->get_jual_profits_tahun($data['tahun']);
+        $data['v3']=$this->tm->get_jual_profits_bulan($data['tahun'],$data['bulan']);
         // echo $data['v_grafik'];
         $this->load->view('MenuPage/Main/corp_profits',$data);
     }
 
     function bagi_hasil($type='html'){//=================OK
-        $data['page']=$this->page;
         $data['title'] = 'Aset bagi hasil';
         //echo $this->input->get('tipe');
         $data['tahun'] = date('Y');
@@ -189,7 +187,6 @@ class Finance extends CI_controller{
     }
 
     function bagi_dividen(){
-        $data['page']=$this->page;
         $data['title'] = 'Pembagian dividen';
         $data['v'] = $this->fm->get_daftar_dividen();
         $data['v_grafik'] = $this->fm->get_grafik_dividen();
@@ -197,7 +194,6 @@ class Finance extends CI_controller{
     }
 
     function form_tabah_dividen(){
-        $tanggal = '"'.date('Y-m').'"';
         $data['page']=$this->page;
         $data['title'] = '';
         $data['id'] = '';
@@ -207,15 +203,7 @@ class Finance extends CI_controller{
         // echo json_encode($data['s']);
     }
 
-    function saldo_dividen(){
-        $tahun = $this->input->get('tahun',true);
-        $saldo = $this->fm->get_saldo($tahun);
-        $saldo=isset($saldo[0])?$saldo[0]->ac:null;
-        echo $saldo;
-    }
-
-    function add_cat_fin(){//=============ada view
-        $data['page']=$this->page;
+    function form_cat_keuangan(){//=============ada view
         $data['title'] = '';
         $data['tanggal'] = date('d/m/Y');
         $data['b']=$this->fm->get_saldo();
@@ -224,7 +212,6 @@ class Finance extends CI_controller{
 
     function form_edit_finansial($id){//=============ada view
         $data['var']=$id;
-        $data['page']=$this->page;
         $data['title'] = '';
         $data['id'] = '';
         $data['tanggal'] = date('d/m/Y');
@@ -235,14 +222,12 @@ class Finance extends CI_controller{
     }
 
     function form_tambah_pemb_bgh(){
-        $data['page']=$this->page;
         $data['title'] = 'Penerimaan bagi hasil';
         $data['v']= $this->fm->daftar_kerjasama_bgh(date('Y'),'json');
         $this->load->view('MenuPage/Form/tambah_pemb_bgh',$data);
     }
 
     function form_edit_pemb_bagi_hasil($id){
-        $data['page']=$this->page;
         $data['title'] = 'Ubah pembayaran bagi hasil';
         $data['v']= $this->fm->get_edit_pemb_bgh($id);
         $this->load->view('MenuPage/Form/edit_pemb_bgh',$data);
@@ -250,7 +235,6 @@ class Finance extends CI_controller{
     }
 
     function form_tambah_aset_bagi_hasil(){//=============ada view
-        $data['page']=$this->page;
         $data['title'] = '';
         $data['id'] = '';
         $data['tanggal'] = date('d/m/Y');
@@ -262,7 +246,6 @@ class Finance extends CI_controller{
     }
 
     function form_edit_aset_bagi_hasil($id){//=============ada view
-        $data['page']=$this->page;
         $data['title'] = '';
         $data['id'] = '';
         $data['tanggal'] = date('d/m/Y');
@@ -272,7 +255,6 @@ class Finance extends CI_controller{
     }
 
     function form_edit_bagi_dividen($id){
-        $data['page']=$this->page;
         $data['title'] = 'Bagi hasil usaha';
         $data['id'] = '';
         $data['v'] = $this->fm->get_edit_bagi_dividen($id);
@@ -281,9 +263,7 @@ class Finance extends CI_controller{
     }
     
     function detail_bagi_hasil($id){//=============ada view
-        $data['page']=$this->page;
         $data['title'] = '';
-        $data['tanggal'] = date('d/m/Y');
         $data['id'] = $id;
         $data['v'] = $this->fm->get_detail_bagi_hasil($id);
         $data['v_histori_bgh'] = $this->fm->get_detail_histori_bagi_hasil($id);
@@ -311,7 +291,7 @@ class Finance extends CI_controller{
         $log_mesg = '[TAMBAH][BAGI HASIL]['.$v['id'].'] Menambah kerja sama bagi hasil untuk aset '.$n_aset.' dari aset '.$sumber.' dengan '.$n_mitra.' mulai tanggal '.$tangmul.' selama '.$bulan.' bulan';
 
         if ($v['resp']) {
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             $data=$this->am->get_aset_umum('json');
             echo json_encode(['res'=>200,'data'=>$data]);
         }
@@ -335,13 +315,13 @@ class Finance extends CI_controller{
         $v = $this->fm->set_pemb_bagi_hasil($id, $jumlah, $cat, $tanggal);
         $log_mesg = '[TAMBAH][PEMBAYARAN][BAGI HASIL]['.$v['id'].']['.$id.'] Menambah pembayaran hasil dari kerjasama bagi hasil penggunaan aset';
         if ($v['res']) {
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             if (isset($_POST['tambah_trans'])) {
                 $ket_kas ='Pembayaran bagi hasil usaha dengan '.$info[1]. ' dari aset '.$info[0];
                 $v1 = $this->fm->set_arus_kas('IN', $ket_kas, $pen, $tanggal, 'System', $id);
                 $log_mesg = '[TAMBAH][KEUANGAN][BAGI HASIL] ['.$v1['id'].']['.$v['id'].'] Menambah pemasukan dari kerjasama bagi hasil dengan '.$info[1].' dari aset '.$info[0];
                 if ($v1['res']) {
-                    $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                    $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
                 }
             }
             echo 200;
@@ -357,11 +337,11 @@ class Finance extends CI_controller{
         $log_mesg = '[HAPUS][PEMBAYARAN][BAGI HASIL]['.$id.'] Menghapus pembayaran hasil dari dari kerjasama bagi hasil penggunaan aset dengan '.$mitra.' dari aset '.$aset;
         $v= $this->fm->del_pemb_bgh($id);
         if ($v) {
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             $v = $this->fm->del_keuangan($id);
             $log_mesg='[HAPUS][KEUANGAN][BAGI HASIL]['.$v['id'].']['.$id.'] Menghapus data keuangan dari penerimaan bagi hasil dengan '.$mitra.' dari aset '.$aset;
             if ($v['res']) {//log delete kas
-                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             }
             $res = $this->fm->get_detail_bagi_hasil($id2);
             $ret['jl'] = $res->jl;
@@ -389,7 +369,7 @@ class Finance extends CI_controller{
         $v1 = $this->fm->edit_pemb_bgh($id, $cat, $tanggal, $pen_b, $pen_m, $jumlah);
         
         if ($v1) {
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             $resp=true;
         }
 
@@ -398,13 +378,13 @@ class Finance extends CI_controller{
             $v = $this->fm->set_arus_kas('IN', $ket_kas, $pen_b, $tanggal, 'System', $id);
             if ($v['res']) {
                 $log_mesg = '[TAMBAH][KEUANGAN][BAGI HASIL] ['.$v['id'].']['.$id.'] Menambah pemasukan dari kerjasama bagi hasil dengan '.$mitra.' dari aset '.$aset;
-                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
                 $resp=true;
             }else{
                 $v=$this->fm->edit_arus_kas($id, $pen_b, 'Debit', $tanggal, $ket_kas);
                 if ($v['resp']) {
                     $log_mesg = '[EDIT][KEUANGAN][BAGI HASIL] ['.$v['id'].']['.$id.'] Mengubah data pemasukan dari kerjasama bagi hasil dengan '.$mitra.' dari aset '.$aset;
-                    $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                    $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
                     $resp=true;
                 }
             }
@@ -412,7 +392,7 @@ class Finance extends CI_controller{
             $v = $this->fm->del_keuangan($id);
             $log_mesg='[HAPUS][KEUANGAN][BAGI HASIL]['.$v['id'].']['.$id.'] Menghapus data keuangan dari penerimaan bagi hasil dengan '.$mitra.' dari aset '.$aset;
             if ($v['res']) {//log delete kas
-                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
                 $resp=true;
             }
         }
@@ -435,7 +415,7 @@ class Finance extends CI_controller{
 
         if ($v['res']) {
             $log_mesg = '[TAMBAH][KEUANGAN]['.$v['id'].'] Menambah transaksi kas '.$jenis3.' ('.$jenis2.') sebesar Rp. '.$jumlah;
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             echo '200';
         }
     }
@@ -454,7 +434,7 @@ class Finance extends CI_controller{
             $v['resp'] = false;
         }
         if ($v['resp']) {
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             $s=$this->fm->get_saldo();
             $s = isset($s[0]->ac)?$s[0]->ac:0;
             echo json_encode(['resp'=>200,'b'=>$s]);
@@ -476,7 +456,7 @@ class Finance extends CI_controller{
         $v = $this->fm->edit_bagi_hasil($id, $pb, $pm, $tangsel);
         $log_mesg = '[EDIT][BAGI HASIL]['.$id.'] Perubahan kerjasama bagi hasil '.$aset.' dengan '.$mitra. ' dengan pembagian BUMDes '.$pb.'% dan Mitra '.$pm.'% mulai dari tanggal '.$tanggal.' selama '.$bulan. ' bulan';
         if ($v) {
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             echo 200;
         }
     }
@@ -703,7 +683,7 @@ class Finance extends CI_controller{
 
         if ($v['res']) {
             $log_mesg = '[HAPUS][KEUANGAN]['.$v['id'].'] Menghapus transaksi keuangan';
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             if ($tp=='mng') {
                 $minggu = $this->input->post('minggu',true);
                 $bulan = $this->input->post('bulan',true);
@@ -742,7 +722,7 @@ class Finance extends CI_controller{
         $v = $this->fm->del_bagi_hasil($id);
         if ($v['res']) {
             $log_mesg = '['.$v['log'].'][BAGI HASIL]['.$id.'] '.$v['mesg'].' kerjasama bagi hasil';
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             echo json_encode(['res'=>200,'stat'=>$v['log']]);
         }else{
             echo json_encode(['res'=>100]);
@@ -763,13 +743,13 @@ class Finance extends CI_controller{
             $v1=$this->fm->set_arus_kas('OUT', $pesan, $nilai, date('Y-m-d'), 'System', $v['id']);
             if ($v1['res']) {
                 $log_mesg = '[TAMBAH][KEUANGAN][BAGI HASIL USAHA]['.$v['id'].'] kas keluar untuk bagi hasil tahunan tahun '.$tahun;
-                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             }
         }
         */
         if ($v['resp']) {
             $log_mesg = '[TAMBAH][BAGI HASIL USAHA]['.$v['id'].'] Menambah bagi hasil usaha tahunan tahun '.$tahun.' untuk sebanyak '.count($entitas).' entitas';
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             echo 200;
         }
 
@@ -777,7 +757,6 @@ class Finance extends CI_controller{
     }
     
     function detail_bagi_dividen($id){
-        $data['page']=$this->page;
         $data['title'] = 'Detail bagi hasil usaha';
         $data['tanggal'] = date('d/m/Y');
         $data['v'] = $this->fm->detail_bagi_hasil_usaha($id);
@@ -802,7 +781,7 @@ class Finance extends CI_controller{
         $this->fm->edit_ent_dividen($id, $ent, $juml);
 
         $log_mesg = '[EDIT][BAGI HASIL USAHA]['.$id.'] Perubahan bagi hasil usaha tahun '.$tahun.' dengan '.count($ent).' penerima, dengan nilai Rp. '.$nilai;
-        $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+        $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
         echo 200;
 
     }
@@ -813,11 +792,11 @@ class Finance extends CI_controller{
         $log_mesg='[HAPUS][BAGI HASIL USAHA]['.$id.'] Menghapus pembagian hasil usaha tahun '.$tahun;
         $v = $this->fm->del_bagi_dividen_g($id);
         if ($v) {
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));/*
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));/*
             $v=$this->fm->del_keuangan($id);
             if ($v['res']) {
                 $log_mesg = '[HAPUS][KEUANGAN][BAGI HASIL USAHA]['.$v['id'].']['.$id.'] Menghapus pembayaran bagi hasil usaha tahun '.$tahun;
-                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             }*/
             echo 200;
         }
@@ -830,11 +809,11 @@ class Finance extends CI_controller{
         $log_mesg = '[BATAL][BAGI HASIL USAHA] Pembatalan pembayaran bagi hasil usaha tahun '.$thn.' untuk '.$ent;
         $v = $this->fm->del_bayar_dividen($id);
         if ($v) {
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             $v = $this->fm->del_keuangan($id);
             if ($v['res']) {
                 $log_mesg = '[HAPUS][KEUANGAN]['.$v['id'].']['.$id.'] Menghapus pembayaran bagi hasil usaha';
-                $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             }
             echo 200;
         }
@@ -853,12 +832,12 @@ class Finance extends CI_controller{
         $v = $this->fm->set_bayar_dividen($id);
 
         if ($v) {
-            $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             if ($fin==1) {
                 $v=$this->fm->set_arus_kas('OUT', $pesan, $hg, date('Y-m-d'), 'System', $id);
                 $log_mesg = '[TAMBAH][KEUANGAN][KELUAR]['.$v['id'].'] Menambah pembayaran bagi hasil usaha untuk '.$ent;
                 if ($v['res']) {
-                    $this->hr->log_admin('0081578813144', $log_mesg, date('Y-m-d'), date('H:i:s'));
+                    $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
                 }
             }
             echo 200;
