@@ -5,131 +5,143 @@ class Administrasi extends CI_Controller{
     function __construct(){
         parent:: __construct();
 		date_default_timezone_set('Asia/Jakarta');
-        $tp='MNG';
-        if ($tp=='MNG') {
+        if ($this->ses->tp=='MNG') {
             $this->page = 'MenuPage';
-        }else if ($tp=='GOV') {
+        }elseif ($this->ses->tp=='GOV') {
             $this->page = 'MenuPageGov';
-        }elseif ($tp=='SYS') {
-            $this->page = 'MenuPageGov';
+        }else {
+            $this->page = 'MenuPageSys';
         }
         $this->PDF = new FPDF();
         $this->bulan = ['01'=>'Januari','02'=>'Februari','03'=>'Maret','04'=>'April','05'=>'Mei','06'=>'Juni','07'=>'Juli','08'=>'Agustus','09'=>'September','10'=>'Oktober','11'=>'November','12'=>'Desember'];
         $this->waktu = date('Y-m-d H:i:s');
-        if (true) {
-            $this->ret['ses']=true;
-        }else{
-            $this->ret['ses']=false;
+        if (!$this->ses->log_s) {
+			redirect(base_url());
         }
     }
 
     function index(){
-        $data['page']=$this->page;
-        $data['title'] = 'Homepage';
+        $dt['page']=$this->page;
+        $dt['title'] = 'Homepage';
         //echo $this->input->get('tipe');
-        $this->load->view('General/home',$data);
+        $this->load->view('General/home',$dt);
     }
 
     function comp_asset(){//=================OK
-        $data['title'] = 'Aset Bumdes';
-        $data['v1'] = $this->am->get_aset_umum();
-        $data['v2'] = $this->am->get_aset_disewakan();
-        $data['v3'] = $this->am->get_aset_bagi_hasil();
-        // echo $data['v3'];
-        $this->load->view('MenuPage/Main/comp_asset',$data);
+        $dt['title'] = 'Aset Bumdes';
+        $dt['v1'] = $this->am->get_aset_umum();
+        $dt['v2'] = $this->am->get_aset_disewakan();
+        $dt['v3'] = $this->am->get_aset_bagi_hasil();
+        // echo $dt['v3'];
+        $this->load->view('MenuPage/Main/comp_asset',$dt);
     }
 
     function form_tambah_aset(){//=================OK
-        $data['title'] = '';
-        $data['b']=$this->fm->get_saldo();
-        $this->load->view('MenuPage/Form/tambah_aset',$data);
+        $dt['title'] = '';
+        $dt['b']=$this->fm->get_saldo();
+        $this->load->view('MenuPage/Form/tambah_aset',$dt);
     }
     
     function business_partner(){//=================OK
-        $data['title'] = 'Rekanan bisnis';
-        $data['v'] = $this->am->get_rekanan();
-        $this->load->view('MenuPage/Main/mitra_usaha',$data);
+        $dt['title'] = 'Rekanan bisnis';
+        $dt['v'] = $this->am->get_rekanan();
+        $this->load->view('MenuPage/Main/mitra_usaha',$dt);
     }
 
     function tambah_rekanan(){//=============ada view
-        $data['title'] = 'Tambah rekanan usaha';
-        $this->load->view('MenuPage/Form/tambah_rekanan',$data);
+        $dt['title'] = 'Tambah rekanan usaha';
+        $this->load->view('MenuPage/Form/tambah_rekanan',$dt);
     }
 
     function detail_aset($id){//=============ada view
-        $data['page']=$this->page;
-        $data['title'] = '';
-        $data['id'] = $id;
-        $data['v'] = $this->am->get_detail_aset($id);
-        $data['v_sewa'] = $this->rm->get_histori_sewa_aset($id);
-        $data['v_bgh'] = $this->fm->get_histori_bgh_aset($id);
-        $this->load->view('MenuPage/Detail_Print/detail_aset2',$data);
-        // echo json_encode($data['v_bgh']);
+        $dt['page']=$this->page;
+        $dt['title'] = '';
+        $dt['id'] = $id;
+        $dt['v'] = $this->am->get_detail_aset($id);
+        $dt['v_sewa'] = $this->rm->get_histori_sewa_aset($id);
+        $dt['v_bgh'] = $this->fm->get_histori_bgh_aset($id);
+        $this->load->view('MenuPage/Detail_Print/detail_aset2',$dt);
+        // echo json_encode($dt['v_bgh']);
         // echo APPPATH;
     }
 
     function security($type='html'){//=============ada view
-        $data['page']=$this->page;
-        $data['title'] = 'Akun admin';//0081578813144
-        $data['y'] = date('Y');
-        $data['m'] = date('m');
+        $dt['page']=$this->page;
+        $dt['bln'] = $this->bulan;
+        $dt['v_tahun'] = $this->hr->get_tahun_log();
+        $dt['title'] = 'Akun admin';//0081578813144
+        $dt['y'] = date('Y');
+        $dt['m'] = date('m');
         if (isset($_GET['tahun'])) {
-            $data['y'] = $this->db->get('tahun',true);
-            $data['m'] = $this->db->get('bulan',true);
+            $dt['y'] = $this->input->get('tahun',true);
+            $dt['m'] = $this->input->get('bulan',true);
         }
-        $data['v'] = $this->hr->get_user_log_id($this->ses->nu);
-        $data['p'] = $this->hr->get_profil('0081586049510');
+        $dt['v'] = $this->hr->get_user_log_id($this->ses->nu, $dt['y'],$dt['m']);
+        $dt['p'] = $this->hr->get_profil($this->ses->nu);
         $kat = ['MNG'=>'Pengurus BUMDes Indrakila Jaya','GOV'=>'Pemerintah Desa Pujotirto','SYS'=>'Sistem Admin Web BUMDes'];
         if ($type=='html') {
-            $data['kt'] = $data['p']?$kat[$data['p']->kt]:null;
-            $this->load->view('MenuPage/Main/security',$data);
+            $dt['kt'] = $dt['p']?$kat[$dt['p']->kt]:null;
+            $this->load->view('MenuPage/Main/security',$dt);
         }else {
-            echo $data['v'];
+            echo $dt['v'];
         }
+    }
+
+    function detail_mitra($id){
+        $dt['page']=$this->page;
+        $dt['bln'] = $this->bulan;
+        $dt['y'] = date('Y');
+        $dt['m'] = date('m');
+        if (isset($_GET['tahun'])) {
+            $dt['y'] = $this->input->get('tahun',true);
+            $dt['m'] = $this->input->get('bulan',true);
+        }
+        $dt['title'] = 'Detail Rekanan';//0081578813144
+        $this->load->view('MenuPage/Detail_print/detail_mitra',$dt);
     }
 
     function user_management(){//=============ada view
-        $data['title'] = '';
-        $data['v']=$this->hr->get_admin();
-        $this->load->view('MenuPage/Main/user_manag',$data);
+        $dt['title'] = '';
+        $dt['v']=$this->hr->get_admin($this->ses->nu);
+        $this->load->view('MenuPage/Main/user_manag',$dt);
     }
 
     function tambah_admin(){//=============ada view
-        $data['page']=$this->page;
-        $data['title'] = '';
-        $this->load->view('MenuPage/Form/tambah_admin',$data);
+        $dt['page']=$this->page;
+        $dt['title'] = '';
+        $this->load->view('MenuPage/Form/tambah_admin',$dt);
     }
 
 
     function admin_log($type='html'){//=============ada view
-        $data['page']=$this->page;
-        $data['bln'] = $this->bulan;
-        $data['title'] = '';
-        $data['m']=date('m');
-        $data['y']=date('Y');
+        $dt['page']=$this->page;
+        $dt['bln'] = $this->bulan;
+        $dt['title'] = '';
+        $dt['m']=date('m');
+        $dt['y']=date('Y');
         if (isset($_GET['tahun'])) {
-            $data['y'] = $this->input->get('tahun',true);
-            $data['m'] = $this->input->get('bulan',true);
+            $dt['y'] = $this->input->get('tahun',true);
+            $dt['m'] = $this->input->get('bulan',true);
         }
-        $data['v'] = $this->hr->get_log_user($data['y'],$data['m']);
-        $data['v_tahun'] = $this->hr->get_tahun_log();
-        // echo $data['v'];
+        $dt['v'] = $this->hr->get_log_user($dt['y'],$dt['m']);
+        $dt['v_tahun'] = $this->hr->get_tahun_log();
+        // echo $dt['v'];
         if ($type=='html') {
-            // $this->load->view('MenuPage/Main/admin_log',$data);
-            echo json_encode($this->ses->userdata());
+            $this->load->view('MenuPage/Main/admin_log',$dt);
+            // echo json_encode($this->ses->userdata());
         }else{
-            echo $data['v'];
+            echo $dt['v'];
         }
     }
 
     function form_edit_aset($id){//=============ada view
-        $data['title'] = 'Edit gudang '.$id;
-        $data['id']=$id;
-        $data['v'] = $this->am->get_edit_aset($id);
-        $data['b']=$this->fm->get_saldo();
-        $data['edit'] = waktu_data($id)&&$data['v'];
-        $this->load->view('MenuPage/Form/edit_aset',$data);
-        // echo json_encode($data['v']);
+        $dt['title'] = 'Edit gudang '.$id;
+        $dt['id']=$id;
+        $dt['v'] = $this->am->get_edit_aset($id);
+        $dt['b']=$this->fm->get_saldo();
+        $dt['edit'] = waktu_data($id)&&$dt['v'];
+        $this->load->view('MenuPage/Form/edit_aset',$dt);
+        // echo json_encode($dt['v']);
     }
 
     function set_aset_baru(){
@@ -229,7 +241,7 @@ class Administrasi extends CI_Controller{
         $from = $this->config->item('smtp_user');
         
         $v=$this->hr->set_url_confirm($nama.'|'.$email.'|'.$kat2.'|'.$kat);
-        $log_mesg = '[TAMBAH][ADMIN]['.$v['id'].'] Registrasi admin baru bernama '.$nama.' dari '.$kat2;
+        $log_mesg = '[TAMBAH][ADMIN] Registrasi admin baru bernama '.$nama.' dari '.$kat2;
 
         if ($v['res']) {
             $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
@@ -249,9 +261,9 @@ class Administrasi extends CI_Controller{
     }
 
     function form_edit_mitra($id){
-        $data['title'] = '';
-        $data['v'] = $this->am->get_edit_mitra($id);
-        $this->load->view('MenuPage/Form/edit_rekanan',$data);
+        $dt['title'] = '';
+        $dt['v'] = $this->am->get_edit_mitra($id);
+        $this->load->view('MenuPage/Form/edit_rekanan',$dt);
     }
 
     function edit_aset(){
@@ -439,13 +451,8 @@ class Administrasi extends CI_Controller{
         // Memberikan space kebawah agar tidak terlalu rapat
         $this->PDF->Cell(10,7,'',0,1);
         $this->PDF->SetFont('Arial','',15);
-        $this->PDF->Cell(190,7,date('d/m/Y'),0,1,'R');
-        /*
-        $this->PDF->SetFont('Arial','',12);
-        $this->PDF->Cell(80,10,'Total pemasukan bagi hasil',0,1);
-        $this->PDF->SetFont('Arial','B',20);
-        $this->PDF->Cell(190,10,'Rp. 400,000',0,1,'C');
-        $this->PDF->Cell(10,10,'',0,1);*/
+        $this->PDF->Cell(190,7,date('d ').$this->bulan[date('m')].date(' Y'),0,1,'R');
+        
 
         /*=======================ASET UMUM===========================*/
         $this->PDF->SetFont('Arial','',15);
@@ -508,7 +515,7 @@ class Administrasi extends CI_Controller{
             $this->PDF->Cell(30,6,date('d/m/Y',strtotime($v->thn)),1,1);
         }
 
-        $this->PDF->Output('I','Daftar_barang_'.date('d_m_Y').'.pdf');
+        $this->PDF->Output('I','Daftar_aset_'.date('d_').$this->bulan[date('m')].'_'.date('Y').'.pdf');
     }
 
     function hapus_satuan(){
@@ -590,34 +597,34 @@ class Administrasi extends CI_Controller{
     }
 
     function form_ubah_profil(){//=============ada view
-        $data['page']=$this->page;
-        $data['title'] = 'Ubah informasi admin ';
-        $data['v']=$this->hr->get_edit_profil($this->ses->nu);
-        $this->load->view('MenuPage/Form/edit_profil',$data);
-        // echo json_encode($data['v']);
+        $dt['page']=$this->page;
+        $dt['title'] = 'Ubah informasi admin ';
+        $dt['v']=$this->hr->get_edit_profil($this->ses->nu);
+        $this->load->view('MenuPage/Form/edit_profil',$dt);
+        // echo json_encode($dt['v']);
     }
 
     function form_ganti_password(){//=============ada view
-        $data['page']=$this->page;
-        $data['title'] = 'Ganti password';
-        // $data['b']=$this->hr->get_saldo('0081578813144);
-        $this->load->view('MenuPage/Form/edit_ganti_pass',$data);
-        // echo json_encode($data['v']);
+        $dt['page']=$this->page;
+        $dt['title'] = 'Ganti password';
+        // $dt['b']=$this->hr->get_saldo('0081578813144);
+        $this->load->view('MenuPage/Form/edit_ganti_pass',$dt);
+        // echo json_encode($dt['v']);
     }
 
     function detail_user($id){
         $kat =['MNG'=>'Pengurus BUMDes', 'GOV'=>'Pemerintahan Desa Pujotirto'];
-        $data['title'] = 'Ganti password';
-        $data['u']=$this->hr->get_detail_user($id);
-        $data['y'] = date('Y');
-        $data['m'] = date('m');
+        $dt['title'] = 'Ganti password';
+        $dt['u']=$this->hr->get_detail_user($id);
+        $dt['y'] = date('Y');
+        $dt['m'] = date('m');
         if (isset($_GET['tahun'])) {
-            $data['y'] = $this->db->get('tahun',true);
-            $data['m'] = $this->db->get('bulan',true);
+            $dt['y'] = $this->db->get('tahun',true);
+            $dt['m'] = $this->db->get('bulan',true);
         }
-        $data['log'] = $this->hr->get_log_user($data['y'], $data['m'], $id);
-        $data['k'] = isset($data['u']->kt)?$kat[$data['u']->kt]:'-';
-        $this->load->view('MenuPage/Detail_Print/detail_user',$data);
+        $dt['log'] = $this->hr->get_log_user($dt['y'], $dt['m'], $id);
+        $dt['k'] = isset($dt['u']->kt)?$kat[$dt['u']->kt]:'-';
+        $this->load->view('MenuPage/Detail_Print/detail_user',$dt);
     }
 
     function edit_profil1(){

@@ -5,57 +5,47 @@ class Trade extends CI_Controller{
     function __construct(){
         parent:: __construct();
 		date_default_timezone_set('Asia/Jakarta');
-        $tp='MNG';
-        if ($tp=='MNG') {
-            $this->page = 'MenuPage';
-        }else if ($tp=='GOV') {
-            $this->page = 'MenuPageGov';
-        }elseif ($tp=='SYS') {
-            $this->page = 'MenuPageGov';
-        }
         $this->bulan = ['01'=>'Januari','02'=>'Februari','03'=>'Maret','04'=>'April','05'=>'Mei','06'=>'Juni','07'=>'Juli','08'=>'Agustus','09'=>'September','10'=>'Oktober','11'=>'November','12'=>'Desember'];
         $this->PDF = new FPDF();
         $this->waktu = date('Y-m-d H:i:s');
-        if (true) {
-            $this->ret=true;
-        }else{
-            $this->ret=false;
+        if (!$this->ses->log_s||$this->ses->tp!='MNG') {
+			redirect(base_url());
         }
     }
 
     function index(){
-        $data['page']=$this->page;
-        $data['title'] = 'Homepage';
+        $dt['page']=$this->page;
+        $dt['title'] = 'Homepage';
         //echo $this->input->get('tipe');
-        $this->load->view('General/home',$data);
+        $this->load->view('General/home',$dt);
     }
 
     function distribution($type='html'){//=================OK
-        $data['title'] = '';
-        $data['bln'] = $this->bulan;
-        $data['tahun'] = date('Y');
-        $data['bulan'] = date('m');
+        $dt['title'] = '';
+        $dt['bln'] = $this->bulan;
+        $dt['tahun'] = date('Y');
+        $dt['bulan'] = date('m');
         if (isset($_GET['tahun'])) {
-            $data['tahun'] = $this->input->get('tahun',TRUE);
-            $data['bulan'] = $this->input->get('bulan',TRUE);
+            $dt['tahun'] = $this->input->get('tahun',TRUE);
+            $dt['bulan'] = $this->input->get('bulan',TRUE);
         }
-        $data['thn'] = $this->tm->get_tahun();
-        $data['v'] = $this->tm->get_total_penjualan($data['tahun'],$data['bulan'],true);
-        $data['value']=$this->tm->get_info_distribusi($data['tahun'],$data['bulan']);
-        $data['v_grafik']=$this->fm->get_grafik_nilai_distribusi($data['tahun']);
-        $data['v_grafik2']=$this->fm->get_grafik_nilai_non_distribusi($data['tahun']);
-        // echo $data['v']->hg;
+        $dt['thn'] = $this->tm->get_tahun();
+        $dt['v'] = $this->tm->get_total_penjualan($dt['tahun'],$dt['bulan'],true);
+        $dt['value']=$this->tm->get_info_distribusi($dt['tahun'],$dt['bulan']);
+        $dt['v_grafik']=$this->fm->get_grafik_nilai_distribusi($dt['tahun']);
+        $dt['v_grafik2']=$this->fm->get_grafik_nilai_non_distribusi($dt['tahun']);
+        // echo $dt['v']->hg;
         
         if ($type=='html') {
-            $this->load->view('MenuPage/Main/distribution',$data);
-            // echo $data['v_grafik2'];
+            $this->load->view('MenuPage/Main/distribution',$dt);
+            // echo $dt['v_grafik2'];
         }else{
             if ($this->ret) {
                 $val['ses']='Ok';
-                $val['tabel']=$data['value'];
-                $val['row']=isset($data['v']->hg)?$data['v']->hg:0;
-                $val['grafik']=json_decode($data['v_grafik']);
-                $val['grafik2']=json_decode($data['v_grafik2']);
+                $val['tabel']=$dt['value'];
+                $val['row']=isset($dt['v']->hg)?$dt['v']->hg:0;
+                $val['grafik']=json_decode($dt['v_grafik']);
+                $val['grafik2']=json_decode($dt['v_grafik2']);
             }else{
                 $val['ses']='Off';
             }
@@ -64,11 +54,11 @@ class Trade extends CI_Controller{
     }
 
     function form_barang_keluar(){//=============ada view
-        $data['title'] = '';
-        $data['tanggal'] = date('d/m/Y');
-        $data['v']=$this->lm->get_komoditas('JSON');
-        $data['v2'] = $this->am->get_rekanan('json');
-        $this->load->view('MenuPage/Form/tambah_barang_keluar',$data);
+        $dt['title'] = '';
+        $dt['tanggal'] = date('d/m/Y');
+        $dt['v']=$this->lm->get_komoditas('JSON');
+        $dt['v2'] = $this->am->get_rekanan('json');
+        $this->load->view('MenuPage/Form/tambah_barang_keluar',$dt);
     }
 
     function set_barang_keluar(){
@@ -100,8 +90,8 @@ class Trade extends CI_Controller{
         if ($v['stat']) {
             $log_mesg = '[TAMBAH][STOK KELUAR]['.$v['id'].'] Stok '.$n_kom.' keluar sebanyak '.$jumlah.' '.$n_sat.' untuk '.$tujuan.$mesg;
             $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
-            $data = $this->lm->get_komoditas('JSON');
-            echo json_encode(['resp'=>200,'data'=>$data]);
+            $dt = $this->lm->get_komoditas('JSON');
+            echo json_encode(['resp'=>200,'data'=>$dt]);
         }else{
             echo json_encode(['resp'=>100]);
         }
@@ -110,12 +100,12 @@ class Trade extends CI_Controller{
     }
 
     function form_edit_barang_keluar_gudang($id){//=============ada view
-        $data['title'] = '';
-        $data['tanggal'] = date('d/m/Y');
-        $data['v'] = $this->tm->get_edit_stok_keluar($id);
-        $data['v2'] = $this->am->get_rekanan('JSON');
-        // echo json_encode($data['v']);
-        $this->load->view('MenuPage/Form/edit_barang_keluar_gudang',$data);
+        $dt['title'] = '';
+        $dt['tanggal'] = date('d/m/Y');
+        $dt['v'] = $this->tm->get_edit_stok_keluar($id);
+        $dt['v2'] = $this->am->get_rekanan('JSON');
+        // echo json_encode($dt['v']);
+        $this->load->view('MenuPage/Form/edit_barang_keluar_gudang',$dt);
     }
 
     function edit_barang_keluar(){
@@ -244,6 +234,107 @@ class Trade extends CI_Controller{
             $this->PDF->Cell(15,6,$v->stk,1,1);
         }
         $this->PDF->Output('I','Daftar_barang_'.date('d_m_Y').'.pdf');
+    }
+        //=============ada view
+    function pdf_barang_keluar(){
+        $tahun = $this->input->get('tahun');
+        $bulan = $this->input->get('bulan');
+        $inf_dist=$this->tm->get_total_penjualan($tahun,$bulan);
+        $inf_dist= isset($inf_dist->hg)?$inf_dist->hg:0;
+        // tm->get_total_penjualan
+        $r = $this->lm->get_info_barang_keluar($tahun,$bulan,'JSON');
+        // membuat halaman baru
+        // echo '<title>Belanja barang</title>';
+        $this->PDF->AddPage();
+        // setting jenis font yang akan digunakan
+        $this->PDF->SetFont('Arial','B',16);
+        $logo = base_url().'logo.jpeg';
+        $this->PDF->Cell(30,30,$this->PDF->Image($logo, ($this->PDF->GetX()-1), $this->PDF->GetY()-12, 33.58),0);
+        // mencetak string 
+        $this->PDF->Cell(128,7,'LAPORAN BARANG KELUAR',0,1,'C');
+        $this->PDF->SetFont('Arial','B',12);
+        $this->PDF->Cell(180,8,'BUMDES Indrakila Jaya',0,1,'C');
+        $this->PDF->Cell(190,0,'',1,1);
+        // Memberikan space kebawah agar tidak terlalu rapat
+        $this->PDF->Cell(10,7,'',0,1);
+        $this->PDF->SetFont('Arial','',15);
+        $this->PDF->Cell(190,7,$this->bulan[$bulan].' | '.$tahun,0,1,'R');
+        $this->PDF->SetFont('Arial','',12);
+        $this->PDF->Cell(80,10,'Total nilai barang keluar',0,1);
+        $this->PDF->SetFont('Arial','B',20);
+        $this->PDF->Cell(190,10,'Rp. '.$inf_dist,0,1,'C');
+        $this->PDF->Cell(10,10,'',0,1);
+        $this->PDF->SetFont('Arial','',15);
+        $this->PDF->Cell(10,10,'Daftar barang',0,1);
+        $this->PDF->SetFont('Arial','B',11);
+        $this->PDF->Cell(20,6,'No',1,0);
+        $this->PDF->Cell(50,6,'Komoditas',1,0);
+        $this->PDF->Cell(30,6,'Tanggal',1,0);
+        $this->PDF->Cell(30,6,'Jumlah',1,0);
+        $this->PDF->Cell(30,6,'Keperluan',1,0);
+        $this->PDF->Cell(30,6,'Sisa stok',1,1);
+        $this->PDF->SetFont('Arial','',9);
+        
+        foreach ($r as $key => $v) {
+            $this->PDF->Cell(20,6,($key+1),1,0);
+            $this->PDF->Cell(50,6,$v->kom,1,0);
+            $this->PDF->Cell(30,6,date('d/m/Y',strtotime($v->tgl)),1,0);
+            $this->PDF->Cell(30,6,$v->jlh,1,0);
+            $this->PDF->Cell(30,6,$v->tjn,1,0);
+            $this->PDF->Cell(30,6,$v->stk,1,1);
+        }
+        $this->PDF->Output('I','Barang_keluar_'.$this->bulan[$bulan].'_'.$tahun.'.pdf');
+    }
+
+    //=============ada view
+    function pdf_distribusi_barang(){
+        $tahun = $this->input->get('tahun');
+        $bulan = $this->input->get('bulan');
+        $inf_dist=$this->tm->get_total_penjualan($tahun,$bulan,true);
+        $inf_dist= isset($inf_dist->hg)?$inf_dist->hg:0;
+        
+        $r = $this->tm->get_info_distribusi($tahun,$bulan,'JSON');
+        // membuat halaman baru
+        // echo '<title>Belanja barang</title>';
+        $this->PDF->AddPage();
+        // setting jenis font yang akan digunakan
+        $this->PDF->SetFont('Arial','B',16);
+        $logo = base_url().'logo.jpeg';
+        $this->PDF->Cell(30,30,$this->PDF->Image($logo, ($this->PDF->GetX()-1), $this->PDF->GetY()-12, 33.58),0);
+        // mencetak string 
+        $this->PDF->Cell(130,7,'LAPORAN DISTRIBUSI BARANG',0,1,'C');
+        $this->PDF->SetFont('Arial','B',12);
+        $this->PDF->Cell(180,8,'BUMDES Indrakila Jaya',0,1,'C');
+        $this->PDF->Cell(190,0,'',1,1);
+        // Memberikan space kebawah agar tidak terlalu rapat
+        $this->PDF->Cell(10,7,'',0,1);
+        $this->PDF->SetFont('Arial','',15);
+        $this->PDF->Cell(190,7,$this->bulan[$bulan].' | '.$tahun,0,1,'R');
+        $this->PDF->SetFont('Arial','',12);
+        $this->PDF->Cell(80,10,'Total nilai barang keluar',0,1);
+        $this->PDF->SetFont('Arial','B',20);
+        $this->PDF->Cell(190,10,'Rp. '.$inf_dist,0,1,'C');
+        $this->PDF->Cell(10,10,'',0,1);
+        $this->PDF->SetFont('Arial','',15);
+        $this->PDF->Cell(10,10,'Daftar barang keluar',0,1);
+        $this->PDF->SetFont('Arial','B',11);
+        $this->PDF->Cell(10,6,'No',1,0);
+        $this->PDF->Cell(20,6,'Tanggal',1,0);
+        $this->PDF->Cell(85,6,'Mitra',1,0);
+        $this->PDF->Cell(25,6,'Komoditas',1,0);
+        $this->PDF->Cell(20,6,'Jumlah',1,0);
+        $this->PDF->Cell(30,6,'Nilai',1,1);
+        $this->PDF->SetFont('Arial','',9);
+        
+        foreach ($r as $key => $v) {
+            $this->PDF->Cell(10,6,($key+1),1,0);
+            $this->PDF->Cell(20,6,date('d/m/Y',strtotime($v->tgl)),1,0);
+            $this->PDF->Cell(85,6,$v->tjn,1,0);
+            $this->PDF->Cell(25,6,$v->kom,1,0);
+            $this->PDF->Cell(20,6,$v->jlh,1,0);
+            $this->PDF->Cell(30,6,'Rp. '.$v->ntr,1,1);
+        }
+        $this->PDF->Output('I','Distribusi_barang_'.$this->bulan[$bulan].'_'.$tahun.'.pdf');
     }
     
 }

@@ -543,10 +543,10 @@ function keuangan_mingguan(value, selector, $tahun=null){
       verticalAlign: 'middle',
       borderWidth: 0
    };
-   var series =  [{
+   var series =  [/*{
          name: 'Saldo',
          data: value['saldo']
-      },{
+      },*/{
          name: 'Debit',
          data: value['debit']
       },{
@@ -620,10 +620,10 @@ function keuangan_bulanan(value, selector, $tahun=null){
       verticalAlign: 'middle',
       borderWidth: 0
    };
-   var series =  [{
+   var series =  [/*{
          name: 'Saldo',
          data: value['saldo']
-      },{
+      },*/{
          name: 'Debit',
          data: value['debit']
       },{
@@ -703,10 +703,10 @@ function keuangan_tahunan(value, selector, $tahun=null){
       verticalAlign: 'middle',
       borderWidth: 0
    };
-   var series =  [{
+   var series =  [/*{
          name: 'Saldo',
          data: value['saldo']
-      },{
+      },*/{
          name: 'Debit',
          data: value['debit']
       },{

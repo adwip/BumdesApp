@@ -8,9 +8,9 @@ $route['default_controller'] = 'Homepage';
 $route['item-sold'] = 'Trade/sales_report';
 $route['tambah-barang-keluar'] = 'Trade/form_barang_keluar';//=============ada view
 $route['set-barang-keluar'] = 'Trade/set_barang_keluar';//=========ada view
-$route['unduh-barang-keluar'] = 'Logistic/pdf_barang_keluar';//==========ada view
+$route['unduh-barang-keluar'] = 'Trade/pdf_barang_keluar';//==========ada view
 $route['detail-lout/(:num)'] = 'Logistic/detail_logistik_keluar/$1';//===ada view
-$route['unduh-daftar-distribusi'] = 'Logistic/pdf_distribusi_barang';//==ada view
+$route['unduh-daftar-distribusi'] = 'Trade/pdf_distribusi_barang';//==ada view
 $route['distribution'] = 'Trade/distribution';//=========ada
 $route['exit-item'] = 'Logistic/exit_item';//=========ada
 $route['pdf-detail-komoditas-out/(:num)'] = 'Trade/pdf_detail_komoditas_keluar/$1';//
@@ -145,7 +145,7 @@ $route['edit-satuan'] = 'Administrasi/edit_satuan';//=================ada view
 $route['edit-profil'] = 'Administrasi/edit_profil';//=================ada view
 $route['ubah-password'] = 'Administrasi/ganti_password';//=================ada view
 $route['log-admin'] = 'Administrasi/admin_log/json';//=================ada view
-// $route['add-user'] = 'Administrasi/tambah_admin';//=================ada view
+$route['detail-mit/(:num)'] = 'Administrasi/detail_mitra/$1';//=================ada view
 //CONCAT(year(tanggal), "/",WEEK(tanggal))
 
 //Rouing government
@@ -174,5 +174,6 @@ $route['registrasi-admin/(:num)'] = 'Homepage/reg_admin/$1';//=================a
 $route['ganti-password/(:num)'] = 'Homepage/forget_password/$1';//=================ada view
 $route['lupa-password'] = 'Homepage/req_forget_pass';//=================ada view
 $route['req-password'] = 'Homepage/req_forget_pass/submit';//=================ada view
+$route['keluar-sistem'] = 'Homepage/keluar';//=================ada view
 
 

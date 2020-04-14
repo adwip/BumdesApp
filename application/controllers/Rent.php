@@ -6,104 +6,93 @@ class Rent extends CI_Controller{
     function __construct(){
         parent:: __construct();
 		date_default_timezone_set('Asia/Jakarta');
-        $tp='MNG';
-        if ($tp=='MNG') {
-            $this->page = 'MenuPage';
-        }else if ($tp=='GOV') {
-            $this->page = 'MenuPageGov';
-        }elseif ($tp=='SYS') {
-            $this->page = 'MenuPageGov';
-        }
         $this->bulan = ['01'=>'Januari','02'=>'Februari','03'=>'Maret','04'=>'April','05'=>'Mei','06'=>'Juni','07'=>'Juli','08'=>'Agustus','09'=>'September','10'=>'Oktober','11'=>'November','12'=>'Desember'];
         $this->PDF = new FPDF();
         $this->waktu = date('Y-m-d H:i:s');
-        if (true) {
-            $this->ret['ses']=true;
-        }else{
-            $this->ret['ses']=false;
+        if (!$this->ses->log_s||$this->ses->tp!='MNG') {
+			redirect(base_url());
         }
-
-        // echo 'Not';
-        // return false;
     }
 
     function index(){
-        $data['page']=$this->page;
-        $data['title'] = 'Homepage';
+        $dt['page']=$this->page;
+        $dt['title'] = 'Homepage';
         //echo $this->input->get('tipe');
-        $this->load->view('General/home',$data);
+        $this->load->view('General/home',$dt);
     }
 
     function rentalling($type='html'){//=================OK
-        $data['title'] = 'Laporan penyewaan';
-        $data['bln'] = $this->bulan;
-        $data['tahun'] = date('Y');
-        $data['bulan'] = date('m');
+        $dt['title'] = 'Laporan penyewaan';
+        $dt['bln'] = $this->bulan;
+        $dt['tahun'] = date('Y');
+        $dt['bulan'] = date('m');
         if (isset($_GET['tahun'])) {
-            $data['tahun'] = $this->input->get('tahun',TRUE);
-            $data['bulan'] = $this->input->get('bulan',TRUE);
+            $dt['tahun'] = $this->input->get('tahun',TRUE);
+            $dt['bulan'] = $this->input->get('bulan',TRUE);
         }
-        $data['thn'] = $this->rm->get_tahun();
-        $data['value']=$this->rm->get_penyewaan($data['tahun'],$data['bulan']);
-        $data['v_grafik']=$this->fm->get_grafik_penyewaan($data['tahun']);
+        $dt['thn'] = $this->rm->get_tahun();
+        $dt['v'] = $this->rm->get_jumlah_penyewaan($dt['tahun'], $dt['bulan']);
+        $dt['v2'] = $this->rm->get_pendapatan_sewa($dt['tahun'], $dt['bulan']);
+        $dt['value']=$this->rm->get_penyewaan($dt['tahun'],$dt['bulan']);
+        $dt['v_grafik']=$this->fm->get_grafik_penyewaan($dt['tahun']);
         if ($type=='html') {
-            $this->load->view('MenuPage/Main/penyewaan',$data);
+            $this->load->view('MenuPage/Main/penyewaan',$dt);
         }else{
             if ($this->ret) {
                 $val['ses']='Ok';
-                $val['tabel']=$data['value'];
+                $val['tabel']=$dt['value'];
             }else{
                 $val['ses']='Off';
             }
             echo json_encode($val);
         }
-        // echo $data['v_grafik'];
+        // echo $dt['v_grafik'];
     }
 
     function rent_price(){//=================OK
-        $data['title']='Daftar harga sewa';
-        $data['tanggal']=date('d/m/Y');
-        $data['value']=$this->rm->get_list_harga_sewa();
-        $this->load->view('MenuPage/Main/rent_price',$data);
-        // echo json_encode($data['value']);
+        $dt['title']='Daftar harga sewa';
+        $dt['tanggal']=date('d/m/Y');
+        $dt['value']=$this->rm->get_list_harga_sewa();
+        $this->load->view('MenuPage/Main/rent_price',$dt);
+        // echo json_encode($dt['value']);
     }
 
     function form_tambah_jadwal(){//=============ada view
-        $data['title']='Daftar harga sewa';
-        $data['v']=$this->am->get_aset_disewakan('json');
-        $this->load->view('MenuPage/Form/tambah_jadwal',$data);
+        $dt['title']='Daftar harga sewa';
+        $dt['v']=$this->am->get_aset_disewakan('json');
+        $this->load->view('MenuPage/Form/tambah_jadwal',$dt);
     }
 
     function form_tambah_aset_sewa(){//=============ada view
-        $data['title']='Daftar harga sewa';
-        $data['v']=$this->am->get_aset_umum('json');
-        $this->load->view('MenuPage/Form/tambah_aset_sewa',$data);
-        // echo json_encode($data['v']);
+        $dt['title']='Daftar harga sewa';
+        $dt['v']=$this->am->get_aset_umum('json');
+        $this->load->view('MenuPage/Form/tambah_aset_sewa',$dt);
+        // echo json_encode($dt['v']);
     }
 
     function form_edit_penyewaan($id){//=============ada view
-        $data['title']='Daftar harga sewa';
-        $data['v'] = $this->rm->get_edit_penyewaan($id);
-        $this->load->view('MenuPage/Form/edit_penyewaan',$data);
-        // echo json_encode($data['v']);
+        $dt['title']='Daftar harga sewa';
+        $dt['v'] = $this->rm->get_edit_penyewaan($id);
+        $this->load->view('MenuPage/Form/edit_penyewaan',$dt);
+        // echo json_encode($dt['v']);
     }
 
     function form_edit_aset_sewa($id){//=============ada view
-        $data['title']='Edit aset disewakan';
-        $data['id'] = $id;
-        $data['v'] = $this->rm->get_edit_aset_sewa($id);
-        $this->load->view('MenuPage/Form/edit_aset_sewa',$data);
-        // echo json_encode($data['v']);
+        $dt['title']='Edit aset disewakan';
+        $dt['id'] = $id;
+        $dt['v'] = $this->rm->get_edit_aset_sewa($id);
+        $this->load->view('MenuPage/Form/edit_aset_sewa',$dt);
+        // echo json_encode($dt['v']);
     }
 
     function detail_aset_sewa($id){//=============ada view
-        $data['title'] = '';
-        $data['id'] = $id;
-        $data['v'] = $this->rm->get_detail_aset_sewa($id);
-        $data['v_histori_sewa'] = $this->rm->get_detail_histori_sewa($id);
-        $data['v_histori_harga_sewa'] = $this->rm->get_perubahan_harga_sewa($id);
-        $this->load->view('MenuPage/Detail_Print/detail_aset_sewa',$data);
-        // echo json_encode($data['v_histori_harga_sewa']);
+        $dt['title'] = '';
+        $dt['id'] = $id;
+        $dt['v'] = $this->rm->get_detail_aset_sewa($id);
+        $dt['v_histori_sewa'] = $this->rm->get_detail_histori_sewa($id);
+        $dt['v_histori_harga_sewa'] = $this->rm->get_perubahan_harga_sewa($id);
+        $this->load->view('MenuPage/Detail_Print/detail_aset_sewa',$dt);
+        // echo json_encode($dt['v_histori_harga_sewa']);
     }
 
     function set_tambah_penyewaan(){
@@ -145,8 +134,8 @@ class Rent extends CI_Controller{
 
         if ($v['res']) {
             $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
-            $data=$this->am->get_aset_umum('json');
-            echo json_encode(['res'=>200,'data'=>$data]);
+            $dt=$this->am->get_aset_umum('json');
+            echo json_encode(['res'=>200,'data'=>$dt]);
         }
     }
     
@@ -232,12 +221,14 @@ class Rent extends CI_Controller{
         // Memberikan space kebawah agar tidak terlalu rapat
         $this->PDF->Cell(10,7,'',0,1);
         $this->PDF->SetFont('Arial','',15);
-        $this->PDF->Cell(190,7,date('d/m/Y'),0,1,'R');/*
+        $this->PDF->Cell(190,7,date('d/m/Y'),0,1,'R');
+        /*
         $this->PDF->SetFont('Arial','',12);
         $this->PDF->Cell(80,10,'Total nilai barang keluar',0,1);
         $this->PDF->SetFont('Arial','B',20);
         $this->PDF->Cell(190,10,'Rp. 400,000',0,1,'C');
         $this->PDF->Cell(10,10,'',0,1);*/
+
         $this->PDF->SetFont('Arial','',15);
         $this->PDF->Cell(10,10,'Daftar jadwal sewa',0,1);
         $this->PDF->SetFont('Arial','B',11);
@@ -257,7 +248,7 @@ class Rent extends CI_Controller{
             $this->PDF->Cell(35,6,$v->pnw,1,0);
             $this->PDF->Cell(35,6,$v->nom,1,1);
         }
-        $this->PDF->Output('I','Daftar_barang_'.date('d_m_Y').'.pdf');
+        $this->PDF->Output('I','Daftar_penyewaan_'.$this->bulan[$bulan].'_'.$tahun.'.pdf');
     }
 
     //=============ada view
@@ -346,8 +337,8 @@ class Rent extends CI_Controller{
         $tm = date('Y-m-d',strtotime($tm));
         $ts = $this->input->post('jumlah_hari');
         $ts = date('Y-m-d',strtotime($tm.' + '.$ts.' days'));
-        $data = $this->rm->cek_penyewaan($id, $tm, $ts);
-        echo $data;
+        $dt = $this->rm->cek_penyewaan($id, $tm, $ts);
+        echo $dt;
     }
     
     function cek_edit_penyewaan(){
@@ -357,8 +348,8 @@ class Rent extends CI_Controller{
         $tm = date('Y-m-d',strtotime($tm));
         $ts = $this->input->post('jumlah_hari');
         $ts = date('Y-m-d',strtotime($tm.' + '.$ts.' days'));
-        $data = $this->rm->cek_penyewaan($ids, $tm, $ts, $id);
-        echo $data;
+        $dt = $this->rm->cek_penyewaan($ids, $tm, $ts, $id);
+        echo $dt;
     }
 
 }

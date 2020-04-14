@@ -4,7 +4,6 @@ class Logistic_model extends CI_Model{
     function __construct(){
         parent:: __construct();
         $this->load->database('default');
-		$this->load->library('Num_splitter');
     }
 
     function get_info_belanja_log($tahun, $bulan, $type='html'){
@@ -119,33 +118,54 @@ class Logistic_model extends CI_Model{
         $this->db->from('stok_item si');
         $this->db->join('stok_keluar sk','si.id_stok=sk.id_prb');
         $this->db->LIKE('tanggal',$tahun.'-'.$bulan,'after');
-        $this->db->group_by('CONCAT(year(tanggal), "/",WEEK(tanggal))');
+        $this->db->group_by('DAY(tanggal)');
+        $this->db->order_by('DAY(tanggal)','ASC');
         $result=$this->db->get()->result();
+        $key_m=[];
         $result1['penjualan']=[];
         $result1['margin']=[];
         $result1['minggu']=[];
         $i=0;
-        foreach ($result as $key => $v) {
+        foreach ($result as $key => $v) {//mengelompokkan minggu
             if ((int)$v->dt>=1 &&(int)$v->dt<=7&&!in_array(1,$result1['minggu'])) {
                 $result1['minggu'][]=1;
-            }elseif ((int)$v->dt>=8 &&(int)$v->dt<=14) {
+                $result1['penjualan'][] = 0;
+                $result1['margin'][] = 0;
+                $key_m[1] = $i;
+                $i++;
+            }elseif ((int)$v->dt>=8 &&(int)$v->dt<=14&&!in_array(2,$result1['minggu'])) {
                 $result1['minggu'][]=2;
-            }elseif ((int)$v->dt>=15 &&(int)$v->dt<=21) {
+                $result1['penjualan'][] = 0;
+                $result1['margin'][] = 0;
+                $key_m[2] = $i;
+                $i++;
+            }elseif ((int)$v->dt>=15 &&(int)$v->dt<=21&&!in_array(3,$result1['minggu'])) {
                 $result1['minggu'][]=3;
-            }else if(!in_array(4,$result1['minggu'])){
+                $result1['penjualan'][] = 0;
+                $result1['margin'][] = 0;
+                $key_m[3] = $i;
+                $i++;
+            }else if((int)$v->dt>=22&&!in_array(4,$result1['minggu'])){
                 $result1['minggu'][]=4;
+                $result1['penjualan'][] = 0;
+                $result1['margin'][] = 0;
+                $key_m[4] = $i;
             }
-            if ((int)$v->dt>=1&&(int)$v->dt<=7&&$i!=0) {
-                $result1['penjualan'][$i-1]+=(int)$v->sl;
-                $result1['margin'][$i-1]+=(int)$v->mg;
-            }else if ((int)$v->dt>=22&&$i!=0) {
-                $result1['penjualan'][$i-1]+=(int)$v->sl;
-                $result1['margin'][$i-1]+=(int)$v->mg;
-            }else{
-                $result1['penjualan'][]=(int)$v->sl;
-                $result1['margin'][]=(int)$v->mg;
+        }
+        foreach ($result as $key => $v) {
+            if ((int)$v->dt>=1 &&(int)$v->dt<=7&&in_array(1,$result1['minggu'])) {
+                $result1['penjualan'][$key_m[1]]+=(int)$v->sl;
+                $result1['margin'][$key_m[1]]+=(int)$v->mg;
+            }elseif ((int)$v->dt>=8 &&(int)$v->dt<=14&&in_array(2,$result1['minggu'])) {
+                $result1['penjualan'][$key_m[2]]+=(int)$v->sl;
+                $result1['margin'][$key_m[2]]+=(int)$v->mg;
+            }elseif ((int)$v->dt>=15 &&(int)$v->dt<=21&&in_array(3,$result1['minggu'])) {
+                $result1['penjualan'][$key_m[3]]+=(int)$v->sl;
+                $result1['margin'][$key_m[3]]+=(int)$v->mg;
+            }else if((int)$v->dt>=22&&in_array(4,$result1['minggu'])){
+                $result1['penjualan'][$key_m[4]]+=(int)$v->sl;
+                $result1['margin'][$key_m[4]]+=(int)$v->mg;
             }
-            $i=$key;
         }
         return json_encode($result1);
     }
@@ -323,9 +343,13 @@ class Logistic_model extends CI_Model{
         return $result[0];
     }
 
-    function get_tahun($tipe){
+    function get_tahun($tipe, $mitra=false){
         $this->db->select('YEAR(tanggal) AS thn');
         $this->db->from('stok_item');
+        if ($mitra) {
+            $this->db->join('stok_keluar','id_temp=id_kom');
+            $this->db->where('mitra',$mitra);
+        }
         $this->db->group_by('YEAR(tanggal)');
         $this->db->where('jenis',$tipe);
         $result = $this->db->get()->result();

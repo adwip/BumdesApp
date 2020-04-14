@@ -5,71 +5,60 @@ class Finance extends CI_controller{
     function __construct(){
         parent:: __construct();
 		date_default_timezone_set('Asia/Jakarta');
-        $tp='MNG';
-        if ($tp=='MNG') {
-            $this->page = 'MenuPage';
-        }else if ($tp=='GOV') {
-            $this->page = 'MenuPageGov';
-        }elseif ($tp=='SYS') {
-            $this->page = 'MenuPageGov';
-        }
         $this->PDF = new FPDF();
         $this->bulan = ['01'=>'Januari','02'=>'Februari','03'=>'Maret','04'=>'April','05'=>'Mei','06'=>'Juni','07'=>'Juli','08'=>'Agustus','09'=>'September','10'=>'Oktober','11'=>'November','12'=>'Desember'];
         $this->waktu = date('Y-m-d H:i:s');
-        $this->admin = 'Tiyo';
-        if (true) {
-            $this->ret['ses']=true;
-        }else{
-            $this->ret['ses']=false;
+        if (!$this->ses->log_s||$this->ses->tp!='MNG') {
+			redirect(base_url());
         }
     }
 
     function index(){
-        $data['page']=$this->page;
-        $data['title'] = 'Homepage';
+        $dt['page']=$this->page;
+        $dt['title'] = 'Homepage';
         //echo $this->input->get('tipe');
-        $this->load->view('General/home',$data);
+        $this->load->view('General/home',$dt);
     }
 
     function weekly_report($type='html'){//=============ada view
-        $data['title'] = 'Laporan mingguan';
+        $dt['title'] = 'Laporan mingguan';
         //echo $this->input->get('tipe');
-        $data['mg'] = [1,2,3,4];
+        $dt['mg'] = [1,2,3,4];
         if (date('d')>=1&&date('d')<=7) {
-            $data['minggu']=1;
+            $dt['minggu']=1;
         }elseif (date('d')>=8&&date('d')<=14) {
-            $data['minggu']=2;
+            $dt['minggu']=2;
         }elseif (date('d')>=15&&date('d')<=21) {
-            $data['minggu']=3;
+            $dt['minggu']=3;
         }else {
-            $data['minggu']=4;
+            $dt['minggu']=4;
         }
         
-        $data['bln'] = $this->bulan;
-        $data['tahun'] = date('Y');
-        $data['bulan'] = date('m');
+        $dt['bln'] = $this->bulan;
+        $dt['tahun'] = date('Y');
+        $dt['bulan'] = date('m');
         if (isset($_GET['tahun'])) {
-            $data['tahun'] = $this->input->get('tahun',TRUE);
-            $data['bulan'] = $this->input->get('bulan',TRUE);
-            $data['minggu'] = $this->input->get('minggu',TRUE);
+            $dt['tahun'] = $this->input->get('tahun',TRUE);
+            $dt['bulan'] = $this->input->get('bulan',TRUE);
+            $dt['minggu'] = $this->input->get('minggu',TRUE);
         }
-        $data['thn'] = $this->fm->get_tahun_fin();
-        $data['value']=$this->fm->get_keuangan_mingguan($data['tahun'],$data['bulan'],$data['minggu']);
-        $data['kd']=$this->fm->get_kredit_debit_mingguan($data['tahun'],$data['bulan'],$data['minggu']);
-        $data['s']=$this->fm->get_saldo();
-        $data['v_grafik']=$this->fm->get_grafik_keuangan_mingguan($data['tahun'],$data['bulan']);
-        // echo $data['v_grafik'];
+        $dt['thn'] = $this->fm->get_tahun_fin();
+        $dt['value']=$this->fm->get_keuangan_mingguan($dt['tahun'],$dt['bulan'],$dt['minggu']);
+        $dt['kd']=$this->fm->get_kredit_debit_mingguan($dt['tahun'],$dt['bulan'],$dt['minggu']);
+        $dt['s']=$this->fm->get_saldo();
+        $dt['v_grafik']=$this->fm->get_grafik_keuangan_mingguan($dt['tahun'],$dt['bulan']);
+        // echo $dt['v_grafik'];
         if ($type=='html') {
-            $this->load->view('MenuPage/Main/weekly_report',$data);
-            // echo $data['value'];
-            // echo $data['minggu'];
-            // echo json_encode($data['thn']);
+            $this->load->view('MenuPage/Main/weekly_report',$dt);
+            // echo $dt['value'];
+            // echo $dt['v_grafik'];
+            // echo json_encode($dt['thn']);
         }else{
             if ($this->ret) {
                 $val['ses']='Ok';
-                $val['tabel']=$data['value'];
-                $val['kd']=$data['kd'];
-                $val['grafik'] = json_decode($data['v_grafik']);
+                $val['tabel']=$dt['value'];
+                $val['kd']=$dt['kd'];
+                $val['grafik'] = json_decode($dt['v_grafik']);
                 
             }else{
                 $val['ses']='Off';
@@ -79,29 +68,29 @@ class Finance extends CI_controller{
     }
 
     function monthly_report($type='html'){//=============ada view
-        $data['title'] = 'Laporan bulanan';
+        $dt['title'] = 'Laporan bulanan';
         //echo $this->input->get('tipe');
-        $data['bln'] = $this->bulan;
-        $data['tahun'] = date('Y');
-        $data['bulan'] = date('m');
+        $dt['bln'] = $this->bulan;
+        $dt['tahun'] = date('Y');
+        $dt['bulan'] = date('m');
         if (isset($_GET['tahun'])) {
-            $data['tahun'] = $this->input->get('tahun',TRUE);
-            $data['bulan'] = $this->input->get('bulan',TRUE);
+            $dt['tahun'] = $this->input->get('tahun',TRUE);
+            $dt['bulan'] = $this->input->get('bulan',TRUE);
         }
-        $data['thn'] = $this->fm->get_tahun_fin();
-        $data['value']=$this->fm->get_keuangan_bulanan($data['tahun'],$data['bulan']);
-        $data['kd']=$this->fm->get_kredit_debit_bulanan($data['tahun'],$data['bulan']);
-        $data['s']=$this->fm->get_saldo();
-        $data['v_grafik']=$this->fm->get_grafik_keuangan_bulanan($data['tahun']);
-        // echo $data['v_grafik'];
+        $dt['thn'] = $this->fm->get_tahun_fin();
+        $dt['value']=$this->fm->get_keuangan_bulanan($dt['tahun'],$dt['bulan']);
+        $dt['kd']=$this->fm->get_kredit_debit_bulanan($dt['tahun'],$dt['bulan']);
+        $dt['s']=$this->fm->get_saldo();
+        $dt['v_grafik']=$this->fm->get_grafik_keuangan_bulanan($dt['tahun']);
+        // echo $dt['v_grafik'];
         if ($type=='html') {
-            $this->load->view('MenuPage/Main/monthly_report',$data);
+            $this->load->view('MenuPage/Main/monthly_report',$dt);
         }else{
             if ($this->ret) {
                 $val['ses']='Ok';
-                $val['tabel']=$data['value'];
-                $val['kd']=$data['kd'];
-                $val['grafik'] = json_decode($data['v_grafik']);
+                $val['tabel']=$dt['value'];
+                $val['kd']=$dt['kd'];
+                $val['grafik'] = json_decode($dt['v_grafik']);
             }else{
                 $val['ses']='Off';
             }
@@ -110,27 +99,27 @@ class Finance extends CI_controller{
     }
 
     function annual_report($type='html'){//=============ada view
-        $data['title'] = 'Laporan tahunan';
+        $dt['title'] = 'Laporan tahunan';
         //echo $this->input->get('tipe');
-        $data['tahun'] = date('Y');
+        $dt['tahun'] = date('Y');
         if (isset($_GET['tahun'])) {
-            $data['tahun'] = $this->input->get('tahun',TRUE);
+            $dt['tahun'] = $this->input->get('tahun',TRUE);
         }
-        $data['thn'] = $this->fm->get_tahun_fin();
-        $data['value']=$this->fm->get_keuangan_tahunan($data['tahun']);
-        $data['kd']=$this->fm->get_kredit_debit_tahunan($data['tahun']);
-        $data['s']=$this->fm->get_saldo();
-        $data['v_grafik']=$this->fm->get_grafik_keuangan_tahunan();
-        // echo $data['v_grafik'];
+        $dt['thn'] = $this->fm->get_tahun_fin();
+        $dt['value']=$this->fm->get_keuangan_tahunan($dt['tahun']);
+        $dt['kd']=$this->fm->get_kredit_debit_tahunan($dt['tahun']);
+        $dt['s']=$this->fm->get_saldo();
+        $dt['v_grafik']=$this->fm->get_grafik_keuangan_tahunan();
+        // echo $dt['v_grafik'];
         if ($type=='html') {
-            $this->load->view('MenuPage/Main/annual_report',$data);
-            // echo $data['value'];
+            $this->load->view('MenuPage/Main/annual_report',$dt);
+            // echo $dt['value'];
         }else{
             if ($this->ret) {
                 $val['ses']='Ok';
-                $val['tabel']=$data['value'];
-                $val['kd']=$data['kd'];
-                $val['grafik'] = json_decode($data['v_grafik']);
+                $val['tabel']=$dt['value'];
+                $val['kd']=$dt['kd'];
+                $val['grafik'] = json_decode($dt['v_grafik']);
             }else{
                 $val['ses']='Off';
             }
@@ -139,46 +128,46 @@ class Finance extends CI_controller{
     }
 
     function corp_profits(){//================= OK
-        $data['nb'] = $this->bulan[date('m')];
-        $data['title'] = 'Laporan tahunan';
+        $dt['nb'] = $this->bulan[date('m')];
+        $dt['title'] = 'Laporan tahunan';
         //echo $this->input->get('tipe');
-        $data['bln'] = $this->bulan;
-        $data['tahun'] = date('Y');
-        $data['bulan'] = date('m');
+        $dt['bln'] = $this->bulan;
+        $dt['tahun'] = date('Y');
+        $dt['bulan'] = date('m');
         if (isset($_GET['tahun'])) {
-            $data['tahun'] = $this->input->get('tahun',TRUE);
-            $data['bulan'] = $this->input->get('bulan',TRUE);
-            $data['nb'] = $this->bulan[$data['bulan']];
+            $dt['tahun'] = $this->input->get('tahun',TRUE);
+            $dt['bulan'] = $this->input->get('bulan',TRUE);
+            $dt['nb'] = $this->bulan[$dt['bulan']];
         }
-        $data['thn'] = $this->lm->get_tahun('OUT');
-        $data['v'] = $this->fm->get_laba_usaha($data['tahun'], $data['bulan']);
-        $data['v_grafik']=$this->fm->get_grafik_laba_dagang($data['tahun']);
-        $data['v2']=$this->tm->get_jual_profits_tahun($data['tahun']);
-        $data['v3']=$this->tm->get_jual_profits_bulan($data['tahun'],$data['bulan']);
-        // echo $data['v_grafik'];
-        $this->load->view('MenuPage/Main/corp_profits',$data);
+        $dt['thn'] = $this->lm->get_tahun('OUT');
+        $dt['v'] = $this->fm->get_laba_usaha($dt['tahun'], $dt['bulan']);
+        $dt['v_grafik']=$this->fm->get_grafik_laba_dagang($dt['tahun']);
+        $dt['v2']=$this->tm->get_jual_profits_tahun($dt['tahun']);
+        $dt['v3']=$this->tm->get_jual_profits_bulan($dt['tahun'],$dt['bulan']);
+        // echo $dt['v_grafik'];
+        $this->load->view('MenuPage/Main/corp_profits',$dt);
     }
 
     function bagi_hasil($type='html'){//=================OK
-        $data['title'] = 'Aset bagi hasil';
+        $dt['title'] = 'Aset bagi hasil';
         //echo $this->input->get('tipe');
-        $data['tahun'] = date('Y');
+        $dt['tahun'] = date('Y');
         if (isset($_GET['tahun'])) {
-            $data['tahun'] = $this->input->get('tahun',TRUE);
+            $dt['tahun'] = $this->input->get('tahun',TRUE);
         }
-        $data['thn'] = $this->fm->get_tahun_bgh();
-        $data['value'] = $this->fm->daftar_kerjasama_bgh($data['tahun']);
-        $data['v'] = $this->fm->get_total_bagi_hasil($data['tahun']);
-        $data['v_grafik']=$this->fm->get_grafik_bagi_hasil($data['tahun']);
+        $dt['thn'] = $this->fm->get_tahun_bgh();
+        $dt['value'] = $this->fm->daftar_kerjasama_bgh($dt['tahun']);
+        $dt['v'] = $this->fm->get_total_bagi_hasil($dt['tahun']);
+        $dt['v_grafik']=$this->fm->get_grafik_bagi_hasil($dt['tahun']);
         if ($type=='html') {
-            // echo json_encode($data['value']);
-            $this->load->view('MenuPage/Main/bagi_hasil',$data);
-            // echo $data['tahun'];
+            // echo json_encode($dt['value']);
+            $this->load->view('MenuPage/Main/bagi_hasil',$dt);
+            // echo $dt['tahun'];
         }else{
             if ($this->ret) {
                 $val['ses']='Ok';
-                $val['tabel']=$data['value'];
-                $val['row']=isset($data['v']->hg)?$data['v']->hg:0;
+                $val['tabel']=$dt['value'];
+                $val['row']=isset($dt['v']->hg)?$dt['v']->hg:0;
             }else{
                 $val['ses']='Off';
             }
@@ -187,88 +176,87 @@ class Finance extends CI_controller{
     }
 
     function bagi_dividen(){
-        $data['title'] = 'Pembagian dividen';
-        $data['v'] = $this->fm->get_daftar_dividen();
-        $data['v_grafik'] = $this->fm->get_grafik_dividen();
-        $this->load->view('MenuPage/Main/Pembagian_dividen',$data);
+        $dt['title'] = 'Pembagian dividen';
+        $dt['v'] = $this->fm->get_daftar_dividen();
+        $dt['v_grafik'] = $this->fm->get_grafik_dividen();
+        $this->load->view('MenuPage/Main/Pembagian_dividen',$dt);
     }
 
     function form_tabah_dividen(){
-        $data['page']=$this->page;
-        $data['title'] = '';
-        $data['id'] = '';
-        // $data['tahun'] = $this->fm->get_tahun_keuangan();
-        $this->load->view('MenuPage/Form/tambah_bagi_hasil_usaha',$data);
-        // echo json_encode($data['tahun']);
-        // echo json_encode($data['s']);
+        $dt['title'] = '';
+        $dt['id'] = '';
+        // $dt['tahun'] = $this->fm->get_tahun_keuangan();
+        $this->load->view('MenuPage/Form/tambah_bagi_hasil_usaha',$dt);
+        // echo json_encode($dt['tahun']);
+        // echo json_encode($dt['s']);
     }
 
     function form_cat_keuangan(){//=============ada view
-        $data['title'] = '';
-        $data['tanggal'] = date('d/m/Y');
-        $data['b']=$this->fm->get_saldo();
-        $this->load->view('MenuPage/Form/tambah_cat_keuangan',$data);
+        $dt['title'] = '';
+        $dt['tanggal'] = date('d/m/Y');
+        $dt['b']=$this->fm->get_saldo();
+        $this->load->view('MenuPage/Form/tambah_cat_keuangan',$dt);
     }
 
     function form_edit_finansial($id){//=============ada view
-        $data['var']=$id;
-        $data['title'] = '';
-        $data['id'] = '';
-        $data['tanggal'] = date('d/m/Y');
-        $data['v'] = $this->fm->get_edit_keuangan($id);
-        $data['s']=$this->fm->get_saldo();
-        $this->load->view('MenuPage/Form/edit_finansial',$data);
-        // echo json_encode($data['v']);
+        $dt['var']=$id;
+        $dt['title'] = '';
+        $dt['id'] = '';
+        $dt['tanggal'] = date('d/m/Y');
+        $dt['v'] = $this->fm->get_edit_keuangan($id);
+        $dt['s']=$this->fm->get_saldo();
+        $this->load->view('MenuPage/Form/edit_finansial',$dt);
+        // echo json_encode($dt['v']);
     }
 
     function form_tambah_pemb_bgh(){
-        $data['title'] = 'Penerimaan bagi hasil';
-        $data['v']= $this->fm->daftar_kerjasama_bgh(date('Y'),'json');
-        $this->load->view('MenuPage/Form/tambah_pemb_bgh',$data);
+        $dt['title'] = 'Penerimaan bagi hasil';
+        $dt['v']= $this->fm->daftar_kerjasama_bgh(date('Y'),'json');
+        $this->load->view('MenuPage/Form/tambah_pemb_bgh',$dt);
     }
 
     function form_edit_pemb_bagi_hasil($id){
-        $data['title'] = 'Ubah pembayaran bagi hasil';
-        $data['v']= $this->fm->get_edit_pemb_bgh($id);
-        $this->load->view('MenuPage/Form/edit_pemb_bgh',$data);
-        // echo json_encode($data['v']);
+        $dt['title'] = 'Ubah pembayaran bagi hasil';
+        $dt['v']= $this->fm->get_edit_pemb_bgh($id);
+        $this->load->view('MenuPage/Form/edit_pemb_bgh',$dt);
+        // echo json_encode($dt['v']);
     }
 
     function form_tambah_aset_bagi_hasil(){//=============ada view
-        $data['title'] = '';
-        $data['id'] = '';
-        $data['tanggal'] = date('d/m/Y');
-        $data['v2'] = $this->am->get_rekanan('JSON');
-        $data['v3'] = $this->am->get_aset_umum('JSON');
-        $this->load->view('MenuPage/Form/tambah_aset_bagi_hasil',$data);
+        $dt['title'] = '';
+        $dt['id'] = '';
+        $dt['tanggal'] = date('d/m/Y');
+        $dt['v2'] = $this->am->get_rekanan('JSON');
+        $dt['v3'] = $this->am->get_aset_umum('JSON');
+        $this->load->view('MenuPage/Form/tambah_aset_bagi_hasil',$dt);
 
-        // echo json_encode($data['v3']);
+        // echo json_encode($dt['v3']);
     }
 
     function form_edit_aset_bagi_hasil($id){//=============ada view
-        $data['title'] = '';
-        $data['id'] = '';
-        $data['tanggal'] = date('d/m/Y');
-        $data['v'] = $this->fm->get_edit_bagi_hasil($id);
-        $this->load->view('MenuPage/Form/edit_bagi_hasil',$data);
-        // echo json_encode($data['v']);
+        $dt['title'] = '';
+        $dt['id'] = '';
+        $dt['tanggal'] = date('d/m/Y');
+        $dt['v'] = $this->fm->get_edit_bagi_hasil($id);
+        $this->load->view('MenuPage/Form/edit_bagi_hasil',$dt);
+        // echo json_encode($dt['v']);
     }
 
     function form_edit_bagi_dividen($id){
-        $data['title'] = 'Bagi hasil usaha';
-        $data['id'] = '';
-        $data['v'] = $this->fm->get_edit_bagi_dividen($id);
-        $data['v2'] = $this->fm->get_edit_ent_bagi_dividen($id);
-        $this->load->view('MenuPage/Form/edit_bagi_dividen',$data);
+        $dt['title'] = 'Bagi hasil usaha';
+        $dt['id'] = '';
+        $dt['v'] = $this->fm->get_edit_bagi_dividen($id);
+        $dt['v2'] = $this->fm->get_edit_ent_bagi_dividen($id);
+        $this->load->view('MenuPage/Form/edit_bagi_dividen',$dt);
     }
     
     function detail_bagi_hasil($id){//=============ada view
-        $data['title'] = '';
-        $data['id'] = $id;
-        $data['v'] = $this->fm->get_detail_bagi_hasil($id);
-        $data['v_histori_bgh'] = $this->fm->get_detail_histori_bagi_hasil($id);
-        $this->load->view('MenuPage/Detail_Print/detail_bagi_hasil',$data);
-        // echo json_encode($data['v']);
+        $dt['title'] = '';
+        $dt['id'] = $id;
+        $dt['v'] = $this->fm->get_detail_bagi_hasil($id);
+        $dt['v_histori_bgh'] = $this->fm->get_detail_histori_bagi_hasil($id);
+        $this->load->view('MenuPage/Detail_Print/detail_bagi_hasil',$dt);
+        // echo json_encode($dt['v']);
     }
 
     function set_tambah_bagi_hasil(){
@@ -292,8 +280,8 @@ class Finance extends CI_controller{
 
         if ($v['resp']) {
             $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
-            $data=$this->am->get_aset_umum('json');
-            echo json_encode(['res'=>200,'data'=>$data]);
+            $dt=$this->am->get_aset_umum('json');
+            echo json_encode(['res'=>200,'data'=>$dt]);
         }
     }
 
@@ -303,22 +291,18 @@ class Finance extends CI_controller{
         $cat = $this->input->post('cat',true);
         $tanggal = $this->input->post('tanggal',true);
         $tanggal = date('Y-m-d',strtotime($tanggal));
-        $pen = $this->input->post('pen_b',true);
-        $pers_b = $this->input->post('pers_b',true);
-        $pers_b = str_replace('%','',$pers_b);
-        $pen = ($pers_b/100)*$jumlah;
+        $pen_b = $this->input->post('pen_b',true);
+        $pen_m = $this->input->post('pen_m',true);
         $info = $this->input->post('info',true);
         $info = explode('|', $info);
-
-        // echo json_encode($_POST);
         
-        $v = $this->fm->set_pemb_bagi_hasil($id, $jumlah, $cat, $tanggal);
+        $v = $this->fm->set_pemb_bagi_hasil($id, $jumlah, $pen_b, $pen_m, $cat, $tanggal);
         $log_mesg = '[TAMBAH][PEMBAYARAN][BAGI HASIL]['.$v['id'].']['.$id.'] Menambah pembayaran hasil dari kerjasama bagi hasil penggunaan aset';
         if ($v['res']) {
             $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             if (isset($_POST['tambah_trans'])) {
                 $ket_kas ='Pembayaran bagi hasil usaha dengan '.$info[1]. ' dari aset '.$info[0];
-                $v1 = $this->fm->set_arus_kas('IN', $ket_kas, $pen, $tanggal, 'System', $id);
+                $v1 = $this->fm->set_arus_kas('IN', $ket_kas, $pen_b, $tanggal, 'System', $id);
                 $log_mesg = '[TAMBAH][KEUANGAN][BAGI HASIL] ['.$v1['id'].']['.$v['id'].'] Menambah pemasukan dari kerjasama bagi hasil dengan '.$info[1].' dari aset '.$info[0];
                 if ($v1['res']) {
                     $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
@@ -416,7 +400,9 @@ class Finance extends CI_controller{
         if ($v['res']) {
             $log_mesg = '[TAMBAH][KEUANGAN]['.$v['id'].'] Menambah transaksi kas '.$jenis3.' ('.$jenis2.') sebesar Rp. '.$jumlah;
             $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
-            echo '200';
+            $s=$this->fm->get_saldo();
+            $s = isset($s[0]->ac)?$s[0]->ac:0;
+            echo json_encode(['resp'=>200,'b'=>$s]);
         }
     }
 
@@ -510,7 +496,7 @@ class Finance extends CI_controller{
             $this->PDF->Cell(30,6,date('d-m-Y',strtotime($v->tm)),1,0);
             $this->PDF->Cell(30,6,date('d-m-Y',strtotime($v->ts)),1,1);
         }
-        $this->PDF->Output('I','Daftar_barang_'.date('d_m_Y').'.pdf');
+        $this->PDF->Output('I','Daftar_kerjasama_bagi_hasil_'.$this->bulan[date('m')].'_'.$tahun.'.pdf');
     }
 
     //=============ada view
@@ -525,7 +511,8 @@ class Finance extends CI_controller{
             $r = $this->fm->get_keuangan_mingguan($tahun,$bulan,$minggu,'JSON');
             $dk=$this->fm->get_kredit_debit_mingguan($tahun,$bulan,$minggu);
             $s=$this->fm->get_saldo();
-            $ket='minggu-an';
+            $ket='minggu-an_';
+            $nb = $this->bulan[$bulan];
         }elseif ($type==2) {
             $tahun = $this->input->get('tahun',true);
             $bulan = $this->input->get('bulan',true);
@@ -534,7 +521,8 @@ class Finance extends CI_controller{
             $r = $this->fm->get_keuangan_bulanan($tahun,$bulan,'JSON');
             $dk=$this->fm->get_kredit_debit_bulanan($tahun,$bulan);
             $s=$this->fm->get_saldo();
-            $ket='bulan-an';
+            $ket='bulan-an_';
+            $nb = $this->bulan[$bulan];
         }else {
             $tahun = $this->input->get('tahun',true);
             $title = 'TAHUN-AN';
@@ -543,6 +531,7 @@ class Finance extends CI_controller{
             $dk=$this->fm->get_kredit_debit_tahunan($tahun);
             $s=$this->fm->get_saldo();
             $ket='tahun-an';
+            $nb = null;
         }
         // membuat halaman baru
         $this->PDF->AddPage();
@@ -620,7 +609,7 @@ class Finance extends CI_controller{
             $this->PDF->Cell(30,($line * $tinggi_sel),'Rp. '.$v->bc,1,1);
         }
         
-        $this->PDF->Output('I','Daftar_transaksi_'.$ket.'_'.date('d_m_Y').'.pdf');
+        $this->PDF->Output('I','Daftar_transaksi_'.$ket.$nb.'_'.$tahun.'.pdf');
     }
 
     //=============ada view
@@ -757,14 +746,14 @@ class Finance extends CI_controller{
     }
     
     function detail_bagi_dividen($id){
-        $data['title'] = 'Detail bagi hasil usaha';
-        $data['tanggal'] = date('d/m/Y');
-        $data['v'] = $this->fm->detail_bagi_hasil_usaha($id);
-        $data['tahun_dividen'] = 2020;
-        $data['id']=$id;
-        $data['tabel_ent'] = $this->fm->detail_entitas_bagi_usaha($id);
-        $this->load->view('MenuPage/Detail_Print/detail_bagi_dividen',$data);
-        // echo json_encode($data['v']);
+        $dt['title'] = 'Detail bagi hasil usaha';
+        $dt['tanggal'] = date('d/m/Y');
+        $dt['v'] = $this->fm->detail_bagi_hasil_usaha($id);
+        $dt['tahun_dividen'] = 2020;
+        $dt['id']=$id;
+        $dt['tabel_ent'] = $this->fm->detail_entitas_bagi_usaha($id);
+        $this->load->view('MenuPage/Detail_Print/detail_bagi_dividen',$dt);
+        // echo json_encode($dt['v']);
     }
 
     function edit_bagi_hasil_div(){
@@ -851,8 +840,8 @@ class Finance extends CI_controller{
         $ts = $this->input->post('bulan');
         $ts = date('Y-m-d',strtotime($tm.' + '.$ts.' months'));
 
-        $data = $this->fm->cek_jadwal_bgh($id, $tm, $ts);
-        echo $data;
+        $dt = $this->fm->cek_jadwal_bgh($id, $tm, $ts);
+        echo $dt;
     }
     
     function cek_edit_jadwal_bgh(){
@@ -863,8 +852,8 @@ class Finance extends CI_controller{
         $ts = $this->input->post('bulan');
         $ts = date('Y-m-d',strtotime($tm.' + '.$ts.' months'));
 
-        $data = $this->fm->cek_jadwal_bgh($ids, $tm, $ts, $id);
-        echo $data;
+        $dt = $this->fm->cek_jadwal_bgh($ids, $tm, $ts, $id);
+        echo $dt;
         // echo json_encode($_POST);
     }
 }

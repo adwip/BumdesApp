@@ -3,7 +3,6 @@
 class HR_model extends CI_Model{
     function __construct(){
         parent:: __construct();
-        $this->load->database('default');
         $config= [
             'protocol'=>'smtp',
             'smtp_host'=>'ssl://smtp.googlemail.com',
@@ -16,11 +15,12 @@ class HR_model extends CI_Model{
         ];
     }
 
-    function get_admin(){
+    function get_admin($id){
         $this->db->select('id_admin AS id, nama AS nm, kategori AS ktg, kontak AS kt, waktu_reg AS wr');
         // status_akt as sa,
         $this->db->from('admin');
         $this->db->where('kategori !=','SYS');
+        $this->db->where('id_admin != ',$id);
         $result = $this->db->get()->result();
         $result1['mng']=null;
         $result1['gov']=null;
@@ -98,10 +98,11 @@ class HR_model extends CI_Model{
         return $result1;
     }
 
-    function get_user_log_id($id){
+    function get_user_log_id($id, $tahun, $bulan){
         $this->db->select('log AS lg, waktu AS tm, tanggal AS dt');
         $this->db->from('log_admin');
         $this->db->where('admin',$id);
+        $this->db->like('tanggal',$tahun.'-'.$bulan);
         $this->db->order_by('id_temp','DESC');
         $result=$this->db->get()->result();
         $result1=null;

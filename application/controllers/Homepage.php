@@ -10,48 +10,51 @@ class Homepage extends CI_Controller{
         }elseif ($this->ses->tp=='GOV') {
             $this->page = 'MenuPageGov';
         }else {
-            $data['page'] = 'MenuPageSys';
+            $this->page = 'MenuPageSys';
         }
         $this->bulan = ['01'=>'Januari','02'=>'Februari','03'=>'Maret','04'=>'April','05'=>'Mei','06'=>'Juni','07'=>'Juli','08'=>'Agustus','09'=>'September','10'=>'Oktober','11'=>'November','12'=>'Desember'];
         $this->waktu = date('Y-m-d H:i:s');
-        if (true) {
-            $this->ret['ses']=true;
-        }else{
-            $this->ret['ses']=false;
-        }
     }
 
     function index(){
-        $data['title'] = 'BUMDes Indrakila | Silahkan masuk';
-        if ($this->ses->log_s=='Ok') {
+        $dt['title'] = 'BUMDes Indrakila | Silahkan masuk';
+        if ($this->ses->log_s) {
 			redirect(site_url('home'));
         }else{
-            $this->load->view('General/Login_page',$data);
+            if ($this->input->is_ajax_request()) {
+                echo json_encode(['ses'=>'OUT']);
+            }else{
+                $this->load->view('General/Login_page',$dt);
+            }
         }
     }
-    
-        // $val = ['tp'=>'MNG','nu'=>'0081585629042','log_s'=>'Ok'];
-        // $this->ses->set_userdata($val);
-        // $data2 = $this->ses->userdata();
-        // $this->ses->sess_destroy();
-        // echo json_encode($data2);
-        // echo $this->ses->__ci_last_regenerate;
 
     function home(){
-        $data['page']=$this->page;
-        $data['title'] = 'Homepage';
+        $dt['page']=$this->page;
+        $dt['title'] = 'Homepage';
         //echo $this->input->get('tipe');
-        $data['Y'] = date('Y');
-        $data['v_graf'] = $this->lm->get_grafik_penjualan($data['Y'], date('m'));
-        $data['v'] = $this->rm->get_total_penyewaan($data['Y']);
-        $data['v2'] = $this->tm->get_total_penjualan($data['Y'],date('m'));
-        $data['v3'] = $this->fm->get_total_bagi_hasil($data['Y']);
-        $data['nam_bulan'] = $this->bulan[date('m')];
-        $data['tahun'] = date('Y');
-        
-        $this->load->view('General/home',$data);
+        $dt['Y'] = date('Y');
+        $dt['v_graf'] = $this->lm->get_grafik_penjualan($dt['Y'], date('m'));
+        $dt['v'] = $this->rm->get_total_penyewaan($dt['Y']);
+        $dt['v2'] = $this->tm->get_total_penjualan($dt['Y'],date('m'));
+        $dt['v3'] = $this->fm->get_total_bagi_hasil($dt['Y']);
+        $dt['nam_bulan'] = $this->bulan[date('m')];
+        $dt['tahun'] = date('Y');
+        if ($this->ses->log_s) {
+            $this->load->view('General/home',$dt);
+
+            // echo $this->input->is_ajax_request();
+            // $dt2 = $this->ses->userdata();
+            // echo json_encode($dt2);
+        }else {
+			redirect(base_url());
+        }
     }
 
+    function keluar(){
+        $this->ses->sess_destroy();
+        echo base_url();
+    }
 
     function login_process(){
         $email = $this->input->post('email',true);
@@ -59,9 +62,9 @@ class Homepage extends CI_Controller{
 
         $v = $this->hr->login_process($email, $password);
         $log_mesg = '[PRIVATE] Masuk ke sistem web pada '.date('d-m-Y H:i:s');
-        if ($v) {
+        if ($v&&$this->ua->is_browser()) {
             $this->hr->log_admin($v->id, $log_mesg, date('Y-m-d'), date('H:i:s'));
-            $ses=['nu'=>$v->id,'nm'=>$v->nm,'tp'=>$v->tp,'img'=>$v->img,'log_s'=>'Ok'];
+            $ses=['nu'=>$v->id,'nm'=>$v->nm,'tp'=>$v->tp,'img'=>$v->img,'log_s'=>true];
             $this->ses->set_userdata($ses);
             $res=['stat'=>200,'url'=>base_url()];
             echo json_encode($res);
@@ -73,9 +76,14 @@ class Homepage extends CI_Controller{
 
     
     function not_found(){
-        $data['page']=$this->page;
-        $this->load->view('General/not_found',$data);
+        $dt['page']=$this->page;
+        if ($this->ses->log_s) {
+            $this->load->view('General/not_found',$dt);
+        }else{
+            
+        }
     }
+
 
     function send() {
         // $this->load->config('email');
@@ -102,15 +110,15 @@ class Homepage extends CI_Controller{
     }
 
     function reg_admin($id){
-        $data['page']=$this->page;
-        $data['title'] = 'Registrasi admin baru';
+        $dt['page']=$this->page;
+        $dt['title'] = 'Registrasi admin baru';
         
-        $data['v'] = $this->hr->get_url_confirm($id);
-        if ($data['v']&&waktu_data($id)&&!isset($_POST['sub'])) {
-            $data['v']= explode('|',$data['v']->nt);
-            $this->load->view('General/registrasi_admin',$data);
-        }else if (isset($_POST['sub'])&&$data['v']) {
-            $res= explode('|',$data['v']->nt);
+        $dt['v'] = $this->hr->get_url_confirm($id);
+        if ($dt['v']&&waktu_data($id)&&!isset($_POST['sub'])) {
+            $dt['v']= explode('|',$dt['v']->nt);
+            $this->load->view('General/registrasi_admin',$dt);
+        }else if (isset($_POST['sub'])&&$dt['v']) {
+            $res= explode('|',$dt['v']->nt);
             $kontak = $this->input->post('kontak',true);
             $password = $this->input->post('pass',true);
             
@@ -136,14 +144,14 @@ class Homepage extends CI_Controller{
                 echo '100| ';
             }
         }else{
-            $this->load->view('General/general_404',$data);
+            $this->load->view('General/general_404',$dt);
         }
     }
 
     function req_forget_pass($type='view'){
-        $data['title'] = 'BUMDes Indrakila | Lupa password';
+        $dt['title'] = 'BUMDes Indrakila | Lupa password';
         if ($type=='view') {
-            $this->load->view('General/Lupa_password',$data);
+            $this->load->view('General/Lupa_password',$dt);
         }else if ($type=='submit'){
             $email = $this->input->post('email',true);
             $user = $this->hr->get_detail_user($email);
@@ -176,15 +184,15 @@ class Homepage extends CI_Controller{
     }
 
     function forget_password($id){
-        $data['page']=$this->page;
-        $data['title'] = 'Registrasi admin baru';
+        $dt['page']=$this->page;
+        $dt['title'] = 'Registrasi admin baru';
         
-        $data['v'] = $this->hr->get_url_confirm($id);
-        if ($data['v']&&waktu_data($id)&&!isset($_POST['sub'])) {
-            $data['v']= explode('|',$data['v']->nt);
-            $this->load->view('General/ganti_password',$data);
-        }else if (isset($_POST['sub'])&&$data['v']) {
-            $id= explode('|',$data['v']->nt);
+        $dt['v'] = $this->hr->get_url_confirm($id);
+        if ($dt['v']&&waktu_data($id)&&!isset($_POST['sub'])) {
+            $dt['v']= explode('|',$dt['v']->nt);
+            $this->load->view('General/ganti_password',$dt);
+        }else if (isset($_POST['sub'])&&$dt['v']) {
+            $id= explode('|',$dt['v']->nt);
             $id = $id[2];
             $password = $this->input->post('password',true);
             $password2 = $this->input->post('password2',true);
@@ -192,12 +200,12 @@ class Homepage extends CI_Controller{
         $v = $this->hr->ganti_password($id, $password, $password2);
         echo $v?200:100;
         }else{
-            $this->load->view('General/general_404',$data);
+            $this->load->view('General/general_404',$dt);
         }
     }
 
     function general_req($id){
-        $data = $this->hr->get_url_conf($id);
+        $dt = $this->hr->get_url_conf($id);
         redirect(site_url());
     }
 }

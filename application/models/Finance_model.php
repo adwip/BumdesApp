@@ -364,37 +364,55 @@ class Finance_model extends CI_Model{
         $this->db->select('sld AS s, SUM(debit) AS d, SUM(kredit) AS k, day(tanggal_fin) AS dt');
         $this->db->from('rekap_keuangan');
         $this->db->like('tanggal_fin',$tahun.'-'.$bulan,'after');
-        $this->db->group_by('CONCAT(year(tanggal_fin), "/",WEEK(tanggal_fin))');
+        // $this->db->group_by('CONCAT(year(tanggal_fin), "/",WEEK(tanggal_fin))');
+        $this->db->group_by('DAY(tanggal_fin)');
+        $this->db->order_by('DAY(tanggal_fin)','ASC');
         $result=$this->db->get()->result();
-        $result1['saldo']=[];
+        $key_m=[];
         $result1['debit']=[];
         $result1['kredit']=[];
         $result1['minggu']=[];
         $i=0;
-        foreach ($result as $key => $v) {
+        foreach ($result as $key => $v) {//mengelompokkan minggu
             if ((int)$v->dt>=1 &&(int)$v->dt<=7&&!in_array(1,$result1['minggu'])) {
                 $result1['minggu'][]=1;
-            }elseif ((int)$v->dt>=8 &&(int)$v->dt<=14) {
+                $result1['debit'][] = 0;
+                $result1['kredit'][] = 0;
+                $key_m[1] = $i;
+                $i++;
+            }elseif ((int)$v->dt>=8 &&(int)$v->dt<=14&&!in_array(2,$result1['minggu'])) {
                 $result1['minggu'][]=2;
-            }elseif ((int)$v->dt>=15 &&(int)$v->dt<=21) {
+                $result1['debit'][] = 0;
+                $result1['kredit'][] = 0;
+                $key_m[2] = $i;
+                $i++;
+            }elseif ((int)$v->dt>=15 &&(int)$v->dt<=21&&!in_array(3,$result1['minggu'])) {
                 $result1['minggu'][]=3;
-            }else if(!in_array(4,$result1['minggu'])){
+                $result1['debit'][] = 0;
+                $result1['kredit'][] = 0;
+                $key_m[3] = $i;
+                $i++;
+            }else if((int)$v->dt>=22&&!in_array(4,$result1['minggu'])){
                 $result1['minggu'][]=4;
+                $result1['debit'][] = 0;
+                $result1['kredit'][] = 0;
+                $key_m[4] = $i;
             }
-            if ((int)$v->dt>=1&&(int)$v->dt<=7&&$i!=0) {
-                $result1['saldo'][$i-1]=(int)$v->s;
-                $result1['debit'][$i-1]+=(int)$v->d;
-                $result1['kredit'][$i-1]+=(int)$v->k;
-            }else if ((int)$v->dt>=22&&$i!=0) {
-                $result1['saldo'][$i-1]=(int)$v->s;
-                $result1['debit'][$i-1]+=(int)$v->d;
-                $result1['kredit'][$i-1]+=(int)$v->k;
-            }else{
-                $result1['saldo'][]=(int)$v->s;
-                $result1['debit'][]=(int)$v->d;
-                $result1['kredit'][]=(int)$v->k;
+        }
+        foreach ($result as $key => $v) {
+            if ((int)$v->dt>=1 &&(int)$v->dt<=7&&in_array(1,$result1['minggu'])) {
+                $result1['debit'][$key_m[1]]+=(int)$v->d;
+                $result1['kredit'][$key_m[1]]+=(int)$v->k;
+            }elseif ((int)$v->dt>=8 &&(int)$v->dt<=14&&in_array(2,$result1['minggu'])) {
+                $result1['debit'][$key_m[2]]+=(int)$v->d;
+                $result1['kredit'][$key_m[2]]+=(int)$v->k;
+            }elseif ((int)$v->dt>=15 &&(int)$v->dt<=21&&in_array(3,$result1['minggu'])) {
+                $result1['debit'][$key_m[3]]+=(int)$v->d;
+                $result1['kredit'][$key_m[3]]+=(int)$v->k;
+            }else if((int)$v->dt>=22&&in_array(4,$result1['minggu'])){
+                $result1['debit'][$key_m[4]]+=(int)$v->d;
+                $result1['kredit'][$key_m[4]]+=(int)$v->k;
             }
-            $i=$key;
         }
         return json_encode($result1);
     }
@@ -512,10 +530,10 @@ class Finance_model extends CI_Model{
         }
     }
 
-    function set_pemb_bagi_hasil($idg, $jumlah, $cat, $tanggal){
+    function set_pemb_bagi_hasil($idg, $jumlah, $pb, $pm, $cat, $tanggal){
         
         $res['id'] = '400'.time();
-        $isi = ['id_pbgh'=>$res['id'],'id_bagi'=>$idg,'jumlah'=>$jumlah,'catatan'=>$cat,'tanggal_bayar'=>$tanggal];
+        $isi = ['id_pbgh'=>$res['id'],'id_bagi'=>$idg,'jumlah'=>$jumlah,'catatan'=>$cat,'tanggal_bayar'=>$tanggal, 'pen_bumdes'=>$pb, 'pen_mitra'=>$pm];
         $this->db->insert('pemb_bagi_hasil',$isi);
 
         $res['res'] = $this->db->affected_rows();

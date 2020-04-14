@@ -136,7 +136,7 @@
     
     <script type="text/javascript">
       pertumbuhan_perdagangan(JSON.parse('<?= $v_graf ?>'),'#grafik_perdagangan', "<?= $nam_bulan ?>", "<?= $tahun ?>")
-      pertumbuhan_penyewaan(JSON.parse('<?= $v_graf ?>'),'#grafik_penyewaan')
+      // pertumbuhan_penyewaan(JSON.parse('<?= $v_graf ?>'),'#grafik_penyewaan')
     </script>
   </body>
 </html>

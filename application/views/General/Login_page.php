@@ -54,7 +54,7 @@
 
                 <div>
                   <h1> BUMDes Indrakila Jaya</h1>
-                  <p>©2019 All Rights Reserved. Dashboard design By Gentelella & Colorlib, system by TA Informatika UII 2015</p>
+                  <p>©2019 All Rights Reserved. Dashboard design By Gentelella & Colorlib, system by TA Informatika UII 2020</p>
                 </div>
               </div>
             </form>
@@ -63,6 +63,5 @@
       </div>
     </div>
     <?php $this->load->view('SuptPage/JsP') ?>
-    <script src="<?= base_url('asset/JS/General_js.js') ?>"></script>
   </body>
 </html>

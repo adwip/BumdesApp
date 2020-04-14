@@ -80,7 +80,7 @@
                 <div class="col-md-5">
                   <div class="row">
                     <form id="laporan-keuangan" action="monthly-freport" method="GET">
-                      <div class="col-md-6 col-sm-6">  
+                      <div class="col-md-6 col-sm-6 col-xs-6">  
                         <div class="form-group">
                           <label for="">Tahun</label>
                           <select name="tahun" class="form-control" onchange="$('#laporan-keuangan').submit()">
@@ -93,7 +93,7 @@
                           </select>
                         </div>
                       </div>
-                      <div class="col-md-6 col-sm-6">
+                      <div class="col-md-6 col-sm-6 col-xs-6">
                         <div class="form-group">
                           <label for="">Bulan</label>
                           <select name="bulan" class="form-control" onchange="$('#laporan-keuangan').submit()">

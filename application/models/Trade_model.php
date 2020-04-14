@@ -4,7 +4,6 @@ class Trade_model extends CI_Model{
     function __construct(){
         parent:: __construct();
         $this->load->database('default');
-		$this->load->library('Num_splitter');
     }
 
     function tambah_distribusi($nama, $jumlah, $tujuan, $mitra, $sat, $harga, $tanggal, $catatan){

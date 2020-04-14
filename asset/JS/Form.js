@@ -244,7 +244,8 @@ $(document).ready(function(){
                     data: $(this).serialize(),
                     dataType: 'json',
                     success: function(v){
-                        if (v==200) {
+                        if (v['resp']==200) {
+                            $('#saldo').val('Rp. '+v['b'])
                             reset_form()
                             swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
                         }else{

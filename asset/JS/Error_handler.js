@@ -255,23 +255,25 @@ $(document).ready(function() {
         if ($(this).val()!='') {
             $('#del-fot').attr('disabled',true)
             // alert(this.files[0].size)
-            console.log(this.files)
+            // console.log(this.files)
         }else{
             $('#del-fot').attr('disabled',false)
         }
 
         if ($(this).val()!='') {
-            const type = this.files[0].type
+            const type = this.files[0].name.split('.')[1]//this.files[0].type
             if (this.files[0].size > (5*1048576)) {//cek ukuran file
                 $('#warning-size').show()
             }else{
                 $('#warning-size').hide()
             }
-
-            if (type == 'image/png'||type == 'image/jpg') {//cek tipe file
+            // console.log(type)
+            if (type == 'png'||type == 'jpg') {//cek tipe file
                 $('#warning-type').hide()
+                // alert(type)
             }else{
                 $('#warning-type').show()
+                // alert(type)
             }
         }else{
             $('#warning-size, #warning-type').hide()

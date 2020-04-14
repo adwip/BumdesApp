@@ -9,6 +9,7 @@ $(document).ready(function(){
                     data: $(this).serialize(),
                     dataType: 'json',
                     success: function(v){
+                        console.log(v)
                         if (v['resp']==200) {
                             $('#saldo').val('Rp. '+v['sld'])
                             swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})

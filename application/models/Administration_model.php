@@ -34,28 +34,6 @@ class Administration_model extends CI_Model{
         return $result;
       }
     }
-    function get_daftar_gudang(){
-        $this->db->select('id_aset AS id, nama AS nm, lokasi AS adr, tanggal_masuk AS tgl');
-        $this->db->from('aset');
-        $this->db->like('id_aset','WRH');
-        $result=$this->db->get()->result();
-        $result1=null;
-        foreach ($result as $key => $v) {
-            $result1 .= '<tr>
-                            <td>'.($key+1).'</td>
-                            <td>'.$v->nm.'</td>
-                            <td>'.$v->adr.'</td>
-                            <td> '.anchor('detail-wrh/'.$v->id,'Detail').' </td>
-                            <td>'.date('Y',strtotime($v->tgl)).'</td>
-                            <td>
-                              '.anchor('edit-w/'.$v->id,'Ubah','class="btn btn-xs btn-primary"').'
-                              <button type="button" class="btn btn-xs btn-danger">Hapus</button>
-                            </td>
-                          </tr>';
-        }
-        return $result1;
-        //NOT FIX
-    }
 
     function get_aset_umum($type='html'){
         $this->db->select('id_aset AS id, nama AS nm, nomor_aset AS num, lokasi AS lok, tanggal_masuk AS thn, harga_sewa AS hs, tanggal_selesai AS ts');
@@ -155,6 +133,7 @@ class Administration_model extends CI_Model{
                             <td>'.$v->rp.'</td>
                             <td>'.$v->ks.'</td>
                             <td>'.$v->ad.'</td>
+                            <td>'.anchor('detail-mit/'.$v->id,'Detail').'</td>
                             <td>
                               '.anchor('edit-rekn/'.$v->id,'Ubah',' class="btn btn-xs btn-warning"').'
                               <button type="button" class="btn btn-xs btn-danger hapus" value="'.$v->id.'">Hapus</button>
@@ -165,18 +144,6 @@ class Administration_model extends CI_Model{
         }else{
           return $result;
         }
-    }
-    function tambah_aset($nama, $nomor, $sumber, $kondisi, $tanggal_masuk, $catatan){
-        /* 
-        id_aset int PK,
-        nomor_aset varchar 30 UNIQUE,
-        nama_aset varchar 50,
-        sumber varchar 10 (beli/non-beli),
-        kondisi varchar 10 (baru/bekas),
-        keadaan varchar 10 (baik/rusak),
-        tanggal_masuk date,
-        catatan varchar 255
-         */
     }
 
     function get_detail_aset($id){
@@ -222,9 +189,6 @@ class Administration_model extends CI_Model{
         return $ret;
     }
 
-    function edit_rekan_usaha(){
-        //NOT FIX
-    }
 
     function set_bagi_hasil($aset,$mitra,$tangmul,$tangsel,$pers_bumdes, $pers_mitra, $sumber){
         $id='004'.time();

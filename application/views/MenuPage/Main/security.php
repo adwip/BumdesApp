@@ -97,7 +97,7 @@
                       <br />
 
                       <!-- start skills -->
-                      <h4>Aktivitas</h4>
+                      <!-- <h4>Aktivitas</h4>
                       <ul class="list-unstyled user_data">
                         <li>
                           <p>Penambahan data</p>
@@ -111,48 +111,43 @@
                           <p>Penghapusan data</p>
                             <label>10</label>
                         </li>
-                      </ul>
+                      </ul> -->
                       <!-- end of skills -->
 
                     </div>
                     <div class="col-md-9 col-sm-9 col-xs-12">
 
                       <div class="profile_title">
-                        <div class="col-md-6">
+                        <div class="col-md-3 col-sm-3 col-xs-3">
                           <h2>Histori aktivitas</h2>
                         </div>
-                        <div class="col-md-6">
-                          <!-- <div id="reportrange" class="pull-right" style="margin-top: 5px; background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #E6E9ED">
-                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                            <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
-                          </div> -->
-                          <form action="">
+                        <div class="col-md-9 col-sm-9 col-xs-9">
+                          <form id="user-log" action="account" method="GET">
                             <div class="form-group pull-right">
-                              <select name="" id="" class="form-control">
-                                <option value="">2020</option>
+                              <select name="tahun" class="form-control" onchange="$('#user-log').submit()">
+                                <?php 
+                                  foreach ($v_tahun as $key => $val) {
+                                    $val->thn==$y?$sel='selected':$sel=null;
+                                    echo '<option '.$sel.' value="'.$val->thn.'">'.$val->thn.'</option>';
+                                  }
+                                ?>
                               </select>
                             </div> 
                             <div class="form-group pull-right" style="margin-right: 15px;">
-                              <select name="" id="" class="form-control">
-                                <option value="">Januari</option>
-                                <option value="">Februari</option>
-                                <option value="">Maret</option>
-                                <option value="">April</option>
-                                <option value="">Mei</option>
-                                <option value="">Juni</option>
-                                <option value="">Juli</option>
-                                <option value="">Agustus</option>
-                                <option value="">September</option>
-                                <option value="">Oktober</option>
-                                <option value="">November</option>
-                                <option value="">Desember</option>
+                              <select name="bulan" id="" class="form-control" onchange="$('#user-log').submit()">
+                                <?php 
+                                foreach ($bln as $key => $val) {
+                                  $key==$m?$sel='selected':$sel=null;
+                                  echo '<option '.$sel.' value="'.$key.'">'.$val.'</option>';
+                                }
+                                ?>
                               </select>
                             </div>
                           </form>
                         </div>
                       </div><br>
                       <!-- start of user-activity-graph -->
-                      <table class="table table-striped table-bordered">
+                      <table id="datatable" class="table table-striped table-bordered">
                         <thead>
                           <tr>
                             <th>No</th>

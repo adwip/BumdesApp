@@ -6,12 +6,9 @@ class Government extends CI_Controller{
         parent:: __construct();
         $this->bulan = ['01'=>'Januari','02'=>'Februari','03'=>'Maret','04'=>'April','05'=>'Mei','06'=>'Juni','07'=>'Juli','08'=>'Agustus','09'=>'September','10'=>'Oktober','11'=>'November','12'=>'Desember'];
         $this->waktu = date('Y-m-d H:i:s');
-        if (true) {
-            $this->ret['ses']=true;
-        }else{
-            // $this->ret['ses']=false;
+        if (!$this->ses->log_s||$this->ses->tp!='GOV') {
+			redirect(base_url());
         }
-        $this->page = 'MenuPageGov';
     }
     
     function gov_stok_masuk($type='h'){//=================OK

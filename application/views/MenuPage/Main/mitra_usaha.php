@@ -79,7 +79,6 @@
               <div class="x_content">
                 <div class="row">
                   <div class="col-md-12">
-                    <button class="btn btn-md btn-warning">Unduh daftar mitra</button>
                     <a href="add-busspartner" class="btn btn-md btn-info">Tambah mitra</a>
                   </div>
                 </div>
@@ -113,6 +112,7 @@
                             <th>Penanggung jawab</th>
                             <th>Nomor telepon</th>
                             <th>Alamat</th>
+                            <th>Detail</th>
                             <th>Aksi</th>
                           </tr>
                         </thead>

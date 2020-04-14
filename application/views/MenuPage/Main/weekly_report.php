@@ -71,12 +71,12 @@
             </div>
             <div class="x_content">
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-6 col-xs-6">
                   <!-- <button class="btn btn-md btn-warning">Unduh laporan keuangan</button> -->
                   <a href="unduh-keuangan-mingguan?tahun=<?=$tahun?>&bulan=<?=$bulan?>&minggu=<?= $minggu ?>"class="btn btn-md btn-warning" target="_blank">Unduh laporan keuangan</a>
                   <a href="add-finr" class="btn btn-md btn-info">Input data keuangan</a>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-6 col-xs-6">
                     <div class="row">
                         <form id="laporan-keuangan" action="weekly-freport" method="GET">
                             <div class="col-md-4 col-sm-4">  

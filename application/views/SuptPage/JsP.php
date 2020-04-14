@@ -55,3 +55,4 @@
     <script src="<?= base_url('asset/') ?>JS/ms-conf.js"></script>
     <!-- Sweetalert -->
     <script src="<?= base_url('asset/') ?>JS/Swal_module.js"></script>
+    <script src="<?= base_url('asset/') ?>JS/General_js.js"></script>
