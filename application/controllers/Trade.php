@@ -13,42 +13,61 @@ class Trade extends CI_Controller{
         }
     }
 
-    function index(){
-        $dt['page']=$this->page;
-        $dt['title'] = 'Homepage';
-        //echo $this->input->get('tipe');
-        $this->load->view('General/home',$dt);
-    }
-
-    function distribution($type='html'){//=================OK
-        $dt['title'] = '';
+    function barang_keluar(){//=================OK
+        $dt['title'] = 'Barang keluar';
         $dt['bln'] = $this->bulan;
         $dt['tahun'] = date('Y');
         $dt['bulan'] = date('m');
+        $lim = 10;
+        $offset = 0;
+        $ajax = $this->input->is_ajax_request();
+        if (isset($_GET['tahun'])) {
+            $dt['tahun'] = $this->input->get('tahun',TRUE);
+            $dt['bulan'] = $this->input->get('bulan',TRUE);
+            $lim = $this->input->get('limit',TRUE);
+            $offset = $this->input->get('offset',TRUE);
+        }
+        $dt['thn'] = $this->lm->get_tahun('OUT');
+        $dt['v'] = $this->tm->get_total_penjualan($dt['tahun'],$dt['bulan']);
+        $dt['value']=$this->lm->get_info_barang_keluar($dt['tahun'],$dt['bulan'], $lim, $offset, $ajax);
+        
+        if (!$ajax) {
+            $this->load->view('MenuPage/Main/exit_item',$dt);
+        }else{
+            $val['ses']='Ok';
+            $val['tabel']=$dt['value'];
+            $val['row']=isset($dt['v']->hg)?$dt['v']->hg:0;
+            echo json_encode($val);
+        }
+    }
+
+    function distribution(){//=================OK
+        $dt['title'] = 'Distribusi barang';
+        $dt['bln'] = $this->bulan;
+        $dt['tahun'] = date('Y');
+        $dt['bulan'] = date('m');
+        $lim = 10;
+        $offset = 0;
+        $ajax = $this->input->is_ajax_request();
         if (isset($_GET['tahun'])) {
             $dt['tahun'] = $this->input->get('tahun',TRUE);
             $dt['bulan'] = $this->input->get('bulan',TRUE);
         }
         $dt['thn'] = $this->tm->get_tahun();
         $dt['v'] = $this->tm->get_total_penjualan($dt['tahun'],$dt['bulan'],true);
-        $dt['value']=$this->tm->get_info_distribusi($dt['tahun'],$dt['bulan']);
+        $dt['value']=$this->tm->get_info_distribusi($dt['tahun'],$dt['bulan'], $lim, $offset, $ajax);
         $dt['v_grafik']=$this->fm->get_grafik_nilai_distribusi($dt['tahun']);
         $dt['v_grafik2']=$this->fm->get_grafik_nilai_non_distribusi($dt['tahun']);
-        // echo $dt['v']->hg;
         
-        if ($type=='html') {
+        if (!$ajax) {
             $this->load->view('MenuPage/Main/distribution',$dt);
-            // echo $dt['v_grafik2'];
         }else{
-            if ($this->ret) {
-                $val['ses']='Ok';
-                $val['tabel']=$dt['value'];
-                $val['row']=isset($dt['v']->hg)?$dt['v']->hg:0;
-                $val['grafik']=json_decode($dt['v_grafik']);
-                $val['grafik2']=json_decode($dt['v_grafik2']);
-            }else{
-                $val['ses']='Off';
-            }
+            $val['ses']='Ok';
+            $val['tabel']=$dt['value'];
+            $val['row']=isset($dt['v']->hg)?$dt['v']->hg:0;
+            $val['grafik']=json_decode($dt['v_grafik']);
+            $val['grafik2']=json_decode($dt['v_grafik2']);
+            $val['tahun'] = $dt['tahun'];
             echo json_encode($val);
         }
     }

@@ -71,8 +71,8 @@
                 </div>
                 <div class="col-md-5 col-sm-5 col-xs-5">
                     <div class="row">
-                        <form id="dis-barang" action="distribution" method="GET">
-                            <div class="col-md-6 col-sm-6 col-xs-6">  
+                        <form id="dis-barang" action="distribution" method="GET" class="form-filter">
+                            <div class="col-md-4 col-sm-4 col-xs-4">  
                                 <div class="form-group">
                                     <label for="">Tahun</label>
                                     <select name="tahun" class="form-control" onchange="$('#dis-barang').submit()">
@@ -85,7 +85,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="col-md-4 col-sm-4 col-xs-4">
                                 <div class="form-group">
                                   <label for="">Bulan</label>
                                   <select name="bulan" class="form-control" onchange="$('#dis-barang').submit()">
@@ -96,6 +96,17 @@
                                       }
                                       ?>
                                   </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <div class="form-group">
+                                    <label for="">Tampilkan</label>
+                                <select name="limit" class="form-control" onchange="$('#belanja-barang').submit()" id="limit">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
                                 </div>
                             </div>
                         </form>
@@ -120,7 +131,7 @@
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-              <table id="datatable" class="table table-striped table-bordered">
+              <table class="table table-striped table-bordered">
                 <thead>
                   <tr>
                     <th>No</th>
@@ -133,9 +144,12 @@
                 </thead>
 
                 <tbody id="val-body">
-                  <?= $value ?>
+                  <?= $value['val'] ?>
                 </tbody>
               </table>
+            </div>
+            <div class="pgn-cust">
+              <?= $value['paginasi'] ?>
             </div>
           </div>
         </div>

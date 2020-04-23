@@ -13,16 +13,8 @@ class Finance extends CI_controller{
         }
     }
 
-    function index(){
-        $dt['page']=$this->page;
-        $dt['title'] = 'Homepage';
-        //echo $this->input->get('tipe');
-        $this->load->view('General/home',$dt);
-    }
-
     function weekly_report($type='html'){//=============ada view
         $dt['title'] = 'Laporan mingguan';
-        //echo $this->input->get('tipe');
         $dt['mg'] = [1,2,3,4];
         if (date('d')>=1&&date('d')<=7) {
             $dt['minggu']=1;
@@ -48,21 +40,13 @@ class Finance extends CI_controller{
         $dt['s']=$this->fm->get_saldo();
         $dt['v_grafik']=$this->fm->get_grafik_keuangan_mingguan($dt['tahun'],$dt['bulan']);
         // echo $dt['v_grafik'];
-        if ($type=='html') {
+        if (!$this->input->is_ajax_request()) {
             $this->load->view('MenuPage/Main/weekly_report',$dt);
-            // echo $dt['value'];
-            // echo $dt['v_grafik'];
-            // echo json_encode($dt['thn']);
         }else{
-            if ($this->ret) {
-                $val['ses']='Ok';
-                $val['tabel']=$dt['value'];
-                $val['kd']=$dt['kd'];
-                $val['grafik'] = json_decode($dt['v_grafik']);
-                
-            }else{
-                $val['ses']='Off';
-            }
+            $val['ses']='Ok';
+            $val['tabel']=$dt['value'];
+            $val['kd']=$dt['kd'];
+            $val['grafik'] = json_decode($dt['v_grafik']);
             echo json_encode($val);
         }
     }
@@ -83,17 +67,13 @@ class Finance extends CI_controller{
         $dt['s']=$this->fm->get_saldo();
         $dt['v_grafik']=$this->fm->get_grafik_keuangan_bulanan($dt['tahun']);
         // echo $dt['v_grafik'];
-        if ($type=='html') {
+        if (!$this->input->is_ajax_request()) {
             $this->load->view('MenuPage/Main/monthly_report',$dt);
         }else{
-            if ($this->ret) {
-                $val['ses']='Ok';
-                $val['tabel']=$dt['value'];
-                $val['kd']=$dt['kd'];
-                $val['grafik'] = json_decode($dt['v_grafik']);
-            }else{
-                $val['ses']='Off';
-            }
+            $val['ses']='Ok';
+            $val['tabel']=$dt['value'];
+            $val['kd']=$dt['kd'];
+            $val['grafik'] = json_decode($dt['v_grafik']);
             echo json_encode($val);
         }
     }
@@ -110,19 +90,13 @@ class Finance extends CI_controller{
         $dt['kd']=$this->fm->get_kredit_debit_tahunan($dt['tahun']);
         $dt['s']=$this->fm->get_saldo();
         $dt['v_grafik']=$this->fm->get_grafik_keuangan_tahunan();
-        // echo $dt['v_grafik'];
-        if ($type=='html') {
+        if (!$this->input->is_ajax_request()) {
             $this->load->view('MenuPage/Main/annual_report',$dt);
-            // echo $dt['value'];
         }else{
-            if ($this->ret) {
-                $val['ses']='Ok';
-                $val['tabel']=$dt['value'];
-                $val['kd']=$dt['kd'];
-                $val['grafik'] = json_decode($dt['v_grafik']);
-            }else{
-                $val['ses']='Off';
-            }
+            $val['ses']='Ok';
+            $val['tabel']=$dt['value'];
+            $val['kd']=$dt['kd'];
+            $val['grafik'] = json_decode($dt['v_grafik']);
             echo json_encode($val);
         }
     }

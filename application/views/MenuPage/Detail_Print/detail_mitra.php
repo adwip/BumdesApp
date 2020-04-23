@@ -67,15 +67,15 @@
                 <table class="col-md-12 col-sm-12 col-xs-12">
                     <tr>
                         <td class="col-md-2 col-sm-2 col-xs-2"><h4>Nama rekanan :</h4></td>
-                        <td class="col-md-4 col-sm-4 col-xs-4"><h3 id="aset"><?= isset($v->na)?$v->na:'-' ?></h3></td>
+                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= $v?$v->nm:'-' ?></h3></td>
                         <td class="col-md-2 col-sm-2 col-xs-2"><h4>Penanggung jawab :</h4></td>
-                        <td class="col-md-4 col-sm-4 col-xs-4"><h3 id="mitra"><?= isset($v->nm)?anchor('detail-mit/'.$v->idm,$v->nm,'target="_blank"'):'-' ?></h3></td>
+                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= $v?$v->pj:'-' ?></h3></td>
                     </tr>
                     <tr>
                         <td class="col-md-2 col-sm-2 col-xs-2"><h4>Kontak :</h4></td>
-                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= isset($v->tm)?date('d-m-Y',strtotime($v->tm)):'-' ?></h3></td>
+                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= $v?$v->k1:'-' ?>/<?= $v?$v->k2:'-' ?></h3></td>
                         <td class="col-md-2 col-sm-2 col-xs-2"><h4>Alamat :</h4></td>
-                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= isset($v->ts)?date('d-m-Y',strtotime($v->ts)):'-' ?></h3></td>
+                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= $v?$v->addr:'-' ?></h3></td>
                     </tr>
                 </table>
             </div>
@@ -98,10 +98,11 @@
                             <td><strong>Pers BUMDes</strong></td>
                             <td><strong>Pers Mitra</strong></td>
                             <td><strong>Total nilai bagi hasil</strong></td>
+                            <td><strong>Status</strong></td>
                         </tr>
                     </thead>
                     <tbody>
-                      <!-- <?= $v_histori_bgh ?> -->
+                      <?= $vbgh ?>
                     </tbody>
                 </table>
             </div>
@@ -125,7 +126,7 @@
                             <div class="col-md-4 col-sm-4 col-xs-4">  
                               <div class="form-group">
                                   <label for="">Tampilkan</label>
-                                  <select name="tahun" class="form-control" onchange="$('#log-admin').submit()">
+                                  <select name="limit" class="form-control" onchange="$('#log-admin').submit()">
                                     <option value="10">10</option>
                                     <option value="10">25</option>
                                     <option value="10">50</option>
@@ -175,7 +176,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                      <!-- <?= $v_histori_bgh ?> -->
+                      <?= $vd ?>
                     </tbody>
                 </table>
             </div>

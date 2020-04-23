@@ -325,4 +325,37 @@ class Administration_model extends CI_Model{
       }
       return $result1;
     }
+
+    function get_detail_mitra($id){
+      $this->db->select('nama_mitra AS nm, penanggung_jawab AS pj, alamat AS addr, kontak_1 AS k1, kontak_2 AS k2');
+      $this->db->from('mitra');
+      $this->db->where('id_mitra',$id);
+      $result=$this->db->get()->result();
+      
+      $result = isset($result[0])?$result[0]:false;
+      return $result;
+    }
+
+    function get_info_bagi_hasil_mitra($id){
+      $this->db->select('IFNULL(IFNULL(nama,deld_aset),aset_luar) AS ast, tanggal_mulai AS tm,tanggal_selesai AS ts, TIMESTAMPDIFF(MONTH,tanggal_mulai, tanggal_selesai) AS dur, pers_bumdes AS pb, pers_mitra AS pm, FORMAT(SUM(jumlah),"#.00") AS jl, status_bgh AS sts');
+      $this->db->from('bagi_hasil_aset');
+      $this->db->join('aset','id_aset=aset_bh');
+      $this->db->join('pemb_bagi_hasil','id_bagi=id_bgh');
+      $this->db->group_by('id_bagi');
+      $this->db->where('mitra',$id);
+      $result = $this->db->get()->result();
+      $result1=null;
+      foreach ($result as $key => $v) {
+        $result1 .= '<tr>
+                        <td>'.($key+1).'</td>
+                        <td>'.$v->ast.'</td>
+                        <td>'.date('d-m-Y',strtotime($v->tm)).' / '.date('d-m-Y',strtotime($v->ts)).' | '.$v->dur.' Bulan</td>
+                        <td>'.$v->pb.'%</td>
+                        <td>'.$v->pm.'%</td>
+                        <td>Rp. '.$v->jl.'</td>
+                        <td>'.$v->sts.'</td>
+                    </tr>';
+      }
+      return $result1;
+    }
 }

@@ -66,14 +66,14 @@
             </div>
             <div class="x_content">
               <div class="row">
-                <div class="col-md-7">
+                <div class="col-md-7 col-sm-7 col-xs-7">
                   <a href="unduh-barang-masuk?tahun=<?=$tahun?>&bulan=<?=$bulan?>"class="btn btn-md btn-warning" target="_blank">Unduh daftar barang masuk</a>
                   <a href="tambah-stok" class="btn btn-md btn-primary">Tambah barang masuk</a>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-5 col-sm-5 col-xs-5">
                     <div class="row">
-                        <form id="belanja-barang" action="stok-masuk" method="GET">
-                            <div class="col-md-6 col-sm-6">
+                        <form id="belanja-barang" action="stok-masuk" method="GET" class="form-filter">
+                            <div class="col-md-4 col-sm-4 col-xs-4">
                                 <div class="form-group">
                                     <label for="">Tahun</label>
                                     <select name="tahun" class="form-control" onchange="$('#belanja-barang').submit()">
@@ -86,7 +86,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-sm-6">
+                            <div class="col-md-4 col-sm-4 col-xs-4">
                                 <div class="form-group">
                                     <label for="">Bulan</label>
                                 <select name="bulan" class="form-control" onchange="$('#belanja-barang').submit()">
@@ -96,6 +96,17 @@
                                       echo '<option '.$sel.' value="'.$key.'">'.$val.'</option>';
                                     }
                                     ?>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <div class="form-group">
+                                    <label for="">Tampilkan</label>
+                                <select name="limit" class="form-control" onchange="$('#belanja-barang').submit()" id="limit">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
                                 </select>
                                 </div>
                             </div>
@@ -120,8 +131,13 @@
               <h3>Informasi logistik</h3>
               <div class="clearfix"></div>
             </div>
+              <!-- <div class="row">
+                <div class="input-sm col-md-4">
+                  <input type="text" class="form-control">
+                </div>
+              </div><br> -->
             <div class="x_content">
-              <table id="datatable" class="table table-striped table-bordered">
+              <table class="table table-striped table-bordered">
                 <thead>
                   <tr>
                     <th>No</th>
@@ -134,9 +150,12 @@
                 </thead>
 
                 <tbody id="val-body" data-act="hapus-stok-masuk" data-meth="POST">
-                    <?= $value ?>
+                    <?= $value['val'] ?>
                 </tbody>
               </table>
+            </div>
+            <div class="pgn-cust">
+              <?= $value['paginasi'] ?>
             </div>
           </div>
         </div>
@@ -183,7 +202,7 @@
     <script src="<?= base_url('asset/') ?>/JS/Fitur.js"></script>
     <script type="text/javascript">
     $(document).ready(function(){
-      pembelian_logistik(JSON.parse('<?= $v_grafik ?>'),'#grafik_pembelian_logistik')
+      pembelian_logistik(JSON.parse('<?= $v_grafik ?>'),'#grafik_pembelian_logistik', '<?= $tahun ?>')
     })
     </script>
   </body>

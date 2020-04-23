@@ -69,7 +69,6 @@
                 <div class="col-md-12">
                   <a href="unduh-daftar-komoditas"class="btn btn-md btn-warning" target="_blank">Unduh daftar komoditas</a>
                   <a href="add-commodites" class="btn btn-md btn-primary">Tambah komoditas</a>
-                  <a href="add-commodites" class="btn btn-md btn-info">Tambah satuan ukur</a>
                 </div>
               </div>
             </div>

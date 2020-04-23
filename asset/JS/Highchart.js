@@ -143,9 +143,9 @@ function pertumbuhan_penyewaan(value, selector){
    $(selector).highcharts(json);
 }
 
-function pembelian_logistik(value, selector){
+function pembelian_logistik(value, selector, tahun){
    var title = {
-      text: 'Pertumbuhan pembelian barang'
+      text: 'Pertumbuhan pembelian barang tahun '+tahun
    };
    var subtitle = {
       text: 'Source: worldClimate.com'

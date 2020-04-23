@@ -12,10 +12,10 @@ $route['unduh-barang-keluar'] = 'Trade/pdf_barang_keluar';//==========ada view
 $route['detail-lout/(:num)'] = 'Logistic/detail_logistik_keluar/$1';//===ada view
 $route['unduh-daftar-distribusi'] = 'Trade/pdf_distribusi_barang';//==ada view
 $route['distribution'] = 'Trade/distribution';//=========ada
-$route['exit-item'] = 'Logistic/exit_item';//=========ada
+$route['exit-item'] = 'Trade/barang_keluar';//=========ada
 $route['pdf-detail-komoditas-out/(:num)'] = 'Trade/pdf_detail_komoditas_keluar/$1';//
 $route['edit-barang-keluar'] = 'Trade/edit_barang_keluar';//=========ada view
-$route['barang-keluar'] = 'Logistic/exit_item/json';//=========ada view
+// $route['barang-keluar'] = 'Logistic/exit_item/json';//=========ada view
 $route['dis-barang'] = 'Trade/distribution/json';//=========ada view
 $route['edit-ei/(:num)'] = 'Trade/form_edit_barang_keluar_gudang/$1';//====ada view
 $route['detail-penjualan/(:num)'] = 'Logistic/detail_logistik_keluar/$1/json';//=========ada view

@@ -6,14 +6,19 @@ class Logistic_model extends CI_Model{
         $this->load->database('default');
     }
 
-    function get_info_belanja_log($tahun, $bulan, $type='html'){
+    function get_info_belanja_log($tahun, $bulan, $limit, $offset, $ajax, $type='html'){
         $this->db->select(' id_prb as idp, id_kom AS idk, nama_komoditas AS nkom,tanggal, jumlah, FORMAT(nilai, "#.00") AS nilai, stok, DATEDIFF( "'.date('Y-m-d').'",tanggal) AS selisih, satuan AS stn');
         $this->db->from('stok_masuk');
         $this->db->join('stok_item','stok_item.id_stok=stok_masuk.id_prb');
         $this->db->join('komoditas','komoditas.id_kom=stok_item.komoditas');
         $this->db->join('satuan','id=sat_barang');
         $this->db->like('tanggal',$tahun.'-'.$bulan);
-        $result = $this->db->get()->result();
+        if ($ajax) {
+            $this->db->limit($limit, $offset);
+        }
+        $result = $this->db->get();
+        $nr=$result->num_rows();
+        $result=$result->result();
         $result1=null;
         if ($type=='html') {
             foreach ($result as $key => $val) {
@@ -22,7 +27,7 @@ class Logistic_model extends CI_Model{
                     $akt = '<button type="button" class="btn btn-xs btn-danger hapus-bmsk" value="'.$val->idp.'">Hapus</button>'.anchor('edit-ig/'.$val->idp,'Ubah','class="btn btn-xs btn-warning"');
                 }
                 $result1 .='<tr data-nam="'.$val->nkom.'">
-                                <td>'.($key+1).'</td>
+                                <td>'.($offset+1).'</td>
                                 <td>'.$val->nkom.'</td>
                                 <td>'.date('d/m/Y',strtotime($val->tanggal)).'</td>
                                 <td>'.$val->jumlah.' '.$val->stn.'</td>
@@ -32,27 +37,32 @@ class Logistic_model extends CI_Model{
                                 '.$akt.'
                                 </td>
                             </tr>';
+                $offset++;
+                if (!$ajax&&$offset==$limit) {
+                    break;
+                }
             }
-            return $result1;
+            return ['val'=>$result1,'paginasi'=>paginasi_gen($limit,$nr)];
         }else{
             return $result;
         }
         //No	Komoditas	Tanggal	Jumlah	Harga	Stok	Aksi
     }
 
-    function get_info_barang_keluar($tahun, $bulan, $type='html'){
+    function get_info_barang_keluar($tahun, $bulan, $limit, $offset, $ajax, $type='html'){
         $this->db->select('id_prb AS id, id_kom AS idk, nama_komoditas AS kom, tanggal AS tgl, jumlah AS jlh, tujuan AS tjn, stok AS stk, satuan AS stn');
         $this->db->from('stok_keluar');
         $this->db->join('stok_item','stok_item.id_stok=stok_keluar.id_prb');
         $this->db->join('komoditas','komoditas.id_kom=stok_item.komoditas');
         $this->db->join('mitra','mitra.id_mitra=stok_keluar.mitra','LEFT');
         $this->db->join('satuan','id=sat_barang');
-        if ($bulan=='All') {
-            $this->db->like('tanggal',$tahun,'after');
-        }else {
-            $this->db->like('tanggal',$tahun.'-'.$bulan,'after');
+        $this->db->like('tanggal',$tahun.'-'.$bulan,'after');
+        if ($ajax) {
+            $this->db->limit($limit, $offset);
         }
-        $result = $this->db->get()->result();
+        $result = $this->db->get();
+        $nr=$result->num_rows();
+        $result=$result->result();
         $result1=null;
         if ($type=='html') {
             foreach ($result as $key => $val) {
@@ -61,7 +71,7 @@ class Logistic_model extends CI_Model{
                     $btn = '<button type="button" class="btn btn-xs btn-danger hapus-bklr" value="'.$val->id.'">Hapus</button>'.anchor('edit-ei/'.$val->id,'Ubah','class="btn btn-xs btn-warning"');
                 }
                 $result1 .='<tr data-nam="'.$val->kom.'">
-                                <td>'.($key+1).'</td>
+                                <td>'.($offset+1).'</td>
                                 <td>'.$val->kom.'</td>
                                 <td>'.date('d/m/Y',strtotime($val->tgl)).'</td>
                                 <td>'.$val->jlh.' '.$val->stn.'</td>
@@ -72,8 +82,12 @@ class Logistic_model extends CI_Model{
                                 '.$btn.'
                                 </td>
                             </tr>';
+                $offset++;
+                if (!$ajax&&$offset==$limit) {
+                    break;
+                }
             }
-            return $result1;
+            return ['val'=>$result1,'paginasi'=>paginasi_gen($limit,$nr)];
         }else{
             return $result;
         }
@@ -342,7 +356,7 @@ class Logistic_model extends CI_Model{
         isset($result[0])?$result[0]=$result[0]:$result[0]=null;
         return $result[0];
     }
-
+    
     function get_tahun($tipe, $mitra=false){
         $this->db->select('YEAR(tanggal) AS thn');
         $this->db->from('stok_item');

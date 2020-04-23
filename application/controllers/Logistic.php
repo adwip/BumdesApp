@@ -14,32 +14,32 @@ class Logistic extends CI_Controller{
         }
     }
 
-    function stok_masuk($type='html'){//=================OK
+    function stok_masuk(){//=================OK
         $dt['bln'] = $this->bulan;
         $dt['title'] = 'Belanja komoditas';
         $dt['tahun'] = date('Y');
         $dt['bulan'] = date('m');
+        $lim = 10;
+        $offset = 0;
+        $ajax = $this->input->is_ajax_request();
         if (isset($_GET['tahun'])) {
             $dt['tahun'] = $this->input->get('tahun',TRUE);
             $dt['bulan'] = $this->input->get('bulan',TRUE);
+            $lim = $this->input->get('limit',TRUE);
+            $offset = $this->input->get('offset',TRUE);
         }
-        $dt['value']=$this->lm->get_info_belanja_log($dt['tahun'],$dt['bulan']);
+        $dt['value']=$this->lm->get_info_belanja_log($dt['tahun'],$dt['bulan'], $lim, $offset, $ajax);
         $dt['thn'] = $this->lm->get_tahun('IN');
         $dt['v']=$this->lm->total_belanja_barang($dt['tahun'],$dt['bulan']);
         $dt['v_grafik']=$this->fm->get_grafik_belanja_barang($dt['tahun']);
-        // echo json_encode($dt['thn']);
-        if ($type=='html') {
+        if (!$ajax) {
             $this->load->view('MenuPage/Main/inc_goods',$dt);
-            // echo json_encode($dt['v']);
         }else{
-            if ($this->ret) {
-                $val['ses']='Ok';
-                $val['tabel']=$dt['value'];
-                $val['row']=isset($dt['v']->hg)?$dt['v']->hg:0;
-                $val['grafik']=json_decode($dt['v_grafik']);
-            }else{
-                $val['ses']='Off';
-            }
+            $val['ses']='Ok';
+            $val['tabel']=$dt['value'];
+            $val['row']=isset($dt['v']->hg)?$dt['v']->hg:0;
+            $val['grafik']=json_decode($dt['v_grafik']);
+            $val['tahun'] = $dt['tahun'];
             echo json_encode($val);
         }
     }
@@ -53,33 +53,6 @@ class Logistic extends CI_Controller{
         // echo json_encode($_GET);
     }
 
-    function exit_item($type='html'){//=================OK
-        $dt['title'] = 'Barang keluar';
-        $dt['bln'] = $this->bulan;
-        $dt['tahun'] = date('Y');
-        $dt['bulan'] = date('m');
-        if (isset($_GET['tahun'])) {
-            $dt['tahun'] = $this->input->get('tahun',TRUE);
-            $dt['bulan'] = $this->input->get('bulan',TRUE);
-        }
-        $dt['thn'] = $this->lm->get_tahun('OUT');
-        $dt['v'] = $this->tm->get_total_penjualan($dt['tahun'],$dt['bulan']);
-        $dt['value']=$this->lm->get_info_barang_keluar($dt['tahun'],$dt['bulan']);
-        
-        if ($type=='html') {
-            $this->load->view('MenuPage/Main/exit_item',$dt);
-        }else{
-            if ($this->ret) {
-                $val['ses']='Ok';
-                $val['tabel']=$dt['value'];
-                $val['row']=isset($dt['v']->hg)?$dt['v']->hg:0;
-            }else{
-                $val['ses']='Off';
-            }
-            echo json_encode($val);
-        }
-        // echo json_encode($dt['value']);
-    }
 
     function komoditas(){//=================OK
         $dt['title'] = 'Komoditas dagang';
@@ -566,14 +539,13 @@ class Logistic extends CI_Controller{
         $har_beli = $this->input->post('har_beli',true);
         $har_jual = $this->input->post('har_jual',true);
         $sat = $this->input->post('sat',true);
-
         
         $log_mesg='[EDIT][KOMODITAS]['.$id.'] Perubahan data barang dagang '.$nama;
 
         $v = $this->lm->edit_kom_dagang($id, $nama, $har_beli, $har_jual, $sat);
         if ($v) {//log delete kas
             $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
-            $resp=true;
+            echo 200;
         }
     }
 }

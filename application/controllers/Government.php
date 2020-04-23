@@ -24,7 +24,7 @@ class Government extends CI_Controller{
         $dt['thn'] = $this->lm->get_tahun('IN');
         $dt['v'] = $this->lm->get_sum_log_in($dt['y'], $dt['m']);
         $dt['v_grafik']=$this->fm->get_grafik_belanja_barang($dt['y']);
-        if ($type=='h') {
+        if (!$this->input->is_ajax_request()) {
             $this->load->view('MenuPage/Main/gov_stok_masuk',$dt);
         }else {
             $dt['v_grafik'] = json_decode($dt['v_grafik']);
@@ -56,7 +56,7 @@ class Government extends CI_Controller{
         $dt['v'] = $this->rm->get_jumlah_penyewaan($dt['y'], $dt['m']);
         $dt['v2'] = $this->rm->get_pendapatan_sewa($dt['y'], $dt['m']);
         $dt['v_grafik']=$this->fm->get_grafik_penyewaan($dt['y']);
-        if ($type=='html') {
+        if (!$this->input->is_ajax_request()) {
             $this->load->view('MenuPage/Main/gov_penyewaan',$dt);
         }else{
             $dt['v_grafik'] = json_decode($dt['v_grafik']);
@@ -95,7 +95,7 @@ class Government extends CI_Controller{
         $dt['vt'] = $this->fm->get_info_aset_bgh($dt['y'], $dt['m']);
         $dt['va'] = $this->fm->get_info_aset_bgh();
         $dt['v_grafik']=$this->fm->get_grafik_bagi_hasil($dt['y']);
-        if ($type=='html') {
+        if (!$this->input->is_ajax_request()) {
             $this->load->view('MenuPage/Main/gov_kerjasama_bgh',$dt);
         }else{
             $dt2['v_grafik'] = json_decode($dt['v_grafik']);
@@ -144,7 +144,7 @@ class Government extends CI_Controller{
         $dt['gf_w']=$this->fm->get_grafik_keuangan_mingguan($dt['y'],$dt['m']);
         $dt['gf_m']=$this->fm->get_grafik_keuangan_bulanan($dt['y']);
         $dt['gf_y']=$this->fm->get_grafik_keuangan_tahunan();
-        if ($type=='html') {
+        if (!$this->input->is_ajax_request()) {
             $this->load->view('MenuPage/Main/gov_finansial',$dt);
         }else{
             $dt2['gf_w']=json_decode($dt['gf_w']);
@@ -193,7 +193,7 @@ class Government extends CI_Controller{
         $dt['v_grafik2']=$this->fm->get_grafik_nilai_distribusi($dt['y']);
         $dt['v_grafik3']=$this->fm->get_grafik_nilai_non_distribusi($dt['y']);
         // echo json_encode($dt['dst']);
-        if ($type=='html') {
+        if (!$this->input->is_ajax_request()) {
             $this->load->view('MenuPage/Main/gov_penjualan',$dt);
             // echo $dt['v_grafik'];
         }else {

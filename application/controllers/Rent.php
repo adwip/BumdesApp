@@ -14,13 +14,6 @@ class Rent extends CI_Controller{
         }
     }
 
-    function index(){
-        $dt['page']=$this->page;
-        $dt['title'] = 'Homepage';
-        //echo $this->input->get('tipe');
-        $this->load->view('General/home',$dt);
-    }
-
     function rentalling($type='html'){//=================OK
         $dt['title'] = 'Laporan penyewaan';
         $dt['bln'] = $this->bulan;
@@ -35,18 +28,13 @@ class Rent extends CI_Controller{
         $dt['v2'] = $this->rm->get_pendapatan_sewa($dt['tahun'], $dt['bulan']);
         $dt['value']=$this->rm->get_penyewaan($dt['tahun'],$dt['bulan']);
         $dt['v_grafik']=$this->fm->get_grafik_penyewaan($dt['tahun']);
-        if ($type=='html') {
+        if (!$this->input->is_ajax_request()) {
             $this->load->view('MenuPage/Main/penyewaan',$dt);
         }else{
-            if ($this->ret) {
-                $val['ses']='Ok';
-                $val['tabel']=$dt['value'];
-            }else{
-                $val['ses']='Off';
-            }
+            $val['ses']='Ok';
+            $val['tabel']=$dt['value'];
             echo json_encode($val);
         }
-        // echo $dt['v_grafik'];
     }
 
     function rent_price(){//=================OK

@@ -21,7 +21,7 @@ class Trade_model extends CI_Model{
         return $resp;
     }
 
-    function get_info_distribusi($tahun, $bulan, $type='html'){
+    function get_info_distribusi($tahun, $bulan, $limit, $offset, $ajax, $type='html'){
         $this->db->select('tanggal AS tgl, nama_mitra AS tjn, nama_komoditas AS kom, jumlah AS jlh, FORMAT(nilai_transaksi, "#.00") AS ntr, satuan AS stn');
         $this->db->from('stok_keluar');
         $this->db->join('stok_item','stok_item.id_stok=stok_keluar.id_prb');
@@ -30,20 +30,29 @@ class Trade_model extends CI_Model{
         $this->db->join('satuan','id=sat_barang');
         $this->db->like('tanggal',$tahun.'-'.$bulan);
         $this->db->where('tujuan','Distribusi');
-        $result = $this->db->get()->result();
+        if ($ajax) {
+            $this->db->limit($limit, $offset);
+        }
+        $result = $this->db->get();
+        $nr=$result->num_rows();
+        $result=$result->result();
         $result1=null;
         if ($type=='html') {
             foreach ($result as $key => $val) {
                 $result1 .='<tr>
-                                <td>'.($key+1).'</td>
+                                <td>'.($offset+1).'</td>
                                 <td>'.date('d/m/Y',strtotime($val->tgl)).'</td>
                                 <td>'.$val->tjn.'</td>
                                 <td>'.$val->kom.'</td>
                                 <td>'.$val->jlh.' '.$val->stn.'</td>
                                 <td>Rp. '.$val->ntr.'</td>
                             </tr>';
+                $offset++;
+                if (!$ajax&&$offset==$limit) {
+                    break;
+                }
             }
-            return $result1;
+            return ['val'=>$result1,'paginasi'=>paginasi_gen($limit,$nr)];
         }else{
             return $result;
         }
@@ -135,5 +144,29 @@ class Trade_model extends CI_Model{
         $result = $this->db->get()->result();
         $result = isset($result[0])?$result[0]:false;
         return $result;
+    }
+
+    function get_distribusi_mitra($id, $bulan, $tahun, $limit){
+        $this->db->select('nama_komoditas AS nk, jumlah AS jl, satuan AS st, nilai_transaksi AS nt, tanggal AS dt');
+        $this->db->from('stok_item');
+        $this->db->join('stok_keluar','id_prb=id_stok');
+        $this->db->join('satuan','id=sat_barang');
+        $this->db->join('komoditas','id_kom=komoditas');
+        $this->db->where('mitra',$id);
+        $this->db->like('tanggal',$tahun.'-'.$bulan);
+        $this->db->order_by('tanggal','ASC');
+        $this->db->limit($limit);
+        $result = $this->db->get()->result();
+        $result1=null;
+        foreach ($result as $key => $v) {
+            $result1 .= '<tr>
+                            <td>'.($key+1).'</td>
+                            <td>'.$v->nk.'</td>
+                            <td>'.$v->jl.' '.$v->st.'</td>
+                            <td>Rp. '.$v->nt.'</td>
+                            <td>'.date('d-m-Y',strtotime($v->dt)).'</td>
+                        </tr>';
+        }
+        return $result1;
     }
 }

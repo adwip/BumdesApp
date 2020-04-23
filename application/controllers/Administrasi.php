@@ -20,13 +20,6 @@ class Administrasi extends CI_Controller{
         }
     }
 
-    function index(){
-        $dt['page']=$this->page;
-        $dt['title'] = 'Homepage';
-        //echo $this->input->get('tipe');
-        $this->load->view('General/home',$dt);
-    }
-
     function comp_asset(){//=================OK
         $dt['title'] = 'Aset Bumdes';
         $dt['v1'] = $this->am->get_aset_umum();
@@ -88,15 +81,19 @@ class Administrasi extends CI_Controller{
     }
 
     function detail_mitra($id){
-        $dt['page']=$this->page;
         $dt['bln'] = $this->bulan;
         $dt['y'] = date('Y');
         $dt['m'] = date('m');
+        $lim = 10;
         if (isset($_GET['tahun'])) {
             $dt['y'] = $this->input->get('tahun',true);
             $dt['m'] = $this->input->get('bulan',true);
+            $lim = $this->input->get('limit',true);
         }
-        $dt['title'] = 'Detail Rekanan';//0081578813144
+        $dt['title'] = 'Detail Rekanan';
+        $dt['v'] = $this->am->get_detail_mitra($id);
+        $dt['vd'] = $this->tm->get_distribusi_mitra($id, $dt['m'], $dt['y'], $lim);
+        $dt['vbgh'] = $this->am->get_info_bagi_hasil_mitra($id);
         $this->load->view('MenuPage/Detail_print/detail_mitra',$dt);
     }
 

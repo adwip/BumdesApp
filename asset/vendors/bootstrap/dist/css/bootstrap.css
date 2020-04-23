@@ -6833,15 +6833,35 @@ button.close {
 }
 /*# sourceMappingURL=bootstrap.css.map */
 
+/* Script tambahan */
+/*
+display: none; <- Crashes Chrome on hover
+Apparently some margin are still there even though it's hidden
+*/
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0; 
-}/*
-display: none; <- Crashes Chrome on hover
-Apparently some margin are still there even though it's hidden
-*/
+}
 
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+.pgn-cust {
+  display: inline-block;
+}
+
+.pgn-cust button {
+  float: left;
+  padding: 4px 8px;
+}
+
+.pgn-cust button.active {
+  background-color: #2A3F54;
+  color: white;
+}
+
+.pgn-cust button:hover:not(.active){
+  background-color: #ddd;
 }
