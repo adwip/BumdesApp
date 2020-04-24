@@ -11,12 +11,12 @@ $(document).ready(function(){
     
     $('#belanja-barang').submit(function(e){
         e.preventDefault()
-        const form = $(this).serialize()
+        let form = $(this).serialize()
         history.pushState("","",'?'+form)
         $.ajax({
             url: $(this).attr('action'),
             type: $(this).attr('method'),
-            data: $(this).serialize(),
+            data: $(this).serialize()+'&pagin=no',
             dataType: 'json',
             success: function(v){
                 if (v['ses']=='Ok') {
@@ -24,7 +24,8 @@ $(document).ready(function(){
                     $('.pgn-cust').html(v['tabel']['paginasi'])
                     $('#info-belanja').html('Rp. '+v['row'])
                     let link = $('a[href|=unduh]').attr('href').split('?')
-                    $('a[href|=unduh]').attr('href',link[0]+'?'+form)
+                    form=form.split('&')
+                    $('a[href|=unduh]').attr('href',link[0]+'?'+form[0]+'&'+form[1])
                     pembelian_logistik(v['grafik'],'#grafik_pembelian_logistik', v['tahun'])
                 }else if(v['ses']=='OUT'){
 
@@ -38,20 +39,21 @@ $(document).ready(function(){
     //Barang keluar
     $('#barang-keluar').submit(function(e){
         e.preventDefault()
-        const form = $(this).serialize()
+        let form = $(this).serialize()
         history.pushState("","",'?'+form)
         $.ajax({
             url: $(this).attr('action'),
             type: $(this).attr('method'),
-            data: $(this).serialize(),
+            data: $(this).serialize()+'&pagin=no',
             dataType: 'json',
             success: function(v){
                 if (v['ses']=='Ok') {
-                    $('#val-body').html(v['tabel']['value'])
-                    $('#info-distribusi').html('Rp. '+v['row'])
+                    $('#val-body').html(v['tabel']['val'])
                     $('.pgn-cust').html(v['tabel']['paginasi'])
+                    $('#info-distribusi').html('Rp. '+v['row'])
                     let link = $('a[href|=unduh]').attr('href').split('?')
-                    $('a[href|=unduh]').attr('href',link[0]+'?'+form)
+                    form=form.split('&')
+                    $('a[href|=unduh]').attr('href',link[0]+'?'+form[0]+'&'+form[1])
                 }else{
                     
                 }
@@ -62,20 +64,21 @@ $(document).ready(function(){
     //Distribusi barang
     $('#dis-barang').submit(function(e){
         e.preventDefault()
-        const form = $(this).serialize()
+        let form = $(this).serialize()
         history.pushState("","",'?'+form)
         $.ajax({
             url: $(this).attr('action'),
             type: $(this).attr('method'),
-            data: $(this).serialize(),
+            data: $(this).serialize()+'&pagin=no',
             dataType: 'json',
             success: function(v){
                 if (v['ses']=='Ok') {
-                    $('#val-body').html(v['tabel']['value'])
+                    $('#val-body').html(v['tabel']['val'])
                     $('.pgn-cust').html(v['tabel']['paginasi'])
                     $('#nilai-dist').html('Rp. '+v['row'])
                     const link = $('a[href|=unduh]').attr('href').split('?')
-                    $('a[href|=unduh]').attr('href',link[0]+'?'+form)
+                    form=form.split('&')
+                    $('a[href|=unduh]').attr('href',link[0]+'?'+form[0]+'&'+form[1])
                     distribusi(v['grafik'],'#distribusi',v['tahun']);
                     non_distribusi(v['grafik2'],'#non-distribusi', v['tahun']);
                 }
@@ -86,18 +89,22 @@ $(document).ready(function(){
     //Penyewaan aset
     $('#sewa-aset').submit(function(e){
         e.preventDefault()
-        const form = $(this).serialize()
+        let form = $(this).serialize()
         history.pushState("","",'?'+form)
         $.ajax({
             url: $(this).attr('action'),
             type: $(this).attr('method'),
-            data: $(this).serialize(),
+            data: $(this).serialize()+'&pagin=no',
             dataType: 'json',
             success: function(v){
-                $('#val-body').html(v.tabel)
+                $('#val-body').html(v['tabel']['val'])
+                $('.pgn-cust').html(v['tabel']['paginasi'])
+                $('#jpn').html(v['jpn'])
+                $('#tps').html('Rp. '+v['tps'])
                 let link = $('a[href|=unduh]').attr('href').split('?')
-                $('a[href|=unduh]').attr('href',link[0]+'?'+form)
-                $('#datatable').dataTable()
+                form=form.split('&')
+                $('a[href|=unduh]').attr('href',link[0]+'?'+form[0]+'&'+form[1])
+                penyewaan(v['grafik'],'#grafik_penyewaan',v['tahun'])
             }
         })
     })
@@ -105,19 +112,35 @@ $(document).ready(function(){
     //Bagi hasil
     $('#bagi-has').submit(function(e){
         e.preventDefault()
-        const form = $(this).serialize()
+        let form = $(this).serialize()
         history.pushState("","",'?'+form)
         $.ajax({
             url: $(this).attr('action'),
             type: $(this).attr('method'),
-            data: $(this).serialize(),
+            data: $(this).serialize()+'&pagin=no',
             dataType: 'json',
             success: function(v){
-                $('#val-body').html(v.tabel)
-                $('#pen-bgh').html('Rp. '+v.row)
-                let link = $('a[href|=unduh]').attr('href').split('?')
-                $('a[href|=unduh]').attr('href',link[0]+'?'+form)
-                $('#datatable').dataTable()
+                if (v['ses']=='Ok') {
+                    $('#val-body').html(v['tabel']['val'])
+                    $('.pgn-cust').html(v['tabel']['paginasi'])
+                    let link = $('a[href|=unduh]').attr('href').split('?')
+                    form=form.split('&')
+                    $('a[href|=unduh]').attr('href',link[0]+'?'+form[0])
+                    $('#pbgh-m').html('Rp. '+v['pbgh-m'])
+                    $('#pbgh-y').html('Rp. '+v['pbgh-y'])
+                    $('#nbgh-m').html('Rp. '+v['nbgh-m'])
+                    $('#nbgh-y').html('Rp. '+v['nbgh-y'])
+                    $('#k-pbgh-m').html('Penerimaan BUMDes bagi hasil '+v['nb']+' '+v['y'])
+                    $('#k-pbgh-y').html('Penerimaan BUMDes bagi hasil tahun '+v['y'])
+                    $('#k-nbgh-m').html('Nilai bagi hasil '+v['nb']+' '+v['y'])
+                    $('#k-nbgh-y').html('Nilai bagi hasil tahun '+v['y'])
+                    $('#int-m').html(v['int-m'])
+                    $('#ext-m').html(v['ext-m'])
+                    $('#int-y').html(v['int-m'])
+                    $('#ext-y').html(v['ext-y'])
+                    $('#g-tahun').html('Tahun '+v['y'])
+                    bagi_hasil(v['v_grafik'],'#grafik_bagi_hasil', v['y'])
+                }
             }
         })
     })
@@ -125,37 +148,30 @@ $(document).ready(function(){
     //Keuangan mingguan,bulanan, tahunan
     $('#laporan-keuangan').submit(function(e){
         e.preventDefault()
-        const form = $(this).serialize()
+        let form = $(this).serialize()
         history.pushState("","",'?'+form)
         $.ajax({
             url: $(this).attr('action'),
             type: $(this).attr('method'),
-            data: $(this).serialize(),
+            data: $(this).serialize()+'&pagin=no',
             dataType: 'json',
             success: function(v){
-                // $('#val-body').removeAttr('id')
-                $('#val-body').html(v.tabel)
-                if (v.kd[0].dbt!=null) {
-                    $('#debit').html('Rp. '+v.kd[0].dbt)
-                }else{
-                    $('#debit').html('Rp. ')
-                }
-                if (v.kd[0].kdt!=null) {
-                    $('#kredit').html('Rp. '+v.kd[0].kdt)
-                }else{
-                    $('#kredit').html('Rp. ')
-                }
+                $('#val-body').html(v['tabel']['val'])
+                $('.pgn-cust').html(v['tabel']['paginasi'])
+                $('#debit').html('Rp. '+v['debit'])
+                $('#kredit').html('Rp. '+v['kredit'])
                 let link = $('a[href|=unduh]').attr('href').split('?')
-                $('a[href|=unduh]').attr('href',link[0]+'?'+form)
+                form=form.split('&')
+                form.pop()
+                $('a[href|=unduh]').attr('href',link[0]+'?'+form.join('&'))
                 keuangan_mingguan(v.grafik,'#grafik_keuangan_mingguan')
                 keuangan_bulanan(v.grafik,'#grafik_keuangan_bulanan')
                 keuangan_tahunan(v.grafik,'#grafik_keuangan_tahunan')
-                // $('.table').attr('id','datatable')
-                $('#datatable').DataTable()
                 
             }
         })
     })
+    
 
     // Get saldo dividen
     $('#tahun-dividen').change(function(){
@@ -178,11 +194,32 @@ $(document).ready(function(){
         history.pushState("","",'?'+form)
         $.ajax({
             url:$(this).attr('action'),
-            data: $(this).serialize(),
+            data: $(this).serialize()+'&pagin=no',
             type: $(this).attr('method'),
-            dataType: 'html',
+            dataType: 'json',
             success: function(v){
-                $('#val-body').html(v)
+                if (v['ses']=='Ok') {
+                    $('#val-body').html(v['tabel']['val'])
+                    $('.pgn-cust').html(v['tabel']['paginasi'])
+                }
+            }
+        })
+    })
+
+    $('#user-log').submit(function(e){
+        e.preventDefault()
+        const form = $(this).serialize()
+        history.pushState("","",'?'+form)
+        $.ajax({
+            url:$(this).attr('action'),
+            data: $(this).serialize()+'&pagin=no',
+            type: $(this).attr('method'),
+            dataType: 'json',
+            success: function(v){
+                if (v['ses']=='Ok') {
+                    $('#val-body').html(v['tabel']['val'])
+                    $('.pgn-cust').html(v['tabel']['paginasi'])
+                }
             }
         })
     })
@@ -194,29 +231,32 @@ $(document).ready(function(){
         const aktif = $(this).closest('.pgn-cust').find('.active')//button yang berwarna
         let nomor_limit = $(this).closest('.pgn-cust').find('.limit-number').val() //nilai button angka yang terpilih
         nomor_limit = parseInt(nomor_limit)
+        let aktif_page = $('#titik').attr('data-num')//nomor paginasi yang aktif
+        aktif_page = parseInt(aktif_page)
         let val = $(this).val()//nilai button yang terpilih
         const form = $('.form-filter')//ambil nilai dari form
-        const limit = $('#limit').val() //nilai limit dari form
-        let nomor_akhir = $('.pgn-cust button:last-child').val() //nilai button terakhir
+        let limit = $('#limit').val() //nilai limit dari form
+        limit = parseInt(limit)
+        let nomor_akhir = $('#last-number').val() //nilai button terakhir
         nomor_akhir = parseInt(nomor_akhir)
         if (val=='prev') {//tombol sebelumnya
-            if (nomor_limit!=0) {
-                val = nomor_limit-limit
+            if (aktif_page!=0) {
+                val = aktif_page-limit
             }else{
                 return false
             }
         }else if (val=='next') {//tombol selanjutnya
-            if (nomor_akhir>nomor_limit) {
-                val = nomor_limit+limit
+            if (aktif_page!=nomor_akhir) {
+                val = aktif_page+limit
             }else{
                 return false
+                // val = nomor_limit+limit
             }
         }else if (val=='...'||aktif==val&&(val!='next'||val!='prev')) {//tombol ...
             return false;
         }else{//tombol angkan
             if (val==nomor_limit) {
                 return false
-                // console.log(val+' '+nomor_limit+' '+nomor_akhir)
             }else{
                 $(this).closest('.pgn-cust').find('button').removeClass('limit-number')
                 $(this).addClass('limit-number')
@@ -224,7 +264,6 @@ $(document).ready(function(){
             }
             
         }
-
         $.ajax({
             url: form.attr('action'),
             data: form.serialize()+'&offset='+val,
@@ -238,6 +277,7 @@ $(document).ready(function(){
                 }
             }
         })
+        $('#titik').attr('data-num',val)
         $(this).closest('.pgn-cust').find('.active').removeClass('active')
         $(this).addClass('active')
     })

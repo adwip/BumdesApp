@@ -72,15 +72,15 @@
             </div>
             <div class="x_content">
               <div class="row">
-                <div class="col-md-8 col-sm-8 col-xs-8">
+                <div class="col-md-8 col-sm-8 col-xs-12">
                   <!-- <button class="btn btn-md btn-warning">Unduh laporan keuangan</button> -->
                   <a href="unduh-keuangan-tahunan?tahun=<?=$tahun?>"class="btn btn-md btn-warning" target="_blank">Unduh laporan keuangan</a>
                   <a href="add-finr" class="btn btn-md btn-info">Input data keuangan</a>
                 </div>
-                <div class="col-md-4 col-sm-4 col-xs-4">
+                <div class="col-md-4 col-sm-4 col-xs-12">
                   <div class="row">
-                    <form id="laporan-keuangan" action="annual-freport" method="GET">
-                      <div class="col-md-12 col-sm-12">  
+                    <form id="laporan-keuangan" action="annual-freport" method="GET" class="form-filter">
+                      <div class="col-md-6 col-sm-6 col-xs-6">  
                         <div class="form-group">
                           <label for="">Tahun</label>
                           <select name="tahun" class="form-control" onchange="$('#laporan-keuangan').submit()">
@@ -93,6 +93,17 @@
                             ?>
                           </select>
                         </div>
+                      </div>
+                      <div class="col-md-6 col-sm-6 col-xs-6">
+                          <div class="form-group">
+                            <label for="">Tampilkan</label>
+                            <select name="limit" class="form-control" onchange="$('#laporan-keuangan').submit()" id="limit">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                          </div>
                       </div>
                     </form>
                   </div>
@@ -120,25 +131,26 @@
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-              <form>
-                      <table id="datatable" class="table table-striped table-bordered">
-                        <thead>
-                          <tr>
-                            <th>No</th>
-                            <th>Tanggal</th>
-                            <th>Keterangan</th>
-                            <th>Debit</th>
-                            <th>Kredit</th>
-                            <th>Saldo</th>
-                            <th>Aksi</th>
-                          </tr>
-                        </thead>
+              <table class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Tanggal</th>
+                    <th>Keterangan</th>
+                    <th>Debit</th>
+                    <th>Kredit</th>
+                    <th>Saldo</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
 
-                        <tbody id="val-body" data-act="hapus-keuangan/thn" data-meth="POST">
-                          <?= $value ?>
-                        </tbody>
-                      </table>
-                    </form>
+                <tbody id="val-body" data-act="hapus-keuangan/thn" data-meth="POST">
+                  <?= $value['val'] ?>
+                </tbody>
+              </table>
+            </div>
+            <div class="pgn-cust">
+              <?= $value['paginasi'] ?>
             </div>
           </div>
         </div>

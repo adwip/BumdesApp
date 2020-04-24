@@ -13,7 +13,7 @@ class Finance extends CI_controller{
         }
     }
 
-    function weekly_report($type='html'){//=============ada view
+    function weekly_report(){//=============ada view
         $dt['title'] = 'Laporan mingguan';
         $dt['mg'] = [1,2,3,4];
         if (date('d')>=1&&date('d')<=7) {
@@ -29,13 +29,19 @@ class Finance extends CI_controller{
         $dt['bln'] = $this->bulan;
         $dt['tahun'] = date('Y');
         $dt['bulan'] = date('m');
+        $lim = 10;
+        $offset = 0;
+        $ajax = $this->input->is_ajax_request();
+        $no_pagin = $this->input->get('pagin',TRUE);
         if (isset($_GET['tahun'])) {
             $dt['tahun'] = $this->input->get('tahun',TRUE);
             $dt['bulan'] = $this->input->get('bulan',TRUE);
             $dt['minggu'] = $this->input->get('minggu',TRUE);
+            $lim = $this->input->get('limit',TRUE);
+            $offset = $this->input->get('offset',TRUE);
         }
         $dt['thn'] = $this->fm->get_tahun_fin();
-        $dt['value']=$this->fm->get_keuangan_mingguan($dt['tahun'],$dt['bulan'],$dt['minggu']);
+        $dt['value']=$this->fm->get_keuangan_mingguan($dt['tahun'],$dt['bulan'],$dt['minggu'], $lim, $offset, $ajax, $no_pagin);
         $dt['kd']=$this->fm->get_kredit_debit_mingguan($dt['tahun'],$dt['bulan'],$dt['minggu']);
         $dt['s']=$this->fm->get_saldo();
         $dt['v_grafik']=$this->fm->get_grafik_keuangan_mingguan($dt['tahun'],$dt['bulan']);
@@ -45,57 +51,73 @@ class Finance extends CI_controller{
         }else{
             $val['ses']='Ok';
             $val['tabel']=$dt['value'];
-            $val['kd']=$dt['kd'];
+            $val['debit']=isset($dt['kd'][0]->dbt)? $dt['kd'][0]->dbt:0;
+            $val['kredit']=isset($dt['kd'][0]->kdt)? $dt['kd'][0]->kdt:0;
             $val['grafik'] = json_decode($dt['v_grafik']);
             echo json_encode($val);
         }
     }
 
-    function monthly_report($type='html'){//=============ada view
+    function monthly_report(){//=============ada view
         $dt['title'] = 'Laporan bulanan';
         //echo $this->input->get('tipe');
         $dt['bln'] = $this->bulan;
         $dt['tahun'] = date('Y');
         $dt['bulan'] = date('m');
+        $lim = 10;
+        $offset = 0;
+        $ajax = $this->input->is_ajax_request();
+        $no_pagin = $this->input->get('pagin',TRUE);
         if (isset($_GET['tahun'])) {
             $dt['tahun'] = $this->input->get('tahun',TRUE);
             $dt['bulan'] = $this->input->get('bulan',TRUE);
+            $lim = $this->input->get('limit',TRUE);
+            $offset = $this->input->get('offset',TRUE);
         }
         $dt['thn'] = $this->fm->get_tahun_fin();
-        $dt['value']=$this->fm->get_keuangan_bulanan($dt['tahun'],$dt['bulan']);
+        $dt['value']=$this->fm->get_keuangan_bulanan($dt['tahun'],$dt['bulan'], $lim, $offset, $ajax, $no_pagin);
         $dt['kd']=$this->fm->get_kredit_debit_bulanan($dt['tahun'],$dt['bulan']);
         $dt['s']=$this->fm->get_saldo();
         $dt['v_grafik']=$this->fm->get_grafik_keuangan_bulanan($dt['tahun']);
         // echo $dt['v_grafik'];
-        if (!$this->input->is_ajax_request()) {
+        if (!$ajax) {
             $this->load->view('MenuPage/Main/monthly_report',$dt);
         }else{
             $val['ses']='Ok';
             $val['tabel']=$dt['value'];
-            $val['kd']=$dt['kd'];
+            $val['debit']=isset($dt['kd'][0]->dbt)? $dt['kd'][0]->dbt:0;
+            $val['kredit']=isset($dt['kd'][0]->kdt)? $dt['kd'][0]->kdt:0;
             $val['grafik'] = json_decode($dt['v_grafik']);
             echo json_encode($val);
         }
     }
 
-    function annual_report($type='html'){//=============ada view
+    function annual_report(){//=============ada view
         $dt['title'] = 'Laporan tahunan';
         //echo $this->input->get('tipe');
         $dt['tahun'] = date('Y');
+        $lim = 10;
+        $offset = 0;
+        $ajax = $this->input->is_ajax_request();
+        $no_pagin = $this->input->get('pagin',TRUE);
+        // echo $no_pagin;
         if (isset($_GET['tahun'])) {
             $dt['tahun'] = $this->input->get('tahun',TRUE);
+            $lim = $this->input->get('limit',TRUE);
+            $offset = $this->input->get('offset',TRUE);
         }
         $dt['thn'] = $this->fm->get_tahun_fin();
-        $dt['value']=$this->fm->get_keuangan_tahunan($dt['tahun']);
+        $dt['value']=$this->fm->get_keuangan_tahunan($dt['tahun'], $lim, $offset, $ajax,$no_pagin);
         $dt['kd']=$this->fm->get_kredit_debit_tahunan($dt['tahun']);
         $dt['s']=$this->fm->get_saldo();
         $dt['v_grafik']=$this->fm->get_grafik_keuangan_tahunan();
-        if (!$this->input->is_ajax_request()) {
+        if (!$ajax) {
             $this->load->view('MenuPage/Main/annual_report',$dt);
         }else{
             $val['ses']='Ok';
             $val['tabel']=$dt['value'];
-            $val['kd']=$dt['kd'];
+            $val['debit']=isset($dt['kd'][0]->dbt)? $dt['kd'][0]->dbt:0;
+            $val['kredit']=isset($dt['kd'][0]->kdt)? $dt['kd'][0]->kdt:0;
             $val['grafik'] = json_decode($dt['v_grafik']);
             echo json_encode($val);
         }
@@ -108,13 +130,19 @@ class Finance extends CI_controller{
         $dt['bln'] = $this->bulan;
         $dt['tahun'] = date('Y');
         $dt['bulan'] = date('m');
+        $lim = 10;
+        $offset = 0;
+        $ajax = $this->input->is_ajax_request();
+        $no_pagin = $this->input->get('pagin',TRUE);
         if (isset($_GET['tahun'])) {
             $dt['tahun'] = $this->input->get('tahun',TRUE);
             $dt['bulan'] = $this->input->get('bulan',TRUE);
             $dt['nb'] = $this->bulan[$dt['bulan']];
+            $lim = $this->input->get('limit',TRUE);
+            $offset = $this->input->get('offset',TRUE);
         }
         $dt['thn'] = $this->lm->get_tahun('OUT');
-        $dt['v'] = $this->fm->get_laba_usaha($dt['tahun'], $dt['bulan']);
+        $dt['value'] = $this->fm->get_laba_usaha($dt['tahun'], $dt['bulan'], $lim, $offset, $ajax, $no_pagin);
         $dt['v_grafik']=$this->fm->get_grafik_laba_dagang($dt['tahun']);
         $dt['v2']=$this->tm->get_jual_profits_tahun($dt['tahun']);
         $dt['v3']=$this->tm->get_jual_profits_bulan($dt['tahun'],$dt['bulan']);
@@ -122,29 +150,51 @@ class Finance extends CI_controller{
         $this->load->view('MenuPage/Main/corp_profits',$dt);
     }
 
-    function bagi_hasil($type='html'){//=================OK
+    function bagi_hasil(){//=================OK
         $dt['title'] = 'Aset bagi hasil';
-        //echo $this->input->get('tipe');
+        $dt['bln'] = $this->bulan;
         $dt['tahun'] = date('Y');
+        $dt['y'] = date('Y');
+        $dt['m'] = date('m');
+        $dt['nb'] = $this->bulan[date('m')];
+        $lim = 10;
+        $offset = 0;
+        $ajax = $this->input->is_ajax_request();
         if (isset($_GET['tahun'])) {
             $dt['tahun'] = $this->input->get('tahun',TRUE);
+            $dt['m'] = $this->input->get('bulan',TRUE);
+            $lim = $this->input->get('limit',TRUE);
+            $offset = $this->input->get('offset',TRUE);
+            $dt['y'] = $dt['tahun']=='All'?date('Y'):$dt['tahun'];
+            $dt['nb']=$this->bulan[$dt['m']];
         }
+        $dt['pby'] = $this->fm->get_total_bagi_hasil($dt['y']);
+        $dt['pbm'] = $this->fm->get_pemb_bagi_hasil_bulan($dt['y'],$dt['m']);
+        $dt['vt'] = $this->fm->get_info_aset_bgh($dt['y'], $dt['m']);
+        $dt['va'] = $this->fm->get_info_aset_bgh();
         $dt['thn'] = $this->fm->get_tahun_bgh();
-        $dt['value'] = $this->fm->daftar_kerjasama_bgh($dt['tahun']);
-        $dt['v'] = $this->fm->get_total_bagi_hasil($dt['tahun']);
-        $dt['v_grafik']=$this->fm->get_grafik_bagi_hasil($dt['tahun']);
-        if ($type=='html') {
+        $dt['value'] = $this->fm->daftar_kerjasama_bgh($dt['tahun'], $lim, $offset, $ajax);
+        $dt['v_grafik']=$this->fm->get_grafik_bagi_hasil($dt['y']);
+        if (!$ajax) {
             // echo json_encode($dt['value']);
             $this->load->view('MenuPage/Main/bagi_hasil',$dt);
             // echo $dt['tahun'];
         }else{
-            if ($this->ret) {
-                $val['ses']='Ok';
-                $val['tabel']=$dt['value'];
-                $val['row']=isset($dt['v']->hg)?$dt['v']->hg:0;
-            }else{
-                $val['ses']='Off';
-            }
+            $val['ses']='Ok';
+            $val['v_grafik'] = json_decode($dt['v_grafik']);
+            $val['pbgh-m'] = isset($dt['pbm']->pnb)?$dt['pbm']->pnb:0;
+            $val['pbgh-y'] = isset($dt['pby']->pnb)?$dt['pby']->pnb:0;
+            $val['nbgh-m'] = isset($dt['pbm']->hg)?$dt['pbm']->hg:0;
+            $val['nbgh-y'] = isset($dt['pby']->hg)?$dt['pby']->hg:0;
+            
+            $val['int-m'] = isset($dt['vt']->jints)?$dt['vt']->jints:0;
+            $val['ext-m'] = isset($dt['vt']->exts)?$dt['vt']->exts:0;
+            $val['int-y'] = isset($dt['va']->jints)?$dt['va']->jints:0;
+            $val['ext-y'] = isset($dt['va']->exts)?$dt['va']->exts:0;
+            
+            $val['nb'] = $dt['nb'];
+            $val['y'] = $dt['y'];
+            $val['tabel']=$dt['value'];
             echo json_encode($val);
         }
     }

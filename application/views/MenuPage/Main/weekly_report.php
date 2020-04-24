@@ -71,15 +71,15 @@
             </div>
             <div class="x_content">
               <div class="row">
-                <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="col-md-5 col-sm-5 col-xs-12">
                   <!-- <button class="btn btn-md btn-warning">Unduh laporan keuangan</button> -->
                   <a href="unduh-keuangan-mingguan?tahun=<?=$tahun?>&bulan=<?=$bulan?>&minggu=<?= $minggu ?>"class="btn btn-md btn-warning" target="_blank">Unduh laporan keuangan</a>
                   <a href="add-finr" class="btn btn-md btn-info">Input data keuangan</a>
                 </div>
-                <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="col-md-7 col-sm-7 col-xs-12">
                     <div class="row">
                         <form id="laporan-keuangan" action="weekly-freport" method="GET">
-                            <div class="col-md-4 col-sm-4">  
+                            <div class="col-md-3 col-sm-3 col-xs-3">  
                                 <div class="form-group">
                                     <label for="">Tahun</label>
                                     <select name="tahun" class="form-control" onchange="$('#laporan-keuangan').submit()">
@@ -92,7 +92,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-4 col-sm-4">
+                            <div class="col-md-3 col-sm-3 col-xs-3">
                                 <div class="form-group">
                                   <label for="">Bulan</label>
                                   <select name="bulan" class="form-control" onchange="$('#laporan-keuangan').submit()">
@@ -105,7 +105,7 @@
                                   </select>
                                 </div>
                             </div>
-                            <div class="col-md-4 col-sm-4">  
+                            <div class="col-md-3 col-sm-3 col-xs-3">  
                                 <div class="form-group">
                                     <label for="">Minggu</label>
                                 <select name="minggu" class="form-control" onchange="$('#laporan-keuangan').submit()">
@@ -116,6 +116,17 @@
                                     }
                                     ?>
                                 </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-3">
+                                <div class="form-group">
+                                  <label for="">Tampilkan</label>
+                                  <select name="limit" class="form-control" onchange="$('#laporan-keuangan').submit()" id="limit">
+                                      <option value="10">10</option>
+                                      <option value="25">25</option>
+                                      <option value="50">50</option>
+                                      <option value="100">100</option>
+                                  </select>
                                 </div>
                             </div>
                         </form>
@@ -144,25 +155,26 @@
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-              <form action="">
-                      <table id="datatable" class="table table-striped table-bordered">
-                        <thead>
-                          <tr>
-                            <th>No</th>
-                            <th>Tanggal</th>
-                            <th>Keterangan</th>
-                            <th>Debit</th>
-                            <th>Kredit</th>
-                            <th>Saldo</th>
-                            <th>Aksi</th>
-                          </tr>
-                        </thead>
+              <table class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Tanggal</th>
+                    <th>Keterangan</th>
+                    <th>Debit</th>
+                    <th>Kredit</th>
+                    <th>Saldo</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
 
-                        <tbody id="val-body" data-act="hapus-keuangan/mng" data-meth="POST">
-                          <?= $value ?>
-                        </tbody>
-                      </table>
-                    </form>
+                <tbody id="val-body" data-act="hapus-keuangan/mng" data-meth="POST">
+                  <?= $value['val'] ?>
+                </tbody>
+              </table>
+            </div>
+            <div class="pgn-cust">
+              <?= $value['paginasi'] ?>
             </div>
           </div>
         </div>

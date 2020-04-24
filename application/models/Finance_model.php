@@ -7,7 +7,7 @@ class Finance_model extends CI_Model{
 		$this->load->library('Num_splitter');
     }
 
-    function daftar_kerjasama_bgh($tahun, $type='html'){
+    function daftar_kerjasama_bgh($tahun, $limit, $offset, $ajax, $type='html'){
         $this->db->select('id_bgh AS id, IFNULL(aset_luar,IFNULL(nama, deld_aset)) AS na, tanggal_mulai AS tm, tanggal_selesai AS ts, nama_mitra AS nm, pers_bumdes AS pb, pers_mitra AS pm, DATEDIFF("'.date('Y-m-d').'",tanggal_mulai) AS rh, status_bgh AS sgh, COUNT(id_pbgh) AS idt');
         $this->db->from('bagi_hasil_aset bg');
         $this->db->join('aset as','bg.aset_bh=as.id_aset','LEFT');
@@ -17,7 +17,12 @@ class Finance_model extends CI_Model{
         if ($tahun!='All') {
             $this->db->where('YEAR(tanggal_mulai) <= "'.$tahun.'" AND YEAR(tanggal_selesai) >= "'.$tahun.'"');
         }
-        $result = $this->db->get()->result();
+        if ($ajax) {
+            $this->db->limit($limit, $offset);
+        }
+        $result = $this->db->get();
+        $nr=$result->num_rows();
+        $result=$result->result();
         $result1=null;
         if ($type=='html') {
             foreach ($result as $key => $v) {
@@ -28,26 +33,30 @@ class Finance_model extends CI_Model{
                         '<button type="button" class="btn btn-xs btn-danger hapus-bgh" value="'.$v->id.'">'.$btnk.'</button>';
                 }
                 $result1 .= '<tr data-nam="">
-                                <td>'.($key+1).'</td>
+                                <td>'.($offset+1).'</td>
                                 <td>'.$v->na.'</td>
                                 <td>'.$v->nm.'</td>
                                 <td>'.date('d-m-Y',strtotime($v->tm)).'</td>
                                 <td>'.date('d-m-Y',strtotime($v->ts)).'</td>
                                 <td>'.$v->sgh.'</td>
-                                <td class="text-center">
+                                <td class="text-center">  <i class="fa fa-info-circle" title="'.$v->id.'"></i>
                                     '.anchor('detail-sp/'.$v->id,'Detail').'<br>
                                     '.$btn.'
                                 </td>
                             </tr>';
+                $offset++;
+                if (!$ajax&&$offset==$limit) {
+                    break;
+                }
             }
-            return $result1;
+            return ['val'=>$result1,'paginasi'=>paginasi_gen($limit,$nr)];
         }else {
             return $result;
         }
 
     }
 
-    function get_keuangan_mingguan($tahun, $bulan, $minggu, $type='html'){
+    function get_keuangan_mingguan($tahun, $bulan, $minggu, $limit, $offset, $ajax, $no_pagin, $type='html'){
         $this->db->select('id_fin AS id, tanggal_fin AS dt, keterangan AS nt, FORMAT(debit, "#.00") AS db, FORMAT(kredit, "#.00") AS kd,FORMAT(sld, "#.00") AS bc, actor AS at');
         $this->db->from('rekap_keuangan');
         if ($minggu=='1') {
@@ -59,7 +68,12 @@ class Finance_model extends CI_Model{
         }else {
             $this->db->where('tanggal_fin between "'.$tahun.'-'.$bulan.'-22" and "'.$tahun.'-'.$bulan.'-31"');
         }
-        $result=$this->db->get()->result();
+        if ($no_pagin!='no'&&$ajax) {
+            $this->db->limit($limit, $offset);
+        }
+        $result = $this->db->get();
+        $nr=$result->num_rows();
+        $result=$result->result();
         $result1=null;
         if ($type=='html') {
             foreach ($result as $key => $v) {
@@ -70,7 +84,7 @@ class Finance_model extends CI_Model{
                 <a href="edit-fin/'.$v->id.'" class="btn btn-xs btn-warning">Ubah</a>';
             }
             $result1 .= '<tr>
-                            <td>'.($key+1).'</td>
+                            <td>'.($offset+1).'</td>
                             <td>'.date('d/m/Y',strtotime($v->dt)).'</td>
                             <td>'.$v->nt.'</td>
                             <td>Rp. '.$v->db.'</td>
@@ -78,18 +92,27 @@ class Finance_model extends CI_Model{
                             <td>Rp. '.$v->bc.'</td>
                             <td>'.$act.'</td>
                       </tr>';
+            $offset++;
+            if (!($no_pagin!='no'&&$ajax)&&$offset==$limit) {
+                break;
+            }
         }
-            return $result1;
+            return ['val'=>$result1,'paginasi'=>paginasi_gen($limit,$nr)];
         }else{
             return $result;
         }
     }
 
-    function get_keuangan_bulanan($tahun, $bulan, $type='html'){
+    function get_keuangan_bulanan($tahun, $bulan, $limit, $offset, $ajax, $no_pagin, $type='html'){
         $this->db->select('id_fin AS id, tanggal_fin AS dt, keterangan AS nt, FORMAT(debit, "#.00") AS db, FORMAT(kredit, "#.00") AS kd,FORMAT(sld, "#.00") AS bc, actor AS at');
         $this->db->from('rekap_keuangan');
         $this->db->like('tanggal_fin',$tahun.'-'.$bulan,'after');
-        $result = $this->db->get()->result();
+        if ($no_pagin!='no'&&$ajax) {
+            $this->db->limit($limit, $offset);
+        }
+        $result = $this->db->get();
+        $nr=$result->num_rows();
+        $result=$result->result();
         $result1=null;
         if ($type=='html') {
             foreach ($result as $key => $v) {
@@ -100,7 +123,7 @@ class Finance_model extends CI_Model{
                 <a href="edit-fin/'.$v->id.'" class="btn btn-xs btn-warning">Ubah</a>';
             }
             $result1 .= '<tr>
-                            <td>'.($key+1).'</td>
+                            <td>'.($offset+1).'</td>
                             <td>'.date('d/m/Y',strtotime($v->dt)).'</td>
                             <td>'.$v->nt.'</td>
                             <td>Rp. '.$v->db.'</td>
@@ -108,18 +131,27 @@ class Finance_model extends CI_Model{
                             <td>Rp. '.$v->bc.'</td>
                             <td>'.$act.'</td>
                       </tr>';
+            $offset++;
+            if (!($no_pagin!='no'&&$ajax)&&$offset==$limit) {
+                break;
+            }
         }
-            return $result1;
+            return ['val'=>$result1,'paginasi'=>paginasi_gen($limit,$nr)];
         }else{
             return $result;
         }
     }
 
-    function get_keuangan_tahunan($tahun, $type='html'){
+    function get_keuangan_tahunan($tahun, $limit, $offset, $ajax, $no_pagin, $type='html'){
         $this->db->select('id_fin AS id, tanggal_fin AS dt, keterangan AS nt, FORMAT(debit, "#.00") AS db, FORMAT(kredit, "#.00") AS kd,FORMAT(sld, "#.00") AS bc, actor AS at');
         $this->db->from('rekap_keuangan');
         $this->db->like('tanggal_fin',$tahun,'after');
-        $result = $this->db->get()->result();
+        if ($no_pagin!='no'&&$ajax) {
+            $this->db->limit($limit, $offset);
+        }
+        $result = $this->db->get();
+        $nr=$result->num_rows();
+        $result=$result->result();
         $result1=null;
         if ($type=='html') {
             foreach ($result as $key => $v) {
@@ -129,7 +161,7 @@ class Finance_model extends CI_Model{
                     <a href="edit-fin/'.$v->id.'" class="btn btn-xs btn-warning">Ubah</a>';
                 }
                 $result1 .= '<tr>
-                                <td>'.($key+1).'</td>
+                                <td>'.($offset+1).'</td>
                                 <td>'.date('d/m/Y',strtotime($v->dt)).'</td>
                                 <td>'.$v->nt.'</td>
                                 <td>Rp. '.$v->db.'</td>
@@ -137,8 +169,12 @@ class Finance_model extends CI_Model{
                                 <td>Rp. '.$v->bc.'</td>
                                 <td>'.$act.'</td>
                           </tr>';
+                $offset++;
+                if (!($no_pagin!='no'&&$ajax)&&$offset==$limit) {
+                    break;
+                }
             }
-            return $result1;
+            return ['val'=>$result1,'paginasi'=>paginasi_gen($limit,$nr)];
         }else{
             return $result;
         }
@@ -187,28 +223,26 @@ class Finance_model extends CI_Model{
         return $result;
     }
 
-    function get_laba_usaha($tahun, $bulan, $type='html'){
+    function get_laba_usaha($tahun, $bulan, $limit, $offset, $ajax, $no_pagin, $type='html'){
         $this->db->select('id_kom AS id, nama_komoditas AS nk, FORMAT(harga_jual, "#.00") AS pl, FORMAT(SUM(jumlah),"#.00") AS ot, FORMAT(SUM(nilai_transaksi),"#.00") AS sl, FORMAT(SUM(margin),"#.00") AS pf, satuan AS sn');
         $this->db->from('komoditas km');
         $this->db->join('stok_item si', 'km.id_kom=si.komoditas','LEFT');
         $this->db->join('satuan stn','stn.id=si.sat_barang');
-        $this->db->join('stok_keluar sk', 'si.id_stok=sk.id_prb');/*
-        if ($tahun!='All'&&$bulan=='All') {
-            $this->db->like('tanggal',$tahun,'after');
-        }elseif ($tahun=='All'&&$bulan!='All') {
-            $this->db->like('tanggal',$bulan);
-        }elseif ($tahun!='All'&&$bulan!='All') {
-            $this->db->like('tanggal',$tahun.'-'.$bulan,'after');
-        }*/
+        $this->db->join('stok_keluar sk', 'si.id_stok=sk.id_prb');
         $this->db->like('tanggal',$tahun.'-'.$bulan,'after');
         $this->db->group_by('id_kom');
         $this->db->group_by('sat_barang');
-        $result=$this->db->get()->result();
+        if ($no_pagin!='no'&&$ajax) {
+            $this->db->limit($limit, $offset);
+        }
+        $result = $this->db->get();
+        $nr=$result->num_rows();
+        $result=$result->result();
         $result1=null;
         if ($type=='html') {
             foreach ($result as $key => $v) {
                 $result1 .= '<tr>
-                                <td>'.($key+1).'</td>
+                                <td>'.($offset+1).'</td>
                                 <td>'.$v->nk.'</td>
                                 <td>'.$v->ot.' '.$v->sn.'</td>
                                 <td>Rp. '.$v->pl.'</td>
@@ -216,8 +250,12 @@ class Finance_model extends CI_Model{
                                 <td>Rp. '.$v->pf.'</td>
                                 <td> '.anchor('#','Detail').' </td>
                             </tr>';
+                $offset++;
+                if (!($no_pagin!='no'&&$ajax)&&$offset==$limit) {
+                    break;
+                }
             }
-            return $result1;
+            return ['val'=>$result1,'paginasi'=>paginasi_gen($limit,$nr)];
         }else{
             return $result;
         }

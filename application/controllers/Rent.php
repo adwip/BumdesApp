@@ -19,20 +19,29 @@ class Rent extends CI_Controller{
         $dt['bln'] = $this->bulan;
         $dt['tahun'] = date('Y');
         $dt['bulan'] = date('m');
+        $lim = 10;
+        $offset = 0;
+        $ajax = $this->input->is_ajax_request();
         if (isset($_GET['tahun'])) {
             $dt['tahun'] = $this->input->get('tahun',TRUE);
             $dt['bulan'] = $this->input->get('bulan',TRUE);
+            $lim = $this->input->get('limit',TRUE);
+            $offset = $this->input->get('offset',TRUE);
         }
         $dt['thn'] = $this->rm->get_tahun();
         $dt['v'] = $this->rm->get_jumlah_penyewaan($dt['tahun'], $dt['bulan']);
         $dt['v2'] = $this->rm->get_pendapatan_sewa($dt['tahun'], $dt['bulan']);
-        $dt['value']=$this->rm->get_penyewaan($dt['tahun'],$dt['bulan']);
+        $dt['value']=$this->rm->get_penyewaan($dt['tahun'],$dt['bulan'], $lim, $offset, $ajax);
         $dt['v_grafik']=$this->fm->get_grafik_penyewaan($dt['tahun']);
-        if (!$this->input->is_ajax_request()) {
+        if (!$ajax) {
             $this->load->view('MenuPage/Main/penyewaan',$dt);
         }else{
             $val['ses']='Ok';
             $val['tabel']=$dt['value'];
+            $val['grafik'] = json_decode($dt['v_grafik']);
+            $val['tahun']=$dt['tahun'];
+            $val['jpn'] = isset($dt['v'])?$dt['v']->tp:0;
+            $val['tps'] = isset($dt['v2'])?$dt['v2']->tps:0;
             echo json_encode($val);
         }
     }

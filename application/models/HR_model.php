@@ -55,66 +55,81 @@ class HR_model extends CI_Model{
         return $result1;
     }
 
-    function get_log_user($tahun, $bulan, $id=false){
+    function get_log_user($tahun, $bulan, $limit, $offset, $ajax, $no_pagin, $id=false){
         $this->db->select('IFNULL(del_ad,nama) AS nm, log AS lg, waktu AS tm, tanggal AS dt');
-        $this->db->from('log_admin la');/*
-        if ($tahun!='All'&&$bulan=='All') {
-            $this->db->like('tanggal',$tahun,'after');
-        }elseif ($tahun=='All'&&$bulan!='All') {
-            $this->db->like('tanggal',$bulan);
-        }elseif ($tahun!='All'&&$bulan!='All') {
-            $this->db->like('tanggal',$tahun.'-'.$bulan,'after');
-        }*/
+        $this->db->from('log_admin la');
         $this->db->like('tanggal',$tahun.'-'.$bulan,'after');
         if ($id) {
             $this->db->where('admin',$id);
         }else {
             $this->db->not_like('log', '[PRIVATE]');
         }
+        if ($no_pagin!='no'&&$ajax) {
+            $this->db->limit($limit, $offset);
+        }
         $this->db->order_by('id_temp','DESC');
         $this->db->join('admin am','am.id_admin=la.admin','LEFT');
-        $result=$this->db->get()->result();
+        $result = $this->db->get();
+        $nr=$result->num_rows();
+        $result=$result->result();
         $result1=null;
         if (!$id) {    
             foreach ($result as $key => $v) {
-            $result1 .= '<tr>
-                        <td>'.($key+1).'</td>
-                        <td>'.$v->nm.'</td>
-                        <td>'.$v->lg.'</td>
-                        <td>'.$v->tm.'</td>
-                        <td>'.date('d/m/Y',strtotime($v->dt)).'</td>
-                        </tr>';
-            }
-        }else {
-            foreach ($result as $key => $v) {
                 $result1 .= '<tr>
-                            <td>'.($key+1).'</td>
+                            <td>'.($offset+1).'</td>
+                            <td>'.$v->nm.'</td>
                             <td>'.$v->lg.'</td>
                             <td>'.$v->tm.'</td>
                             <td>'.date('d/m/Y',strtotime($v->dt)).'</td>
                             </tr>';
+                $offset++;
+                if (!($no_pagin!='no'&&$ajax)&&$offset==$limit) {
+                    break;
+                }
+            }
+        }else {
+            foreach ($result as $key => $v) {
+                $result1 .= '<tr>
+                            <td>'.($offset+1).'</td>
+                            <td>'.$v->lg.'</td>
+                            <td>'.$v->tm.'</td>
+                            <td>'.date('d/m/Y',strtotime($v->dt)).'</td>
+                            </tr>';
+                $offset++;
+                if (!$ajax&&$offset==$limit) {
+                    break;
+                }
             }
         }
-        return $result1;
+        return ['val'=>$result1,'paginasi'=>paginasi_gen($limit,$nr)];
     }
 
-    function get_user_log_id($id, $tahun, $bulan){
+    function get_user_log_id($id, $tahun, $bulan, $limit, $offset, $ajax, $no_pagin){
         $this->db->select('log AS lg, waktu AS tm, tanggal AS dt');
         $this->db->from('log_admin');
         $this->db->where('admin',$id);
         $this->db->like('tanggal',$tahun.'-'.$bulan);
         $this->db->order_by('id_temp','DESC');
-        $result=$this->db->get()->result();
+        if ($no_pagin!='no'&&$ajax) {
+            $this->db->limit($limit, $offset);
+        }
+        $result = $this->db->get();
+        $nr=$result->num_rows();
+        $result=$result->result();
         $result1=null;
         foreach ($result as $key => $v) {
             $result1 .= '<tr>
-                           <td>'.($key+1).'</td>
+                           <td>'.($offset+1).'</td>
                            <td>'.$v->lg.'</td>
                            <td>'.$v->tm.'</td>
                            <td>'.date('d/m/Y',strtotime($v->dt)).'</td>
                         </tr>';
+            $offset++;
+            if (!($no_pagin!='no'&&$ajax)&&$offset==$limit) {
+                break;
+            }
         }
-        return $result1;
+        return ['val'=>$result1,'paginasi'=>paginasi_gen($limit,$nr)];
     }
 
     function set_admin_baru($nama, $email, $password, $kategori, $kontak, $foto){

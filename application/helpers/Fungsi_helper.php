@@ -42,8 +42,9 @@ if (!function_exists('paginasi_gen')) {
     function paginasi_gen($limit, $num_rows){
         $i=0;
         $pag=1;
-        $ret = $num_rows>$limit?'<button id="prev" val=="prev">&laquo;</button>':null;
-        $last_page = $num_rows-$limit+1;
+        $next_prev = $num_rows/$limit;
+        $ret = $next_prev>=6?'<button id="prev" value="prev">&laquo;</button>':null;
+        $last_page = $num_rows-($num_rows%$limit)+1;
         $page = 0;//$pag;
         while ($num_rows > 0&&$i<5) {
             $kurang = ($num_rows-$limit)<0?($num_rows-$limit):0;
@@ -52,17 +53,18 @@ if (!function_exists('paginasi_gen')) {
             if ($i<3) {
                 $ret .= '<button '.$title.' '.$first_page.' value="'.$page.'">'.($page+1).'</button>';
             }else if($i==3&&($num_rows-$limit-$kurang)>$limit*2){
-                $ret .= '<button id="titik" val="...">...</button>';
+                $ret .= '<button id="titik" data-num="0" value="...">...</button>';
             }else if($i==3){
                 $ret .= '<button '.$title.' value="'.$page.'">'.($page+1).'</button>';
             }else if ($i==4) {
-                $ret .= '<button '.$title.' value="'.($last_page-1).'">'.$last_page.'</button>';
+                
+                $ret .= '<button '.$title.' id="last-number" value="'.($last_page-1).'">'.$last_page.'</button>';
             }
             $num_rows -= $limit;
             $page += $limit;
             $i++;
         }
-        $ret .= $i==1||$num_rows==0?null:'<button  val=="next">&raquo;</button>';
+        $ret .= /*$i==1||$num_rows==0*/$next_prev>=6?'<button value="next">&raquo;</button>':null;
         return $ret;
     }
 }

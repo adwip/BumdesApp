@@ -65,15 +65,15 @@
             </div>
             <div class="x_content">
               <div class="row">
-                <div class="col-md-9 col-sm-9 col-xs-9">
+                <div class="col-md-8 col-sm-8 col-xs-12">
                   <a href="unduh-daftar-bagi-hasil?tahun=<?=$tahun?>"class="btn btn-md btn-warning" target="_blank">Unduh daftar kerja sama</a>
-                  <a href="tambah-bagi-hasil" class="btn btn-md btn-info">Tambah aset dibagi hasil</a>
+                  <a href="tambah-bagi-hasil" class="btn btn-md btn-info">Tambah aset bagi hasil</a>
                   <a href="tambah-pemasukan-bgh" class="btn btn-md btn-primary">Tambah pembayaran bagi hasil</a>
                 </div>
-                <div class="col-md-3 col-sm-3 col-xs-3">
+                <div class="col-md-4 col-sm-4 col-xs-12">
                     <div class="row">
-                        <form id="bagi-has" action="bagi-hasil" method="GET">
-                            <div class="col-md-12 col-sm-12 col-xs-12">  
+                        <form id="bagi-has" action="bagi-hasil" method="GET" class="form-filter">
+                            <div class="col-md-4 col-sm-4 col-xs-4">  
                                 <div class="form-group">
                                     <label for="">Tahun</label>
                                     <select name="tahun" class="form-control" onchange="$('#bagi-has').submit()">
@@ -87,6 +87,30 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-5 col-sm-5 col-xs-5">
+                              <div class="form-group">
+                                  <label for="">Bulan</label>
+                                <select name="bulan" class="form-control" onchange="$('#bagi-has').submit()">
+                                    <?php 
+                                    foreach ($bln as $key => $val) {
+                                      $key==$m?$sel='selected':$sel=null;
+                                      echo '<option '.$sel.' value="'.$key.'">'.$val.'</option>';
+                                    }
+                                    ?>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-3">
+                                <div class="form-group">
+                                  <label for="">Tampilkan</label>
+                                  <select name="limit" class="form-control" onchange="$('#bagi-has').submit()" id="limit">
+                                      <option value="10">10</option>
+                                      <option value="25">25</option>
+                                      <option value="50">50</option>
+                                      <option value="100">100</option>
+                                  </select>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -97,9 +121,41 @@
         <br>
         <br>
           <div class="row tile_count">
-            <div class="col-md-12 col-sm-12 col-xs-12 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Total pemasukan bagi hasil</span>
-              <div class="count text-center" id="pen-bgh"><?= isset($v->hg)?'Rp. '.$v->hg:'Rp. 0' ?></div>
+            <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> <span id="k-pbgh-m">Penerimaan BUMDes bagi hasil <?= $nb ?> <?= $y ?></span></span>
+              <div class="count text-center" id="pbgh-m">Rp. <?= isset($pbm->pnb)?''.$pbm->pnb:'0' ?></div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> <span id="k-pbgh-y">Penerimaan BUMDes bagi hasil tahun <?= $y ?></span></span>
+              <div class="count text-center" id="pbgh-y">Rp. <?= isset($pby->pnb)?''.$pby->pnb:'0' ?></div>
+            </div>
+          </div>
+          <div class="row tile_count">
+            <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> <span id="k-nbgh-m">Nilai bagi hasil <?= $nb ?> <?= $y ?></span></span>
+              <div class="count text-center" id="nbgh-m">Rp. <?= isset($pbm->hg)?''.$pbm->hg:'0' ?></div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> <span id="k-nbgh-y">Nilai bagi hasil tahun <?= $y ?></span></span>
+              <div class="count text-center" id="nbgh-y">Rp. <?= isset($pby->hg)?''.$pby->hg:'0' ?></div>
+            </div>
+          </div>
+          <div class="row tile_count">
+            <div class="col-md-3 col-sm-3 col-xs-3 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> Aset internal <?= $nb ?> <?= $y ?></span>
+              <div class="count" id="int-m"><?= $vt?''.$vt->jints:'0' ?></div>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> Aset eksternal <?= $nb ?> <?= $y ?></span>
+              <div class="count" id="ext-m"><?= $vt?''.$vt->exts:'0' ?></div>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> Aset internal tahun <?= $y ?></span>
+              <div class="count" id="int-y"><?= $va?''.$va->jints:'0' ?></div>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> Aset eksternal tahun <?= $y ?></span>
+              <div class="count" id="ext-y"><?= $va?''.$va->exts:'0' ?></div>
             </div>
           </div>
         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -109,7 +165,7 @@
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-                <table id="datatable" class="table table-striped table-bordered">
+                <table class="table table-striped table-bordered">
                   <thead>
                     <tr>
                       <th>No</th>
@@ -123,9 +179,12 @@
                   </thead>
 
                   <tbody id="val-body" data-act="hapus-bagi-hasil" data-meth="POST">
-                      <?= $value ?>
+                      <?= $value['val'] ?>
                   </tbody>
                 </table>
+            </div>
+            <div class="pgn-cust">
+              <?= $value['paginasi'] ?>
             </div>
           </div>
         </div>
@@ -136,7 +195,7 @@
               <div class="dashboard_graph">
                 <div class="row x_title">
                   <div class="col-md-12 col-sm-12 col-xs-12">
-                    <h3>Pertumbuhan pemasukan bagi hasil <small>tahun 2019</small></h3>
+                    <h3>Pertumbuhan pemasukan bagi hasil <small id="g-tahun">Tahun <?= $y ?></h3>
                   </div>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12">

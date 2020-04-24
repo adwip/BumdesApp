@@ -22,7 +22,7 @@ class Trade_model extends CI_Model{
     }
 
     function get_info_distribusi($tahun, $bulan, $limit, $offset, $ajax, $type='html'){
-        $this->db->select('tanggal AS tgl, nama_mitra AS tjn, nama_komoditas AS kom, jumlah AS jlh, FORMAT(nilai_transaksi, "#.00") AS ntr, satuan AS stn');
+        $this->db->select('id_prb AS id, tanggal AS tgl, nama_mitra AS tjn, nama_komoditas AS kom, jumlah AS jlh, FORMAT(nilai_transaksi, "#.00") AS ntr, satuan AS stn');
         $this->db->from('stok_keluar');
         $this->db->join('stok_item','stok_item.id_stok=stok_keluar.id_prb');
         $this->db->join('komoditas','komoditas.id_kom=stok_item.komoditas');
@@ -46,6 +46,7 @@ class Trade_model extends CI_Model{
                                 <td>'.$val->kom.'</td>
                                 <td>'.$val->jlh.' '.$val->stn.'</td>
                                 <td>Rp. '.$val->ntr.'</td>
+                                <td>'.anchor('detail-lout/'.$val->id,'Detail','  title="'.$val->id.'"').'</td>
                             </tr>';
                 $offset++;
                 if (!$ajax&&$offset==$limit) {

@@ -102,7 +102,7 @@
                             <div class="col-md-4 col-sm-4 col-xs-4">
                                 <div class="form-group">
                                     <label for="">Tampilkan</label>
-                                <select name="limit" class="form-control" onchange="$('#belanja-barang').submit()" id="limit">
+                                <select name="limit" class="form-control" onchange="$('#barang-keluar').submit()" id="limit">
                                     <option value="10">10</option>
                                     <option value="25">25</option>
                                     <option value="50">50</option>
@@ -156,22 +156,6 @@
         </div>
           
           <br>
-          <!-- <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-              <div class="dashboard_graph">
-                <div class="row x_title">
-                  <div class="col-md-9">
-                    <h3>Grafik belanja logistik</h3>
-                  </div>
-                </div>
-
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                  <div id="grafik_penjualan"></div>
-                </div>
-                <div class="clearfix"></div>
-              </div>
-            </div>
-          </div> -->
           <br>
         </div>
         <!-- /page content -->

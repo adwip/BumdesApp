@@ -101,7 +101,7 @@
                             <div class="col-md-4 col-sm-4 col-xs-4">
                                 <div class="form-group">
                                     <label for="">Tampilkan</label>
-                                <select name="limit" class="form-control" onchange="$('#belanja-barang').submit()" id="limit">
+                                <select name="limit" class="form-control" onchange="$('#dis-barang').submit()" id="limit">
                                     <option value="10">10</option>
                                     <option value="25">25</option>
                                     <option value="50">50</option>
@@ -140,6 +140,7 @@
                     <th>Komoditas</th>
                     <th>Jumlah</th>
                     <th>Nilai</th>
+                    <th>Detail</th>
                   </tr>
                 </thead>
 

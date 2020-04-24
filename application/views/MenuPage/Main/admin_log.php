@@ -68,10 +68,10 @@
               </div>
               <div class="x_content">
                 <div class="row">
-                  <div class="col-md-12">
+                  <div class="col-md-12 ccol-sm-12 col-xs-12">
                     <div class="row">
-                        <form id="log-admin" action="admin-log">
-                            <div class="col-md-6 col-sm-6">  
+                        <form id="log-admin" action="admin-log" class="form-filter">
+                            <div class="col-md-4 col-sm-4 col-xs-4">  
                               <div class="form-group">
                                   <label for="">Tahun</label>
                                   <select name="tahun" class="form-control" onchange="$('#log-admin').submit()">
@@ -84,7 +84,7 @@
                                   </select>
                               </div>
                             </div>
-                            <div class="col-md-6 col-sm-6">
+                            <div class="col-md-4 col-sm-4 col-xs-4">
                               <div class="form-group">
                                 <label for="">Bulan</label>
                                 <select name="bulan" class="form-control" onchange="$('#log-admin').submit()">
@@ -96,6 +96,17 @@
                                   ?>
                                 </select>
                               </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <div class="form-group">
+                                  <label for="">Tampilkan</label>
+                                  <select name="limit" class="form-control" onchange="$('#log-admin').submit()" id="limit">
+                                      <option value="10">10</option>
+                                      <option value="25">25</option>
+                                      <option value="50">50</option>
+                                      <option value="100">100</option>
+                                  </select>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -113,23 +124,24 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <form action="">
-                      <table id="datatable" class="table table-striped table-bordered">
-                        <thead>
-                          <tr>
-                            <th>No</th>
-                            <th>Nama</th>
-                            <th>Keterangan</th>
-                            <th>Waktu log</th>
-                            <th>Tanggal log</th>
-                          </tr>
-                        </thead>
+                    <table class="table table-striped table-bordered">
+                      <thead>
+                        <tr>
+                          <th>No</th>
+                          <th>Nama</th>
+                          <th>Keterangan</th>
+                          <th>Waktu log</th>
+                          <th>Tanggal log</th>
+                        </tr>
+                      </thead>
 
-                        <tbody id="val-body">
-                          <?= $v ?>
-                        </tbody>
-                      </table>
-                    </form>
+                      <tbody id="val-body">
+                        <?= $value['val'] ?>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="pgn-cust">
+                    <?= $value['paginasi'] ?>
                   </div>
                 </div>
               </div>
@@ -152,6 +164,6 @@
     <?php $this->load->view('SuptPage/JsP') ?>
     <!--Javascript tambahan -->
     <script src="<?= base_url('asset') ?>/JS/Fitur.js"></script>
-    <!-- <script src="<?= base_url('asset/JS/Ajax_req.js') ?>"></script> -->
+    <script src="<?= base_url('asset/JS/Ajax_req.js') ?>"></script>
   </body>
 </html>

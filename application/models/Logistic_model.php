@@ -77,7 +77,7 @@ class Logistic_model extends CI_Model{
                                 <td>'.$val->jlh.' '.$val->stn.'</td>
                                 <td>'.$val->tjn.'</td>
                                 <td class="text-center">
-                                    '.anchor('detail-lout/'.$val->id,'Detail','  title="'.$val->id.'"').'    <br>
+                                    '.anchor('detail-lout/'.$val->id,'Detail','  title="'.$val->id.'"').'<br>
                                 
                                 '.$btn.'
                                 </td>

@@ -122,8 +122,16 @@
                           <h2>Histori aktivitas</h2>
                         </div>
                         <div class="col-md-9 col-sm-9 col-xs-9">
-                          <form id="user-log" action="account" method="GET">
+                          <form id="user-log" action="account" method="GET" class="form-filter">
                             <div class="form-group pull-right">
+                              <select name="limit" class="form-control" onchange="$('#user-log').submit()" id="limit">
+                                  <option value="10">10</option>
+                                  <option value="25">25</option>
+                                  <option value="50">50</option>
+                                  <option value="100">100</option>
+                              </select>
+                            </div>
+                            <div class="form-group pull-right" style="margin-right: 15px;">
                               <select name="tahun" class="form-control" onchange="$('#user-log').submit()">
                                 <?php 
                                   foreach ($v_tahun as $key => $val) {
@@ -147,7 +155,7 @@
                         </div>
                       </div><br>
                       <!-- start of user-activity-graph -->
-                      <table id="datatable" class="table table-striped table-bordered">
+                      <table class="table table-striped table-bordered">
                         <thead>
                           <tr>
                             <th>No</th>
@@ -158,11 +166,12 @@
                         </thead>
 
                         <tbody id="val-body" data-act="hapus-stok-masuk" data-meth="POST">
-                            <?= $v ?>
+                            <?= $value['val'] ?>
                         </tbody>
                       </table>
-                      <div id="graph_bar" style="width:100%; height:280px;"></div>
-                      <!-- end of user-activity-graph -->
+                      <div class="pgn-cust">
+                        <?= $value['paginasi'] ?>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -187,5 +196,6 @@
 
     <?php $this->load->view('SuptPage/JsP') ?>
     <script src="<?= base_url('asset/JS/Fitur.js') ?>"></script>
+    <script src="<?= base_url('asset/JS/Ajax_req.js') ?>"></script>
   </body>
 </html>

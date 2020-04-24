@@ -7,19 +7,17 @@ class Rent_model extends CI_Model{
 		$this->load->library('Num_splitter');
     }
 
-    function get_penyewaan($tahun, $bulan, $type='html'){
+    function get_penyewaan($tahun, $bulan, $limit, $offset, $ajax, $type='html'){
         $this->db->select('id_sewa AS id, nama AS ast, tanggal_mulai AS wml, tanggal_selesai AS wsl, penyewa AS pnw, FORMAT(harga, "#.00") AS nom');
         $this->db->from('penyewaan pn');
-        $this->db->join('aset as','as.id_aset=pn.aset');/*
-        if ($tahun!='All'&&$bulan=='All') {
-            $this->db->like('tanggal_mulai',$tahun,'after');
-        }elseif ($tahun=='All'&&$bulan!='All') {
-            $this->db->like('tanggal_mulai',$bulan);
-        }elseif ($tahun!='All'&&$bulan!='All') {
-            $this->db->like('tanggal_mulai',$tahun.'-'.$bulan,'after');
-        }*/
+        $this->db->join('aset as','as.id_aset=pn.aset');
+        if ($ajax) {
+            $this->db->limit($limit, $offset);
+        }
         $this->db->like('tanggal_mulai',$tahun.'-'.$bulan,'after');
-        $result = $this->db->get()->result();
+        $result = $this->db->get();
+        $nr=$result->num_rows();
+        $result=$result->result();
         $result1=null;
         if ($type=='html') {
             foreach ($result as $key => $v) {
@@ -28,18 +26,22 @@ class Rent_model extends CI_Model{
                     $but = '<button type="button" class="btn btn-xs btn-danger hapus-sewa" value="'.$v->id.'">Hapus</button>'.anchor('edit-ar/'.$v->id,'Ubah','class="btn btn-xs btn-warning"');
                 }
                 $result1 .='<tr data-nam="'.$v->ast.'">
-                            <td>'.($key+1).'</td>
+                            <td>'.($offset+1).'</td>
                             <td>'.$v->ast.'</td>
                             <td>'.date('d/m/Y',strtotime($v->wml)).'</td>
                             <td>'.date('d/m/Y',strtotime($v->wsl)).'</td>
                             <td>'.$v->pnw.'</td>
                             <td>Rp. '.$v->nom.'</td>
-                            <td class="text-center">
+                            <td class="text-center"> <i class="fa fa-info-circle" title="'.$v->id.'"></i>
                                 '.$but.'
                             </td>
                         </tr>';
+                $offset++;
+                if (!$ajax&&$offset==$limit) {
+                    break;
+                }
             }
-            return $result1;
+            return ['val'=>$result1,'paginasi'=>paginasi_gen($limit,$nr)];
         }else{
             return $result;
         }

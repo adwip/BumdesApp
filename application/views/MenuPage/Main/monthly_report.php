@@ -72,15 +72,15 @@
             </div>
             <div class="x_content">
               <div class="row">
-                <div class="col-md-7">
+                <div class="col-md-7 col-sm-7 col-xs-12">
                   <!-- <button class="btn btn-md btn-warning">Unduh laporan keuangan</button> -->
                   <a href="unduh-keuangan-bulanan?tahun=<?=$tahun?>&bulan=<?=$bulan?>"class="btn btn-md btn-warning" target="_blank">Unduh laporan keuangan</a>
                   <a href="add-finr" class="btn btn-md btn-info">Input data keuangan</a>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-5 col-sm-5 col-xs-12">
                   <div class="row">
-                    <form id="laporan-keuangan" action="monthly-freport" method="GET">
-                      <div class="col-md-6 col-sm-6 col-xs-6">  
+                    <form id="laporan-keuangan" action="monthly-freport" method="GET" class="form-filter">
+                      <div class="col-md-4 col-sm-4 col-xs-4">  
                         <div class="form-group">
                           <label for="">Tahun</label>
                           <select name="tahun" class="form-control" onchange="$('#laporan-keuangan').submit()">
@@ -93,7 +93,7 @@
                           </select>
                         </div>
                       </div>
-                      <div class="col-md-6 col-sm-6 col-xs-6">
+                      <div class="col-md-4 col-sm-4 col-xs-4">
                         <div class="form-group">
                           <label for="">Bulan</label>
                           <select name="bulan" class="form-control" onchange="$('#laporan-keuangan').submit()">
@@ -103,6 +103,17 @@
                               echo '<option '.$sel.' value="'.$key.'">'.$val.'</option>';
                             }
                             ?>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-4 col-sm-4 col-xs-4">
+                          <div class="form-group">
+                          <label for="">Tampilkan</label>
+                          <select name="limit" class="form-control" onchange="$('#laporan-keuangan').submit()" id="limit">
+                              <option value="10">10</option>
+                              <option value="25">25</option>
+                              <option value="50">50</option>
+                              <option value="100">100</option>
                           </select>
                         </div>
                       </div>
@@ -132,7 +143,7 @@
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-              <table id="datatable" class="table table-striped table-bordered">
+              <table class="table table-striped table-bordered">
                 <thead>
                   <tr>
                     <th>No</th>
@@ -146,9 +157,12 @@
                 </thead>
 
                 <tbody id="val-body" data-act="hapus-keuangan/bln" data-meth="POST">
-                  <?= $value ?>
+                  <?= $value['val'] ?>
                 </tbody>
               </table>
+            </div>
+            <div class="pgn-cust">
+              <?= $value['paginasi'] ?>
             </div>
           </div>
         </div>

@@ -72,7 +72,7 @@ function pertumbuhan_perdagangan(value, selector, bulan, tahun){
    $(selector).highcharts(json);
 }
 
-function pertumbuhan_penyewaan(value, selector){
+function pertumbuhan_penyewaan(value, selector, tahun){
    var title = {
       text: 'Pertumbuhan perdagangan'   
    };
@@ -356,9 +356,9 @@ function non_distribusi(value, selector, tahun=null){
    $(selector).highcharts(json);
 }
 
-function penyewaan(value, selector, $tahun=null){
+function penyewaan(value, selector, tahun){
    var title = {
-      text: 'Pertumbuhan penyewaan aset BUMDes'   
+      text: 'Pertumbuhan penyewaan aset BUMDes tahun '+tahun
    };
    var subtitle = {
       text: 'Sumber: BUMDes Indrakila jaya'
@@ -429,7 +429,7 @@ function penyewaan(value, selector, $tahun=null){
 
 function bagi_hasil(value, selector, $tahun=null){
    var title = {
-      text: 'Pertumbuhan pemasukan bagi hasil aset '+$tahun
+      text: 'Pertumbuhan pemasukan bagi hasil aset tahun '+$tahun
    };
    var subtitle = {
       text: 'Sumber: BUMDes Indrakila jaya'

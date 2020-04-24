@@ -52,6 +52,8 @@ class Trade extends CI_Controller{
         if (isset($_GET['tahun'])) {
             $dt['tahun'] = $this->input->get('tahun',TRUE);
             $dt['bulan'] = $this->input->get('bulan',TRUE);
+            $lim = $this->input->get('limit',TRUE);
+            $offset = $this->input->get('offset',TRUE);
         }
         $dt['thn'] = $this->tm->get_tahun();
         $dt['v'] = $this->tm->get_total_penjualan($dt['tahun'],$dt['bulan'],true);

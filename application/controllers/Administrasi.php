@@ -58,25 +58,60 @@ class Administrasi extends CI_Controller{
         // echo APPPATH;
     }
 
-    function security($type='html'){//=============ada view
+    function admin_log(){//=============ada view
+        $dt['page']=$this->page;
+        $dt['bln'] = $this->bulan;
+        $dt['title'] = '';
+        $dt['m']=date('m');
+        $dt['y']=date('Y');
+        $lim = 10;
+        $offset = 0;
+        $ajax = $this->input->is_ajax_request();
+        $no_pagin = $this->input->get('pagin',TRUE);
+        if (isset($_GET['tahun'])) {
+            $dt['y'] = $this->input->get('tahun',true);
+            $dt['m'] = $this->input->get('bulan',true);
+            $lim = $this->input->get('limit',TRUE);
+            $offset = $this->input->get('offset',TRUE);
+        }
+        $dt['value'] = $this->hr->get_log_user($dt['y'],$dt['m'], $lim, $offset, $ajax, $no_pagin);
+        $dt['v_tahun'] = $this->hr->get_tahun_log();
+        if (!$ajax) {
+            $this->load->view('MenuPage/Main/admin_log',$dt);
+        }else{
+            $val['ses']='Ok';
+            $val['tabel']=$dt['value'];
+            echo json_encode($val);
+        }
+    }
+
+    function security(){//=============ada view
         $dt['page']=$this->page;
         $dt['bln'] = $this->bulan;
         $dt['v_tahun'] = $this->hr->get_tahun_log();
         $dt['title'] = 'Akun admin';//0081578813144
         $dt['y'] = date('Y');
         $dt['m'] = date('m');
+        $lim = 10;
+        $offset = 0;
+        $ajax = $this->input->is_ajax_request();
+        $no_pagin = $this->input->get('pagin',TRUE);
         if (isset($_GET['tahun'])) {
             $dt['y'] = $this->input->get('tahun',true);
             $dt['m'] = $this->input->get('bulan',true);
+            $lim = $this->input->get('limit',TRUE);
+            $offset = $this->input->get('offset',TRUE);
         }
-        $dt['v'] = $this->hr->get_user_log_id($this->ses->nu, $dt['y'],$dt['m']);
+        $dt['value'] = $this->hr->get_user_log_id($this->ses->nu, $dt['y'],$dt['m'], $lim, $offset, $ajax, $no_pagin);
         $dt['p'] = $this->hr->get_profil($this->ses->nu);
         $kat = ['MNG'=>'Pengurus BUMDes Indrakila Jaya','GOV'=>'Pemerintah Desa Pujotirto','SYS'=>'Sistem Admin Web BUMDes'];
-        if ($type=='html') {
+        if (!$ajax) {
             $dt['kt'] = $dt['p']?$kat[$dt['p']->kt]:null;
             $this->load->view('MenuPage/Main/security',$dt);
         }else {
-            echo $dt['v'];
+            $val['ses']='Ok';
+            $val['tabel']=$dt['value'];
+            echo json_encode($val);
         }
     }
 
@@ -107,28 +142,6 @@ class Administrasi extends CI_Controller{
         $dt['page']=$this->page;
         $dt['title'] = '';
         $this->load->view('MenuPage/Form/tambah_admin',$dt);
-    }
-
-
-    function admin_log($type='html'){//=============ada view
-        $dt['page']=$this->page;
-        $dt['bln'] = $this->bulan;
-        $dt['title'] = '';
-        $dt['m']=date('m');
-        $dt['y']=date('Y');
-        if (isset($_GET['tahun'])) {
-            $dt['y'] = $this->input->get('tahun',true);
-            $dt['m'] = $this->input->get('bulan',true);
-        }
-        $dt['v'] = $this->hr->get_log_user($dt['y'],$dt['m']);
-        $dt['v_tahun'] = $this->hr->get_tahun_log();
-        // echo $dt['v'];
-        if ($type=='html') {
-            $this->load->view('MenuPage/Main/admin_log',$dt);
-            // echo json_encode($this->ses->userdata());
-        }else{
-            echo $dt['v'];
-        }
     }
 
     function form_edit_aset($id){//=============ada view
