@@ -7,11 +7,11 @@ class Rent_model extends CI_Model{
 		$this->load->library('Num_splitter');
     }
 
-    function get_penyewaan($tahun, $bulan, $limit, $offset, $ajax, $type='html'){
+    function get_penyewaan($tahun, $bulan, $limit, $offset, $ajax, $no_pagin, $type='html'){
         $this->db->select('id_sewa AS id, nama AS ast, tanggal_mulai AS wml, tanggal_selesai AS wsl, penyewa AS pnw, FORMAT(harga, "#.00") AS nom');
         $this->db->from('penyewaan pn');
         $this->db->join('aset as','as.id_aset=pn.aset');
-        if ($ajax) {
+        if ($no_pagin!='no'&&$ajax) {
             $this->db->limit($limit, $offset);
         }
         $this->db->like('tanggal_mulai',$tahun.'-'.$bulan,'after');
@@ -37,7 +37,7 @@ class Rent_model extends CI_Model{
                             </td>
                         </tr>';
                 $offset++;
-                if (!$ajax&&$offset==$limit) {
+                if (!($no_pagin!='no'&&$ajax)&&$offset==$limit) {
                     break;
                 }
             }

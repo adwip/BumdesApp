@@ -125,7 +125,7 @@ $(document).ready(function(){
                     $('.pgn-cust').html(v['tabel']['paginasi'])
                     let link = $('a[href|=unduh]').attr('href').split('?')
                     form=form.split('&')
-                    $('a[href|=unduh]').attr('href',link[0]+'?'+form[0])
+                    $('a[href|=unduh]').attr('href',link[0]+'?'+form[0]+'&'+form[1])
                     $('#pbgh-m').html('Rp. '+v['pbgh-m'])
                     $('#pbgh-y').html('Rp. '+v['pbgh-y'])
                     $('#nbgh-m').html('Rp. '+v['nbgh-m'])

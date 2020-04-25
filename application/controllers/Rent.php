@@ -19,19 +19,21 @@ class Rent extends CI_Controller{
         $dt['bln'] = $this->bulan;
         $dt['tahun'] = date('Y');
         $dt['bulan'] = date('m');
-        $lim = 10;
+        $dt['lim'] = 10;
         $offset = 0;
+        $dt['form_lim'] = [10, 25, 50, 100];
         $ajax = $this->input->is_ajax_request();
+        $no_pagin = $this->input->get('pagin',TRUE);
         if (isset($_GET['tahun'])) {
             $dt['tahun'] = $this->input->get('tahun',TRUE);
             $dt['bulan'] = $this->input->get('bulan',TRUE);
-            $lim = $this->input->get('limit',TRUE);
+            $dt['lim'] = $this->input->get('limit',TRUE);
             $offset = $this->input->get('offset',TRUE);
         }
         $dt['thn'] = $this->rm->get_tahun();
         $dt['v'] = $this->rm->get_jumlah_penyewaan($dt['tahun'], $dt['bulan']);
         $dt['v2'] = $this->rm->get_pendapatan_sewa($dt['tahun'], $dt['bulan']);
-        $dt['value']=$this->rm->get_penyewaan($dt['tahun'],$dt['bulan'], $lim, $offset, $ajax);
+        $dt['value']=$this->rm->get_penyewaan($dt['tahun'],$dt['bulan'], $dt['lim'], $offset, $ajax, $no_pagin);
         $dt['v_grafik']=$this->fm->get_grafik_penyewaan($dt['tahun']);
         if (!$ajax) {
             $this->load->view('MenuPage/Main/penyewaan',$dt);
@@ -203,7 +205,7 @@ class Rent extends CI_Controller{
     function pdf_sewa(){
         $tahun = $this->input->get('tahun');
         $bulan = $this->input->get('bulan');
-        $r = $this->rm->get_penyewaan($tahun,$bulan,'JSON');
+        $r = $this->rm->get_penyewaan($tahun,$bulan,0,0,0,0,'JSON');
         // membuat halaman baru
         $this->PDF->AddPage();
         // setting jenis font yang akan digunakan

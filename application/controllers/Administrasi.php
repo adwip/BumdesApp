@@ -64,17 +64,18 @@ class Administrasi extends CI_Controller{
         $dt['title'] = '';
         $dt['m']=date('m');
         $dt['y']=date('Y');
-        $lim = 10;
+        $dt['lim'] = 10;
         $offset = 0;
+        $dt['form_lim'] = [10, 25, 50, 100];
         $ajax = $this->input->is_ajax_request();
         $no_pagin = $this->input->get('pagin',TRUE);
         if (isset($_GET['tahun'])) {
             $dt['y'] = $this->input->get('tahun',true);
             $dt['m'] = $this->input->get('bulan',true);
-            $lim = $this->input->get('limit',TRUE);
+            $dt['lim'] = $this->input->get('limit',TRUE);
             $offset = $this->input->get('offset',TRUE);
         }
-        $dt['value'] = $this->hr->get_log_user($dt['y'],$dt['m'], $lim, $offset, $ajax, $no_pagin);
+        $dt['value'] = $this->hr->get_log_user($dt['y'],$dt['m'], $dt['lim'], $offset, $ajax, $no_pagin);
         $dt['v_tahun'] = $this->hr->get_tahun_log();
         if (!$ajax) {
             $this->load->view('MenuPage/Main/admin_log',$dt);
@@ -92,17 +93,18 @@ class Administrasi extends CI_Controller{
         $dt['title'] = 'Akun admin';//0081578813144
         $dt['y'] = date('Y');
         $dt['m'] = date('m');
-        $lim = 10;
+        $dt['lim'] = 10;
         $offset = 0;
+        $dt['form_lim'] = [10, 25, 50, 100];
         $ajax = $this->input->is_ajax_request();
         $no_pagin = $this->input->get('pagin',TRUE);
         if (isset($_GET['tahun'])) {
             $dt['y'] = $this->input->get('tahun',true);
             $dt['m'] = $this->input->get('bulan',true);
-            $lim = $this->input->get('limit',TRUE);
+            $dt['lim'] = $this->input->get('limit',TRUE);
             $offset = $this->input->get('offset',TRUE);
         }
-        $dt['value'] = $this->hr->get_user_log_id($this->ses->nu, $dt['y'],$dt['m'], $lim, $offset, $ajax, $no_pagin);
+        $dt['value'] = $this->hr->get_user_log_id($this->ses->nu, $dt['y'],$dt['m'], $dt['lim'], $offset, $ajax, $no_pagin);
         $dt['p'] = $this->hr->get_profil($this->ses->nu);
         $kat = ['MNG'=>'Pengurus BUMDes Indrakila Jaya','GOV'=>'Pemerintah Desa Pujotirto','SYS'=>'Sistem Admin Web BUMDes'];
         if (!$ajax) {

@@ -110,10 +110,12 @@
                           <div class="form-group">
                           <label for="">Tampilkan</label>
                           <select name="limit" class="form-control" onchange="$('#laporan-keuangan').submit()" id="limit">
-                              <option value="10">10</option>
-                              <option value="25">25</option>
-                              <option value="50">50</option>
-                              <option value="100">100</option>
+                            <?php 
+                            foreach ($form_lim as $key => $val) {
+                              $val==$lim?$sel='selected':$sel=null;
+                              echo '<option '.$sel.' value="'.$val.'">'.$val.'</option>';
+                            }
+                            ?>
                           </select>
                         </div>
                       </div>

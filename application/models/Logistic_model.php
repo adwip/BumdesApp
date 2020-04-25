@@ -6,14 +6,14 @@ class Logistic_model extends CI_Model{
         $this->load->database('default');
     }
 
-    function get_info_belanja_log($tahun, $bulan, $limit, $offset, $ajax, $type='html'){
+    function get_info_belanja_log($tahun, $bulan, $limit, $offset, $ajax, $no_pagin, $type='html'){
         $this->db->select(' id_prb as idp, id_kom AS idk, nama_komoditas AS nkom,tanggal, jumlah, FORMAT(nilai, "#.00") AS nilai, stok, DATEDIFF( "'.date('Y-m-d').'",tanggal) AS selisih, satuan AS stn');
         $this->db->from('stok_masuk');
         $this->db->join('stok_item','stok_item.id_stok=stok_masuk.id_prb');
         $this->db->join('komoditas','komoditas.id_kom=stok_item.komoditas');
         $this->db->join('satuan','id=sat_barang');
         $this->db->like('tanggal',$tahun.'-'.$bulan);
-        if ($ajax) {
+        if ($no_pagin!='no'&&$ajax) {
             $this->db->limit($limit, $offset);
         }
         $result = $this->db->get();
@@ -38,7 +38,7 @@ class Logistic_model extends CI_Model{
                                 </td>
                             </tr>';
                 $offset++;
-                if (!$ajax&&$offset==$limit) {
+                if (!($no_pagin!='no'&&$ajax)&&$offset==$limit) {
                     break;
                 }
             }
@@ -49,7 +49,7 @@ class Logistic_model extends CI_Model{
         //No	Komoditas	Tanggal	Jumlah	Harga	Stok	Aksi
     }
 
-    function get_info_barang_keluar($tahun, $bulan, $limit, $offset, $ajax, $type='html'){
+    function get_info_barang_keluar($tahun, $bulan, $limit, $offset, $ajax, $no_pagin, $type='html'){
         $this->db->select('id_prb AS id, id_kom AS idk, nama_komoditas AS kom, tanggal AS tgl, jumlah AS jlh, tujuan AS tjn, stok AS stk, satuan AS stn');
         $this->db->from('stok_keluar');
         $this->db->join('stok_item','stok_item.id_stok=stok_keluar.id_prb');
@@ -57,7 +57,7 @@ class Logistic_model extends CI_Model{
         $this->db->join('mitra','mitra.id_mitra=stok_keluar.mitra','LEFT');
         $this->db->join('satuan','id=sat_barang');
         $this->db->like('tanggal',$tahun.'-'.$bulan,'after');
-        if ($ajax) {
+        if ($no_pagin!='no'&&$ajax) {
             $this->db->limit($limit, $offset);
         }
         $result = $this->db->get();
@@ -83,7 +83,7 @@ class Logistic_model extends CI_Model{
                                 </td>
                             </tr>';
                 $offset++;
-                if (!$ajax&&$offset==$limit) {
+                if (!($no_pagin!='no'&&$ajax)&&$offset==$limit) {
                     break;
                 }
             }

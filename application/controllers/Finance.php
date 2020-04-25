@@ -29,19 +29,20 @@ class Finance extends CI_controller{
         $dt['bln'] = $this->bulan;
         $dt['tahun'] = date('Y');
         $dt['bulan'] = date('m');
-        $lim = 10;
+        $dt['lim'] = 10;
         $offset = 0;
+        $dt['form_lim'] = [10, 25, 50, 100];
         $ajax = $this->input->is_ajax_request();
         $no_pagin = $this->input->get('pagin',TRUE);
         if (isset($_GET['tahun'])) {
             $dt['tahun'] = $this->input->get('tahun',TRUE);
             $dt['bulan'] = $this->input->get('bulan',TRUE);
             $dt['minggu'] = $this->input->get('minggu',TRUE);
-            $lim = $this->input->get('limit',TRUE);
+            $dt['lim'] = $this->input->get('limit',TRUE);
             $offset = $this->input->get('offset',TRUE);
         }
         $dt['thn'] = $this->fm->get_tahun_fin();
-        $dt['value']=$this->fm->get_keuangan_mingguan($dt['tahun'],$dt['bulan'],$dt['minggu'], $lim, $offset, $ajax, $no_pagin);
+        $dt['value']=$this->fm->get_keuangan_mingguan($dt['tahun'],$dt['bulan'],$dt['minggu'], $dt['lim'], $offset, $ajax, $no_pagin);
         $dt['kd']=$this->fm->get_kredit_debit_mingguan($dt['tahun'],$dt['bulan'],$dt['minggu']);
         $dt['s']=$this->fm->get_saldo();
         $dt['v_grafik']=$this->fm->get_grafik_keuangan_mingguan($dt['tahun'],$dt['bulan']);
@@ -64,18 +65,19 @@ class Finance extends CI_controller{
         $dt['bln'] = $this->bulan;
         $dt['tahun'] = date('Y');
         $dt['bulan'] = date('m');
-        $lim = 10;
+        $dt['lim'] = 10;
         $offset = 0;
+        $dt['form_lim'] = [10, 25, 50, 100];
         $ajax = $this->input->is_ajax_request();
         $no_pagin = $this->input->get('pagin',TRUE);
         if (isset($_GET['tahun'])) {
             $dt['tahun'] = $this->input->get('tahun',TRUE);
             $dt['bulan'] = $this->input->get('bulan',TRUE);
-            $lim = $this->input->get('limit',TRUE);
+            $dt['lim'] = $this->input->get('limit',TRUE);
             $offset = $this->input->get('offset',TRUE);
         }
         $dt['thn'] = $this->fm->get_tahun_fin();
-        $dt['value']=$this->fm->get_keuangan_bulanan($dt['tahun'],$dt['bulan'], $lim, $offset, $ajax, $no_pagin);
+        $dt['value']=$this->fm->get_keuangan_bulanan($dt['tahun'],$dt['bulan'], $dt['lim'], $offset, $ajax, $no_pagin);
         $dt['kd']=$this->fm->get_kredit_debit_bulanan($dt['tahun'],$dt['bulan']);
         $dt['s']=$this->fm->get_saldo();
         $dt['v_grafik']=$this->fm->get_grafik_keuangan_bulanan($dt['tahun']);
@@ -96,18 +98,19 @@ class Finance extends CI_controller{
         $dt['title'] = 'Laporan tahunan';
         //echo $this->input->get('tipe');
         $dt['tahun'] = date('Y');
-        $lim = 10;
+        $dt['lim'] = 10;
         $offset = 0;
+        $dt['form_lim'] = [10, 25, 50, 100];
         $ajax = $this->input->is_ajax_request();
         $no_pagin = $this->input->get('pagin',TRUE);
         // echo $no_pagin;
         if (isset($_GET['tahun'])) {
             $dt['tahun'] = $this->input->get('tahun',TRUE);
-            $lim = $this->input->get('limit',TRUE);
+            $dt['lim'] = $this->input->get('limit',TRUE);
             $offset = $this->input->get('offset',TRUE);
         }
         $dt['thn'] = $this->fm->get_tahun_fin();
-        $dt['value']=$this->fm->get_keuangan_tahunan($dt['tahun'], $lim, $offset, $ajax,$no_pagin);
+        $dt['value']=$this->fm->get_keuangan_tahunan($dt['tahun'], $dt['lim'], $offset, $ajax,$no_pagin);
         $dt['kd']=$this->fm->get_kredit_debit_tahunan($dt['tahun']);
         $dt['s']=$this->fm->get_saldo();
         $dt['v_grafik']=$this->fm->get_grafik_keuangan_tahunan();
@@ -130,19 +133,20 @@ class Finance extends CI_controller{
         $dt['bln'] = $this->bulan;
         $dt['tahun'] = date('Y');
         $dt['bulan'] = date('m');
-        $lim = 10;
+        $dt['lim'] = 10;
         $offset = 0;
+        $dt['form_lim'] = [10, 25, 50, 100];
         $ajax = $this->input->is_ajax_request();
         $no_pagin = $this->input->get('pagin',TRUE);
         if (isset($_GET['tahun'])) {
             $dt['tahun'] = $this->input->get('tahun',TRUE);
             $dt['bulan'] = $this->input->get('bulan',TRUE);
             $dt['nb'] = $this->bulan[$dt['bulan']];
-            $lim = $this->input->get('limit',TRUE);
+            $dt['lim'] = $this->input->get('limit',TRUE);
             $offset = $this->input->get('offset',TRUE);
         }
         $dt['thn'] = $this->lm->get_tahun('OUT');
-        $dt['value'] = $this->fm->get_laba_usaha($dt['tahun'], $dt['bulan'], $lim, $offset, $ajax, $no_pagin);
+        $dt['value'] = $this->fm->get_laba_usaha($dt['tahun'], $dt['bulan'], $dt['lim'], $offset, $ajax, $no_pagin);
         $dt['v_grafik']=$this->fm->get_grafik_laba_dagang($dt['tahun']);
         $dt['v2']=$this->tm->get_jual_profits_tahun($dt['tahun']);
         $dt['v3']=$this->tm->get_jual_profits_bulan($dt['tahun'],$dt['bulan']);
@@ -157,13 +161,15 @@ class Finance extends CI_controller{
         $dt['y'] = date('Y');
         $dt['m'] = date('m');
         $dt['nb'] = $this->bulan[date('m')];
-        $lim = 10;
+        $dt['lim'] = 10;
         $offset = 0;
+        $dt['form_lim'] = [10, 25, 50, 100];
         $ajax = $this->input->is_ajax_request();
+        $no_pagin = $this->input->get('pagin',TRUE);
         if (isset($_GET['tahun'])) {
             $dt['tahun'] = $this->input->get('tahun',TRUE);
             $dt['m'] = $this->input->get('bulan',TRUE);
-            $lim = $this->input->get('limit',TRUE);
+            $dt['lim'] = $this->input->get('limit',TRUE);
             $offset = $this->input->get('offset',TRUE);
             $dt['y'] = $dt['tahun']=='All'?date('Y'):$dt['tahun'];
             $dt['nb']=$this->bulan[$dt['m']];
@@ -173,7 +179,7 @@ class Finance extends CI_controller{
         $dt['vt'] = $this->fm->get_info_aset_bgh($dt['y'], $dt['m']);
         $dt['va'] = $this->fm->get_info_aset_bgh();
         $dt['thn'] = $this->fm->get_tahun_bgh();
-        $dt['value'] = $this->fm->daftar_kerjasama_bgh($dt['tahun'], $lim, $offset, $ajax);
+        $dt['value'] = $this->fm->daftar_kerjasama_bgh($dt['tahun'], $dt['lim'], $offset, $ajax, $no_pagin);
         $dt['v_grafik']=$this->fm->get_grafik_bagi_hasil($dt['y']);
         if (!$ajax) {
             // echo json_encode($dt['value']);
@@ -474,7 +480,9 @@ class Finance extends CI_controller{
     //=============ada view
     function pdf_daftar_bagi_hasil(){
         $tahun = $this->input->get('tahun',true);
-        $r = $this->fm->daftar_kerjasama_bgh($tahun,'json');
+        $bulan = $this->input->get('bulan',true);
+        $nb = isset($this->bulan[$bulan])?$this->bulan[$bulan]:'not valid';
+        $r = $this->fm->daftar_kerjasama_bgh($tahun,0,0,0,0,'json');
         $row = $this->fm->get_total_bagi_hasil($tahun);
         $row = isset($row->hg)?$row->hg:0;
         // membuat halaman baru
@@ -486,18 +494,52 @@ class Finance extends CI_controller{
         // mencetak string 
         $this->PDF->Cell(130,7,'DAFTAR BAGI HASIL ASET',0,1,'C');
         $this->PDF->SetFont('Arial','B',12);
-        $this->PDF->Cell(180,8,'BUMDES Indrakila Jaya',0,1,'C');
+        $this->PDF->Cell(190,8,'BUMDES Indrakila Jaya',0,1,'C');
         $this->PDF->Cell(190,0,'',1,1);
         // Memberikan space kebawah agar tidak terlalu rapat
         $this->PDF->Cell(10,7,'',0,1);
         $this->PDF->SetFont('Arial','',15);
-        $this->PDF->Cell(190,7,date('d/m/Y'),0,1,'R');
-        
+        $tanggal = date('d').' '.$this->bulan[date('m')].' '.date('Y');
+        $this->PDF->Cell(190,7,$tanggal,0,1,'R');
+        //Ambil data dari db
+        $pby = $this->fm->get_total_bagi_hasil($tahun);
+        $pbm = $this->fm->get_pemb_bagi_hasil_bulan($tahun, $bulan);
+        $vt = $this->fm->get_info_aset_bgh($tahun, $bulan);
+        $va = $this->fm->get_info_aset_bgh();
+
+        $this->PDF->SetFont('Arial','B',8);
+        $this->PDF->Cell(95,10,'Penerimaan bagi hasil BUMDes '.$nb.' '.$tahun,0,0);
+        $this->PDF->Cell(95,10,'Penerimaan bagi hasil BUMDes tahun '.$tahun,0,1);
+        $this->PDF->SetFont('Arial','',20);
+        $this->PDF->Cell(95,10,isset($pbm->pnb)?'Rp. '.$pbm->pnb:'Rp. 0','R',0,'C');
+        $this->PDF->Cell(95,10,isset($pby->pnb)?'Rp. '.$pby->pnb:'Rp. 0','L',1,'C');
+        $this->PDF->Cell(10,2,'',0,1);
+
+        $this->PDF->SetFont('Arial','B',8);
+        $this->PDF->Cell(95,10,'Nilai bagi hasil '.$nb.' '.$tahun,0,0);
+        $this->PDF->Cell(95,10,'Nilai bagi hasil tahun '.$tahun,0,1);
+        $this->PDF->SetFont('Arial','',20);
+        $this->PDF->Cell(95,10,isset($pbm->hg)?'Rp. '.$pbm->hg:'Rp. 0','R',0,'C');
+        $this->PDF->Cell(95,10,isset($pby->hg)?'Rp. '.$pby->hg:'Rp. 0','L',1,'C');
+        $this->PDF->Cell(10,2,'',0,1);
+
+        $this->PDF->SetFont('Arial','B',8);
+        $this->PDF->Cell(45,10,'Aset internal '.$nb.' '.$tahun,0,0);
+        $this->PDF->Cell(55,10,'Aset eksternal '.$nb.' '.$tahun,0,0);
+        $this->PDF->Cell(45,10,'Aset internal tahun '.$tahun,0,0);
+        $this->PDF->Cell(50,10,'Aset eksternal tahun '.$tahun,0,1);
+        $this->PDF->SetFont('Arial','',20);
+        $this->PDF->Cell(45,10,$vt?$vt->jints:0,null,0,'C');
+        $this->PDF->Cell(55,10,$vt?$vt->exts:0,'L',0,'C');
+        $this->PDF->Cell(45,10,$va?$va->jints:0,'L',0,'C');
+        $this->PDF->Cell(45,10,$va?$va->exts:0,'L',1,'C');
+        $this->PDF->Cell(10,6,'',0,1);
+        /*
         $this->PDF->SetFont('Arial','',12);
         $this->PDF->Cell(80,10,'Total pemasukan bagi hasil',0,1);
         $this->PDF->SetFont('Arial','B',20);
         $this->PDF->Cell(190,10,'Rp. '.$row,0,1,'C');
-        $this->PDF->Cell(10,10,'',0,1);
+        $this->PDF->Cell(10,10,'',0,1);*/
 
         $this->PDF->SetFont('Arial','',15);
         $this->PDF->Cell(10,10,'Daftar bagi hasil',0,1);
@@ -532,7 +574,7 @@ class Finance extends CI_controller{
             $minggu = $this->input->get('minggu',true);
             $title = 'MINGGU-AN';
             $tanggal = 'Minggu ke-'.$minggu.' '.$this->bulan[$bulan].' '.$tahun;
-            $r = $this->fm->get_keuangan_mingguan($tahun,$bulan,$minggu,'JSON');
+            $r = $this->fm->get_keuangan_mingguan($tahun,$bulan,$minggu,0,0,0,0,'JSON');
             $dk=$this->fm->get_kredit_debit_mingguan($tahun,$bulan,$minggu);
             $s=$this->fm->get_saldo();
             $ket='minggu-an_';
@@ -542,7 +584,7 @@ class Finance extends CI_controller{
             $bulan = $this->input->get('bulan',true);
             $title = 'BULAN-AN';
             $tanggal = $this->bulan[$bulan].' '.$tahun;
-            $r = $this->fm->get_keuangan_bulanan($tahun,$bulan,'JSON');
+            $r = $this->fm->get_keuangan_bulanan($tahun,$bulan,0,0,0,0,'JSON');
             $dk=$this->fm->get_kredit_debit_bulanan($tahun,$bulan);
             $s=$this->fm->get_saldo();
             $ket='bulan-an_';
@@ -551,7 +593,7 @@ class Finance extends CI_controller{
             $tahun = $this->input->get('tahun',true);
             $title = 'TAHUN-AN';
             $tanggal = $tahun;
-            $r = $this->fm->get_keuangan_tahunan($tahun,'JSON');
+            $r = $this->fm->get_keuangan_tahunan($tahun,0,0,0,0,'JSON');
             $dk=$this->fm->get_kredit_debit_tahunan($tahun);
             $s=$this->fm->get_saldo();
             $ket='tahun-an';

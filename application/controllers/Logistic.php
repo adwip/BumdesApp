@@ -19,16 +19,18 @@ class Logistic extends CI_Controller{
         $dt['title'] = 'Belanja komoditas';
         $dt['tahun'] = date('Y');
         $dt['bulan'] = date('m');
-        $lim = 10;
+        $dt['lim'] = 10;
         $offset = 0;
         $ajax = $this->input->is_ajax_request();
+        $no_pagin = $this->input->get('pagin',TRUE);
+        $dt['form_lim'] = [10, 25, 50, 100];
         if (isset($_GET['tahun'])) {
             $dt['tahun'] = $this->input->get('tahun',TRUE);
             $dt['bulan'] = $this->input->get('bulan',TRUE);
-            $lim = $this->input->get('limit',TRUE);
+            $dt['lim'] = $this->input->get('limit',TRUE);
             $offset = $this->input->get('offset',TRUE);
         }
-        $dt['value']=$this->lm->get_info_belanja_log($dt['tahun'],$dt['bulan'], $lim, $offset, $ajax);
+        $dt['value']=$this->lm->get_info_belanja_log($dt['tahun'],$dt['bulan'], $dt['lim'], $offset, $ajax, $no_pagin);
         $dt['thn'] = $this->lm->get_tahun('IN');
         $dt['v']=$this->lm->total_belanja_barang($dt['tahun'],$dt['bulan']);
         $dt['v_grafik']=$this->fm->get_grafik_belanja_barang($dt['tahun']);
@@ -139,14 +141,14 @@ class Logistic extends CI_Controller{
         }
     }
 
-    //=============ada view
-    function pdf_belanja_barang(){
+    
+    function pdf_belanja_barang(){//OK
         $tahun = $this->input->get('tahun');
         $bulan = $this->input->get('bulan');
         $inf_bel=$this->lm->total_belanja_barang($tahun,$bulan);
         $inf_bel = isset($inf_bel->hg)?$inf_bel->hg:0;
 
-        $r = $this->lm->get_info_belanja_log($tahun,$bulan,'JSON');
+        $r = $this->lm->get_info_belanja_log($tahun,$bulan,0,0,0,0,'JSON');
         // membuat halaman baru
         // echo '<title>Belanja barang</title>';
         $this->PDF->AddPage();

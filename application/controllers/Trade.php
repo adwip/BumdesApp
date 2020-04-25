@@ -18,18 +18,20 @@ class Trade extends CI_Controller{
         $dt['bln'] = $this->bulan;
         $dt['tahun'] = date('Y');
         $dt['bulan'] = date('m');
-        $lim = 10;
+        $dt['lim'] = 10;
         $offset = 0;
+        $dt['form_lim'] = [10, 25, 50, 100];
         $ajax = $this->input->is_ajax_request();
+        $no_pagin = $this->input->get('pagin',TRUE);
         if (isset($_GET['tahun'])) {
             $dt['tahun'] = $this->input->get('tahun',TRUE);
             $dt['bulan'] = $this->input->get('bulan',TRUE);
-            $lim = $this->input->get('limit',TRUE);
+            $dt['lim'] = $this->input->get('limit',TRUE);
             $offset = $this->input->get('offset',TRUE);
         }
         $dt['thn'] = $this->lm->get_tahun('OUT');
         $dt['v'] = $this->tm->get_total_penjualan($dt['tahun'],$dt['bulan']);
-        $dt['value']=$this->lm->get_info_barang_keluar($dt['tahun'],$dt['bulan'], $lim, $offset, $ajax);
+        $dt['value']=$this->lm->get_info_barang_keluar($dt['tahun'],$dt['bulan'], $dt['lim'], $offset, $ajax, $no_pagin);
         
         if (!$ajax) {
             $this->load->view('MenuPage/Main/exit_item',$dt);
@@ -46,18 +48,20 @@ class Trade extends CI_Controller{
         $dt['bln'] = $this->bulan;
         $dt['tahun'] = date('Y');
         $dt['bulan'] = date('m');
-        $lim = 10;
+        $dt['lim'] = 10;
         $offset = 0;
+        $dt['form_lim'] = [10, 25, 50, 100];
         $ajax = $this->input->is_ajax_request();
+        $no_pagin = $this->input->get('pagin',TRUE);
         if (isset($_GET['tahun'])) {
             $dt['tahun'] = $this->input->get('tahun',TRUE);
             $dt['bulan'] = $this->input->get('bulan',TRUE);
-            $lim = $this->input->get('limit',TRUE);
+            $dt['lim'] = $this->input->get('limit',TRUE);
             $offset = $this->input->get('offset',TRUE);
         }
         $dt['thn'] = $this->tm->get_tahun();
         $dt['v'] = $this->tm->get_total_penjualan($dt['tahun'],$dt['bulan'],true);
-        $dt['value']=$this->tm->get_info_distribusi($dt['tahun'],$dt['bulan'], $lim, $offset, $ajax);
+        $dt['value']=$this->tm->get_info_distribusi($dt['tahun'],$dt['bulan'], $dt['lim'], $offset, $ajax, $no_pagin);
         $dt['v_grafik']=$this->fm->get_grafik_nilai_distribusi($dt['tahun']);
         $dt['v_grafik2']=$this->fm->get_grafik_nilai_non_distribusi($dt['tahun']);
         
@@ -263,7 +267,7 @@ class Trade extends CI_Controller{
         $inf_dist=$this->tm->get_total_penjualan($tahun,$bulan);
         $inf_dist= isset($inf_dist->hg)?$inf_dist->hg:0;
         // tm->get_total_penjualan
-        $r = $this->lm->get_info_barang_keluar($tahun,$bulan,'JSON');
+        $r = $this->lm->get_info_barang_keluar($tahun,$bulan,0,0,0,0,'JSON');
         // membuat halaman baru
         // echo '<title>Belanja barang</title>';
         $this->PDF->AddPage();
@@ -314,7 +318,7 @@ class Trade extends CI_Controller{
         $inf_dist=$this->tm->get_total_penjualan($tahun,$bulan,true);
         $inf_dist= isset($inf_dist->hg)?$inf_dist->hg:0;
         
-        $r = $this->tm->get_info_distribusi($tahun,$bulan,'JSON');
+        $r = $this->tm->get_info_distribusi($tahun,$bulan,0,0,0,0,'JSON');
         // membuat halaman baru
         // echo '<title>Belanja barang</title>';
         $this->PDF->AddPage();

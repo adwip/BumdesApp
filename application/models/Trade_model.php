@@ -21,7 +21,7 @@ class Trade_model extends CI_Model{
         return $resp;
     }
 
-    function get_info_distribusi($tahun, $bulan, $limit, $offset, $ajax, $type='html'){
+    function get_info_distribusi($tahun, $bulan, $limit, $offset, $ajax, $no_pagin, $type='html'){
         $this->db->select('id_prb AS id, tanggal AS tgl, nama_mitra AS tjn, nama_komoditas AS kom, jumlah AS jlh, FORMAT(nilai_transaksi, "#.00") AS ntr, satuan AS stn');
         $this->db->from('stok_keluar');
         $this->db->join('stok_item','stok_item.id_stok=stok_keluar.id_prb');
@@ -30,7 +30,7 @@ class Trade_model extends CI_Model{
         $this->db->join('satuan','id=sat_barang');
         $this->db->like('tanggal',$tahun.'-'.$bulan);
         $this->db->where('tujuan','Distribusi');
-        if ($ajax) {
+        if ($no_pagin!='no'&&$ajax) {
             $this->db->limit($limit, $offset);
         }
         $result = $this->db->get();
@@ -49,7 +49,7 @@ class Trade_model extends CI_Model{
                                 <td>'.anchor('detail-lout/'.$val->id,'Detail','  title="'.$val->id.'"').'</td>
                             </tr>';
                 $offset++;
-                if (!$ajax&&$offset==$limit) {
+                if (!($no_pagin!='no'&&$ajax)&&$offset==$limit) {
                     break;
                 }
             }

@@ -125,10 +125,12 @@
                           <form id="user-log" action="account" method="GET" class="form-filter">
                             <div class="form-group pull-right">
                               <select name="limit" class="form-control" onchange="$('#user-log').submit()" id="limit">
-                                  <option value="10">10</option>
-                                  <option value="25">25</option>
-                                  <option value="50">50</option>
-                                  <option value="100">100</option>
+                               <?php 
+                                foreach ($form_lim as $key => $val) {
+                                  $val==$lim?$sel='selected':$sel=null;
+                                  echo '<option '.$sel.' value="'.$val.'">'.$val.'</option>';
+                                }
+                                ?>
                               </select>
                             </div>
                             <div class="form-group pull-right" style="margin-right: 15px;">

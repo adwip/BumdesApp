@@ -66,7 +66,7 @@
             <div class="x_content">
               <div class="row">
                 <div class="col-md-8 col-sm-8 col-xs-12">
-                  <a href="unduh-daftar-bagi-hasil?tahun=<?=$tahun?>"class="btn btn-md btn-warning" target="_blank">Unduh daftar kerja sama</a>
+                  <a href="unduh-daftar-bagi-hasil?tahun=<?=$tahun?>&bulan=<?=$m?>"class="btn btn-md btn-warning" target="_blank">Unduh daftar kerja sama</a>
                   <a href="tambah-bagi-hasil" class="btn btn-md btn-info">Tambah aset bagi hasil</a>
                   <a href="tambah-pemasukan-bgh" class="btn btn-md btn-primary">Tambah pembayaran bagi hasil</a>
                 </div>
@@ -104,10 +104,12 @@
                                 <div class="form-group">
                                   <label for="">Tampilkan</label>
                                   <select name="limit" class="form-control" onchange="$('#bagi-has').submit()" id="limit">
-                                      <option value="10">10</option>
-                                      <option value="25">25</option>
-                                      <option value="50">50</option>
-                                      <option value="100">100</option>
+                                    <?php 
+                                    foreach ($form_lim as $key => $val) {
+                                      $val==$lim?$sel='selected':$sel=null;
+                                      echo '<option '.$sel.' value="'.$val.'">'.$val.'</option>';
+                                    }
+                                    ?>
                                   </select>
                                 </div>
                             </div>

@@ -7,7 +7,7 @@ class Finance_model extends CI_Model{
 		$this->load->library('Num_splitter');
     }
 
-    function daftar_kerjasama_bgh($tahun, $limit, $offset, $ajax, $type='html'){
+    function daftar_kerjasama_bgh($tahun, $limit, $offset, $ajax, $no_pagin, $type='html'){
         $this->db->select('id_bgh AS id, IFNULL(aset_luar,IFNULL(nama, deld_aset)) AS na, tanggal_mulai AS tm, tanggal_selesai AS ts, nama_mitra AS nm, pers_bumdes AS pb, pers_mitra AS pm, DATEDIFF("'.date('Y-m-d').'",tanggal_mulai) AS rh, status_bgh AS sgh, COUNT(id_pbgh) AS idt');
         $this->db->from('bagi_hasil_aset bg');
         $this->db->join('aset as','bg.aset_bh=as.id_aset','LEFT');
@@ -17,7 +17,7 @@ class Finance_model extends CI_Model{
         if ($tahun!='All') {
             $this->db->where('YEAR(tanggal_mulai) <= "'.$tahun.'" AND YEAR(tanggal_selesai) >= "'.$tahun.'"');
         }
-        if ($ajax) {
+        if ($no_pagin!='no'&&$ajax) {
             $this->db->limit($limit, $offset);
         }
         $result = $this->db->get();
@@ -45,7 +45,7 @@ class Finance_model extends CI_Model{
                                 </td>
                             </tr>';
                 $offset++;
-                if (!$ajax&&$offset==$limit) {
+                if (!($no_pagin!='no'&&$ajax)&&$offset==$limit) {
                     break;
                 }
             }

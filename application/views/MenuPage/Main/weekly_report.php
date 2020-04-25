@@ -122,10 +122,12 @@
                                 <div class="form-group">
                                   <label for="">Tampilkan</label>
                                   <select name="limit" class="form-control" onchange="$('#laporan-keuangan').submit()" id="limit">
-                                      <option value="10">10</option>
-                                      <option value="25">25</option>
-                                      <option value="50">50</option>
-                                      <option value="100">100</option>
+                                    <?php 
+                                    foreach ($form_lim as $key => $val) {
+                                      $val==$lim?$sel='selected':$sel=null;
+                                      echo '<option '.$sel.' value="'.$val.'">'.$val.'</option>';
+                                    }
+                                    ?>
                                   </select>
                                 </div>
                             </div>
@@ -141,11 +143,11 @@
           <div class="row tile_count">
             <div class="col-md-6 col-sm-6 col-xs-12 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Debit</span>
-              <div class="count text-center" id="debit">Rp. <?= isset($kd[0])? $kd[0]->dbt:0 ?></div>
+              <div class="count text-center" id="debit">Rp. <?= isset($kd[0]->dbt)? $kd[0]->dbt:0 ?></div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-12 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Kredit</span>
-              <div class="count text-center" id="kredit">Rp. <?= isset($kd[0])? $kd[0]->kdt:0 ?></div>
+              <div class="count text-center" id="kredit">Rp. <?= isset($kd[0]->kdt)? $kd[0]->kdt:0 ?></div>
             </div>
           </div>
         <div class="col-md-12 col-sm-12 col-xs-12">
