@@ -26,11 +26,11 @@
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
-                <img src="https://1.bp.blogspot.com/-kuf6W_Yxf5E/WFqXlaCcAeI/AAAAAAAAIL0/V9UhNuz6MhMJciRalykCPaaPp6QCaPjYwCLcB/s1600/Arnold-Schwarzenegger-n-aime-pas-son-corps.jpg" alt="..." class="img-circle profile_img">
+                <img src="<?= isset($this->ses->img)?base_url('media/admin/'.$this->ses->img):base_url('media/admin/unnamed.png') ?>" alt="foto-admin" class="img-circle profile_img">
               </div>
               <div class="profile_info">
                 <span>Welcome,</span>
-                <h2>John Doe</h2>
+                <h2><?= $this->ses->nm ?></h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -122,64 +122,69 @@
                     </div>
                   <div class="col-md-8 col-sm-8 col-xs-8">
                     <div class="row">
-                        <form id="" action="admin-log">
-                            <div class="col-md-4 col-sm-4 col-xs-4">  
-                              <div class="form-group">
-                                  <label for="">Tampilkan</label>
-                                  <select name="limit" class="form-control" onchange="$('#log-admin').submit()">
-                                    <option value="10">10</option>
-                                    <option value="10">25</option>
-                                    <option value="10">50</option>
-                                    <option value="10">100</option>
-                                    <option value="All">Semua</option>
-                                  </select>
-                              </div>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-xs-4">
-                              <div class="form-group">
-                                <label for="">Bulan</label>
-                                <select name="bulan" class="form-control" onchange="$('#log-admin').submit()">
-                                <?php 
-                                  foreach ($bln as $key => $val) {
-                                    $key==$m?$sel='selected':$sel=null;
-                                    echo '<option '.$sel.' value="'.$key.'">'.$val.'</option>';
-                                  }
-                                  ?>
-                                </select>
-                              </div>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-xs-4">
-                              <div class="form-group">
+                        <form action="" class="form-filter" method="GET" id="detail-dist-mitra">
+                          <div class="col-md-4 col-sm-4 col-xs-4">  
+                            <div class="form-group">
                                 <label for="">Tahun</label>
-                                <select name="bulan" class="form-control" onchange="$('#log-admin').submit()">
-                                <?php 
-                                  foreach ($bln as $key => $val) {
-                                    $key==$m?$sel='selected':$sel=null;
-                                    echo '<option '.$sel.' value="'.$key.'">'.$val.'</option>';
+                                <select name="tahun" class="form-control" onchange="$('#detail-dist-mitra').submit()">
+                                  <?php 
+                                    foreach ($thn as $key => $val) {
+                                      $val->thn==$y?$sel='selected':$sel=null;
+                                      echo '<option '.$sel.' value="'.$val->thn.'">'.$val->thn.'</option>';
+                                    }
+                                  ?>
+                                </select>
+                            </div>
+                          </div>
+                          <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div class="form-group">
+                              <label for="">Bulan</label>
+                              <select name="bulan" class="form-control" onchange="$('#detail-dist-mitra').submit()">
+                              <?php 
+                                foreach ($bln as $key => $val) {
+                                  $key==$m?$sel='selected':$sel=null;
+                                  echo '<option '.$sel.' value="'.$key.'">'.$val.'</option>';
+                                }
+                                ?>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-md-4 col-sm-4 col-xs-4">
+                              <div class="form-group">
+                                <label for="">Tampilkan</label>
+                                <select name="limit" class="form-control" onchange="$('#detail-dist-mitra').submit()" id="limit">
+                                  <?php 
+                                  foreach ($form_lim as $key => $val) {
+                                    $val==$lim?$sel='selected':$sel=null;
+                                    echo '<option '.$sel.' value="'.$val.'">'.$val.'</option>';
                                   }
                                   ?>
                                 </select>
                               </div>
-                            </div>
+                          </div>
                         </form>
                     </div>
                   </div>
                 </div>
                 <table class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <td><strong>No</strong></td>
-                            <td><strong>Komoditas</strong></td>
-                            <td><strong>Jumlah</strong></td>
-                            <td><strong>Harga</strong></td>
-                            <td><strong>Tanggal</strong></td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                      <?= $vd ?>
-                    </tbody>
+                  <thead>
+                      <tr>
+                          <td><strong>No</strong></td>
+                          <td><strong>Komoditas</strong></td>
+                          <td><strong>Jumlah</strong></td>
+                          <td><strong>Harga</strong></td>
+                          <td><strong>Tanggal</strong></td>
+                          <td><strong>Ekstra</strong></td>
+                      </tr>
+                  </thead>
+                  <tbody id="val-body">
+                    <?= $value['val'] ?>
+                  </tbody>
                 </table>
             </div>
+                  <div class="pgn-cust">
+                    <?= $value['paginasi'] ?>
+                  </div>
           </div>
         </div>
         </div>
@@ -200,5 +205,6 @@
 
     <?php $this->load->view('SuptPage/JsP') ?>
     <script src="<?= base_url('asset/JS/Fitur.js') ?>"></script>
+    <script src="<?= base_url('asset/JS/Ajax_req.js') ?>"></script>
   </body>
 </html>

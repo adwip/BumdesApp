@@ -205,6 +205,7 @@ class Rent extends CI_Controller{
     function pdf_sewa(){
         $tahun = $this->input->get('tahun');
         $bulan = $this->input->get('bulan');
+        $nb = isset($this->bulan[$bulan])?$this->bulan[$bulan]:'not-valid';
         $r = $this->rm->get_penyewaan($tahun,$bulan,0,0,0,0,'JSON');
         // membuat halaman baru
         $this->PDF->AddPage();
@@ -220,14 +221,20 @@ class Rent extends CI_Controller{
         // Memberikan space kebawah agar tidak terlalu rapat
         $this->PDF->Cell(10,7,'',0,1);
         $this->PDF->SetFont('Arial','',15);
-        $this->PDF->Cell(190,7,date('d/m/Y'),0,1,'R');
-        /*
-        $this->PDF->SetFont('Arial','',12);
-        $this->PDF->Cell(80,10,'Total nilai barang keluar',0,1);
-        $this->PDF->SetFont('Arial','B',20);
-        $this->PDF->Cell(190,10,'Rp. 400,000',0,1,'C');
-        $this->PDF->Cell(10,10,'',0,1);*/
+        $nb = date('d').' '.$nb.' '.date('Y');
+        $this->PDF->Cell(190,7,$nb,0,1,'R');
+        
+        $jumlah_sewa = $this->rm->get_jumlah_penyewaan($tahun, $bulan);
+        $pemasukan_sewa = $this->rm->get_pendapatan_sewa($tahun, $bulan);
 
+        $this->PDF->SetFont('Arial','B',10);
+        $this->PDF->Cell(95,10,'Jumlah penyewaan',0,0);
+        $this->PDF->Cell(95,10,'Total pendapatan sewa',0,1);
+        $this->PDF->SetFont('Arial','',20);
+        $this->PDF->Cell(95,10,$jumlah_sewa?$jumlah_sewa->tp:0,'R',0,'C');
+        $this->PDF->Cell(95,10,$pemasukan_sewa?'Rp. '.$pemasukan_sewa->tps:'Rp. 0','L',1,'C');
+        $this->PDF->Cell(10,10,'',0,1);
+        
         $this->PDF->SetFont('Arial','',15);
         $this->PDF->Cell(10,10,'Daftar jadwal sewa',0,1);
         $this->PDF->SetFont('Arial','B',11);

@@ -88,6 +88,7 @@ $route['edit-pemb-bgh'] = 'Finance/edit_pemb_bgh';//=========ada view
 $route['hapus-pemb-bagi-hasil'] = 'Finance/del_pemb_bgh';//=========ada view
 $route['cek-jadwal-bgh'] = 'Finance/cek_jadwal_bgh';//=========ada view
 $route['cek-edit-bgh'] = 'Finance/cek_edit_jadwal_bgh';//=========ada view
+$route['unduh-bagi-hasil-usaha'] = 'Finance/pdf_bagi_hasil_usaha';//=========ada view
 // $route['cek-saldo'] = 'Finance/cek_saldo';
 
 
@@ -167,6 +168,7 @@ $route['gbgh'] = 'Government/gov_kerjasama_bgh/j';//=================ada view
 
 //Routing homepage
 $route['404_override'] = 'Homepage/not_found';
+$route['link-not-valid'] = 'Homepage/not_found';
 $route['home'] = 'Homepage/home';
 $route['masuk'] = 'Homepage/login_process';//=================ada view
 $route['translate_uri_dashes'] = TRUE;

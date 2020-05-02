@@ -25,25 +25,40 @@ class Administrasi extends CI_Controller{
         $dt['v1'] = $this->am->get_aset_umum();
         $dt['v2'] = $this->am->get_aset_disewakan();
         $dt['v3'] = $this->am->get_aset_bagi_hasil();
-        // echo $dt['v3'];
-        $this->load->view('MenuPage/Main/comp_asset',$dt);
+        if ($this->ses->tp=='MNG') {
+            $this->load->view('MenuPage/Main/comp_asset',$dt);
+        }else {
+			redirect(base_url());
+        }
     }
 
     function form_tambah_aset(){//=================OK
         $dt['title'] = '';
         $dt['b']=$this->fm->get_saldo();
-        $this->load->view('MenuPage/Form/tambah_aset',$dt);
+        if ($this->ses->tp=='MNG') {
+            $this->load->view('MenuPage/Form/tambah_aset',$dt);
+        }else {
+			redirect(base_url());
+        }
     }
     
     function business_partner(){//=================OK
         $dt['title'] = 'Rekanan bisnis';
         $dt['v'] = $this->am->get_rekanan();
-        $this->load->view('MenuPage/Main/mitra_usaha',$dt);
+        if ($this->ses->tp=='MNG') {
+            $this->load->view('MenuPage/Main/mitra_usaha',$dt);
+        }else {
+			redirect(base_url());
+        }
     }
 
     function tambah_rekanan(){//=============ada view
         $dt['title'] = 'Tambah rekanan usaha';
-        $this->load->view('MenuPage/Form/tambah_rekanan',$dt);
+        if ($this->ses->tp=='MNG') {
+            $this->load->view('MenuPage/Form/tambah_rekanan',$dt);
+        }else {
+			redirect(base_url());
+        }
     }
 
     function detail_aset($id){//=============ada view
@@ -77,12 +92,14 @@ class Administrasi extends CI_Controller{
         }
         $dt['value'] = $this->hr->get_log_user($dt['y'],$dt['m'], $dt['lim'], $offset, $ajax, $no_pagin);
         $dt['v_tahun'] = $this->hr->get_tahun_log();
-        if (!$ajax) {
+        if (!$ajax&&($this->ses->tp=='MNG'||$this->ses->tp=='SYS')) {
             $this->load->view('MenuPage/Main/admin_log',$dt);
-        }else{
+        }else if($ajax&&($this->ses->tp=='MNG'||$this->ses->tp=='SYS')){
             $val['ses']='Ok';
             $val['tabel']=$dt['value'];
             echo json_encode($val);
+        }else{
+			redirect(base_url());
         }
     }
 
@@ -117,33 +134,88 @@ class Administrasi extends CI_Controller{
         }
     }
 
+    function detail_user($id){
+        $kat =['MNG'=>'Pengurus BUMDes', 'GOV'=>'Pemerintahan Desa Pujotirto'];
+        $dt['title'] = 'Detail admin';
+        $dt['bln'] = $this->bulan;
+        $dt['id']=$id;
+        $dt['v_tahun'] = $this->hr->get_tahun_log();
+        $dt['u']=$this->hr->get_detail_user($id);
+        $dt['y'] = date('Y');
+        $dt['m'] = date('m');
+        $dt['lim'] = 10;
+        $offset = 0;
+        $dt['form_lim'] = [10, 25, 50, 100];
+        $ajax = $this->input->is_ajax_request();
+        $no_pagin = $this->input->get('pagin',TRUE);
+        if (isset($_GET['tahun'])) {
+            $dt['y'] = $this->db->get('tahun',true);
+            $dt['m'] = $this->db->get('bulan',true);
+            $dt['lim'] = $this->input->get('limit',TRUE);
+            $offset = $this->input->get('offset',TRUE);
+        }
+        $dt['value'] = $this->hr->get_log_user($dt['y'], $dt['m'], $dt['lim'], $offset, $ajax, $no_pagin, $id);
+        $dt['k'] = isset($dt['u']->kt)?$kat[$dt['u']->kt]:'-';
+        if (!$ajax&&$this->ses->tp=='MNG') {
+            $this->load->view('MenuPage/Detail_Print/detail_user',$dt);
+        }else if($ajax&&$this->ses->tp=='MNG'){
+            $val['ses']='Ok';
+            $val['tabel']=$dt['value'];
+            echo json_encode($val);
+        }else{
+			redirect(base_url());
+        }
+    }
     function detail_mitra($id){
         $dt['bln'] = $this->bulan;
         $dt['y'] = date('Y');
         $dt['m'] = date('m');
-        $lim = 10;
+        $dt['lim'] = 10;
+        $offset = 0;
+        $dt['form_lim'] = [10, 25, 50, 100];
+        $ajax = $this->input->is_ajax_request();
+        $no_pagin = $this->input->get('pagin',TRUE);
         if (isset($_GET['tahun'])) {
             $dt['y'] = $this->input->get('tahun',true);
             $dt['m'] = $this->input->get('bulan',true);
-            $lim = $this->input->get('limit',true);
+            $dt['lim'] = $this->input->get('limit',TRUE);
+            $offset = $this->input->get('offset',TRUE);
         }
         $dt['title'] = 'Detail Rekanan';
+        $dt['thn'] = $this->tm->get_tahun();
         $dt['v'] = $this->am->get_detail_mitra($id);
-        $dt['vd'] = $this->tm->get_distribusi_mitra($id, $dt['m'], $dt['y'], $lim);
+        $dt['value'] = $this->tm->get_distribusi_mitra($id, $dt['m'], $dt['y'], $dt['lim'], $offset, $ajax, $no_pagin);
         $dt['vbgh'] = $this->am->get_info_bagi_hasil_mitra($id);
-        $this->load->view('MenuPage/Detail_print/detail_mitra',$dt);
+        if (!$ajax&&$this->ses->tp=='MNG') {
+            $this->load->view('MenuPage/Detail_print/detail_mitra',$dt);
+        }else if($ajax&&$this->ses->tp=='MNG'){
+            $val['ses']='Ok';
+            $val['tabel']=$dt['value'];
+            echo json_encode($val);
+        }else {
+			redirect(base_url());
+        }
     }
 
     function user_management(){//=============ada view
-        $dt['title'] = '';
+        $dt['title'] = 'Manajemen admin';
+        $dt['page']=$this->page;
         $dt['v']=$this->hr->get_admin($this->ses->nu);
-        $this->load->view('MenuPage/Main/user_manag',$dt);
+        if ($this->ses->tp=='MNG'||$this->ses->tp=='SYS') {
+            $this->load->view('MenuPage/Main/user_manag',$dt);
+        }else {
+			redirect(base_url());
+        }
     }
 
     function tambah_admin(){//=============ada view
         $dt['page']=$this->page;
-        $dt['title'] = '';
-        $this->load->view('MenuPage/Form/tambah_admin',$dt);
+        $dt['title'] = 'Tambah admin sistem';
+        if ($this->ses->tp=='MNG'||$this->ses->tp=='SYS') {
+            $this->load->view('MenuPage/Form/tambah_admin',$dt);
+        }else {
+			redirect(base_url());
+        }
     }
 
     function form_edit_aset($id){//=============ada view
@@ -152,8 +224,11 @@ class Administrasi extends CI_Controller{
         $dt['v'] = $this->am->get_edit_aset($id);
         $dt['b']=$this->fm->get_saldo();
         $dt['edit'] = waktu_data($id)&&$dt['v'];
-        $this->load->view('MenuPage/Form/edit_aset',$dt);
-        // echo json_encode($dt['v']);
+        if ($this->ses->tp=='MNG') {
+            $this->load->view('MenuPage/Form/edit_aset',$dt);
+        }else {
+			redirect(base_url());
+        }
     }
 
     function set_aset_baru(){
@@ -273,9 +348,13 @@ class Administrasi extends CI_Controller{
     }
 
     function form_edit_mitra($id){
-        $dt['title'] = '';
+        $dt['title'] = 'Ubah data mitra';
         $dt['v'] = $this->am->get_edit_mitra($id);
-        $this->load->view('MenuPage/Form/edit_rekanan',$dt);
+        if ($this->ses->tp=='MNG') {
+            $this->load->view('MenuPage/Form/edit_rekanan',$dt);
+        }else {
+			redirect(base_url());
+        }
     }
 
     function edit_aset(){
@@ -622,21 +701,6 @@ class Administrasi extends CI_Controller{
         // $dt['b']=$this->hr->get_saldo('0081578813144);
         $this->load->view('MenuPage/Form/edit_ganti_pass',$dt);
         // echo json_encode($dt['v']);
-    }
-
-    function detail_user($id){
-        $kat =['MNG'=>'Pengurus BUMDes', 'GOV'=>'Pemerintahan Desa Pujotirto'];
-        $dt['title'] = 'Ganti password';
-        $dt['u']=$this->hr->get_detail_user($id);
-        $dt['y'] = date('Y');
-        $dt['m'] = date('m');
-        if (isset($_GET['tahun'])) {
-            $dt['y'] = $this->db->get('tahun',true);
-            $dt['m'] = $this->db->get('bulan',true);
-        }
-        $dt['log'] = $this->hr->get_log_user($dt['y'], $dt['m'], $id);
-        $dt['k'] = isset($dt['u']->kt)?$kat[$dt['u']->kt]:'-';
-        $this->load->view('MenuPage/Detail_Print/detail_user',$dt);
     }
 
     function edit_profil1(){

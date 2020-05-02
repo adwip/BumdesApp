@@ -170,9 +170,10 @@ class Finance extends CI_controller{
             $dt['tahun'] = $this->input->get('tahun',TRUE);
             $dt['m'] = $this->input->get('bulan',TRUE);
             $dt['lim'] = $this->input->get('limit',TRUE);
+            $dt['lim'] = in_array($dt['lim'],$dt['form_lim'])?$dt['lim']:10;
             $offset = $this->input->get('offset',TRUE);
             $dt['y'] = $dt['tahun']=='All'?date('Y'):$dt['tahun'];
-            $dt['nb']=$this->bulan[$dt['m']];
+            $dt['nb']=isset($this->bulan[$dt['m']])?$this->bulan[$dt['m']]:'not-valid';
         }
         $dt['pby'] = $this->fm->get_total_bagi_hasil($dt['y']);
         $dt['pbm'] = $this->fm->get_pemb_bagi_hasil_bulan($dt['y'],$dt['m']);
@@ -241,7 +242,7 @@ class Finance extends CI_controller{
 
     function form_tambah_pemb_bgh(){
         $dt['title'] = 'Penerimaan bagi hasil';
-        $dt['v']= $this->fm->daftar_kerjasama_bgh(date('Y'),'json');
+        $dt['v']= $this->fm->daftar_kerjasama_bgh(date('Y'), 0, 0, 0, 0,'json');
         $this->load->view('MenuPage/Form/tambah_pemb_bgh',$dt);
     }
 
@@ -332,7 +333,7 @@ class Finance extends CI_controller{
             $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
             if (isset($_POST['tambah_trans'])) {
                 $ket_kas ='Pembayaran bagi hasil usaha dengan '.$info[1]. ' dari aset '.$info[0];
-                $v1 = $this->fm->set_arus_kas('IN', $ket_kas, $pen_b, $tanggal, 'System', $id);
+                $v1 = $this->fm->set_arus_kas('IN', $ket_kas, $pen_b, $tanggal, 'System', $v['id']);
                 $log_mesg = '[TAMBAH][KEUANGAN][BAGI HASIL] ['.$v1['id'].']['.$v['id'].'] Menambah pemasukan dari kerjasama bagi hasil dengan '.$info[1].' dari aset '.$info[0];
                 if ($v1['res']) {
                     $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
@@ -680,8 +681,12 @@ class Finance extends CI_controller{
 
     //=============ada view
     function pdf_laporan_laba(){
-
-        $r = $this->fm->get_laba_usaha('All','All','JSON');
+        $tahun = $this->input->get('tahun',true);
+        $bulan = $this->input->get('bulan',true);
+        $nb = isset($this->bulan[$bulan])?$this->bulan[$bulan]:'bulan not-valid';
+        $v2=$this->tm->get_jual_profits_tahun($tahun);
+        $v3=$this->tm->get_jual_profits_bulan($tahun, $bulan);
+        $r = $this->fm->get_laba_usaha($tahun,$bulan,0,0,0,0,'JSON');
         // membuat halaman baru
         $this->PDF->AddPage();
         // setting jenis font yang akan digunakan
@@ -696,17 +701,26 @@ class Finance extends CI_controller{
         // Memberikan space kebawah agar tidak terlalu rapat
         $this->PDF->Cell(10,7,'',0,1);
         $this->PDF->SetFont('Arial','',15);
-        $this->PDF->Cell(190,7,'Semua tahun, semua bulan',0,1,'R');
+        $tanggal = date('d').' '.$this->bulan[date('m')].' '.date('Y');
+        $this->PDF->Cell(190,7,$tanggal,0,1,'R');
 
         $this->PDF->Cell(10,7,'',0,1);
-        $this->PDF->SetFont('Arial','B',12);
-        $this->PDF->Cell(95,10,'Penjualan',0,0);
-        $this->PDF->Cell(95,10,'Keuntungan',0,1);
+        $this->PDF->SetFont('Arial','B',10);
+        $this->PDF->Cell(95,10,'Penjualan '.$nb.' '.$tahun,0,0);
+        $this->PDF->Cell(95,10,'Keuntungan '.$nb.' '.$tahun,0,1);
         $this->PDF->SetFont('Arial','',20);
-        $this->PDF->Cell(95,10,'Rp. 5,000,000','R',0,'C');
-        $this->PDF->Cell(95,10,'Rp. 5,000,000','L',1,'C');
-        $this->PDF->Cell(10,10,'',0,1);
+        $this->PDF->Cell(95,10,isset($v3->jl)?'Rp. '.$v3->jl:'Rp. 0','R',0,'C');
+        $this->PDF->Cell(95,10,isset($v3->pf)?'Rp. '.$v3->pf:'Rp. 0','L',1,'C');
+        $this->PDF->Cell(10,2,'',0,1);
 
+        $this->PDF->Cell(10,7,'',0,1);
+        $this->PDF->SetFont('Arial','B',10);
+        $this->PDF->Cell(95,10,'Penjualan tahun '.$tahun,0,0);
+        $this->PDF->Cell(95,10,'Keuntungan tahun '.$tahun,0,1);
+        $this->PDF->SetFont('Arial','',20);
+        $this->PDF->Cell(95,10,isset($v2->jl)?'Rp. '.$v2->jl:'Rp. 0','R',0,'C');
+        $this->PDF->Cell(95,10,isset($v2->pf)?'Rp. '.$v2->pf:'Rp. 0','L',1,'C');
+        $this->PDF->Cell(10,10,'',0,1);
         $this->PDF->SetFont('Arial','',15);
         $this->PDF->Cell(10,10,'Rincian keuangan',0,1);
 
@@ -729,6 +743,67 @@ class Finance extends CI_controller{
         }
         
         $this->PDF->Output('I','Daftar_barang_'.date('d_m_Y').'.pdf');
+    }
+
+    function pdf_bagi_hasil_usaha(){
+        $id = $this->input->get('id',true);
+        $tahun = $this->input->get('tahun',true);
+        $bulan = $this->input->get('bulan',true);
+        $r = $this->fm->daftar_kerjasama_bgh($tahun,0,0,0,0,'json');
+        $row = $this->fm->get_total_bagi_hasil($tahun);
+        $row = isset($row->hg)?$row->hg:0;
+        // membuat halaman baru
+        $this->PDF->AddPage();
+        // setting jenis font yang akan digunakan
+        $this->PDF->SetFont('Arial','B',16);
+        $logo = base_url().'logo.jpeg';
+        $this->PDF->Cell(30,30,$this->PDF->Image($logo, ($this->PDF->GetX()-1), $this->PDF->GetY()-12, 33.58),0);
+        // mencetak string 
+        $this->PDF->Cell(130,7,'BAGI HASIL USAHA BUMDES',0,1,'C');
+        $this->PDF->SetFont('Arial','B',12);
+        $this->PDF->Cell(190,8,'BUMDES Indrakila Jaya',0,1,'C');
+        $this->PDF->Cell(190,0,'',1,1);
+        // Memberikan space kebawah agar tidak terlalu rapat
+        $this->PDF->Cell(10,7,'',0,1);
+        $this->PDF->SetFont('Arial','',15);
+        $tanggal = date('d').' '.$this->bulan[date('m')].' '.date('Y');
+        $this->PDF->Cell(190,7,$tanggal,0,1,'R');
+        //Ambil data dari db
+        $v = $this->fm->detail_bagi_hasil_usaha($id);
+        // echo json_encode($v);
+        $this->PDF->SetFont('Arial','B',15);
+        $this->PDF->Cell(95,10,'Tahun : ',0,0);
+        $this->PDF->Cell(95,10,'Jumlah : ',0,1);
+        $this->PDF->SetFont('Arial','',20);
+        $this->PDF->Cell(95,10,isset($v->thn)?$v->thn:'not valid','R',0,'C');
+        $this->PDF->Cell(95,10,isset($v->jlh)?'Rp. '.$v->jlh:'Rp. 0','L',1,'C');
+        $this->PDF->Cell(10,2,'',0,1);
+        
+        $this->PDF->SetFont('Arial','B',15);
+        $this->PDF->Cell(190,10,'Catatan : ',0,1);
+        $this->PDF->SetFont('Arial','',10);
+        $this->PDF->MultiCell(190,5,isset($v->cat)?$v->cat:null,0);
+        $this->PDF->Cell(10,5,'',0,1);
+
+        $r =$this->fm->detail_entitas_bagi_usaha($id,'json');
+        // echo json_encode($r);
+        $this->PDF->SetFont('Arial','B',15);
+        $this->PDF->Cell(10,10,'Penerima bagi hasil',0,1);
+
+        $this->PDF->SetFont('Arial','B',11);
+        $this->PDF->Cell(15,6,'No',1,0);
+        $this->PDF->Cell(85,6,'Tujuan',1,0);
+        $this->PDF->Cell(45,6,'Persentase',1,0);
+        $this->PDF->Cell(45,6,'Nilai',1,1);
+
+        $this->PDF->SetFont('Arial','',9);     
+        foreach ($r as $key => $v) {
+            $this->PDF->Cell(15,6,($key+1),1,0);
+            $this->PDF->Cell(85,6,$v->ent,1,0);
+            $this->PDF->Cell(45,6,$v->prs.'%',1,0);
+            $this->PDF->Cell(45,6,'Rp. '.$v->nil,1,1);
+        }
+        $this->PDF->Output('I','Daftar_kerjasama_bagi_hasil_'.$this->bulan[date('m')].'_'.$tahun.'.pdf');
     }
 
     function hapus_keuangan($tp){

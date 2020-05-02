@@ -1,4 +1,7 @@
 $(document).ready(function(){
+    
+    $('#login-conf-but').attr('disabled',false)
+
     $('#login-system').submit(function(e){
         e.preventDefault()
         $.ajax({

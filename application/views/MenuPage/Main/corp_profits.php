@@ -67,7 +67,7 @@
             <div class="x_content">
               <div class="row">
                 <div class="col-md-5 col-sm-5 col-xs-12">
-                  <a href="unduh-laporan-laba" class="btn btn-md btn-warning" target="_blank">Unduh laporan keuangan</a>
+                  <a href="unduh-laporan-laba?tahun=<?= $tahun ?>&bulan=<?= $bulan ?>" class="btn btn-md btn-warning" target="_blank">Unduh laporan laba</a>
                 </div>
                 <div class="col-md-7 col-sm-7 col-xs-12">
                     <div class="row">

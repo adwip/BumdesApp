@@ -147,8 +147,8 @@ class Trade_model extends CI_Model{
         return $result;
     }
 
-    function get_distribusi_mitra($id, $bulan, $tahun, $limit){
-        $this->db->select('nama_komoditas AS nk, jumlah AS jl, satuan AS st, nilai_transaksi AS nt, tanggal AS dt');
+    function get_distribusi_mitra($id, $bulan, $tahun, $limit, $offset, $ajax, $no_pagin){
+        $this->db->select('id_stok AS id, nama_komoditas AS nk, jumlah AS jl, satuan AS st, nilai_transaksi AS nt, tanggal AS dt');
         $this->db->from('stok_item');
         $this->db->join('stok_keluar','id_prb=id_stok');
         $this->db->join('satuan','id=sat_barang');
@@ -156,18 +156,27 @@ class Trade_model extends CI_Model{
         $this->db->where('mitra',$id);
         $this->db->like('tanggal',$tahun.'-'.$bulan);
         $this->db->order_by('tanggal','ASC');
-        $this->db->limit($limit);
-        $result = $this->db->get()->result();
+        if ($no_pagin!='no'&&$ajax) {
+            $this->db->limit($limit, $offset);
+        }
+        $result = $this->db->get();
+        $nr=$result->num_rows();
+        $result=$result->result();
         $result1=null;
         foreach ($result as $key => $v) {
             $result1 .= '<tr>
-                            <td>'.($key+1).'</td>
+                            <td>'.($offset+1).'</td>
                             <td>'.$v->nk.'</td>
                             <td>'.$v->jl.' '.$v->st.'</td>
                             <td>Rp. '.$v->nt.'</td>
                             <td>'.date('d-m-Y',strtotime($v->dt)).'</td>
+                            <td class="text-center"> <i class="fa fa-info-circle" title="'.$v->id.'"></i></td>
                         </tr>';
+                $offset++;
+                if (!($no_pagin!='no'&&$ajax)&&$offset==$limit) {
+                    break;
+                }
         }
-        return $result1;
+        return ['val'=>$result1,'paginasi'=>paginasi_gen($limit,$nr)];
     }
 }

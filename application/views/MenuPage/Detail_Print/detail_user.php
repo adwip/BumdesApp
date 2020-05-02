@@ -26,11 +26,11 @@
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
-                <img src="https://1.bp.blogspot.com/-kuf6W_Yxf5E/WFqXlaCcAeI/AAAAAAAAIL0/V9UhNuz6MhMJciRalykCPaaPp6QCaPjYwCLcB/s1600/Arnold-Schwarzenegger-n-aime-pas-son-corps.jpg" alt="..." class="img-circle profile_img">
+                <img src="<?= isset($this->ses->img)?base_url('media/admin/'.$this->ses->img):base_url('media/admin/unnamed.png') ?>" alt="foto-admin" class="img-circle profile_img">
               </div>
               <div class="profile_info">
                 <span>Welcome,</span>
-                <h2>John Doe</h2>
+                <h2><?= $this->ses->nm ?></h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -114,27 +114,45 @@
                             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
                             <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
                           </div> -->
-                          <form action="">
-                            <div class="form-group pull-right">
-                              <select name="" id="" class="form-control">
-                                <option value="">2020</option>
-                              </select>
-                            </div> 
-                            <div class="form-group pull-right" style="margin-right: 15px;">
-                              <select name="" id="" class="form-control">
-                                <option value="">Januari</option>
-                                <option value="">Februari</option>
-                                <option value="">Maret</option>
-                                <option value="">April</option>
-                                <option value="">Mei</option>
-                                <option value="">Juni</option>
-                                <option value="">Juli</option>
-                                <option value="">Agustus</option>
-                                <option value="">September</option>
-                                <option value="">Oktober</option>
-                                <option value="">November</option>
-                                <option value="">Desember</option>
-                              </select>
+                          <form action="<?= site_url('detail-user/'.$id) ?>" class="form-filter" method="GET">
+                            <div class="col-md-4 col-sm-4 col-xs-4">  
+                              <div class="form-group">
+                                  <label for="">Tahun</label>
+                                  <select name="tahun" class="form-control" onchange="$('#log-admin').submit()">
+                                    <?php 
+                                      foreach ($v_tahun as $key => $val) {
+                                        $val->thn==$y?$sel='selected':$sel=null;
+                                        echo '<option '.$sel.' value="'.$val->thn.'">'.$val->thn.'</option>';
+                                      }
+                                    ?>
+                                  </select>
+                              </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                              <div class="form-group">
+                                <label for="">Bulan</label>
+                                <select name="bulan" class="form-control" onchange="$('#log-admin').submit()">
+                                <?php 
+                                  foreach ($bln as $key => $val) {
+                                    $key==$m?$sel='selected':$sel=null;
+                                    echo '<option '.$sel.' value="'.$key.'">'.$val.'</option>';
+                                  }
+                                  ?>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <div class="form-group">
+                                  <label for="">Tampilkan</label>
+                                  <select name="limit" class="form-control" onchange="$('#log-admin').submit()" id="limit">
+                                    <?php 
+                                    foreach ($form_lim as $key => $val) {
+                                      $val==$lim?$sel='selected':$sel=null;
+                                      echo '<option '.$sel.' value="'.$val.'">'.$val.'</option>';
+                                    }
+                                    ?>
+                                  </select>
+                                </div>
                             </div>
                           </form>
                         </div>
@@ -151,10 +169,12 @@
                         </thead>
 
                         <tbody id="val-body" data-act="hapus-stok-masuk" data-meth="POST">
-                            <?= $log ?>
+                            <?= $value['val'] ?>
                         </tbody>
                       </table>
-                      <div id="graph_bar" style="width:100%; height:280px;"></div>
+                      <div class="pgn-cust">
+                        <?= $value['paginasi'] ?>
+                      </div>
                       <!-- end of user-activity-graph -->
                     </div>
                   </div>
@@ -180,6 +200,6 @@
 
     <?php $this->load->view('SuptPage/JsP') ?>
     <script src="<?= base_url('asset/JS/Fitur.js') ?>"></script>
-    <script src="<?= base_url('asset/JS/Form.js') ?>"></script>
+    <script src="<?= base_url('asset/JS/Ajax_req.js') ?>"></script>
   </body>
 </html>

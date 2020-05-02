@@ -172,6 +172,24 @@ $(document).ready(function(){
         })
     })
     
+    //Detail distribusi mitra
+    $('#detail-dist-mitra').submit(function(e){
+        e.preventDefault()
+        let form = $(this).serialize()
+        history.pushState("","",'?'+form)
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr('method'),
+            data: $(this).serialize()+'&pagin=no',
+            dataType: 'json',
+            success: function(v){
+                if (v['ses']=='Ok') {
+                    $('#val-body').html(v['tabel']['val'])
+                    $('.pgn-cust').html(v['tabel']['paginasi'])
+                }
+            }
+        })
+    })
 
     // Get saldo dividen
     $('#tahun-dividen').change(function(){

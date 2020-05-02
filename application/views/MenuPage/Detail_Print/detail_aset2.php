@@ -26,11 +26,11 @@
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
-                <img src="https://1.bp.blogspot.com/-kuf6W_Yxf5E/WFqXlaCcAeI/AAAAAAAAIL0/V9UhNuz6MhMJciRalykCPaaPp6QCaPjYwCLcB/s1600/Arnold-Schwarzenegger-n-aime-pas-son-corps.jpg" alt="..." class="img-circle profile_img">
+                <img src="<?= isset($this->ses->img)?base_url('media/admin/'.$this->ses->img):base_url('media/admin/unnamed.png') ?>" alt="foto-admin" class="img-circle profile_img">
               </div>
               <div class="profile_info">
                 <span>Welcome,</span>
-                <h2>John Doe</h2>
+                <h2><?= $this->ses->nm ?></h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -38,7 +38,7 @@
             <br />
 
             <!-- sidebar menu -->
-            <?php $this->load->view('SuptPage/MenuPage') ?>
+            <?php $this->load->view('SuptPage/'.$page) ?>
             <!-- /sidebar menu -->
 
             <!-- /menu footer buttons -->
@@ -85,8 +85,6 @@
                         <li><i class="fa fa-map-marker user-profile-icon"></i> <?= isset($v[0])?$v[0]->lk:'-' ?>
                         </li>
                       </ul>
-                      
-                      <a href="ganti-password" class="btn btn-xs btn-warning"><i class="fa fa-gears m-right-xs"></i> Ubah data aset</a>
                       <br />
 
                       <!-- start skills -->
@@ -134,8 +132,8 @@
                             <tr>
                                 <td class="col-md-2 col-sm-2 col-xs-2"><h5>Keadaan :</h5></td>
                                 <td class="col-md-4 col-sm-4 col-xs-4"><h4><?= isset($v[0])?$v[0]->kn:'-' ?></h4></td>
-                                <td class="col-md-2 col-sm-2 col-xs-2"><h5>Sumber :</h5></td>
-                                <td class="col-md-4 col-sm-4 col-xs-4"><h4><?= isset($v[0])?$v[0]->sb:'-' ?></h4></td>
+                                <td class="col-md-2 col-sm-2 col-xs-2"><h5>Harga :</h5></td>
+                                <td class="col-md-4 col-sm-4 col-xs-4"><h4><?= isset($v[0])?'Rp. '.$v[0]->prc:'-' ?></h4></td>
                             </tr>
                             <tr>
                                 <td class="col-md-2 col-sm-2 col-xs-2"><h5>Keterangan :</h5></td>

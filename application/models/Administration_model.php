@@ -40,7 +40,7 @@ class Administration_model extends CI_Model{
         $this->db->from('aset AS as');
         $this->db->join('aset_disewakan AS ad', 'as.id_aset = ad.aset_sw','LEFT');
         $this->db->join('bagi_hasil_aset ab','ab.aset_bh = as.id_aset','LEFT');
-        $this->db->where('(tanggal_selesai < "'.date('Y-m-d').'" OR tanggal_selesai IS NULL)');
+        $this->db->where('(tanggal_selesai < "'.date('Y-m-d').'" OR tanggal_selesai IS NULL OR status_bgh = "BATAL")');
         $this->db->where('harga_sewa IS NULL');
         // $this->db->where("`tanggal_selesai`<'".date('Y-m-d')."' OR `tanggal_selesai` IS NULL ");
         $result=$this->db->get()->result();
@@ -97,6 +97,7 @@ class Administration_model extends CI_Model{
         $this->db->from('bagi_hasil_aset ab');
         $this->db->join('aset as','as.id_aset=ab.aset_bh');
         $this->db->where('tanggal_selesai >',date('Y-m-d'));
+        $this->db->where('status_bgh IS NULL');
         $result = $this->db->get()->result();
         $result1=null;
         if ($type=='html') {
@@ -120,13 +121,17 @@ class Administration_model extends CI_Model{
     }
 
     function get_rekanan($type='html'){
-        $this->db->select('id_mitra AS id, nama_mitra AS nr, penanggung_jawab AS rp, kontak_1 AS ks, alamat AS ad');
+        $this->db->select('id_mitra AS id, nama_mitra AS nr, penanggung_jawab AS rp, kontak_1 AS ks, alamat AS ad, IFNULL(id_bgh,id_temp) AS link');
         $this->db->from('mitra');
-        $this->db->where('status','Aktif');
+        $this->db->join('bagi_hasil_aset bgh','bgh.mitra=id_mitra','LEFT');
+        $this->db->join('stok_keluar sk','sk.mitra=id_mitra','LEFT');
+        $this->db->group_by('id_mitra');
+        // $this->db->where('status','Aktif');
         $result = $this->db->get()->result();
         $result1=null;
         if ($type=='html') {
           foreach ($result as $key => $v) {
+            $del = $v->link?null:'<button type="button" class="btn btn-xs btn-danger hapus" value="'.$v->id.'">Hapus</button>';
             $result1 .= '<tr data-nam="'.$v->nr.'">
                             <td>'.($key+1).'</td>
                             <td>'.$v->nr.'</td>
@@ -135,8 +140,7 @@ class Administration_model extends CI_Model{
                             <td>'.$v->ad.'</td>
                             <td>'.anchor('detail-mit/'.$v->id,'Detail').'</td>
                             <td>
-                              '.anchor('edit-rekn/'.$v->id,'Ubah',' class="btn btn-xs btn-warning"').'
-                              <button type="button" class="btn btn-xs btn-danger hapus" value="'.$v->id.'">Hapus</button>
+                              '.anchor('edit-rekn/'.$v->id,'Ubah',' class="btn btn-xs btn-warning"').''.$del.'
                             </td>
                         </tr>';
           }
@@ -147,7 +151,7 @@ class Administration_model extends CI_Model{
     }
 
     function get_detail_aset($id){
-      $this->db->select('id_aset AS id, nomor_aset AS na, nama AS nm, sumber AS sb, lokasi AS lk, kondisi AS kd, tanggal_masuk AS tg, keadaan AS kn, ket_aset AS kt, gambar AS img');
+      $this->db->select('id_aset AS id, nomor_aset AS na, nama AS nm, sumber AS sb, lokasi AS lk, kondisi AS kd, tanggal_masuk AS tg, keadaan AS kn, ket_aset AS kt, gambar AS img, FORMAT(harga_aset, "#.00") AS prc');
       $this->db->from('aset');
       $this->db->where('id_aset',$id);
       $result = $this->db->get()->result();
@@ -226,7 +230,7 @@ class Administration_model extends CI_Model{
     }
 
     function get_edit_aset($id){
-      $this->db->select('id_aset AS id, nomor_aset AS na, nama AS nm, lokasi AS lk, kondisi kd, keadaan AS kn, kepemilikan AS kp, tanggal_masuk AS tg, ket_aset AS kt, harga_aset AS ha, sumber AS sb, kredit AS kr, gambar AS img, id_fin AS idf');
+      $this->db->select('id_aset AS id, nomor_aset AS na, nama AS nm, lokasi AS lk, kondisi kd, keadaan AS kn, tanggal_masuk AS tg, ket_aset AS kt, harga_aset AS ha, sumber AS sb, kredit AS kr, gambar AS img, id_fin AS idf');
       $this->db->from('aset as');
       // $this->db->join('rekap_keuangan rk','rk.foreg_id=as.id_aset','LEFT');
       $this->db->join('rekap_keuangan','foreg_id=id_aset','LEFT');

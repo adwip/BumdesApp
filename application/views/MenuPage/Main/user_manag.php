@@ -48,7 +48,7 @@
             <br />
 
             <!-- sidebar menu -->
-            <?php $this->load->view('SuptPage/MenuPage') ?>
+            <?php $this->load->view('SuptPage/'.$page) ?>
             <!-- /sidebar menu -->
 
             <!-- /menu footer buttons -->

@@ -34,18 +34,20 @@ class Homepage extends CI_Controller{
         $dt['title'] = 'Homepage';
         //echo $this->input->get('tipe');
         $dt['Y'] = date('Y');
-        $dt['v_graf'] = $this->lm->get_grafik_penjualan($dt['Y'], date('m'));
         $dt['v'] = $this->rm->get_total_penyewaan($dt['Y']);
         $dt['v2'] = $this->tm->get_total_penjualan($dt['Y'],date('m'));
         $dt['v3'] = $this->fm->get_total_bagi_hasil($dt['Y']);
         $dt['nam_bulan'] = $this->bulan[date('m')];
-        $dt['tahun'] = date('Y');
-        if ($this->ses->log_s) {
+        $dt['v_graf'] = $this->lm->get_grafik_penjualan($dt['Y'], date('m'));
+        $dt['v_grafik']=$this->fm->get_grafik_penyewaan($dt['Y']);
+        if ($this->ses->log_s&&$this->ses->tp!='SYS') {
             $this->load->view('General/home',$dt);
 
             // echo $this->input->is_ajax_request();
             // $dt2 = $this->ses->userdata();
             // echo json_encode($dt2);
+        }elseif ($this->ses->log_s&&$this->ses->tp=='SYS') {
+			redirect(site_url('account'));
         }else {
 			redirect(base_url());
         }
@@ -80,7 +82,7 @@ class Homepage extends CI_Controller{
         if ($this->ses->log_s) {
             $this->load->view('General/not_found',$dt);
         }else{
-            
+            $this->load->view('General/general_404',$dt);
         }
     }
 
@@ -112,6 +114,7 @@ class Homepage extends CI_Controller{
     function reg_admin($id){
         $dt['page']=$this->page;
         $dt['title'] = 'Registrasi admin baru';
+        $this->ses->sess_destroy();
         
         $dt['v'] = $this->hr->get_url_confirm($id);
         if ($dt['v']&&waktu_data($id)&&!isset($_POST['sub'])) {
@@ -144,7 +147,28 @@ class Homepage extends CI_Controller{
                 echo '100| ';
             }
         }else{
-            $this->load->view('General/general_404',$dt);
+            redirect(site_url('link-not-valid'));
+        }
+    }
+
+    function ganti_email($id){
+        $dt['page']=$this->page;
+        $dt['title'] = 'Registrasi admin baru';
+        
+        $dt['v'] = $this->hr->get_url_confirm($id);
+        if ($dt['v']&&waktu_data($id)&&!isset($_POST['sub'])) {
+            $dt['v']= explode('|',$dt['v']->nt);
+            $this->load->view('General/ganti_password',$dt);
+        }else if (isset($_POST['sub'])&&$dt['v']) {
+            $id= explode('|',$dt['v']->nt);
+            $id = $id[2];
+            $password = $this->input->post('password',true);
+            $password2 = $this->input->post('password2',true);
+            
+        $v = $this->hr->ganti_password($id, $password, $password2);
+        echo $v?200:100;
+        }else{
+            redirect(site_url('link-not-valid'));
         }
     }
 
@@ -200,12 +224,12 @@ class Homepage extends CI_Controller{
         $v = $this->hr->ganti_password($id, $password, $password2);
         echo $v?200:100;
         }else{
-            $this->load->view('General/general_404',$dt);
+            redirect(site_url('link-not-valid'));
         }
     }
 
     function general_req($id){
         $dt = $this->hr->get_url_conf($id);
-        redirect(site_url());
+        // redirect(site_url());
     }
 }

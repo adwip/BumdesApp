@@ -655,24 +655,28 @@ class Finance_model extends CI_Model{
         return $ret;
     }
 
-    function detail_entitas_bagi_usaha($id){
-        $this->db->select('id_ent_div AS id, pers_jumlah_div AS prs, FORMAT((pers_jumlah_div/100)*jumlah_div,"#.00") AS nil, entitas_div AS ent, status_pemb_div AS sp ,tanggal_pemb_div AS tp, tahun_div AS td, (pers_jumlah_div/100)*jumlah_div AS nil2, sld AS sd');
+    function detail_entitas_bagi_usaha($id, $type='html'){
+        $this->db->select('id_ent_div AS id, pers_jumlah_div AS prs, FORMAT((pers_jumlah_div/100)*jumlah_div,"#.00") AS nil, entitas_div AS ent, status_pemb_div AS sp ,tanggal_pemb_div AS tp, tahun_div AS td, (pers_jumlah_div/100)*jumlah_div AS nil2');
         $this->db->from('dividen_profit');
-        $this->db->join('penerima_dividen','id_div=id_gdiv');
+        $this->db->join('penerima_dividen','id_div=id_gdiv');/*
         $join = '(SELECT `id_fin` FROM `rekap_keuangan` ORDER by `last_change` DESC limit 1)';
-        $this->db->join('rekap_keuangan','id_fin='.$join,'LEFT');
+        $this->db->join('rekap_keuangan','id_fin='.$join,'LEFT');*/
         $this->db->where('id_gdiv',$id);
         $result = $this->db->get()->result();
         $result1 = null;
-        foreach ($result as $key => $v) {
-            $result1 .= '<tr data-nam="'.$v->td.'">
-                            <td>'.($key+1).'</td>
-                            <td>'.$v->ent.'</td>
-                            <td>'.$v->prs.' %</td>
-                            <td>Rp. '.$v->nil.'</td>
-                        </tr>';
+        if ($type=='html') {
+            foreach ($result as $key => $v) {
+                $result1 .= '<tr data-nam="'.$v->td.'">
+                                <td>'.($key+1).'</td>
+                                <td>'.$v->ent.'</td>
+                                <td>'.$v->prs.' %</td>
+                                <td>Rp. '.$v->nil.'</td>
+                            </tr>';
+            }
+            return $result1;
+        }else{
+            return $result;
         }
-        return $result1;
     }
 
     function detail_bagi_hasil_usaha($id){
@@ -740,7 +744,7 @@ class Finance_model extends CI_Model{
         $this->db->join('aset as','as.id_aset=aset_bh','LEFT');
         $this->db->join('mitra mt','mt.id_mitra=mitra');
         $this->db->where('id_bgh',$id);
-        $this->db->where('status <> "Batal"');
+        $this->db->where('status IS NULL');
         $result = $this->db->get()->result();
         $result = isset($result[0])&&waktu_data($id)?$result[0]:null;
         return $result;
@@ -882,7 +886,7 @@ class Finance_model extends CI_Model{
     }
 
     function del_bagi_hasil($id){
-        $this->db->select('DATEDIFF("'.date('Y-m-d').'",tanggal_mulai) AS jh, COUNT(id_temp) AS jb');
+        $this->db->select('DATEDIFF("'.date('Y-m-d').'",tanggal_mulai) AS jh, COUNT(id_pbgh) AS jb');
         $this->db->from('bagi_hasil_aset');
         $this->db->join('pemb_bagi_hasil','id_bagi=id_bgh','LEFT');
         $this->db->where('id_bgh',$id);
@@ -945,6 +949,7 @@ class Finance_model extends CI_Model{
         $this->db->or_where('(tanggal_mulai >= "'.$tm.'" AND tanggal_mulai <= "'.$ts.'")');
         $this->db->or_where('(tanggal_mulai <= "'.$tm.'" AND tanggal_selesai >= "'.$ts.'")');
         $this->db->or_where('(tanggal_mulai >= "'.$tm.'" AND tanggal_selesai <= "'.$ts.'"))');
+        $this->db->where('status_bgh IS NULL');
         $result = $this->db->get()->num_rows();
         return $result;
     }
@@ -975,6 +980,7 @@ class Finance_model extends CI_Model{
     function get_info_aset_bgh($tahun=false, $bulan=false){
         $this->db->select('COUNT(aset_bh) AS ints, COUNT(aset_luar) AS exts, deld_aset AS deints, (COUNT(aset_bh)+COUNT(deld_aset)) AS jints');
         $this->db->from('bagi_hasil_aset');
+        $this->db->where('status_bgh IS NULL');
         if ($tahun) {
             $this->db->where('tanggal_selesai  >= "'.$tahun.'-'.$bulan.'-'.date('d').'"');
         }

@@ -42,7 +42,7 @@
                 </div><br>
               </span>
               <div>
-                <button class="btn btn-default submit" type="submit">Masuk</button>
+                <button class="btn btn-default submit" id="login-conf-but" type="submit" disabled>Masuk</button>
               </div>
               <div class="separator">
                 <p class="change_link">Lupa password
@@ -54,7 +54,7 @@
 
                 <div>
                   <h1> BUMDes Indrakila Jaya</h1>
-                  <p>©2019 All Rights Reserved. Dashboard design By Gentelella & Colorlib, system by TA Informatika UII 2020</p>
+                  <!-- <p>©2019 All Rights Reserved. Dashboard design By Gentelella & Colorlib, system by TA Informatika UII 2020</p> -->
                 </div>
               </div>
             </form>

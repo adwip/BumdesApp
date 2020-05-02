@@ -53,13 +53,6 @@
 
         <!-- page content -->
         <div class="right_col" role="main" style="color: black;">
-          <!-- <div class="">
-            <div class="page-title">
-              <div class="title_left">
-                <h1>Manajemen Toko Bumdes</h1> 
-              </div>
-            </div>
-          </div> -->
           <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
               <div class="x_title">
@@ -71,45 +64,45 @@
                   <div class="col-md-12 ccol-sm-12 col-xs-12">
                     <div class="row">
                         <form id="log-admin" action="admin-log" class="form-filter">
-                            <div class="col-md-4 col-sm-4 col-xs-4">  
-                              <div class="form-group">
-                                  <label for="">Tahun</label>
-                                  <select name="tahun" class="form-control" onchange="$('#log-admin').submit()">
-                                    <?php 
-                                      foreach ($v_tahun as $key => $val) {
-                                        $val->thn==$y?$sel='selected':$sel=null;
-                                        echo '<option '.$sel.' value="'.$val->thn.'">'.$val->thn.'</option>';
-                                      }
-                                    ?>
-                                  </select>
-                              </div>
+                          <div class="col-md-4 col-sm-4 col-xs-4">  
+                            <div class="form-group">
+                                <label for="">Tahun</label>
+                                <select name="tahun" class="form-control" onchange="$('#log-admin').submit()">
+                                  <?php 
+                                    foreach ($v_tahun as $key => $val) {
+                                      $val->thn==$y?$sel='selected':$sel=null;
+                                      echo '<option '.$sel.' value="'.$val->thn.'">'.$val->thn.'</option>';
+                                    }
+                                  ?>
+                                </select>
                             </div>
-                            <div class="col-md-4 col-sm-4 col-xs-4">
+                          </div>
+                          <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div class="form-group">
+                              <label for="">Bulan</label>
+                              <select name="bulan" class="form-control" onchange="$('#log-admin').submit()">
+                              <?php 
+                                foreach ($bln as $key => $val) {
+                                  $key==$m?$sel='selected':$sel=null;
+                                  echo '<option '.$sel.' value="'.$key.'">'.$val.'</option>';
+                                }
+                                ?>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-md-4 col-sm-4 col-xs-4">
                               <div class="form-group">
-                                <label for="">Bulan</label>
-                                <select name="bulan" class="form-control" onchange="$('#log-admin').submit()">
-                                <?php 
-                                  foreach ($bln as $key => $val) {
-                                    $key==$m?$sel='selected':$sel=null;
-                                    echo '<option '.$sel.' value="'.$key.'">'.$val.'</option>';
+                                <label for="">Tampilkan</label>
+                                <select name="limit" class="form-control" onchange="$('#log-admin').submit()" id="limit">
+                                  <?php 
+                                  foreach ($form_lim as $key => $val) {
+                                    $val==$lim?$sel='selected':$sel=null;
+                                    echo '<option '.$sel.' value="'.$val.'">'.$val.'</option>';
                                   }
                                   ?>
                                 </select>
                               </div>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-xs-4">
-                                <div class="form-group">
-                                  <label for="">Tampilkan</label>
-                                  <select name="limit" class="form-control" onchange="$('#log-admin').submit()" id="limit">
-                                    <?php 
-                                    foreach ($form_lim as $key => $val) {
-                                      $val==$lim?$sel='selected':$sel=null;
-                                      echo '<option '.$sel.' value="'.$val.'">'.$val.'</option>';
-                                    }
-                                    ?>
-                                  </select>
-                                </div>
-                            </div>
+                          </div>
                         </form>
                     </div>
                   </div>

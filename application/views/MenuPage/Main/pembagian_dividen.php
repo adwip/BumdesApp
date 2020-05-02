@@ -66,8 +66,8 @@
             <div class="x_content">
               <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
-                  <a href="unduh-daftar-bagi-hasil"class="btn btn-md btn-warning" target="_blank">Unduh data dividen</a>
-                  <a href="tambah-dividen" class="btn btn-md btn-info">Tambah Pembagian dividen</a>
+                  <!-- <a href="unduh-daftar-bagi-hasil"class="btn btn-md btn-warning" target="_blank">Unduh bagi hasil usaha</a> -->
+                  <a href="tambah-dividen" class="btn btn-md btn-info">Tambah Pembagian hasil usaha</a>
                 </div>
               </div>
             </div>

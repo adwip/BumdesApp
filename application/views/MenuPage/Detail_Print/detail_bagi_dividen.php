@@ -26,11 +26,11 @@
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
-                <img src="https://1.bp.blogspot.com/-kuf6W_Yxf5E/WFqXlaCcAeI/AAAAAAAAIL0/V9UhNuz6MhMJciRalykCPaaPp6QCaPjYwCLcB/s1600/Arnold-Schwarzenegger-n-aime-pas-son-corps.jpg" alt="..." class="img-circle profile_img">
+                <img src="<?= isset($this->ses->img)?base_url('media/admin/'.$this->ses->img):base_url('media/admin/unnamed.png') ?>" alt="foto-admin" class="img-circle profile_img">
               </div>
               <div class="profile_info">
                 <span>Welcome,</span>
-                <h2>John Doe</h2>
+                <h2><?= $this->ses->nm ?></h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -76,7 +76,7 @@
                         <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= isset($v->cat)?$v->cat:'-' ?></h3></td>
                     </tr>
                 </table>
-                <a href="unduh-bagi-hasil?id=<?= $id ?>" class="btn btn-md btn-primary">Unduh dokumen PDF</a>
+                <a href="<?= site_url('unduh-bagi-hasil-usaha?id='.$id) ?>" target="_blank" class="btn btn-md btn-primary">Unduh dokumen PDF</a>
             </div>
           </div>
         </div>

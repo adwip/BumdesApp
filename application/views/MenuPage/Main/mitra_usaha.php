@@ -85,15 +85,6 @@
               </div>
             </div>
           </div>
-          <!-- <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-              <div class="x_panel" style="height: 70px;">
-                <div class="x_content text-center">
-                  <button class="btn btn-md btn-primary">Tambah Toko</button>
-                </div>
-              </div>
-            </div>
-          </div> -->
           <br>
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">

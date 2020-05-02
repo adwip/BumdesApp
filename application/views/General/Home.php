@@ -54,15 +54,15 @@
         <!-- page content -->
         <div class="right_col" role="main" style="color:black;">
           <div class="row tile_count">
-            <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
+            <div class="col-md-4 col-sm-4 col-xs-12 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Penyewaan <?= $Y ?></span>
               <div class="count"><?= isset($v->hg)?'Rp. '.$v->hg:'Rp. 0' ?></div>
             </div>
-            <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
-              <span class="count_top"><i class="fa fa-clock-o"></i> Penjualan <?= $nam_bulan ?> <?= $tahun ?></span>
+            <div class="col-md-4 col-sm-4 col-xs-12 tile_stats_count">
+              <span class="count_top"><i class="fa fa-clock-o"></i> Penjualan <?= $nam_bulan ?> <?= $Y ?></span>
               <div class="count"><?= isset($v2->hg)?'Rp. '.$v2->hg:'Rp. 0' ?></div>
             </div>
-            <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
+            <div class="col-md-4 col-sm-4 col-xs-12 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Bagi hasil <?= $Y ?></span>
               <div class="count"><?= isset($v3->hg)?'Rp. '.$v3->hg:'Rp. 0' ?></div>
             </div>
@@ -73,19 +73,8 @@
               <div class="dashboard_graph">
                 <div class="row x_title">
                   <div class="col-md-12">
-                    <h3>Pertumbuhan perdagangan <small>Bulan <?= $nam_bulan ?> <?= $tahun ?></small></h3>
+                    <h3>Pertumbuhan perdagangan <small>Bulan <?= $nam_bulan ?> <?= $Y ?></small></h3>
                   </div>
-                  <!-- <div class="col-md-6">
-                    <form id="TipForm" action="">
-                      <div class="form-group">
-                        <select onchange="submitHp()" name="tipe" class="form-control">
-                          <option value="minggu">Minggu</option>
-                          <option value="bulan">Bulan</option>
-                          <option value="Tahun">Tahun</option>
-                        </select>
-                      </div>
-                    </form>
-                  </div> -->
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12">
@@ -102,7 +91,7 @@
               <div class="dashboard_graph">
                 <div class="row x_title">
                   <div class="col-md-12">
-                    <h3>Pertumbuhan penyewaan <small>Bulan <?= $nam_bulan ?> <?= $tahun ?></small></h3>
+                    <h3>Pertumbuhan penyewaan <small>Bulan <?= $nam_bulan ?> <?= $Y ?></small></h3>
                   </div>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12">
@@ -135,7 +124,8 @@
     <script src="<?= base_url('asset') ?>/JS/Form.js"></script>
     
     <script type="text/javascript">
-      pertumbuhan_perdagangan(JSON.parse('<?= $v_graf ?>'),'#grafik_perdagangan', "<?= $nam_bulan ?>", "<?= $tahun ?>")
+      pertumbuhan_perdagangan(JSON.parse('<?= $v_graf ?>'),'#grafik_perdagangan', "<?= $nam_bulan ?>", "<?= $Y ?>")
+      penyewaan(JSON.parse('<?= $v_grafik ?>'),'#grafik_penyewaan', '<?= $Y ?>')
       // pertumbuhan_penyewaan(JSON.parse('<?= $v_graf ?>'),'#grafik_penyewaan')
     </script>
   </body>

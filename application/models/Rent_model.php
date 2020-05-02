@@ -168,8 +168,9 @@ class Rent_model extends CI_Model{
     function get_jumlah_penyewaan($tahun, $bulan){
         $this->db->select('IFNULL(COUNT(id_sewa),0) AS tp');
         $this->db->from('penyewaan');
-        $this->db->where('tanggal_mulai <= "'.$tahun.'-'.$bulan.'-'.date('d').'"');
-        $this->db->where('tanggal_selesai >= "'.$tahun.'-'.$bulan.'-'.date('d').'"');
+        $this->db->like('tanggal_mulai',$tahun.'-'.$bulan,'after');
+        // $this->db->where('tanggal_mulai <= "'.$tahun.'-'.$bulan.'-'.date('d').'"');
+        // $this->db->where('tanggal_selesai >= "'.$tahun.'-'.$bulan.'-'.date('d').'"');
         $result = $this->db->get()->result();
         $result = isset($result[0])?$result[0]:false;
         return $result;
