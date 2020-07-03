@@ -127,6 +127,16 @@ class Logistic_model extends CI_Model{
         }
     }
 
+    function get_stok_komoditas($id){
+        $this->db->select('stok AS stk');
+        $this->db->from('stok_item');
+        $this->db->where('komoditas',$id);
+        $this->db->order_by('last_change');
+        $this->db->limit(1);
+        $result=$this->db->get()->result();
+        $result = isset($result[0]->stk)?(int)$result[0]->stk:0;
+        return $result;
+    }
     function get_grafik_penjualan($tahun,$bulan){
         $this->db->select('SUM(nilai_transaksi) AS sl, SUM(margin) AS mg, DAY(tanggal) AS dt');
         $this->db->from('stok_item si');

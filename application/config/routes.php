@@ -159,8 +159,8 @@ $route['gov-kerjasama-bgh'] = 'Government/gov_kerjasama_bgh';//=================
 $route['gov-logistik'] = 'Government/gov_logistik';//=================ada view
 $route['gov-dividen'] = 'Government/gov_dividen';//=================ada view
 $route['gov-det-bghu/(:num)'] = 'Government/gov_det_bghu/$1';//=================ada view
-$route['gsmj'] = 'Government/gov_stok_masuk/j';//=================ada view
-$route['gpjn'] = 'Government/gov_penjualan/j';//=================ada view
+$route['gsmj'] = 'Government/gov_stok_masuk/j';//delete
+$route['gpjn'] = 'Government/gov_penjualan/j';//delete
 $route['gpnw'] = 'Government/gov_penyewaan/j';//=================ada view
 $route['gfin'] = 'Government/gov_finansial/j';//=================ada view
 $route['gbgh'] = 'Government/gov_kerjasama_bgh/j';//=================ada view
@@ -177,5 +177,7 @@ $route['ganti-password/(:num)'] = 'Homepage/forget_password/$1';//==============
 $route['lupa-password'] = 'Homepage/req_forget_pass';//=================ada view
 $route['req-password'] = 'Homepage/req_forget_pass/submit';//=================ada view
 $route['keluar-sistem'] = 'Homepage/keluar';//=================ada view
+$route['konfirmasi-ganti-email/(:num)'] = 'Homepage/konfirmasi_ganti_email/$1';//=================ada view
+$route['cek-mail'] = 'Administrasi/cek_mail';//=================ada view
 
 

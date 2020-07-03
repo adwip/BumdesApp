@@ -64,7 +64,7 @@
                 </div>
                 <div class="col-md-7 col-sm-7 col-xs-7">
                   <div class="row">
-                    <form id="gov-penjualan" action="gpjn" method="GET">
+                    <form id="gov-penjualan" action="gov-penjualan" method="GET">
                       <div class="col-md-6 col-sm-6">  
                         <div class="form-group">
                           <label for="">Tahun</label>
@@ -189,7 +189,7 @@
     <script src="<?= base_url('asset') ?>/JS/Ajax_req_gov.js"></script>
     
     <script type="text/javascript">
-      pertumbuhan_perdagangan(JSON.parse('<?= $v_grafik ?>'),'#grafik-laba-dagang')
+      pertumbuhan_perdagangan_bulan(JSON.parse('<?= $v_grafik ?>'),'#grafik-laba-dagang', "<?= $y ?>")
       distribusi(JSON.parse('<?= $v_grafik2 ?>'),'#grafik-distribusi', "<?= $y ?>")
       non_distribusi(JSON.parse('<?= $v_grafik3 ?>'),'#grafik-non-distribusi', "<?= $y ?>")
     </script>

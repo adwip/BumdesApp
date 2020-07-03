@@ -64,8 +64,8 @@
                 </div>
                 <div class="col-md-5">
                   <div class="row">
-                    <form id="gov-sewa" action="gpnw" method="GET">
-                      <div class="col-md-6 col-sm-6">  
+                    <form id="gov-sewa" action="gov-penyewaan" method="GET">
+                      <div class="col-md-6 col-sm-6">
                         <div class="form-group">
                           <label for="">Tahun</label>
                           <select name="tahun" class="form-control" onchange="$('#gov-sewa').submit()">
@@ -144,7 +144,7 @@
     <script src="<?= base_url('asset') ?>/JS/Ajax_req_gov.js"></script>
     
     <script type="text/javascript">
-      penyewaan(JSON.parse('<?= $v_grafik ?>'),'#grafik_penyewaan')
+      penyewaan(JSON.parse('<?= $v_grafik ?>'),'#grafik_penyewaan', '<?= $y ?>')
     </script>
   </body>
 </html>

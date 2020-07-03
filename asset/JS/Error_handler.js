@@ -323,3 +323,13 @@ $(document).ready(function() {
         }
     })
 })
+
+//nilai float
+$('.float-nums').on('keypress',function(){
+    
+    if (event.charCode !=8 && event.charCode ==0||event.charCode >= 48 && event.charCode <= 57||event.charCode==46&&!$(this).val().includes(".")) {
+        return true
+    }{
+        return false
+    }
+})

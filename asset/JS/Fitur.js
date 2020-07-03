@@ -156,3 +156,23 @@ $(document).ready(function(){
       $('#val-b').val(psm)
     })
 })
+
+$('#cek-email').on('focusout',function(){
+  // alert($(this).attr('data-old'))
+  const old =  $(this).attr('data-old');
+  const val =  $(this).val();
+  $.ajax({
+    url: 'cek-mail',
+    type: 'GET',
+    data: 'mail='+val,
+    dataType: 'text',
+    success: function(v){
+      if (v==1&&old!=val) {
+        alert('Ganti')
+        // alert($(this).attr('data-old'))
+      }else{
+        alert('Ok')
+      }
+    }
+  })
+})

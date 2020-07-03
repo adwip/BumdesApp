@@ -137,6 +137,7 @@ class Administrasi extends CI_Controller{
     function detail_user($id){
         $kat =['MNG'=>'Pengurus BUMDes', 'GOV'=>'Pemerintahan Desa Pujotirto'];
         $dt['title'] = 'Detail admin';
+        $dt['page']=$this->page;
         $dt['bln'] = $this->bulan;
         $dt['id']=$id;
         $dt['v_tahun'] = $this->hr->get_tahun_log();
@@ -156,9 +157,9 @@ class Administrasi extends CI_Controller{
         }
         $dt['value'] = $this->hr->get_log_user($dt['y'], $dt['m'], $dt['lim'], $offset, $ajax, $no_pagin, $id);
         $dt['k'] = isset($dt['u']->kt)?$kat[$dt['u']->kt]:'-';
-        if (!$ajax&&$this->ses->tp=='MNG') {
+        if (!$ajax&&$this->ses->tp=='MNG'||$this->ses->tp=='SYS') {
             $this->load->view('MenuPage/Detail_Print/detail_user',$dt);
-        }else if($ajax&&$this->ses->tp=='MNG'){
+        }else if($ajax&&$this->ses->tp=='MNG'||$this->ses->tp=='SYS'){
             $val['ses']='Ok';
             $val['tabel']=$dt['value'];
             echo json_encode($val);
@@ -275,7 +276,7 @@ class Administrasi extends CI_Controller{
                 $file_name = $file_name[0];
             }
             $config = [
-                'upload_path'=> 'asset/gambar/',
+                'upload_path'=> 'media/aset/',
                 'allowed_types'=> 'jpg|png',
                 'max_size'=> 5*1048576,//in KB, 0 = unlimit
                 'max_width'=>0,
@@ -786,6 +787,7 @@ class Administrasi extends CI_Controller{
         $del_foto = $this->input->post('del_fot',true);
         $img_val = $this->input->post('img_val',true);
         $email = $this->input->post('email',true);
+        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
         $kontak = $this->input->post('kontak',true);
         $password = $this->input->post('password',true);
         
@@ -797,7 +799,7 @@ class Administrasi extends CI_Controller{
         $type = $type=='jpeg'?'jpg':$type;
         $nam_file = in_array($type,['png','jpg'])&&$size?'800'.time().'.'.$type:false;
 
-        $v=$this->hr->edit_profil($id,$nama, $email, $kontak, $password, $nam_file, $del_foto);
+        $v=$this->hr->edit_profil($id,$nama, $kontak, $password, $nam_file, $del_foto);
 
         
         $mesg=null;
@@ -834,8 +836,30 @@ class Administrasi extends CI_Controller{
                 $file_name2 = $mesg['orig_name'];
             }
         }
+        
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $this->load->library('email');
+            $from = $this->config->item('smtp_user');
+            
+            $v1=$this->hr->set_url_confirm($id.'|'.$email);
+    
+            if ($v1['res']) {
+    
+                $subject = 'Konfirmasi perubahan email admin sistem manajemen BUMDes Indrakila '.date('d-m-Y');
+                $message = 'Silahkan klik <a href="'.site_url('konfirmasi-ganti-email/'.$v1['id']).'" target="_blank">tautan</a> ini untuk konfirmasi perubahan email ';
+        
+                $this->email->set_newline("\r\n");
+                $this->email->from($from, 'Sistem Web BUMDes');
+                $this->email->to($email);
+                $this->email->subject($subject);
+                $this->email->message($message);
+                $this->email->send();
+            }
+        }
 
         if ($v) {
+            $log_mesg = '[PRIVATE] Perubahan informasi admin';
+            $this->hr->log_admin($id, $log_mesg, date('Y-m-d'), date('H:i:s'));
             $ar = [200, $stat, $foto, $file_name2];
             $ar = implode('|',$ar);
             echo $ar;
@@ -854,5 +878,11 @@ class Administrasi extends CI_Controller{
         echo $v?200:100;
         // echo $password.' - '.$password2;
     }
+
+    function cek_mail(){
+        $val = $this->input->get('mail',true);
+
+        $v = $this->hr->cek_mail($val);
+        echo $v;    }
 
 }

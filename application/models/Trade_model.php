@@ -61,7 +61,7 @@ class Trade_model extends CI_Model{
     }
 
     function get_edit_stok_keluar($id){
-        $this->db->select('id_stok AS id, nama_komoditas AS kom, tujuan AS tj, tanggal AS dt, jumlah AS jl, id_mitra AS nm, nilai_transaksi AS hg, catatan AS ct, satuan AS st, id_fin AS idf');
+        $this->db->select('id_stok AS id, nama_komoditas AS kom, tujuan AS tj, tanggal AS dt, jumlah AS jl, id_mitra AS nm, nilai_transaksi AS hg, catatan AS ct, satuan AS st, id_fin AS idf, komoditas AS idk');
         $this->db->from('stok_item si');
         $this->db->join('stok_keluar sm','sm.id_prb=si.id_stok');
         $this->db->join('komoditas km','km.id_kom=si.komoditas');

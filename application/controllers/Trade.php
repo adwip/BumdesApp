@@ -128,8 +128,9 @@ class Trade extends CI_Controller{
         $dt['title'] = '';
         $dt['tanggal'] = date('d/m/Y');
         $dt['v'] = $this->tm->get_edit_stok_keluar($id);
+        $dt['sk'] = $this->lm->get_stok_komoditas(isset($dt['v']->idk)?$dt['v']->idk:0);
         $dt['v2'] = $this->am->get_rekanan('JSON');
-        // echo json_encode($dt['v']);
+        // echo json_encode($dt['sk']);
         $this->load->view('MenuPage/Form/edit_barang_keluar_gudang',$dt);
     }
 

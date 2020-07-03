@@ -1,6 +1,6 @@
-function pertumbuhan_perdagangan(value, selector, bulan, tahun){
+function pertumbuhan_perdagangan_minggu(value, selector, bulan, tahun){
    var title = {
-      text: 'Pertumbuhan perdagangan bulan '+bulan+' '+tahun
+      text: 'Pertumbuhan perdagangan '+bulan+' '+tahun
    };
    var subtitle = {
       text: 'Source: worldClimate.com'
@@ -8,6 +8,80 @@ function pertumbuhan_perdagangan(value, selector, bulan, tahun){
    var xAxis =[{
       tickmarkPlacement: 'on',
       categories: value['minggu'],
+      startOnTick: true
+    }
+   ];
+   var yAxis = {
+      title: {
+         text: 'Rupiah IDR'
+      },
+      plotLines: [{
+         value: 0,
+         width: 1,
+         color: '#808080'
+      }]
+   };   
+   var tooltip = {
+       /*valueSuffix: ' µgram/m3',
+       height: 20,*/
+      /* backgroundColor: '#FCFFC5',
+       borderColor: 'black',
+       borderRadius: 10,*/
+       formatter: function() {
+          return this.series.name + '</b> minggu <b>' + this.x + '</b>, adalah <b>Rp. '+ this.y+' </b>';
+       }
+    }
+   var legend = {
+      layout: 'vertical',
+      align: 'right',
+      verticalAlign: 'middle',
+      borderWidth: 0
+   };
+   var series =  [{
+         name: 'Penjualan',
+         data: value['penjualan']
+      },{
+         name: 'Keuntungan',
+         data: value['margin']
+      }
+   ];
+
+   var plotOptions = {
+      line: {
+         dataLabels: {
+            enabled: false
+         },   
+         enableMouseTracking: true
+      },
+      series: {
+         pointPlacement: 'on'
+      }
+
+   };
+
+   var json = {};
+   json.title = title;
+ //   json.subtitle = subtitle;
+   json.xAxis = xAxis;
+   json.yAxis = yAxis;
+   json.tooltip = tooltip;
+   json.legend = legend;
+   json.series = series;
+   json.plotOptions = plotOptions;
+   
+   $(selector).highcharts(json);
+}
+
+function pertumbuhan_perdagangan_bulan(value, selector, tahun){
+   var title = {
+      text: 'Pertumbuhan perdagangan tahun '+tahun
+   };
+   var subtitle = {
+      text: 'Source: worldClimate.com'
+   };
+   var xAxis =[{
+      tickmarkPlacement: 'on',
+      categories: value['bulan'],
       startOnTick: true
     }
    ];
@@ -504,9 +578,9 @@ function bagi_hasil(value, selector, $tahun=null){
    $(selector).highcharts(json);
 }
 
-function keuangan_mingguan(value, selector, $tahun=null){
+function keuangan_mingguan(value, selector, bulan,  tahun){
    var title = {
-      text: 'Keuangan BUMDes Indrakila Jaya bulan Desember 2019'   
+      text: 'Keuangan minggu-an BUMDes Indrakila Jaya bulan '+bulan+' '+tahun
    };
    var subtitle = {
       text: 'Sumber: BUMDes Indrakila jaya'
@@ -581,9 +655,9 @@ function keuangan_mingguan(value, selector, $tahun=null){
    $(selector).highcharts(json);
 }
 
-function keuangan_bulanan(value, selector, $tahun=null){
+function keuangan_bulanan(value, selector, tahun){
    var title = {
-      text: 'Keuangan BUMDes Indrakila Jaya Tahun 2019'   
+      text: 'Keuangan bulan-an BUMDes Indrakila Jaya Tahun '+tahun
    };
    var subtitle = {
       text: 'Sumber: BUMDes Indrakila jaya'
@@ -664,9 +738,9 @@ function keuangan_bulanan(value, selector, $tahun=null){
    $(selector).highcharts(json);
 }
 
-function keuangan_tahunan(value, selector, $tahun=null){
+function keuangan_tahunan(value, selector){
    var title = {
-      text: 'Keuangan tahunan BUMDes Indrakila Jaya'   
+      text: 'Keuangan tahun-an BUMDes Indrakila Jaya'   
    };
    var subtitle = {
       text: 'Sumber: BUMDes Indrakila jaya'
@@ -855,7 +929,7 @@ function bagi_hasil_usaha(value, selector){
    };
    var series =  [{
          name: 'Nilai bagi hasil',
-         data: value['val']
+         data: value['nilai']
       }
    ];
 

@@ -42,7 +42,7 @@ class Homepage extends CI_Controller{
         $dt['v_grafik']=$this->fm->get_grafik_penyewaan($dt['Y']);
         if ($this->ses->log_s&&$this->ses->tp!='SYS') {
             $this->load->view('General/home',$dt);
-
+            // echo $dt['v_graf'];
             // echo $this->input->is_ajax_request();
             // $dt2 = $this->ses->userdata();
             // echo json_encode($dt2);
@@ -93,8 +93,8 @@ class Homepage extends CI_Controller{
         $from = $this->config->item('smtp_user');
         
         $to = 'prabowoa63@gmail.com';//$this->input->post('to');
-        $subject = 'Ganti password '.time();//$this->input->post('subject');
-        $message = "";//$this->input->post('message');
+        $subject = 'Cek sistem mail '.time();//$this->input->post('subject');
+        $message = "Contoh pesan";//$this->input->post('message');
 
         $this->email->set_newline("\r\n");
         $this->email->from($from);
@@ -151,22 +151,16 @@ class Homepage extends CI_Controller{
         }
     }
 
-    function ganti_email($id){
+    function konfirmasi_ganti_email($id){
         $dt['page']=$this->page;
-        $dt['title'] = 'Registrasi admin baru';
-        
-        $dt['v'] = $this->hr->get_url_confirm($id);
-        if ($dt['v']&&waktu_data($id)&&!isset($_POST['sub'])) {
-            $dt['v']= explode('|',$dt['v']->nt);
-            $this->load->view('General/ganti_password',$dt);
-        }else if (isset($_POST['sub'])&&$dt['v']) {
-            $id= explode('|',$dt['v']->nt);
-            $id = $id[2];
-            $password = $this->input->post('password',true);
-            $password2 = $this->input->post('password2',true);
-            
-        $v = $this->hr->ganti_password($id, $password, $password2);
-        echo $v?200:100;
+        $dt['title'] = 'Konfirmasi email';
+        $this->ses->sess_destroy();
+        $v = $this->hr->get_url_confirm($id);
+        $this->hr->set_r_url_confirm($id);
+        if ($v) {
+            $v = explode('|',$v->nt);
+            $this->hr->ganti_email($v[0], $v[1]);
+            $this->load->view('General/ganti_email',$dt);
         }else{
             redirect(site_url('link-not-valid'));
         }

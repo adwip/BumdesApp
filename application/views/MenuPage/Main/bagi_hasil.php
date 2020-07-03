@@ -188,6 +188,7 @@
             <div class="pgn-cust">
               <?= $value['paginasi'] ?>
             </div>
+            <h6>Cat: Setelah 30 hari atau telah menerima pembayaran, bagi hasil hanya bisa dibatalkan</h6>
           </div>
         </div>
           

@@ -29,42 +29,11 @@
             <h1><img src="<?php echo base_url(); ?>logo2.png"style="max-width:100px;max-height:100px;"> BUMDes Indrakila Jaya</h1>
         </div>
       </div>
-      <div class="main_container">
-        <form method="POST" action="<?= site_url('registrasi') ?>"  class="form-horizontal form-label-left tex-center">
-            <div class="form-group text-center">
-                <h2>Ubah email</h2>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-3" for="">Nama</label>
-                <div class="col-md-6 col-sm-6 col-xs-6">
-                    <input type="text" required readonly class="form-control" name="nama" autocomplete="off">
-                </div>
-            </div> <br>
-            <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-3">Email</label>
-                <div class="col-md-3 col-sm-3 col-xs-3">
-                    <input type="text" required class="form-control" name="email" onkeypress="return (event.charCode !=32)" autocomplete="off" id="username">
-                </div>
-                <div class="col-md-3 col-sm-3 col-xs-3">
-                    <input type="text" readonly required class="form-control" name="email" onkeypress="return (event.charCode !=32)" autocomplete="off" id="username">
-                </div>
-            </div> <br>
-            <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-3">Kata sandi</label>
-                <div class="col-md-3 col-sm-3 col-xs-3">
-                    <input type="text" required class="form-control" name="email" onkeypress="return (event.charCode !=32)" autocomplete="off" id="username">
-                </div>
-                <div class="col-md-3 col-sm-3 col-xs-3">
-                    <input type="text" required class="form-control" name="email" onkeypress="return (event.charCode !=32)" autocomplete="off" id="username">
-                </div>
-                <div class="col-md-3 col-sm-3 col-xs-3" id="warning">
-                    <small class="label label-danger">Kata sandi tidak sama</small>
-                </div>
-            </div> <br>
-            <div class="col-md-12 col-sm-12 col-xs-12 text-center">
-            <button type="submit" class="btn btn-md btn-primary">Kirim</button>
-            </div>
-        </form>
+      <div class="main_container text-center">
+        <h1>Email berhasil diubah</h1>
+        <br>
+        <br>
+        <a href="<?= base_url() ?>" class="btn btn-md btn-primary">Masuk kembali</a>
       </div>
     </div>
   </body>

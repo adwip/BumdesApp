@@ -159,6 +159,7 @@
             <div class="pgn-cust">
               <?= $value['paginasi'] ?>
             </div>
+            <h6>Cat: Setelah 10 hari, penyewaan hanya bisa dibatalkan</h6>
           </div>
         </div>
           

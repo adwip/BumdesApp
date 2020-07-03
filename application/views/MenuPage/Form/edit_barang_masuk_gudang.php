@@ -99,7 +99,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" >Jumlah</label>
                         <div class="col-md-5 col-sm-5 col-xs-5">
-                          <input type="text" required class="form-control" name="jumlah" value="<?= isset($v->jl)?$v->jl:0 ?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
+                          <input type="text" required class="form-control float-nums" name="jumlah" value="<?= isset($v->jl)?$v->jl:0 ?>">
                         </div>
                         <div class="col-md-1 col-sm-1 col-xs-1">
                           <input type="text" name="satuan" readonly class="form-control"  value="<?= isset($v->st)?$v->st:'-' ?>">

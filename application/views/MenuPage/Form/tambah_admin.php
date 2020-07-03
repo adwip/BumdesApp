@@ -74,7 +74,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3">Email</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                          <input type="text" required class="form-control" name="email" onkeypress="return (event.charCode !=32)" autocomplete="off" id="username">
+                          <input type="text" required class="form-control" name="email" onkeypress="return (event.charCode !=32)" autocomplete="off" id="cek-email" data-old="">
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3" style="display: none;" id="warning">
                           <small class="label label-danger">Email sudah digunakan</small>

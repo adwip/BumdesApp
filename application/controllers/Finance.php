@@ -49,6 +49,7 @@ class Finance extends CI_controller{
         // echo $dt['v_grafik'];
         if (!$this->input->is_ajax_request()) {
             $this->load->view('MenuPage/Main/weekly_report',$dt);
+            // echo json_encode($dt['s']);
         }else{
             $val['ses']='Ok';
             $val['tabel']=$dt['value'];
@@ -211,6 +212,7 @@ class Finance extends CI_controller{
         $dt['v'] = $this->fm->get_daftar_dividen();
         $dt['v_grafik'] = $this->fm->get_grafik_dividen();
         $this->load->view('MenuPage/Main/Pembagian_dividen',$dt);
+        // echo $dt['v_grafik'];
     }
 
     function form_tabah_dividen(){

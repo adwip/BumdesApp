@@ -169,8 +169,8 @@ class HR_model extends CI_Model{
         return $result;
     }
 
-    function edit_profil($id, $nama, $email, $kontak, $pass, $foto, $df){
-        $isi = ['nama'=>$nama,'email'=>$email,'kontak'=>$kontak];
+    function edit_profil($id, $nama, $kontak, $pass, $foto, $df){
+        $isi = ['nama'=>$nama,'kontak'=>$kontak];
         if ($foto) {
             $isi['foto_user']=$foto;
         }elseif ($df) {
@@ -194,12 +194,10 @@ class HR_model extends CI_Model{
         return $result;
     }
 
-    function cek_username($usn){
-        $this->db->select('');
+    function cek_mail($email){
         $this->db->from('admin');
-        $this->db->where('username',$usn);
-        $result = $this->db->get()->num_rows();
-        // $this->db->
+        $this->db->where('email',$email);
+        $result = $this->db->get()->num_rows()>0?true:false;
         return $result;
     }
 
@@ -247,17 +245,6 @@ class HR_model extends CI_Model{
         return $result;
     }
 
-    function add_user($nama, $email, $kontak, $kategori){
-
-    }
-
-    function register_user($email, $password){
-
-    }
-
-    function get_user($jenis='MNG'){
-
-    }
 
     function ganti_password($id, $pass1, $pass2){
         if ($pass1==$pass2) {
@@ -269,7 +256,10 @@ class HR_model extends CI_Model{
         }
     }
 
-    function cek_session($id){
-
+    function ganti_email($id, $email){
+        $this->db->where('id_admin',$id);
+        $this->db->update('admin',['email'=>$email]);
+        return $this->db->affected_rows();
     }
+
 }

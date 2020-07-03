@@ -64,7 +64,7 @@
                 </div>
                 <div class="col-md-7 col-sm-7 col-xs-7">
                   <div class="row">
-                    <form id="gov-stok-masuk" action="gsmj" method="GET">
+                    <form id="gov-stok-masuk" action="gov-stok-masuk" method="GET">
                       <div class="col-md-6 col-sm-6">  
                         <div class="form-group">
                           <label for="">Tahun</label>
@@ -126,24 +126,7 @@
               </div>
             </div>
           </div>
-          <br>
-          <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-              <div class="dashboard_graph">
-                <div class="row x_title">
-                  <div class="col-md-12">
-                    <h3>Pertumbuhan nilai belanja <small class="g-tahun">Tahun <?= $y ?></small></h3>
-                  </div>
-                </div>
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                  <!-- <div id="chart_plot_01" class="demo-placeholder"></div> -->
-                  <div id="grafik_penyewaan"></div>
-                </div>
-                <div class="clearfix"></div>
-              </div>
-            </div>
-          </div>
-          <br>
+          
           <br>
           <br>
         </div>
@@ -165,7 +148,7 @@
     <script src="<?= base_url('asset') ?>/JS/Ajax_req_gov.js"></script>
     
     <script type="text/javascript">
-      pembelian_logistik(JSON.parse('<?= $v_grafik ?>'),'#grafik_perdagangan')
+      pembelian_logistik(JSON.parse('<?= $v_grafik ?>'),'#grafik_perdagangan','<?= $y ?>')
     </script>
   </body>
 </html>

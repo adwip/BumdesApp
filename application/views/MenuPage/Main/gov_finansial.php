@@ -69,7 +69,7 @@
               <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <div class="row">
-                    <form id="gov-fin" action="gfin" method="GET">
+                    <form id="gov-fin" action="gov-finansial" method="GET">
                       <div class="col-md-4 col-sm-4 col-xs-4">  
                         <div class="form-group">
                           <label for="">Tahun</label>
@@ -220,8 +220,8 @@
     <script src="<?= base_url('asset') ?>/JS/Ajax_req_gov.js"></script>
     
     <script type="text/javascript">
-      keuangan_mingguan(JSON.parse('<?= $gf_w ?>'),'#grafik_keuangan_mingguan')
-      keuangan_bulanan(JSON.parse('<?= $gf_m ?>'),'#grafik_keuangan_bulanan')
+      keuangan_mingguan(JSON.parse('<?= $gf_w ?>'),'#grafik_keuangan_mingguan', '<?= $nam_bulan ?>', '<?= $y ?>')
+      keuangan_bulanan(JSON.parse('<?= $gf_m ?>'),'#grafik_keuangan_bulanan', '<?= $y ?>')
       keuangan_tahunan(JSON.parse('<?= $gf_y ?>'),'#grafik_keuangan_tahunan')
     </script>
   </body>

@@ -746,7 +746,7 @@ class Finance_model extends CI_Model{
         $this->db->where('id_bgh',$id);
         $this->db->where('status IS NULL');
         $result = $this->db->get()->result();
-        $result = isset($result[0])&&waktu_data($id)?$result[0]:null;
+        $result = isset($result[0])&&!waktu_data($id)?$result[0]:null;
         return $result;
     }
 

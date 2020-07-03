@@ -79,7 +79,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" >Jumlah</label>
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                          <input autocomplete="off" type="text" required class="form-control empty-form" id="jumlah" name="jumlah" onkeypress="return (event.charCode !=8 && event.charCode ==0||event.charCode >= 48 && event.charCode <= 57||event.charCode==46)">
+                          <input autocomplete="off" type="text" required class="form-control empty-form float-nums" id="jumlah" name="jumlah">
                         </div>
                         <div class="col-md-2 col-sm-2 col-xs-2">
                           <input type="text" readonly id="stok" class="form-control empty-form">

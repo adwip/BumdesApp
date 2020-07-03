@@ -12,6 +12,9 @@ $(document).ready(function(){
                     type: $(this).attr('method'),
                     data: $(this).serialize()+n_kom+sat,
                     dataType: 'json',
+                    beforeSend: function(){
+                        $('button[type=submit]').attr('disabled',true)
+                    },
                     success: function(v){
                         if (v['resp']==200) {
                             reset_form()
@@ -20,6 +23,7 @@ $(document).ready(function(){
                         }else{
                             swal({text:"Data gagal terkirim",buttons: false,timer:3000,icon:"error"})
                         }
+                        $('button[type=submit]').attr('disabled',false)
                     }
                 })
             }
@@ -38,6 +42,9 @@ $(document).ready(function(){
                     type: $(this).attr('method'),
                     data: $(this).serialize()+n_kom+sat+n_mitra,
                     dataType: 'json',
+                    beforeSend: function(){
+                        $('button[type=submit]').attr('disabled',true)
+                    },
                     success: function(v){
                         if (v['resp']==200) {
                             let html = '<option value="">Pilih komoditas</option>'
@@ -51,6 +58,7 @@ $(document).ready(function(){
                         }else{
                             swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
                         }
+                        $('button[type=submit]').attr('disabled',false)
                     }
                 })
             }
@@ -66,6 +74,9 @@ $(document).ready(function(){
                     type: $(this).attr('method'),
                     data: $(this).serialize(),
                     dataType: 'json',
+                    beforeSend: function(){
+                        $('button[type=submit]').attr('disabled',true)
+                    },
                     success: function(v){
                         if (v==200) {
                             reset_form()
@@ -73,6 +84,7 @@ $(document).ready(function(){
                         }else{
                             swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
                         }
+                        $('button[type=submit]').attr('disabled',false)
                     }
                 })
             }
@@ -88,6 +100,9 @@ $(document).ready(function(){
                     type: $(this).attr('method'),
                     data: $(this).serialize(),
                     dataType: 'json',
+                    beforeSend: function(){
+                        $('button[type=submit]').attr('disabled',true)
+                    },
                     success: function(v){
                         if (v['res']==200) {
                             $('#satuan').html(v['v'])
@@ -96,6 +111,7 @@ $(document).ready(function(){
                         }else{
                             swal({text:"Gagal menambahkan",buttons: false,timer:3000,icon:"error"})
                         }
+                        $('button[type=submit]').attr('disabled',false)
                     }
                 })
             }
@@ -112,6 +128,9 @@ $(document).ready(function(){
                     type: $(this).attr('method'),
                     data: $(this).serialize()+n_aset,
                     dataType: 'json',
+                    beforeSend: function(){
+                        $('button[type=submit]').attr('disabled',true)
+                    },
                     success: function(v){
                         if (v==200) {
                             reset_form()
@@ -119,6 +138,7 @@ $(document).ready(function(){
                         }else{
                             swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
                         }
+                        $('button[type=submit]').attr('disabled',false)
                     }
                 })
             }
@@ -135,6 +155,9 @@ $(document).ready(function(){
                     type: $(this).attr('method'),
                     data: $(this).serialize()+n_aset,
                     dataType: 'json',
+                    beforeSend: function(){
+                        $('button[type=submit]').attr('disabled',true)
+                    },
                     success: function(v){
                         if (v['res']==200) {
                             let html = '<option value="">Pilih aset</option>'
@@ -148,6 +171,7 @@ $(document).ready(function(){
                         }else{
                             swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
                         }
+                        $('button[type=submit]').attr('disabled',false)
                     }
                 })
             }
@@ -164,6 +188,9 @@ $(document).ready(function(){
                     type: $(this).attr('method'),
                     data: $(this).serialize()+n_mitra,
                     dataType: 'json',
+                    beforeSend: function(){
+                        $('button[type=submit]').attr('disabled',true)
+                    },
                     success: function(v){
                         if (v['res']==200) {
                             let html = '<option value="">Pilih aset</option>'
@@ -177,6 +204,7 @@ $(document).ready(function(){
                         }else{
                             swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
                         }
+                        $('button[type=submit]').attr('disabled',false)
                     }
                 })
             }
@@ -193,6 +221,9 @@ $(document).ready(function(){
                     type: $(this).attr('method'),
                     data: $(this).serialize()+'&info='+info,
                     dataType: 'json',
+                    beforeSend: function(){
+                        $('button[type=submit]').attr('disabled',true)
+                    },
                     success: function(v){
                         if (v==200) {
                             reset_form()
@@ -200,6 +231,7 @@ $(document).ready(function(){
                         }else{
                             swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
                         }
+                        $('button[type=submit]').attr('disabled',false)
                     }
                 })
             }
@@ -218,6 +250,9 @@ $(document).ready(function(){
                     cache: false,
                     contentType: false,
                     processData: false,
+                    beforeSend: function(){
+                        $('button[type=submit]').attr('disabled',true)
+                    },
                     success: function(v){
                         v = v.split('|')
                         if (v[0]==200) {
@@ -228,6 +263,7 @@ $(document).ready(function(){
                         }else{
                             swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
                         }
+                        $('button[type=submit]').attr('disabled',false)
                     }
                 })
             }
@@ -243,6 +279,9 @@ $(document).ready(function(){
                     type: $(this).attr('method'),
                     data: $(this).serialize(),
                     dataType: 'json',
+                    beforeSend: function(){
+                        $('button[type=submit]').attr('disabled',true)
+                    },
                     success: function(v){
                         if (v['resp']==200) {
                             $('#saldo').val('Rp. '+v['b'])
@@ -251,6 +290,7 @@ $(document).ready(function(){
                         }else{
                             swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
                         }
+                        $('button[type=submit]').attr('disabled',false)
                     }
                 })
             }
@@ -266,6 +306,9 @@ $(document).ready(function(){
                     type: $(this).attr('method'),
                     data: $(this).serialize(),
                     dataType: 'json',
+                    beforeSend: function(){
+                        $('button[type=submit]').attr('disabled',true)
+                    },
                     success: function(v){
                         if (v==200) {
                             reset_form()
@@ -273,6 +316,7 @@ $(document).ready(function(){
                         }else{
                             swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
                         }
+                        $('button[type=submit]').attr('disabled',false)
                     }
                 })
             }
@@ -288,6 +332,9 @@ $(document).ready(function(){
                     type: $(this).attr('method'),
                     data: $(this).serialize(),
                     dataType: 'json',
+                    beforeSend: function(){
+                        $('button[type=submit]').attr('disabled',true)
+                    },
                     success: function(v){
                         if (v==200) {
                             reset_form()
@@ -295,6 +342,7 @@ $(document).ready(function(){
                         }else{
                             swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
                         }
+                        $('button[type=submit]').attr('disabled',false)
                     }
                 })
             }
@@ -314,6 +362,9 @@ $(document).ready(function(){
                     cache: false,
                     contentType: false,
                     processData: false,
+                    beforeSend: function(){
+                        $('button[type=submit]').attr('disabled',true)
+                    },
                     success: function(v){
                         v = v.split('|')
                         if (v[0]==200) {
@@ -321,6 +372,7 @@ $(document).ready(function(){
                         }else{
                             swal({text:"Registrasi gagal",buttons: false,timer:3000,icon:"error"})
                         }
+                        $('button[type=submit]').attr('disabled',false)
                     }
                 })
             }
@@ -338,12 +390,16 @@ $(document).ready(function(){
                     type: $(this).attr('method'),
                     data: $(this).serialize(),
                     dataType: 'text',
+                    beforeSend: function(){
+                        $('button[type=submit]').attr('disabled',true)
+                    },
                     success: function(v){
                         if (v==200) {
                             swal({text:"Ganti password berhasil",buttons: false,timer:3000,icon:"success"})
                         }else{
                             swal({text:"Ganti password gagal",buttons: false,timer:3000,icon:"error"})
                         }
+                        $('button[type=submit]').attr('disabled',false)
                     }
                 })
             }
@@ -358,6 +414,9 @@ $(document).ready(function(){
                     type: $(this).attr('method'),
                     data: $(this).serialize(),
                     dataType: 'json',
+                    beforeSend: function(){
+                        $('button[type=submit]').attr('disabled',true)
+                    },
                     success: function(v){
                         if (v==200) {
                             reset_form()
@@ -365,6 +424,7 @@ $(document).ready(function(){
                         }else{
                             swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
                         }
+                        $('button[type=submit]').attr('disabled',false)
                     }
                 })
             }
@@ -372,27 +432,6 @@ $(document).ready(function(){
     })
 
     /*========================================Edit form========================================= */
-    $('#edit-barang-masuk').submit(function(e){
-        e.preventDefault()
-        swal({title:"Lanjutkan menyimpan ?",buttons:['Batal','Lanjut'],closeOnClickOutside:false}).then((Ok) => {
-            if (Ok) {
-                $.ajax({
-                    url: $(this).attr('action'),
-                    type: $(this).attr('method'),
-                    data: $(this).serialize(),
-                    dataType: 'json',
-                    success: function(v){
-                        if (v['resp']==200) {
-                            $('#saldo').val('Rp. '+v['sld'])
-                            swal({text:"Berhasil menyimpan",buttons: false,timer:3000,icon:"success"})
-                        }else{
-                            swal({text:"Gagal menyimpan",buttons: false,timer:3000,icon:"error"})
-                        }
-                    }
-                })
-            }
-        })
-    })
 
     $('#edit-barang-keluar').submit(function(e){
         e.preventDefault()

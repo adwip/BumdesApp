@@ -90,7 +90,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" >Jumlah</label>
                         <div class="col-md-5 col-sm-5 col-xs-5">
-                          <input autocomplete="off" placeholder="Jumlah stok masuk sesuai satuan" type="text" required class="form-control empty-form" name="jumlah" onkeypress="return (event.charCode !=8 && event.charCode ==0||event.charCode >= 48 && event.charCode <= 57||event.charCode==46)">
+                          <input autocomplete="off" placeholder="Jumlah stok masuk sesuai satuan" type="text" required class="form-control empty-form float-nums" name="jumlah">
                         </div>
                         <div class="col-md-1 col-sm-1 col-xs-1">
                           <input readonly type="text" class="form-control empty-form" id="satuan"  name="n_sat">

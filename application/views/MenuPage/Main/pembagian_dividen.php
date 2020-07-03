@@ -138,7 +138,7 @@
     <!--Javascript tambahan -->
     <script src="<?= base_url('asset') ?>/JS/Fitur.js"></script>
     <script>
-      pertumbuhan_bagi_hasil(JSON.parse('<?= $v_grafik ?>'),'#grafik_bagi_hasil')
+      bagi_hasil_usaha(JSON.parse('<?= $v_grafik ?>'),'#grafik_bagi_hasil')
     </script>
   </body>
 </html>

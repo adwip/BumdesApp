@@ -124,7 +124,7 @@
     <script src="<?= base_url('asset') ?>/JS/Form.js"></script>
     
     <script type="text/javascript">
-      pertumbuhan_perdagangan(JSON.parse('<?= $v_graf ?>'),'#grafik_perdagangan', "<?= $nam_bulan ?>", "<?= $Y ?>")
+      pertumbuhan_perdagangan_minggu(JSON.parse('<?= $v_graf ?>'),'#grafik_perdagangan', "<?= $nam_bulan ?>", "<?= $Y ?>")
       penyewaan(JSON.parse('<?= $v_grafik ?>'),'#grafik_penyewaan', '<?= $Y ?>')
       // pertumbuhan_penyewaan(JSON.parse('<?= $v_graf ?>'),'#grafik_penyewaan')
     </script>

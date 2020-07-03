@@ -64,7 +64,7 @@
                 </div>
                 <div class="col-md-5">
                   <div class="row">
-                    <form id="gov-kbgh" action="gbgh" method="GET">
+                    <form id="gov-kbgh" action="gov-kerjasama-bgh" method="GET">
                       <div class="col-md-6 col-sm-6">  
                         <div class="form-group">
                           <label for="">Tahun</label>
