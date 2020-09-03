@@ -6,9 +6,10 @@ $(document).ready(function(){
             url:$(this).attr('action'),
             data: $(this).serialize(),
             type: $(this).attr('method'),
-            dataType: 'html',
+            dataType: 'json',
             success: function(v){
-                $('#val-body').html(v)
+                $('#val-body').html(v['val'])
+                $('.pgn-cust').html(v['paginasi'])
             }
         })
     })
@@ -19,9 +20,10 @@ $(document).ready(function(){
             url:$(this).attr('action'),
             data: $(this).serialize(),
             type: $(this).attr('method'),
-            dataType: 'html',
+            dataType: 'json',
             success: function(v){
-                $('#val-body').html(v)
+                $('#val-body').html(v['val'])
+                $('.pgn-cust').html(v['paginasi'])
             }
         })
     })

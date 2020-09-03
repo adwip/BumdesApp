@@ -42,7 +42,7 @@ function total_persentase(){
 
 $(document).ready(function(){
 
-  $('#datatable, #datatable1, #datatable2, .datatable').dataTable();
+  // $('#datatable, #datatable1, #datatable2, .datatable').dataTable();
 
   $('#table-master').on('keyup','.jumlah-div',function(){
     total_persentase()

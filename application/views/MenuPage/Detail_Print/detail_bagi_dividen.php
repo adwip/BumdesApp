@@ -73,7 +73,7 @@
                     </tr>
                     <tr>
                         <td class="col-md-2 col-sm-2 col-xs-2"><h4>Catatan :</h4></td>
-                        <td class="col-md-4 col-sm-4 col-xs-4"><h3><?= isset($v->cat)?$v->cat:'-' ?></h3></td>
+                        <td class="col-md-4 col-sm-4 col-xs-4"><p><?= isset($v->cat)?$v->cat:'-' ?></p></td>
                     </tr>
                 </table>
                 <a href="<?= site_url('unduh-bagi-hasil-usaha?id='.$id) ?>" target="_blank" class="btn btn-md btn-primary">Unduh dokumen PDF</a>

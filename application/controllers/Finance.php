@@ -41,6 +41,7 @@ class Finance extends CI_controller{
             $dt['lim'] = $this->input->get('limit',TRUE);
             $offset = $this->input->get('offset',TRUE);
         }
+        $dt['nb']= $this->bulan[$dt['bulan']];
         $dt['thn'] = $this->fm->get_tahun_fin();
         $dt['value']=$this->fm->get_keuangan_mingguan($dt['tahun'],$dt['bulan'],$dt['minggu'], $dt['lim'], $offset, $ajax, $no_pagin);
         $dt['kd']=$this->fm->get_kredit_debit_mingguan($dt['tahun'],$dt['bulan'],$dt['minggu']);
@@ -56,6 +57,8 @@ class Finance extends CI_controller{
             $val['debit']=isset($dt['kd'][0]->dbt)? $dt['kd'][0]->dbt:0;
             $val['kredit']=isset($dt['kd'][0]->kdt)? $dt['kd'][0]->kdt:0;
             $val['grafik'] = json_decode($dt['v_grafik']);
+            $val['nb'] = $dt['nb'];
+            $val['thn'] = $dt['tahun'];
             echo json_encode($val);
         }
     }

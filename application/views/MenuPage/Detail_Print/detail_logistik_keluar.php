@@ -103,13 +103,13 @@
               <div class="x_panel">
                 <div class="x_title">
                   <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-7 col-sm-7 col-xs-12">
                       <h1>Histori barang keluar</h1>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-5 col-sm-5 col-xs-12">
                       <div class="row">
                           <form id="detail-penjualan" action="<?= site_url('detail-penjualan/'.$id) ?>" method="GET">
-                              <div class="col-md-6 col-sm-6">  
+                              <div class="col-md-4 col-sm-4 col-xs-12">  
                                   <div class="form-group">
                                       <label for="">Tahun</label>
                                       <select name="tahun" class="form-control" onchange="$('#detail-penjualan').submit()">
@@ -122,7 +122,7 @@
                                       </select>
                                   </div>
                               </div>
-                              <div class="col-md-6 col-sm-6">
+                              <div class="col-md-4 col-sm-4 col-xs-12">
                                   <div class="form-group">
                                       <label for="">Bulan</label>
                                   <select name="bulan" class="form-control" onchange="$('#detail-penjualan').submit()">
@@ -133,6 +133,19 @@
                                       }
                                       ?>
                                   </select>
+                                  </div>
+                              </div>
+                              <div class="col-md-4 col-sm-4 col-xs-12">
+                                  <div class="form-group">
+                                    <label for="">Tampilkan</label>
+                                    <select name="limit" class="form-control" onchange="$('#detail-penjualan').submit()" id="limit">
+                                      <?php 
+                                      foreach ($form_lim as $key => $val) {
+                                        $val==$lim?$sel='selected':$sel=null;
+                                        echo '<option '.$sel.' value="'.$val.'">'.$val.'</option>';
+                                      }
+                                      ?>
+                                    </select>
                                   </div>
                               </div>
                           </form>
@@ -155,9 +168,12 @@
                           </tr>
                       </thead>
                       <tbody id="val-body">
-                          <?= $v_keluar_tabel ?>
+                        <?= $v_keluar_tabel['val'] ?>
                       </tbody>
                   </table>
+                </div>
+                <div class="pgn-cust">
+                  <?= $v_keluar_tabel['paginasi'] ?>
                 </div>
               </div>
             </div>

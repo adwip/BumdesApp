@@ -205,7 +205,7 @@ class Logistic_model extends CI_Model{
         return $result;
     }
 
-    function get_detail_komoditas_masuk($id, $y, $m, $type='html'){
+    function get_detail_komoditas_masuk($id, $y, $m, $limit, $offset, $ajax, $no_pagin){
         $this->db->select('tanggal AS tg, jenis AS jn, asal AS ct, jumlah AS jl, FORMAT(nilai, "#.00") AS nl, stok AS stk, satuan AS st');
         $this->db->from('stok_masuk sm');
         $this->db->join('stok_item si','si.id_stok=sm.id_prb');
@@ -213,52 +213,62 @@ class Logistic_model extends CI_Model{
         $this->db->like('tanggal',$y.'-'.$m);
         $this->db->join('satuan sn','sn.id=si.sat_barang');
         $this->db->order_by('tanggal','DESC');
-        $result = $this->db->get()->result();
+        $result = $this->db->get();
+        $nr=$result->num_rows();
+        $result=$result->result();
         $result1=null;
-        if ($type=='html') {
-            foreach ($result as $key => $v) {
-                $result1 .= '
-                            <tr>
-                                <td>'.($key+1).'</td>
-                                <td>'.date('d/m/Y',strtotime($v->tg)).'</td>
-                                <td>'.$v->ct.'</td>
-                                <td>'.$v->jl.' '.$v->st.'</td>
-                                <td>'.$v->stk.' '.$v->st.'</td>
-                                <td>Rp. '.$v->nl.'</td>
-                            </tr>';
-            }
-            return $result1;
-        }else{
-            return $result;
+        if ($no_pagin!='no'&&$ajax) {
+            $this->db->limit($limit, $offset);
         }
+        foreach ($result as $key => $v) {
+            $result1 .= '
+                        <tr>
+                            <td>'.($offset+1).'</td>
+                            <td>'.date('d/m/Y',strtotime($v->tg)).'</td>
+                            <td>'.$v->ct.'</td>
+                            <td>'.$v->jl.' '.$v->st.'</td>
+                            <td>'.$v->stk.' '.$v->st.'</td>
+                            <td>Rp. '.$v->nl.'</td>
+                        </tr>';
+                        $offset++;
+                        if (!($no_pagin!='no'&&$ajax)&&$offset==$limit) {
+                            break;
+                        }
+        }
+        return ['val'=>$result1,'paginasi'=>paginasi_gen($limit,$nr)];
     }
 
-    function get_detail_komoditas_keluar($id, $y, $m, $type='html'){
+    function get_detail_komoditas_keluar($id, $y, $m, $limit, $offset, $ajax, $no_pagin){
         $this->db->select('tanggal AS tg, tujuan AS ct, jumlah AS jl, FORMAT(nilai_transaksi, "#.00") AS nl, stok AS stk, FORMAT(margin, "#.00") AS kn');
         $this->db->from('stok_keluar sk');
         $this->db->join('stok_item si','si.id_stok=sk.id_prb');
         $this->db->where('komoditas',$id);
         $this->db->like('tanggal',$y.'-'.$m);
         $this->db->order_by('tanggal','DESC');
-        $result = $this->db->get()->result();
+        $result = $this->db->get();
+        $nr=$result->num_rows();
+        $result=$result->result();
         $result1=null;
-        if ($type=='html') {
-            foreach ($result as $key => $v) {
-                $result1 .= '
-                            <tr>
-                                <td>'.($key+1).'</td>
-                                <td>'.date('d/m/Y',strtotime($v->tg)).'</td>
-                                <td>'.$v->ct.'</td>
-                                <td>'.$v->jl.'</td>
-                                <td>Rp. '.$v->nl.'</td>
-                                <td>Rp. '.$v->kn.'</td>
-                                <td>'.$v->stk.'</td>
-                            </tr>';
-            }
-            return $result1;
-        }else{
-            return $result;
+        if ($no_pagin!='no'&&$ajax) {
+            $this->db->limit($limit, $offset);
         }
+        foreach ($result as $key => $v) {
+            $result1 .= '
+                        <tr>
+                            <td>'.($offset+1).'</td>
+                            <td>'.date('d/m/Y',strtotime($v->tg)).'</td>
+                            <td>'.$v->ct.'</td>
+                            <td>'.$v->jl.'</td>
+                            <td>Rp. '.$v->nl.'</td>
+                            <td>Rp. '.$v->kn.'</td>
+                            <td>'.$v->stk.'</td>
+                        </tr>';
+                        $offset++;
+                        if (!($no_pagin!='no'&&$ajax)&&$offset==$limit) {
+                            break;
+                        }
+        }
+        return ['val'=>$result1,'paginasi'=>paginasi_gen($limit,$nr)];
     }
 
     function get_histori_harga_komoditas($id){

@@ -78,9 +78,6 @@
                     </tr>
                 </table>
                 <hr class="col-md-12 col-sm-12 col-xs-12">
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                    <a href="pdf-stok" class="btn btn-sm btn-primary">Unduh bentuk PDF</a>
-                </div>
             </div>
           </div>
         </div>

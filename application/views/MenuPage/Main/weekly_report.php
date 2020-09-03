@@ -221,7 +221,7 @@
     <script src="<?= base_url('asset') ?>/JS/Fitur.js"></script>
     <script src="<?= base_url('asset/JS/Ajax_req.js') ?>"></script>
     <script type="text/javascript">
-      keuangan_mingguan(JSON.parse('<?= $v_grafik ?>'),'#grafik_keuangan_mingguan')
+      keuangan_mingguan(JSON.parse('<?= $v_grafik ?>'),'#grafik_keuangan_mingguan', '<?= $nb ?>', '<?= $tahun ?>')
     </script>
   </body>
 </html>

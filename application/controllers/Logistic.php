@@ -102,19 +102,26 @@ class Logistic extends CI_Controller{
         $dt['id'] = $id;
         $dt['y'] = date('Y');
         $dt['m'] = date('m');
+        $dt['lim'] = 10;
+        $offset = 0;
+        $ajax = $this->input->is_ajax_request();
+        $no_pagin = $this->input->get('pagin',TRUE);
+        $dt['form_lim'] = [10, 25, 50, 100];
         if (isset($_GET['tahun'])) {
             $dt['y'] = $this->input->get('tahun',TRUE);
             $dt['m'] = $this->input->get('bulan',TRUE);
+            $dt['lim'] = $this->input->get('limit',TRUE);
+            $offset = $this->input->get('offset',TRUE);
         }
         $dt['v'] = $this->lm->get_detail_log_masuk($id);
         $id=isset($dt['v']->id)?$dt['v']->id:null;
-        $dt['v_masuk_tabel'] = $this->lm->get_detail_komoditas_masuk($id, $dt['y'],$dt['m']);
+        $dt['v_masuk_tabel'] = $this->lm->get_detail_komoditas_masuk($id, $dt['y'],$dt['m'], $dt['lim'], $offset, $ajax, $no_pagin);//$dt['tahun'],$dt['bulan'], $dt['lim'], $offset, $ajax, $no_pagin
         $dt['thn'] = $this->lm->get_tahun_his_log($id, 'IN');
         $dt['bln'] = $this->bulan;
         if ($type=='html') {
             $this->load->view('MenuPage/Detail_Print/detail_logistik_masuk',$dt);
         }else{
-            echo $dt['v_masuk_tabel'];
+            echo json_encode($dt['v_masuk_tabel']);
             // echo json_encode($_GET);
         }
     }
@@ -125,19 +132,27 @@ class Logistic extends CI_Controller{
         $dt['id'] = $id;
         $dt['y'] = date('Y');
         $dt['m'] = date('m');
+        $dt['lim'] = 10;
+        $offset = 0;
+        $ajax = $this->input->is_ajax_request();
+        $no_pagin = $this->input->get('pagin',TRUE);
+        $dt['form_lim'] = [10, 25, 50, 100];
         if (isset($_GET['tahun'])) {
             $dt['y'] = $this->input->get('tahun',TRUE);
             $dt['m'] = $this->input->get('bulan',TRUE);
+            $dt['lim'] = $this->input->get('limit',TRUE);
+            $offset = $this->input->get('offset',TRUE);
         }
         $dt['v'] = $this->lm->get_detail_log_keluar($id);
         $id=isset($dt['v']->id)?$dt['v']->id:null;
-        $dt['v_keluar_tabel'] = $this->lm->get_detail_komoditas_keluar($id, $dt['y'],$dt['m']);
+        $dt['v_keluar_tabel'] = $this->lm->get_detail_komoditas_keluar($id, $dt['y'],$dt['m'], $dt['lim'], $offset, $ajax, $no_pagin);
         $dt['thn'] = $this->lm->get_tahun_his_log($id, 'OUT');
         $dt['bln'] = $this->bulan;
         if ($type=='html') {
             $this->load->view('MenuPage/Detail_Print/detail_logistik_keluar',$dt);
         }else{
-            echo $dt['v_keluar_tabel'];
+            echo json_encode($dt['v_keluar_tabel']);
+            // echo json_encode($_GET);
         }
     }
 

@@ -161,7 +161,7 @@ class Homepage extends CI_Controller{
             $v = explode('|',$v->nt);
             $this->hr->ganti_email($v[0], $v[1]);
             $this->load->view('General/ganti_email',$dt);
-        }else{
+        }else{ 
             redirect(site_url('link-not-valid'));
         }
     }

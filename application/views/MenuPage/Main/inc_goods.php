@@ -101,15 +101,15 @@
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-4">
                                 <div class="form-group">
-                                    <label for="">Tampilkan</label>
-                                <select name="limit" class="form-control" onchange="$('#belanja-barang').submit()" id="limit">
-                                  <?php 
-                                  foreach ($form_lim as $key => $val) {
-                                    $val==$lim?$sel='selected':$sel=null;
-                                    echo '<option '.$sel.' value="'.$val.'">'.$val.'</option>';
-                                  }
-                                  ?>
-                                </select>
+                                  <label for="">Tampilkan</label>
+                                  <select name="limit" class="form-control" onchange="$('#belanja-barang').submit()" id="limit">
+                                    <?php 
+                                    foreach ($form_lim as $key => $val) {
+                                      $val==$lim?$sel='selected':$sel=null;
+                                      echo '<option '.$sel.' value="'.$val.'">'.$val.'</option>';
+                                    }
+                                    ?>
+                                  </select>
                                 </div>
                             </div>
                         </form>

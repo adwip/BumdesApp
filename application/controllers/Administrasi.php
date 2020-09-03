@@ -883,6 +883,7 @@ class Administrasi extends CI_Controller{
         $val = $this->input->get('mail',true);
 
         $v = $this->hr->cek_mail($val);
-        echo $v;    }
+        echo $v;    
+    }
 
 }
