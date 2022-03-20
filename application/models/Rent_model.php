@@ -8,7 +8,7 @@ class Rent_model extends CI_Model{
     }
 
     function get_penyewaan($tahun, $bulan, $limit, $offset, $ajax, $no_pagin, $type='html'){
-        $this->db->select('id_sewa AS id, nama AS ast, tanggal_mulai AS wml, tanggal_selesai AS wsl, penyewa AS pnw, FORMAT(harga, "#.00") AS nom');
+        $this->db->select('id_sewa AS id, nama AS ast, tanggal_mulai AS wml, tanggal_selesai AS wsl, penyewa AS pnw, FORMAT(harga, "#.00") AS nom, IF(tanggal_mulai < "'.date('Y-m-d').'","ON", "OFF") AS ccl, status_sewa AS stts');
         $this->db->from('penyewaan pn');
         $this->db->join('aset as','as.id_aset=pn.aset');
         if ($no_pagin!='no'&&$ajax) {
@@ -22,8 +22,12 @@ class Rent_model extends CI_Model{
         if ($type=='html') {
             foreach ($result as $key => $v) {
                 $but=null;
-                if (waktu_data($v->id, 10)) {
+                if (waktu_data($v->id,10)) {
                     $but = '<button type="button" class="btn btn-xs btn-danger hapus-sewa" value="'.$v->id.'">Hapus</button>'.anchor('edit-ar/'.$v->id,'Ubah','class="btn btn-xs btn-warning"');
+                }else if($v->ccl=='ON'&&$v->stts=='1'){
+                    $but = '<button value="'.$v->id.'" type="button" class="btn btn-xs btn-danger batal-sewa" >Batalkan</button>';
+                }else if($v->stts=='0'){
+                    $but = 'Dibatalkan';
                 }
                 $result1 .='<tr data-nam="'.$v->ast.'">
                             <td>'.($offset+1).'</td>
@@ -127,7 +131,7 @@ class Rent_model extends CI_Model{
     function set_penyewaan($aset, $penyewa, $kontak, $tanggal_mulai, $tanggal_sel, $harga){
 
         $id='002'.time();
-        $isi = ['id_sewa'=>$id,'aset'=>$aset,'penyewa'=>$penyewa,'kontak'=>$kontak,'tanggal_mulai'=>$tanggal_mulai,'tanggal_selesai'=>$tanggal_sel,'harga'=>$harga];
+        $isi = ['id_sewa'=>$id,'aset'=>$aset,'penyewa'=>$penyewa,'kontak'=>$kontak,'tanggal_mulai'=>$tanggal_mulai,'tanggal_selesai'=>$tanggal_sel,'harga'=>$harga,'status_sewa'=>1];
         $this->db->insert('penyewaan',$isi);
         $resp['id']=$id;
         $resp['stat']=$this->db->affected_rows();
@@ -247,6 +251,7 @@ class Rent_model extends CI_Model{
     function cek_penyewaan($id, $tm, $ts, $edit=false){
         $this->db->from('penyewaan');
         $this->db->where('aset',$id);
+        $this->db->where('status_sewa',1);
         if ($edit) {
             $this->db->where('id_sewa <>',$edit);
         }
@@ -274,6 +279,12 @@ class Rent_model extends CI_Model{
                         </tr>';
         }
         return $result1;
+    }
+
+    function set_pembatalan_sewa($id){
+        $this->db->where('id_sewa',$id);
+        $this->db->update('penyewaan',['status_sewa'=>0]);
+        return $this->db->affected_rows();
     }
 
 }

@@ -692,6 +692,7 @@ class Administrasi extends CI_Controller{
         $dt['page']=$this->page;
         $dt['title'] = 'Ubah informasi admin ';
         $dt['v']=$this->hr->get_edit_profil($this->ses->nu);
+        $dt['edit_stat'] = $this->ses->nu=='0081586049510'?true:false;
         $this->load->view('MenuPage/Form/edit_profil',$dt);
         // echo json_encode($dt['v']);
     }

@@ -164,9 +164,13 @@ $(document).ready(function(){
                 form=form.split('&')
                 form.pop()
                 $('a[href|=unduh]').attr('href',link[0]+'?'+form.join('&'))
-                keuangan_mingguan(v.grafik,'#grafik_keuangan_mingguan')
-                keuangan_bulanan(v.grafik,'#grafik_keuangan_bulanan')
-                keuangan_tahunan(v.grafik,'#grafik_keuangan_tahunan')
+                if (v['nb']!='month'||v['nb']!='year') {
+                    keuangan_mingguan(v.grafik,'#grafik_keuangan_mingguan',v['nb'],v['thn'])
+                }else if(v['nb']!='month'){
+                    keuangan_bulanan(v.grafik,'#grafik_keuangan_bulanan',v['thn'])
+                }else{
+                    keuangan_tahunan(v.grafik,'#grafik_keuangan_tahunan')
+                }
                 
             }
         })

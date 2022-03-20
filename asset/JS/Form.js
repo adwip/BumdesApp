@@ -797,4 +797,23 @@ $(document).ready(function(){
         })
     })
 
+    $('#forget-email-req').submit(function(e){
+        e.preventDefault()
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: $(this).serialize(),
+            dataType: 'text',
+            beforeSend: function(){
+                $('button[type=submit]').attr('disabled',true)
+            },
+            success: function(v){
+                if (v==200) {
+                    $('#form-mail').val('')
+                }
+                $('button[type=submit]').attr('disabled',false)
+            }
+        })
+    })
+
 })

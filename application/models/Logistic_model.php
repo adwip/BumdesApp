@@ -96,7 +96,7 @@ class Logistic_model extends CI_Model{
     }
 
     function get_komoditas($type='html'){
-        $this->db->select('id_kom AS id, nama_komoditas AS kom, IFNULL(stok,0) AS stk, IFNULL(stok, "new") AS del, FORMAT(harga_jual, "#.00") AS hgj, FORMAT(harga_beli, "#.00") AS hgb, satuan AS st, sat AS st2');//,  FORMAT(SUM(nilai)/SUM(jumlah),"#.00") AS hs
+        $this->db->select('id_kom AS id, nama_komoditas AS kom, IFNULL(round(stok,2),0) AS stk, IFNULL(stok, "new") AS del, FORMAT(harga_jual, "#.00") AS hgj, FORMAT(harga_beli, "#.00") AS hgb, satuan AS st, sat AS st2');//,  FORMAT(SUM(nilai)/SUM(jumlah),"#.00") AS hs
         $this->db->from('komoditas as k');
         $join = '(SELECT `id_stok` FROM `stok_item` WHERE `komoditas`=`id_kom` ORDER by `last_change` DESC limit 1)';
         $this->db->join('stok_item as si','id_stok='.$join,'LEFT');
@@ -111,7 +111,7 @@ class Logistic_model extends CI_Model{
                 $result1 .='<tr>
                                 <td>'.($key+1).'</td>
                                 <td>'.$val->kom.'</td>
-                                <td>'.$val->stk.' '.$val->st.'</td>
+                                <td>'.round($val->stk,2).' '.$val->st.'</td>
                                 <td>Rp. '.$val->hgj.'</td>
                                 <td>Rp. '.$val->hgb.'</td>
                                 <td class="text-center">

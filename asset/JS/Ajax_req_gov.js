@@ -87,6 +87,7 @@ $(document).ready(function(){
                     keuangan_mingguan(v['gf_w'],'#grafik_keuangan_mingguan', v['nb'], v['y'])
                     keuangan_bulanan(v['gf_m'],'#grafik_keuangan_bulanan', v['y'])
                     keuangan_tahunan(v['gf_y'],'#grafik_keuangan_tahunan')
+                    
                 }
             }
         })

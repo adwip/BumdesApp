@@ -94,6 +94,8 @@ class Finance extends CI_controller{
             $val['debit']=isset($dt['kd'][0]->dbt)? $dt['kd'][0]->dbt:0;
             $val['kredit']=isset($dt['kd'][0]->kdt)? $dt['kd'][0]->kdt:0;
             $val['grafik'] = json_decode($dt['v_grafik']);
+            $val['nb'] = 'month';
+            $val['thn'] = $dt['tahun'];
             echo json_encode($val);
         }
     }
@@ -126,6 +128,8 @@ class Finance extends CI_controller{
             $val['debit']=isset($dt['kd'][0]->dbt)? $dt['kd'][0]->dbt:0;
             $val['kredit']=isset($dt['kd'][0]->kdt)? $dt['kd'][0]->kdt:0;
             $val['grafik'] = json_decode($dt['v_grafik']);
+            $val['nb'] = 'year';
+            $val['thn'] = $dt['tahun'];
             echo json_encode($val);
         }
     }

@@ -75,6 +75,31 @@ $(document).ready(function(){
             }
         })
     })
+    //batalkan penyewaan
+    $('tbody').on('click','.batal-sewa',function(){
+        const act = $(this).closest('tbody')
+        const rem = $(this).closest('tr')
+        const id = $(this).val()
+        swal({title:"Lanjutkan pembatalan ?",dangerMode: true,button:'Lanjut'}).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: 'batal-sewa',
+                    type: act.attr('data-meth'),
+                    data: $('#sewa-aset').serialize()+'&id='+id+'&nm='+rem.attr('data-nam'),
+                    dataType: 'json',
+                    success: function(v){
+                        if (v['res']==200) {
+                            rem.find('td:nth-child(7)').html(' ')
+                            rem.find('td:nth-child(7)').html('<i class="fa fa-info-circle" title="'+id+'"></i> Dibatalkan')
+                            swal({text:"Berhasil membatalkan",buttons: false,timer:3000,icon:"success"})
+                        }else{
+                            swal({text:"Gagal membatalkan",buttons: false,timer:3000,icon:"error"})
+                        }
+                    }
+                })
+            }
+        }) 
+    })
 
     //menghapus keuangan mingguan, bulanan, tahunan
     $('tbody').on('click','.hapus-fin',function(){

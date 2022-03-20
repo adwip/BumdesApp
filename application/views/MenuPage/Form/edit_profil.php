@@ -68,14 +68,14 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3" for="">Nama</label>
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                          <input type="text" required class="form-control" name="nama" value="<?= isset($v->nm)?$v->nm:'-' ?>">
+                          <input type="text" required class="form-control" name="nama" value="<?= isset($v->nm)?$v->nm:'-' ?>" <?= $edit_stat?'disabled':' ' ?>>
                         </div>
                       </div> <br>
                       <div class="form-group"><!-- ============================================================== -->
                         <label class="control-label col-md-3 col-sm-3 col-xs-3">Foto</label>
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                          <input class="form-control" type="file" name="foto" id="img-form">
-                          <span><input name="del_fot" <?= !isset($v->img)?'disabled':null ?> value="<?= isset($v->img)?$v->img:null ?>" id="del-fot" type="checkbox"><label>Hapus foto | </label></span>
+                          <input class="form-control" type="file" name="foto" id="img-form"  <?= $edit_stat?'disabled':' ' ?>>
+                          <span><input name="del_fot" <?= !isset($v->img)?'disabled':null ?> value="<?= isset($v->img)?$v->img:null ?>" id="del-fot" type="checkbox"  <?= $edit_stat?'disabled':' ' ?>><label>Hapus foto | </label></span>
                           <span>Ukuran maksimal 5 Mb</span>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">

@@ -160,5 +160,13 @@
     <!--Javascript tambahan -->
     <script src="<?= base_url('asset') ?>/JS/Fitur.js"></script>
     <script src="<?= base_url('asset/JS/Ajax_req.js') ?>"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script>
+      var socket = io('http://localhost:5000/');
+      socket.on('connect', function(){
+        // alert('terhubung')
+        console.log(socket)
+      });
+    </script>
   </body>
 </html>

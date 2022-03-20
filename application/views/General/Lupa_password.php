@@ -27,11 +27,11 @@
       <div class="login_wrapper">
         <div class=" form login_form">
           <section class="login_content">
-            <form method="POST" action="req-password" >
+            <form method="POST" action="req-password" id="forget-email-req">
             <h1><img src="<?= base_url(); ?>logo2.png"style="max-width:100px;max-height:100px;"> BUMDes</h1>
               
               <div>
-                <input type="text" class="form-control" placeholder="Email" required name="email" />
+                <input id="form-mail" type="text" class="form-control" placeholder="Email" required name="email" />
               </div>
               <div>
                 <button class="btn btn-default submit" type="submit">Kirim</button>
@@ -59,5 +59,7 @@
             content:none;
         }
     </style>
+    <?php $this->load->view('SuptPage/JsP') ?>
+    <script src="<?= base_url('asset/JS/Form.js') ?>"></script>
   </body>
 </html>

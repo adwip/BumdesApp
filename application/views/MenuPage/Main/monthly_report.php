@@ -208,7 +208,7 @@
     <script src="<?= base_url('asset') ?>/JS/Fitur.js"></script>
     <script src="<?= base_url('asset/JS/Ajax_req.js') ?>"></script>
     <script type="text/javascript">
-      keuangan_bulanan(JSON.parse('<?= $v_grafik ?>'),'#grafik_keuangan_bulanan')
+      keuangan_bulanan(JSON.parse('<?= $v_grafik ?>'),'#grafik_keuangan_bulanan', '<?= $tahun ?>')
     </script>
   </body>
 </html>

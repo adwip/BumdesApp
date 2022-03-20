@@ -358,4 +358,15 @@ class Rent extends CI_Controller{
         echo $dt;
     }
 
+    function set_pembatalan_sewa(){
+        $id = $this->input->post('id');
+
+        $val = $this->rm->set_pembatalan_sewa($id);
+        $log_mesg = '[BATAL][PENYEWAAN]['.$id.'] Membatalkan jadwal penyewaan aset';
+
+        if ($val) {
+            $this->hr->log_admin($this->ses->nu, $log_mesg, date('Y-m-d'), date('H:i:s'));
+            echo json_encode(['res'=>200]);
+        }
+    }
 }

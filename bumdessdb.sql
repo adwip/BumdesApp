@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 03, 2020 at 07:49 PM
+-- Generation Time: Nov 06, 2020 at 09:16 AM
 -- Server version: 10.1.40-MariaDB
 -- PHP Version: 7.3.5
 
@@ -44,8 +44,8 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id_admin`, `nama`, `email`, `password`, `kategori`, `kontak`, `foto_user`, `waktu_reg`) VALUES
-('0081578813144', 'Steve rogers', '15523231@students.uii.ac.id', '25d55ad283aa400af464c76d713c07ad', 'GOV', '0832-5604-0453', '8001586623283.jpg', '2020-03-10 02:09:11'),
-('0081585629042', 'Tony stark', 'prabowoa63@gmail.com', '25d55ad283aa400af464c76d713c07ad', 'MNG', '030502060306', '8001586585613.jpg', '2020-03-31 11:30:42'),
+('0081578813144', 'Steve rogers', 'pemerintah_desa@dummy.com', '25d55ad283aa400af464c76d713c07ad', 'GOV', '0832-5604-0453', '8001586623283.jpg', '2020-03-10 02:09:11'),
+('0081585629042', 'Tony stark', 'adminbumdes@dummy.com', '25d55ad283aa400af464c76d713c07ad', 'MNG', '030502060306', '8001586585613.jpg', '2020-03-31 11:30:42'),
 ('0081586049510', 'Administrator', 'sistemwebbumdij@gmail.com', '25d55ad283aa400af464c76d713c07ad', 'SYS', NULL, '8001586025005.jpg', '2020-04-05 01:18:30');
 
 --
@@ -86,7 +86,7 @@ INSERT INTO `aset` (`id_aset`, `nomor_aset`, `nama`, `sumber`, `harga_aset`, `lo
 ('0051585410835', 'ASET/CONTOH', 'Mobil 1', 'Non-beli', NULL, 'Kalipuru', 'Baru', 'Baik', '3001585830162.jpg', '2020-03-28', NULL),
 ('0051585410896', 'ASET/CONTOH-004', 'Mobil bagus', 'Beli', 7000000, 'Kalipuru', 'Bekas', 'Baik', '3001585830251.jpg', '2020-03-28', NULL),
 ('0051585552294', 'ASET/2020/M-AIRCRAFT/0306/7', 'Boeing 747 - 8 Presidential Version', 'Beli', 560000, 'Kebumen', 'Baru', 'Baik', '3001585830016.jpg', '2020-03-30', NULL),
-('0051588781759', '004/05/AST/BMDS/034', 'Sepeda motor', 'Beli', 80000000, 'Kalipuru 1', 'Baru', 'Baik', '0031588781759.png', '2020-05-06', NULL);
+('0051602005145', '0909/05/BMD/002', 'Motor inventaris', 'Beli', 40000000, 'Kalipuru', 'Baru', 'Baik', '0031602005145.jpg', '2020-10-07', NULL);
 
 -- --------------------------------------------------------
 
@@ -283,7 +283,73 @@ INSERT INTO `log_admin` (`id_temp`, `log`, `admin`, `del_ad`, `tanggal`, `waktu`
 (21, '[PRIVATE] Masuk ke sistem web pada 03-09-2020 14:01:56', '0081585629042', NULL, '2020-09-03', '14:01:56'),
 (22, '[TAMBAH][KEUANGAN][STOK KELUAR][0061599116632][0011599116632] Menambah arus kas masuk (Debit) untuk penjualan Telur sebanyak 90 Kg', '0081585629042', NULL, '2020-09-03', '14:03:52'),
 (23, '[TAMBAH][STOK KELUAR][0011599116632] Stok Telur keluar sebanyak 90 Kg untuk Distribusi kepada PT. Margomulyo nasi goreng', '0081585629042', NULL, '2020-09-03', '14:03:52'),
-(24, '[PRIVATE] Masuk ke sistem web pada 03-09-2020 14:20:16', '0081585629042', NULL, '2020-09-03', '14:20:16');
+(24, '[PRIVATE] Masuk ke sistem web pada 03-09-2020 14:20:16', '0081585629042', NULL, '2020-09-03', '14:20:16'),
+(25, '[PRIVATE] Masuk ke sistem web pada 04-09-2020 14:10:40', '0081585629042', NULL, '2020-09-04', '14:10:40'),
+(26, '[PRIVATE] Masuk ke sistem web pada 04-09-2020 14:24:40', '0081585629042', NULL, '2020-09-04', '14:24:40'),
+(27, '[TAMBAH][PENYEWAAN][0021599207815] Penyewaan aset Mobil 1 mulai dari 04-09-2020 selama 4 hari oleh User test', '0081585629042', NULL, '2020-09-04', '15:23:35'),
+(28, '[TAMBAH][KEUANGAN][PENYEWAAN][0021599207815][0061599207815] Pemasukan dari penyewaan Mobil 1 oleh User test', '0081585629042', NULL, '2020-09-04', '15:23:36'),
+(29, '[PRIVATE] Masuk ke sistem web pada 05-09-2020 13:53:23', '0081585629042', NULL, '2020-09-05', '13:53:23'),
+(30, '[PRIVATE] Masuk ke sistem web pada 06-09-2020 13:18:03', '0081585629042', NULL, '2020-09-06', '13:18:03'),
+(31, '[PRIVATE] Masuk ke sistem web pada 06-09-2020 23:34:47', '0081585629042', NULL, '2020-09-06', '23:34:47'),
+(32, '[PRIVATE] Masuk ke sistem web pada 07-09-2020 11:43:35', '0081585629042', NULL, '2020-09-07', '11:43:35'),
+(33, '[PRIVATE] Masuk ke sistem web pada 07-09-2020 11:58:25', '0081585629042', NULL, '2020-09-07', '11:58:25'),
+(34, '[PRIVATE] Masuk ke sistem web pada 07-09-2020 11:59:31', '0081585629042', NULL, '2020-09-07', '11:59:31'),
+(35, '[HAPUS][ASET][0051588781759] Menghapus Sepeda motor dari daftar aset', '0081585629042', NULL, '2020-09-07', '12:19:19'),
+(36, '[PRIVATE] Masuk ke sistem web pada 09-09-2020 13:08:45', '0081585629042', NULL, '2020-09-09', '13:08:45'),
+(37, '[PRIVATE] Masuk ke sistem web pada 10-09-2020 21:21:50', '0081585629042', NULL, '2020-09-10', '21:21:50'),
+(38, '[PRIVATE][REQ][GANTI PASSWORD][5001599748157] Request lupa password', '0081578813144', NULL, '2020-09-10', '21:29:18'),
+(39, '[PRIVATE][REQ][GANTI PASSWORD][5001599748382] Request lupa password', '0081578813144', NULL, '2020-09-10', '21:33:02'),
+(40, '[PRIVATE][REQ][GANTI PASSWORD][5001599748979] Request lupa password', '0081578813144', NULL, '2020-09-10', '21:42:59'),
+(41, '[PRIVATE][REQ][GANTI PASSWORD][5001599749009] Request lupa password', '0081578813144', NULL, '2020-09-10', '21:43:29'),
+(42, '[PRIVATE][REQ][GANTI PASSWORD][5001599749108] Request lupa password', '0081578813144', NULL, '2020-09-10', '21:45:08'),
+(43, '[PRIVATE][REQ][GANTI PASSWORD][5001599749229] Request lupa password', '0081578813144', NULL, '2020-09-10', '21:47:09'),
+(44, '[PRIVATE] Masuk ke sistem web pada 10-09-2020 21:48:17', '0081585629042', NULL, '2020-09-10', '21:48:17'),
+(45, '[PRIVATE] Masuk ke sistem web pada 10-09-2020 21:48:52', '0081586049510', NULL, '2020-09-10', '21:48:52'),
+(46, '[PRIVATE] Masuk ke sistem web pada 10-09-2020 21:56:58', '0081585629042', NULL, '2020-09-10', '21:56:58'),
+(47, '[PRIVATE] Masuk ke sistem web pada 13-09-2020 16:08:42', '0081585629042', NULL, '2020-09-13', '16:08:42'),
+(48, '[PRIVATE] Masuk ke sistem web pada 14-09-2020 08:13:11', '0081585629042', NULL, '2020-09-14', '08:13:11'),
+(49, '[TAMBAH][KEUANGAN][STOK MASUK][0061600046151][0011600046150] Menambah arus kas keluar (Kredit) untuk pembelian Telur sebanyak 30 Kg', '0081585629042', NULL, '2020-09-14', '08:15:51'),
+(50, '[TAMBAH][STOK MASUK][0011600046150] Penambahan stok masuk Telur sebanyak 30 Kg dengan cara Beli', '0081585629042', NULL, '2020-09-14', '08:15:51'),
+(51, '[PRIVATE] Masuk ke sistem web pada 15-09-2020 17:58:57', '0081585629042', NULL, '2020-09-15', '17:58:57'),
+(52, '[PRIVATE] Masuk ke sistem web pada 16-09-2020 09:51:15', '0081585629042', NULL, '2020-09-16', '09:51:15'),
+(53, '[PRIVATE] Masuk ke sistem web pada 18-09-2020 15:14:55', '0081585629042', NULL, '2020-09-18', '15:14:55'),
+(54, '[PRIVATE] Masuk ke sistem web pada 19-09-2020 21:25:14', '0081585629042', NULL, '2020-09-19', '21:25:14'),
+(55, '[PRIVATE] Masuk ke sistem web pada 06-10-2020 22:38:14', '0081585629042', NULL, '2020-10-06', '22:38:14'),
+(56, '[PRIVATE] Masuk ke sistem web pada 06-10-2020 23:49:31', '0081585629042', NULL, '2020-10-06', '23:49:31'),
+(57, '[TAMBAH][KEUANGAN][STOK MASUK][0061602003300][0011602003300] Menambah arus kas keluar (Kredit) untuk pembelian Telur sebanyak 40.6 Kg', '0081585629042', NULL, '2020-10-06', '23:55:00'),
+(58, '[TAMBAH][STOK MASUK][0011602003300] Penambahan stok masuk Telur sebanyak 40.6 Kg dengan cara Beli', '0081585629042', NULL, '2020-10-06', '23:55:00'),
+(59, '[TAMBAH][KEUANGAN][STOK MASUK][0061602003324][0011602003324] Menambah arus kas keluar (Kredit) untuk pembelian Beras sebanyak 50 Kg', '0081585629042', NULL, '2020-10-06', '23:55:24'),
+(60, '[TAMBAH][STOK MASUK][0011602003324] Penambahan stok masuk Beras sebanyak 50 Kg dengan cara Beli', '0081585629042', NULL, '2020-10-06', '23:55:24'),
+(61, '[TAMBAH][KEUANGAN][STOK KELUAR][0061602003539][0011602003539] Menambah arus kas masuk (Debit) untuk penjualan Telur sebanyak 9.10 Kg', '0081585629042', NULL, '2020-10-06', '23:58:59'),
+(62, '[TAMBAH][STOK KELUAR][0011602003539] Stok Telur keluar sebanyak 9.10 Kg untuk Distribusi kepada PT. Margomulyo nasi goreng', '0081585629042', NULL, '2020-10-06', '23:58:59'),
+(63, '[TAMBAH][PENYEWAAN][0021602003700] Penyewaan aset Mobil 1 mulai dari 07-10-2020 selama 3 hari oleh Antonio', '0081585629042', NULL, '2020-10-07', '00:01:40'),
+(64, '[TAMBAH][KEUANGAN][PENYEWAAN][0021602003700][0061602003700] Pemasukan dari penyewaan Mobil 1 oleh Antonio', '0081585629042', NULL, '2020-10-07', '00:01:40'),
+(65, '[TAMBAH][PENYEWAAN][0021602003752] Penyewaan aset Mobil 1 mulai dari 07-10-2020 selama 2 hari oleh Tony stark', '0081585629042', NULL, '2020-10-07', '00:02:33'),
+(66, '[TAMBAH][KEUANGAN][PENYEWAAN][0021602003752][0061602003753] Pemasukan dari penyewaan Mobil 1 oleh Tony stark', '0081585629042', NULL, '2020-10-07', '00:02:33'),
+(67, '[HAPUS][PENYEWAAN][0021602003752] Menghapus jadwal penyewaan aset', '0081585629042', NULL, '2020-10-07', '00:03:37'),
+(68, '[HAPUS][KEUANGAN][0061602003753][0021602003752] Menghapus transaksi dari penyewaan aset', '0081585629042', NULL, '2020-10-07', '00:03:37'),
+(69, '[HAPUS][PENYEWAAN][0021602003700] Menghapus jadwal penyewaan aset', '0081585629042', NULL, '2020-10-07', '00:03:44'),
+(70, '[HAPUS][KEUANGAN][0061602003700][0021602003700] Menghapus transaksi dari penyewaan aset', '0081585629042', NULL, '2020-10-07', '00:03:44'),
+(71, '[TAMBAH][PENYEWAAN][0021602003893] Penyewaan aset Mobil 1 mulai dari 07-10-2020 selama 2 hari oleh Tony', '0081585629042', NULL, '2020-10-07', '00:04:53'),
+(72, '[TAMBAH][KEUANGAN][PENYEWAAN][0021602003893][0061602003893] Pemasukan dari penyewaan Mobil 1 oleh Tony', '0081585629042', NULL, '2020-10-07', '00:04:53'),
+(73, '[TAMBAH][PENYEWAAN][0021602004097] Penyewaan aset Mobil bagus mulai dari 01-10-2020 selama 3 hari oleh Steve', '0081585629042', NULL, '2020-10-07', '00:08:17'),
+(74, '[TAMBAH][KEUANGAN][PENYEWAAN][0021602004097][0061602004097] Pemasukan dari penyewaan Mobil bagus oleh Steve', '0081585629042', NULL, '2020-10-07', '00:08:17'),
+(75, '[TAMBAH][PENYEWAAN][0021602004168] Penyewaan aset Mobil bagus mulai dari 05-10-2020 selama 2 hari oleh Thor', '0081585629042', NULL, '2020-10-07', '00:09:29'),
+(76, '[TAMBAH][KEUANGAN][PENYEWAAN][0021602004168][0061602004169] Pemasukan dari penyewaan Mobil bagus oleh Thor', '0081585629042', NULL, '2020-10-07', '00:09:29'),
+(77, '[TAMBAH][ASET][0051602005145] Penambahan aset Motor inventaris dengan kondisi Baru dalam keadaan Baik melalui proses Beli', '0081585629042', NULL, '2020-10-07', '00:25:45'),
+(78, '[PRIVATE] Masuk ke sistem web pada 07-10-2020 08:37:14', '0081585629042', NULL, '2020-10-07', '08:37:14'),
+(79, '[TAMBAH][KEUANGAN][STOK MASUK][0061602034725][0011602034725] Menambah arus kas keluar (Kredit) untuk pembelian Telur sebanyak 60 Kg', '0081585629042', NULL, '2020-10-07', '08:38:45'),
+(80, '[TAMBAH][STOK MASUK][0011602034725] Penambahan stok masuk Telur sebanyak 60 Kg dengan cara Beli', '0081585629042', NULL, '2020-10-07', '08:38:46'),
+(81, '[TAMBAH][KEUANGAN][STOK KELUAR][0061602034788][0011602034788] Menambah arus kas masuk (Debit) untuk penjualan Beras sebanyak 2 Kg', '0081585629042', NULL, '2020-10-07', '08:39:48'),
+(82, '[TAMBAH][STOK KELUAR][0011602034788] Stok Beras keluar sebanyak 2 Kg untuk Distribusi kepada PT. Margomulyo nasi goreng', '0081585629042', NULL, '2020-10-07', '08:39:48'),
+(83, '[HAPUS][PENYEWAAN][0021602004168] Menghapus jadwal penyewaan aset', '0081585629042', NULL, '2020-10-07', '08:42:02'),
+(84, '[HAPUS][KEUANGAN][0061602004169][0021602004168] Menghapus transaksi dari penyewaan aset', '0081585629042', NULL, '2020-10-07', '08:42:02'),
+(85, '[TAMBAH][PENYEWAAN][0021602034949] Penyewaan aset Mobil bagus mulai dari 07-10-2020 selama 2 hari oleh Test 1', '0081585629042', NULL, '2020-10-07', '08:42:30'),
+(86, '[TAMBAH][KEUANGAN][PENYEWAAN][0021602034949][0061602034950] Pemasukan dari penyewaan Mobil bagus oleh Test 1', '0081585629042', NULL, '2020-10-07', '08:42:30'),
+(87, '[PRIVATE] Masuk ke sistem web pada 07-10-2020 08:43:55', '0081578813144', NULL, '2020-10-07', '08:43:55'),
+(88, '[PRIVATE] Masuk ke sistem web pada 07-10-2020 08:44:57', '0081586049510', NULL, '2020-10-07', '08:44:57'),
+(89, '[PRIVATE] Masuk ke sistem web pada 07-10-2020 09:24:21', '0081585629042', NULL, '2020-10-07', '09:24:21'),
+(90, '[PRIVATE] Masuk ke sistem web pada 20-10-2020 10:32:08', '0081585629042', NULL, '2020-10-20', '10:32:08');
 
 -- --------------------------------------------------------
 
@@ -297,18 +363,17 @@ CREATE TABLE `mitra` (
   `penanggung_jawab` varchar(30) NOT NULL,
   `alamat` varchar(100) NOT NULL,
   `kontak_1` varchar(20) NOT NULL,
-  `kontak_2` varchar(20) DEFAULT NULL,
-  `status` int(11) DEFAULT NULL
+  `kontak_2` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `mitra`
 --
 
-INSERT INTO `mitra` (`id_mitra`, `nama_mitra`, `penanggung_jawab`, `alamat`, `kontak_1`, `kontak_2`, `status`) VALUES
-('0071585410227', 'PT. Margomulyo nasi goreng', 'Steven chow', 'Jln. Kaliurang', '040560780456', NULL, NULL),
-('0071585554912', 'Saudi Aramco Co., Ltd', 'Black widow', 'Indonesia', '090908088787', NULL, NULL),
-('0071588072959', 'Pertamina', 'Erick tohir', 'Jakarta', '00000000000', NULL, 0);
+INSERT INTO `mitra` (`id_mitra`, `nama_mitra`, `penanggung_jawab`, `alamat`, `kontak_1`, `kontak_2`) VALUES
+('0071585410227', 'PT. Margomulyo nasi goreng', 'Steven chow', 'Jln. Kaliurang', '040560780456', NULL),
+('0071585554912', 'Saudi Aramco Co., Ltd', 'Black widow', 'Indonesia', '090908088787', NULL),
+('0071588072959', 'Pertamina', 'Erick tohir', 'Jakarta', '00000000000', NULL);
 
 -- --------------------------------------------------------
 
@@ -401,7 +466,11 @@ INSERT INTO `penyewaan` (`id_sewa`, `deld_aset`, `aset`, `penyewa`, `kontak`, `t
 ('0021588232967', NULL, '0051585410896', 'Anu 1', '09090909090', '2020-04-30', '2020-05-02', 1400000, 1),
 ('0021588697689', NULL, '0051585410835', 'Orgg', '0909090909', '2020-05-05', '2020-05-07', 1000000, 1),
 ('0021589877782', NULL, '0051585410835', 'Test test', '090909090909', '2020-05-19', '2020-05-21', 1000000, 1),
-('0021591450098', NULL, '0051585410835', 'Anut', '090909090909', '2020-06-06', '2020-06-08', 1000000, 1);
+('0021591450098', NULL, '0051585410835', 'Anut', '090909090909', '2020-06-06', '2020-06-08', 1000000, 1),
+('0021599207815', NULL, '0051585410835', 'User test', '09090900909', '2020-08-20', '2020-09-08', 2000000, 1),
+('0021602003893', NULL, '0051585410835', 'Tony', '1234', '2020-10-07', '2020-10-09', 1000000, 1),
+('0021602004097', NULL, '0051585410896', 'Steve', '12432', '2020-10-01', '2020-10-04', 2130000, 1),
+('0021602034949', NULL, '0051585410896', 'Test 1', '0909', '2020-10-07', '2020-10-09', 1420000, 1);
 
 -- --------------------------------------------------------
 
@@ -463,7 +532,17 @@ INSERT INTO `rekap_keuangan` (`id_fin`, `jenis`, `keterangan`, `debit`, `kredit`
 ('0061597210053', 'OUT', 'Pembelian/stok masuk Telur sebanyak 20 Kg', NULL, 300000, 67570000, '2020-08-12', '2020-08-12 12:27:33', '0011597210053', 'System'),
 ('0061597210280', 'IN', 'Penerimaan dari penjualan Telur sebanyak 51.5 Kg untuk tujuan Distribusi kepada PT. Margomulyo nasi goreng', 1030000, NULL, 68600000, '2020-08-12', '2020-08-12 12:31:20', '0011597210280', 'System'),
 ('0061599033572', 'OUT', 'Pembelian/stok masuk Beras sebanyak 10 Kg', NULL, 600000, 68000000, '2020-09-02', '2020-09-02 14:59:32', '0011599033572', 'System'),
-('0061599116632', 'IN', 'Penerimaan dari penjualan Telur sebanyak 90 Kg untuk tujuan Distribusi kepada PT. Margomulyo nasi goreng', 843000, NULL, 68843000, '2020-09-03', '2020-09-03 14:03:52', '0011599116632', 'System');
+('0061599116632', 'IN', 'Penerimaan dari penjualan Telur sebanyak 90 Kg untuk tujuan Distribusi kepada PT. Margomulyo nasi goreng', 843000, NULL, 68843000, '2020-09-03', '2020-09-03 14:03:52', '0011599116632', 'System'),
+('0061599207815', 'IN', 'Penerimaan dari penyewaan aset Mobil 1 mulai dari 04-09-2020 selama 4 oleh User test', 2000000, NULL, 70843000, '2020-09-04', '2020-09-04 15:23:35', '0021599207815', 'System'),
+('0061600046151', 'OUT', 'Pembelian/stok masuk Telur sebanyak 30 Kg', NULL, 1000000, 69843000, '2020-09-14', '2020-09-14 08:15:51', '0011600046150', 'System'),
+('0061602003300', 'OUT', 'Pembelian/stok masuk Telur sebanyak 40.6 Kg', NULL, 232000, 69611000, '2020-10-06', '2020-10-06 23:55:00', '0011602003300', 'System'),
+('0061602003324', 'OUT', 'Pembelian/stok masuk Beras sebanyak 50 Kg', NULL, 900000, 68711000, '2020-10-06', '2020-10-06 23:55:24', '0011602003324', 'System'),
+('0061602003539', 'IN', 'Penerimaan dari penjualan Telur sebanyak 9.10 Kg untuk tujuan Distribusi kepada PT. Margomulyo nasi goreng', 300000, NULL, 69011000, '2020-10-06', '2020-10-06 23:58:59', '0011602003539', 'System'),
+('0061602003893', 'IN', 'Penerimaan dari penyewaan aset Mobil 1 mulai dari 07-10-2020 selama 2 oleh Tony', 1000000, NULL, 70011000, '2020-10-07', '2020-10-07 00:04:53', '0021602003893', 'System'),
+('0061602004097', 'IN', 'Penerimaan dari penyewaan aset Mobil bagus mulai dari 01-10-2020 selama 3 oleh Steve', 2130000, NULL, 72141000, '2020-10-01', '2020-10-07 00:08:17', '0021602004097', 'System'),
+('0061602034725', 'OUT', 'Pembelian/stok masuk Telur sebanyak 60 Kg', NULL, 70000, 73491000, '2020-10-06', '2020-10-07 08:38:45', '0011602034725', 'System'),
+('0061602034788', 'IN', 'Penerimaan dari penjualan Beras sebanyak 2 Kg untuk tujuan Distribusi kepada PT. Margomulyo nasi goreng', 40000, NULL, 72111000, '2020-10-07', '2020-10-07 08:39:48', '0011602034788', 'System'),
+('0061602034950', 'IN', 'Penerimaan dari penyewaan aset Mobil bagus mulai dari 07-10-2020 selama 2 oleh Test 1', 1420000, NULL, 73531000, '2020-10-07', '2020-10-07 08:42:30', '0021602034949', 'System');
 
 --
 -- Triggers `rekap_keuangan`
@@ -596,7 +675,13 @@ INSERT INTO `stok_item` (`id_stok`, `komoditas`, `jenis`, `jumlah`, `sat_barang`
 ('0011597210053', '0071585408307', 'IN', 20, 1, 350, '2020-08-12', '2020-08-12 12:27:33'),
 ('0011597210280', '0071585408307', 'OUT', 51.5, 1, 298.5, '2020-08-12', '2020-08-12 12:31:20'),
 ('0011599033572', '0071587976593', 'IN', 10, 1, 52.7, '2020-09-02', '2020-09-02 14:59:32'),
-('0011599116632', '0071585408307', 'OUT', 90, 1, 208.5, '2020-09-03', '2020-09-03 14:03:52');
+('0011599116632', '0071585408307', 'OUT', 90, 1, 208.5, '2020-09-03', '2020-09-03 14:03:52'),
+('0011600046150', '0071585408307', 'IN', 30, 1, 238.5, '2020-09-14', '2020-09-14 08:15:50'),
+('0011602003300', '0071585408307', 'IN', 40.6, 1, 279.1, '2020-10-06', '2020-10-06 23:55:00'),
+('0011602003324', '0071587976593', 'IN', 50, 1, 102.7, '2020-10-06', '2020-10-06 23:55:24'),
+('0011602003539', '0071585408307', 'OUT', 9.1, 1, 270, '2020-10-06', '2020-10-06 23:58:59'),
+('0011602034725', '0071585408307', 'IN', 60, 1, 330, '2020-10-06', '2020-10-07 08:38:45'),
+('0011602034788', '0071587976593', 'OUT', 2, 1, 100.7, '2020-10-07', '2020-10-07 08:39:48');
 
 --
 -- Triggers `stok_item`
@@ -703,7 +788,9 @@ INSERT INTO `stok_keluar` (`id_temp`, `id_prb`, `tujuan`, `nilai_transaksi`, `ma
 (9, '0011592382220', 'Non-distribusi', 700000, 672000, NULL, ''),
 (10, '0011592383130', 'Non-distribusi', 1900000, 1872000, NULL, ''),
 (11, '0011597210280', 'Distribusi', 1030000, 276000, '0071585410227', ''),
-(12, '0011599116632', 'Distribusi', 843000, 0, '0071585410227', '');
+(12, '0011599116632', 'Distribusi', 843000, 0, '0071585410227', ''),
+(13, '0011602003539', 'Distribusi', 300000, 169500, '0071585410227', ''),
+(14, '0011602034788', 'Distribusi', 40000, 12000, '0071585410227', '');
 
 --
 -- Triggers `stok_keluar`
@@ -787,7 +874,11 @@ INSERT INTO `stok_masuk` (`id_temp`, `id_prb`, `asal`, `nilai`, `catatan`) VALUE
 (12, '0011593242673', 'Beli', 800000, ''),
 (13, '0011596859149', 'Beli', 600000, ''),
 (14, '0011597210053', 'Beli', 300000, ''),
-(15, '0011599033572', 'Beli', 600000, '');
+(15, '0011599033572', 'Beli', 600000, ''),
+(16, '0011600046150', 'Beli', 1000000, ''),
+(17, '0011602003300', 'Beli', 232000, ''),
+(18, '0011602003324', 'Beli', 900000, ''),
+(19, '0011602034725', 'Beli', 70000, '');
 
 -- --------------------------------------------------------
 
@@ -800,13 +891,6 @@ CREATE TABLE `url_confirm` (
   `catatan` varchar(100) DEFAULT NULL,
   `status` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `url_confirm`
---
-
-INSERT INTO `url_confirm` (`id`, `catatan`, `status`) VALUES
-('5001593329567', '0081585629042|15523231@students.uii.ac.id', 1);
 
 --
 -- Indexes for dumped tables
@@ -948,7 +1032,7 @@ ALTER TABLE `histori_harga_komoditas`
 -- AUTO_INCREMENT for table `log_admin`
 --
 ALTER TABLE `log_admin`
-  MODIFY `id_temp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id_temp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
 
 --
 -- AUTO_INCREMENT for table `satuan`
@@ -960,13 +1044,13 @@ ALTER TABLE `satuan`
 -- AUTO_INCREMENT for table `stok_keluar`
 --
 ALTER TABLE `stok_keluar`
-  MODIFY `id_temp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_temp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `stok_masuk`
 --
 ALTER TABLE `stok_masuk`
-  MODIFY `id_temp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_temp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Constraints for dumped tables

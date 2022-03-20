@@ -292,7 +292,7 @@ class Logistic extends CI_Controller{
         foreach ($r as $key => $v) {            
             $this->PDF->Cell(10,6,($key+1),1,0);
             $this->PDF->Cell(80,6,$v->kom,1,0);
-            $this->PDF->Cell(30,6,$v->stk,1,0);
+            $this->PDF->Cell(30,6,round($v->stk,2).' '.$v->st,1,0);
             $this->PDF->Cell(35,6,'Rp. '.$v->hgj,1,0);
             $this->PDF->Cell(35,6,'Rp. '.$v->hgb,1,1);
         }

@@ -126,7 +126,7 @@ class Administration_model extends CI_Model{
         $this->db->join('bagi_hasil_aset bgh','bgh.mitra=id_mitra','LEFT');
         $this->db->join('stok_keluar sk','sk.mitra=id_mitra','LEFT');
         $this->db->group_by('id_mitra');
-        // $this->db->where('status','Aktif');
+        // $this->db->where('status',1);
         $result = $this->db->get()->result();
         $result1=null;
         if ($type=='html') {
